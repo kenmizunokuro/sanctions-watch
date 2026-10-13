@@ -132,6 +132,32 @@
 2026-10-01 04:27:02,OFAC,掲載終了候補（要確認）,Maraya,制裁リスト（OFAC：SDN）; FixedRef=28301; event_id=eef66c298c11ec747f6da9c0385d3c50d1d19117e57c5b8d3803059d8081c4c7; SHA256=5afe67d5b6709be142c09ddd3550b58593d7a706e82cbd68a8001ffc3c90e28b,削除承認待ち（名簿は有効のまま・削除未反映）
 2026-09-23 23:32:21,OFAC,掲載終了候補（要確認）,Safari Club,制裁リスト（OFAC：SDN）; FixedRef=21264; event_id=51cd022b2b3bd6ed22e24f914240a2c1c1b97fd8588f94f006dfdec72d766556; SHA256=83553ea89120cba98271cd3724531dd3d603e27521c4b47be6548a3856ed068b,削除承認待ち（名簿は有効のまま・削除未反映）
 2026-09-23 23:32:21,OFAC,掲載終了候補（要確認）,Olenga Francois,制裁リスト（OFAC：SDN）; FixedRef=21263; event_id=51cd022b2b3bd6ed22e24f914240a2c1c1b97fd8588f94f006dfdec72d766556; SHA256=83553ea89120cba98271cd3724531dd3d603e27521c4b47be6548a3856ed068b,削除承認待ち（名簿は有効のまま・削除未反映）
+2026-10-13 23:51:09,OFAC,追加,Tamex Logistics,,制裁リスト（OFAC：SDN）
+2026-10-13 23:51:09,OFAC,追加,Tamex Leasing,,制裁リスト（OFAC：SDN）
+2026-10-13 23:51:09,OFAC,追加,Inzunza Francisco Javier Partida,,制裁リスト（OFAC：SDN）
+2026-10-13 23:51:09,OFAC,追加,Amador Inzunza Francisco,,制裁リスト（OFAC：SDN）
+2026-10-13 23:51:09,OFAC,追加,"Distribuidora de Gas Economico, S.A. de C.V.",,制裁リスト（OFAC：SDN）
+2026-10-13 23:51:09,OFAC,追加,Garza Gamaliel Garcia,,制裁リスト（OFAC：SDN）
+2026-10-13 23:51:09,OFAC,追加,Elias Gamaliel Garza,,制裁リスト（OFAC：SDN）
+2026-10-13 23:51:09,OFAC,追加,"Construcciones y Edificaciones Garza Elias, S.A. de C.V.",,制裁リスト（OFAC：SDN）
+2026-10-13 23:51:09,OFAC,追加,CEGESA S.A. de C.V.,,制裁リスト（OFAC：SDN）
+2026-10-13 23:51:09,OFAC,追加,CEGESA,,制裁リスト（OFAC：SDN）
+2026-10-13 23:51:09,OFAC,追加,Cuadra San Dibanh,,制裁リスト（OFAC：SDN）
+2026-10-13 23:51:09,OFAC,追加,Club La Molienda,,制裁リスト（OFAC：SDN）
+2026-10-13 23:51:09,OFAC,追加,La Molienda Race Track,,制裁リスト（OFAC：SDN）
+2026-10-13 23:51:09,OFAC,追加,Restaurant Bar La Molienda,,制裁リスト（OFAC：SDN）
+2026-10-13 23:51:09,OFAC,追加,Pablo Cesar Alvarez Guajardo,,制裁リスト（OFAC：SDN）
+2026-10-13 23:51:09,OFAC,追加,"Construaceros del Fuerte, S.A. de C.V.",,制裁リスト（OFAC：SDN）
+2026-10-13 23:51:09,OFAC,追加,"Gas Energia Confiable, S.A. de C.V.",,制裁リスト（OFAC：SDN）
+2026-10-13 23:51:09,OFAC,追加,"Inova NLD Desarrollos Inmobilarios, S.A. de C.V.",,制裁リスト（OFAC：SDN）
+2026-10-13 23:51:09,OFAC,追加,"Propane Trading Group, S.A. de C.V.",,制裁リスト（OFAC：SDN）
+2026-10-13 23:51:09,OFAC,追加,"Transportadora de Gas de Nuevo Laredo, S.A. de C.V.",,制裁リスト（OFAC：SDN）
+2026-10-13 23:51:09,OFAC,追加,"Concretos y Productos Asfalticos del Norte, S.A. de C.V.",,制裁リスト（OFAC：SDN）
+2026-10-13 23:51:09,OFAC,追加,"INZUNZA PARTIDA, Francisco Javier",,制裁リスト（OFAC：SDN）
+2026-10-13 23:51:09,OFAC,追加,"GARZA GARCIA, Gamaliel",,制裁リスト（OFAC：SDN）
+2026-10-13 23:51:09,OFAC,追加,"GARZA ELIAS, Gamaliel",,制裁リスト（OFAC：SDN）
+2026-10-13 23:51:09,OFAC,追加,"GUAJARDO ALVAREZ, Pablo Cesar",,制裁リスト（OFAC：SDN）
+2026-10-13 23:51:09,OFAC,追加,"AMADOR INZUNZA, Francisco",,制裁リスト（OFAC：SDN）
 2026-10-09 23:41:10,OFAC,追加,International Criminal Court,,制裁リスト（OFAC：SDN）
 2026-10-09 02:51:13,OFAC,追加,Paritosh Shipping Inc.,,制裁リスト（OFAC：SDN）
 2026-10-09 02:51:13,OFAC,追加,Ornella Shipping Inc.,,制裁リスト（OFAC：SDN）
@@ -4973,29 +4999,3 @@
 2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,GUARIN LOAIZA Jose Berley,,制裁リスト（OFAC：SDN）
 2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,GUARÍN LOAIZA José Berley,,制裁リスト（OFAC：SDN）
 2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,WAZIR Malang,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,MOHAMMED Wali,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,JAN Malang,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,GHALI Iyad ag,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,GHALY Iyad ag,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,VALLARTA ESCALANTE Luis Francisco,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,SANCHEZ ARELLANO Luis Fernando,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,KARNER Mihael,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,TOPOLOVEC Jozef,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,ORELLANA MORALES Jairo Estuardo,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,VILLA SANCHEZ Arnoldo,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,CALDERON SANCHEZ Erick Rene,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,LOZA HERNANDEZ Miguel,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,FERNANDEZ DE LUNA Jesus,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,FERNANDEZ DE LUNA Gerardo,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,GONZALEZ MUNIZ Esperanza Maria,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,FERNANDEZ GONZALEZ Carolina,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,GONZALEZ MUNIZ Emilio Guillermo,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,DROGANOV Aleksey O.,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,KARPOV Pavel,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,KOMNOV Dmitriy,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,KHIMINA Yelena,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,KRIVORUCHKO Aleksey,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,KRIVORUCHKO Alex,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,KRIVORUCHKO Alexei,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,KUZNETSOV Artem,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,KUZNETSOV Artyom,,制裁リスト（OFAC：SDN）
