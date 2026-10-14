@@ -1,4 +1,5 @@
 検知日時,出所,種別,受取人名,変更前,変更後
+2026-10-15 00:10:57,OFAC,掲載終了候補（要確認）,Rodriguez Gomez Jorge Jesus,制裁リスト（OFAC：SDN）; FixedRef=25078; event_id=90e0fff076e68294df4a8d97b15140bf7d449b998dd5643bad7897b89546c9e6; SHA256=2364ca6e126dd009cc91e13330d585d965e696029642933e91e3e9c3d4cd4668,削除承認待ち（名簿は有効のまま・削除未反映）
 2026-10-09 23:41:06,OFAC,掲載終了候補（要確認）,Htet Theint Win,制裁リスト（OFAC：SDN）; FixedRef=47354; event_id=30b254b6d89aff26aa1d2d941520f24192259c0e0cb17ecf371261cb11517b62; SHA256=df65bed201df2dc1f5fbccb581e7c683b5673aa7674066b6f99fef506db93662,削除承認待ち（名簿は有効のまま・削除未反映）
 2026-10-09 02:51:09,OFAC,掲載終了候補（要確認）,Pinocchio,制裁リスト（OFAC：SDN）; FixedRef=54934; event_id=67775c4d26ce434dae542a758e3c052a59331d3b65c860631e564c31b2a5fb69; SHA256=3d43f641650e7c3cb11303784d6329e3a50d2df14a1497541ddeef5d69090695,削除承認待ち（名簿は有効のまま・削除未反映）
 2026-10-09 02:51:09,OFAC,掲載終了候補（要確認）,Hakuna Matata,制裁リスト（OFAC：SDN）; FixedRef=54931; event_id=67775c4d26ce434dae542a758e3c052a59331d3b65c860631e564c31b2a5fb69; SHA256=3d43f641650e7c3cb11303784d6329e3a50d2df14a1497541ddeef5d69090695,削除承認待ち（名簿は有効のまま・削除未反映）
@@ -4998,4 +4999,3 @@
 2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,SHAH Mullah Mohammed,,制裁リスト（OFAC：SDN）
 2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,GUARIN LOAIZA Jose Berley,,制裁リスト（OFAC：SDN）
 2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,GUARÍN LOAIZA José Berley,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,WAZIR Malang,,制裁リスト（OFAC：SDN）
