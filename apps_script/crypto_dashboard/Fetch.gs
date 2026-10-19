@@ -31,14 +31,22 @@ function caHttpError_(url,response) {
       details.push(reason.replace(/[\r\n\t]+/g,' ').replace(/\b(?:\d{1,3}\.){3}\d{1,3}\b/g,'[IP非表示]').slice(0,180));
     }
   }
-  return Error('取得失敗 HTTP '+code+' ['+(isApi?'GitHub版確認':'配布JSON取得')+'] '+url+
+  return Error('取得失敗 HTTP '+code+' ['+(isApi?'GitHub版確認':/\/published_commit\.json$/.test(url)?'GitHub公開版参照':'配布JSON取得')+'] '+url+
     (details.length?' / '+details.join(' / '):''));
 }
+/** 公開された同一コミットの成果物だけを読む。GitHub APIの未認証枠には依存しない。 */
+function caPublishedCommit_(cfg) {
+  var url='https://raw.githubusercontent.com/'+cfg.repo+'/'+cfg.branch+'/data/crypto/published_commit.json';
+  var version=JSON.parse(caGetText_(url));
+  if(!version||version.schema_version!==1||typeof version.commit_sha!=='string'||
+    !/^[0-9a-f]{40}$/.test(version.commit_sha))throw Error('GitHub公開版参照の構造変更・欠損（同期を停止）');
+  return version.commit_sha;
+}
 function caFetchSnapshot_(cfg) {
-  var commit=JSON.parse(caGetText_('https://api.github.com/repos/'+cfg.repo+'/commits/'+encodeURIComponent(cfg.branch)));
-  var url=caSnapshotUrl_(cfg,commit.sha);
+  var sha=caPublishedCommit_(cfg);
+  var url=caSnapshotUrl_(cfg,sha);
   var snapshot=caValidateSnapshot_(JSON.parse(caGetText_(url)));
-  snapshot.commit_sha=commit.sha;
+  snapshot.commit_sha=sha;
   snapshot.snapshot_url=url;
   try{
     var chainUrl=url.replace('/dashboard.json','/chain_observations.json');

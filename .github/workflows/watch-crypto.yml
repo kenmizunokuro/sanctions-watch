@@ -14,8 +14,10 @@ on:
       - src/crypto_history/**
       - src/crypto_token_history_watch.py
       - requirements-crypto.txt
+      - tools/publish_crypto_dashboard.sh
       - tests/test_crypto_*.py
       - tests/test_crypto_dashboard.cjs
+      - tests/test_crypto_dashboard_publication.sh
   workflow_run:
     workflows: [watch-ofac]
     types: [completed]
@@ -47,6 +49,7 @@ jobs:
           python -m pip install -r requirements-crypto.txt
           python -m unittest tests.test_crypto_addresses tests.test_crypto_validation tests.test_crypto_validation_expanded tests.test_crypto_bech32_reference tests.test_crypto_ledger tests.test_crypto_watch tests.test_crypto_chain tests.test_crypto_token_history
           node tests/test_crypto_dashboard.cjs
+          bash tests/test_crypto_dashboard_publication.sh
       - name: 保存済みOFAC原本から収録
         id: extract
         run: python -m src.crypto_watch
@@ -61,11 +64,7 @@ jobs:
         run: |
           git config user.name 'sanctions-watch[bot]'
           git config user.email 'sanctions-watch@users.noreply.github.com'
-          git add data/crypto/
-          if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'chore(crypto): アドレス台帳と監視証跡を更新'
-          # 共通concurrency下で実行。並行した人的編集は上書きしない。
-          git push origin HEAD:main
+          bash tools/publish_crypto_dashboard.sh
       - name: 失敗証跡
         if: failure()
         uses: actions/upload-artifact@v4
