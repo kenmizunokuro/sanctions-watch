@@ -14,8 +14,10 @@ on:
       - src/crypto_history/**
       - src/crypto_token_history_watch.py
       - requirements-crypto.txt
+      - tools/publish_crypto_dashboard.sh
       - tests/test_crypto_*.py
       - tests/test_crypto_dashboard.cjs
+      - tests/test_crypto_dashboard_publication.sh
   workflow_run:
     workflows: [watch-ofac]
     types: [completed]
@@ -47,6 +49,7 @@ jobs:
           python -m pip install -r requirements-crypto.txt
           python -m unittest tests.test_crypto_addresses tests.test_crypto_validation tests.test_crypto_validation_expanded tests.test_crypto_bech32_reference tests.test_crypto_ledger tests.test_crypto_watch tests.test_crypto_chain tests.test_crypto_token_history
           node tests/test_crypto_dashboard.cjs
+          bash tests/test_crypto_dashboard_publication.sh
       - name: 保存済みOFAC原本から収録
         id: extract
         run: python -m src.crypto_watch
@@ -61,23 +64,7 @@ jobs:
         run: |
           git config user.name 'sanctions-watch[bot]'
           git config user.email 'sanctions-watch@users.noreply.github.com'
-          git add data/crypto/
-          if git diff --cached --quiet; then
-            # データ不変なら既存の公開ポインタを維持。初回のみ作成する。
-            if test -f data/crypto/published_commit.json; then exit 0; fi
-          else
-            git commit -m 'chore(crypto): アドレス台帳と監視証跡を更新'
-            # 共通concurrency下で実行。並行した人的編集は上書きしない。
-            git push origin HEAD:main
-          fi
-          # 公開コミットを確定してからポインタを別コミットで発行する。
-          # 途中失敗時は旧ポインタのまま（未完成版を正常扱いしない）。
-          printf '{"schema_version":1,"commit_sha":"%s"}\n' "$(git rev-parse HEAD)" > data/crypto/published_commit.json
-          git add data/crypto/published_commit.json
-          if ! git diff --cached --quiet; then
-            git commit -m 'chore(crypto): 同一世代の公開版を確定'
-            git push origin HEAD:main
-          fi
+          bash tools/publish_crypto_dashboard.sh
       - name: 失敗証跡
         if: failure()
         uses: actions/upload-artifact@v4
