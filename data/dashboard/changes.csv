@@ -133,6 +133,21 @@
 2026-10-01 04:27:02,OFAC,掲載終了候補（要確認）,Maraya,制裁リスト（OFAC：SDN）; FixedRef=28301; event_id=eef66c298c11ec747f6da9c0385d3c50d1d19117e57c5b8d3803059d8081c4c7; SHA256=5afe67d5b6709be142c09ddd3550b58593d7a706e82cbd68a8001ffc3c90e28b,削除承認待ち（名簿は有効のまま・削除未反映）
 2026-09-23 23:32:21,OFAC,掲載終了候補（要確認）,Safari Club,制裁リスト（OFAC：SDN）; FixedRef=21264; event_id=51cd022b2b3bd6ed22e24f914240a2c1c1b97fd8588f94f006dfdec72d766556; SHA256=83553ea89120cba98271cd3724531dd3d603e27521c4b47be6548a3856ed068b,削除承認待ち（名簿は有効のまま・削除未反映）
 2026-09-23 23:32:21,OFAC,掲載終了候補（要確認）,Olenga Francois,制裁リスト（OFAC：SDN）; FixedRef=21263; event_id=51cd022b2b3bd6ed22e24f914240a2c1c1b97fd8588f94f006dfdec72d766556; SHA256=83553ea89120cba98271cd3724531dd3d603e27521c4b47be6548a3856ed068b,削除承認待ち（名簿は有効のまま・削除未反映）
+2026-10-19 23:51:12,OFAC,追加,Qiji Chuangtan Beijing Investment Management Co Ltd,,制裁リスト（OFAC：Consolidated）
+2026-10-19 23:51:12,OFAC,追加,奇绩创坛 北京 投资管理有限责任公司,,制裁リスト（OFAC：Consolidated）
+2026-10-19 23:51:12,OFAC,追加,MiraclePlus,,制裁リスト（OFAC：Consolidated）
+2026-10-19 23:51:12,OFAC,追加,Mengxi Chuangtan Beijing Investment Management Co Ltd,,制裁リスト（OFAC：Consolidated）
+2026-10-19 23:51:12,OFAC,追加,Beijing Qiji Chuangtan Phase I Venture Capital Center Limited Partnership,,制裁リスト（OFAC：Consolidated）
+2026-10-19 23:51:12,OFAC,追加,北京奇绩创坛一期创业投资中心 有限合伙,,制裁リスト（OFAC：Consolidated）
+2026-10-19 23:51:12,OFAC,追加,Miracle Plus RMB Fund I,,制裁リスト（OFAC：Consolidated）
+2026-10-19 23:51:12,OFAC,追加,Beijing Qiji Chuangtan Phase II Venture Capital Center Limited Partnership,,制裁リスト（OFAC：Consolidated）
+2026-10-19 23:51:12,OFAC,追加,北京奇绩创坛二期创业投资中心 有限合伙,,制裁リスト（OFAC：Consolidated）
+2026-10-19 23:51:12,OFAC,追加,Miracle Plus RMB Fund II,,制裁リスト（OFAC：Consolidated）
+2026-10-19 23:51:12,OFAC,追加,Beijing Qijichuangtanerqi Chuangye Investment Center (Limited Partnership),,制裁リスト（OFAC：Consolidated）
+2026-10-19 23:51:12,OFAC,追加,Beijing Qiji Chuangtan Zhiyuan Enterprise Management Center Limited Partnership,,制裁リスト（OFAC：Consolidated）
+2026-10-19 23:51:12,OFAC,追加,北京奇绩创坛致远企业管理中心 有限合伙,,制裁リスト（OFAC：Consolidated）
+2026-10-19 23:51:12,OFAC,追加,Shanghai Zhisuan Technology Co Ltd,,制裁リスト（OFAC：Consolidated）
+2026-10-19 23:51:12,OFAC,追加,上海至算科技有限公司,,制裁リスト（OFAC：Consolidated）
 2026-10-16 02:30:53,OFAC,追加,International Development Bank for Investment and Finance,,制裁リスト（OFAC：SDN）
 2026-10-16 02:30:53,OFAC,追加,مصرف التنمية الدولي للاستثمار والتمويل,,制裁リスト（OFAC：SDN）
 2026-10-16 02:30:53,OFAC,追加,Iraq Development Bank,,制裁リスト（OFAC：SDN）
@@ -4984,18 +4999,3 @@
 2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,JA'FAR Abu,,制裁リスト（OFAC：SDN）
 2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,AL-JUBURI Maysar Ali Musa Abdallah,,制裁リスト（OFAC：SDN）
 2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,AL-JIBURI Muyassir,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,HARARA Muyassir,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,AL-SHAMMARI Muyassir,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,HASSAN Muhammad Khalid,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,AL-QAHTANI Mus'ab,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,ZAGARIA Pasquale,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,ZAGARIA Carmine,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,ZAGARIA Antonio,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,JABER Ayman,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,JABIR Ayman,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,JABER Aiman,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,JABER Ayman Mehriz,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,JABER Ayman Mohriz,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,JABIR Ayman Muhriz,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,EL KHAIRY Hamad,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,KHAIRY Abderrahmane Ould Mohamed Lemine Ould Mohamed,,制裁リスト（OFAC：SDN）

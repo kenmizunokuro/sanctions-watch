@@ -1,96 +1,21 @@
 # 制裁リスト差分レポート
 
-## OFAC　追加 90 / 削除 0 / 変更 0
+## OFAC　追加 15 / 削除 0 / 変更 0
 
 ### 追加
-- `International Development Bank for Investment and Finance` — 制裁リスト（OFAC：SDN）
-- `مصرف التنمية الدولي للاستثمار والتمويل` — 制裁リスト（OFAC：SDN）
-- `Iraq Development Bank` — 制裁リスト（OFAC：SDN）
-- `Mohammadi Zhila` — 制裁リスト（OFAC：SDN）
-- `محمدی ژیلا` — 制裁リスト（OFAC：SDN）
-- `Mohamadi Jela` — 制裁リスト（OFAC：SDN）
-- `Mohammadi Aliabad Zhila` — 制裁リスト（OFAC：SDN）
-- `محمدی علی آباد ژیلا` — 制裁リスト（OFAC：SDN）
-- `Elitesphere Trading Co., Limited` — 制裁リスト（OFAC：SDN）
-- `Seyyed Abbas Hosseini Parsa and Partners Qeshm General Partnership Company` — 制裁リスト（OFAC：SDN）
-- `شرکت تضامنی سید عباس حسینی پارسا و شرکا قشم` — 制裁リスト（OFAC：SDN）
-- `Mohiesnejad Khaled` — 制裁リスト（OFAC：SDN）
-- `محیسن نژاد خالد` — 制裁リスト（OFAC：SDN）
-- `Hosseini Parsa Seyyed Abbas` — 制裁リスト（OFAC：SDN）
-- `حسینی پارسا سید عباس` — 制裁リスト（OFAC：SDN）
-- `Bavi Sadegh` — 制裁リスト（OFAC：SDN）
-- `باوی صادق` — 制裁リスト（OFAC：SDN）
-- `Bavi and Partners Exchange Company` — 制裁リスト（OFAC：SDN）
-- `شرکت صرافی باوی و شرکاء` — 制裁リスト（OFAC：SDN）
-- `ABOLHASAN JALALI AND PARTNERS EXCHANGE COMPANY` — 制裁リスト（OFAC：SDN）
-- `شرکت صرافی ابوالحسن جلالی و شرکا` — 制裁リスト（OFAC：SDN）
-- `Jalali and Partners General Partnership Company` — 制裁リスト（OFAC：SDN）
-- `Jalali Abolhasan` — 制裁リスト（OFAC：SDN）
-- `جلالی ابوالحسن` — 制裁リスト（OFAC：SDN）
-- `Katebi Milad` — 制裁リスト（OFAC：SDN）
-- `کاتبی میلاد` — 制裁リスト（OFAC：SDN）
-- `Sabeti Amir` — 制裁リスト（OFAC：SDN）
-- `ثابتی امیر` — 制裁リスト（OFAC：SDN）
-- `Mullah Mohammadi Ensiyeh` — 制裁リスト（OFAC：SDN）
-- `ملامحمدی انسیه` — 制裁リスト（OFAC：SDN）
-- `Borji Nazanin` — 制裁リスト（OFAC：SDN）
-- `برجی نازنین` — 制裁リスト（OFAC：SDN）
-- `Allahyar Farzad` — 制裁リスト（OFAC：SDN）
-- `الهیار فرزاد` — 制裁リスト（OFAC：SDN）
-- `Vasighi Meraji Fatemeh` — 制裁リスト（OFAC：SDN）
-- `وثیقی معراجی فاطمه` — 制裁リスト（OFAC：SDN）
-- `Vasighi Fatemeh` — 制裁リスト（OFAC：SDN）
-- `SOHEIL AND SORUSH NAJAFZADEH AND PARTNERS COMPANY` — 制裁リスト（OFAC：SDN）
-- `شرکت سهیل و سروش نجف زاده و شرکا` — 制裁リスト（OFAC：SDN）
-- `Abdolalipur Azadeh` — 制裁リスト（OFAC：SDN）
-- `عبدالعلی پور آزاده` — 制裁リスト（OFAC：SDN）
-- `Alipur Azadeh` — 制裁リスト（OFAC：SDN）
-- `Najafzadeh Sorush` — 制裁リスト（OFAC：SDN）
-- `نجف زاده سروش` — 制裁リスト（OFAC：SDN）
-- `Najafzadeh Sorosh` — 制裁リスト（OFAC：SDN）
-- `Najafzadeh Soheil` — 制裁リスト（OFAC：SDN）
-- `نجف زاده سهیل` — 制裁リスト（OFAC：SDN）
-- `Najafzadeh Suhail` — 制裁リスト（OFAC：SDN）
-- `Mirmohammadi Mansureh` — 制裁リスト（OFAC：SDN）
-- `میرمحمدی منصوره` — 制裁リスト（OFAC：SDN）
-- `Jazireh International Bank Company` — 制裁リスト（OFAC：SDN）
-- `بانک بین المللی جزیره` — 制裁リスト（OFAC：SDN）
-- `Bank-E Beinamelali Jazireh` — 制裁リスト（OFAC：SDN）
-- `CHABAHAR INTERNATIONAL BANK OVERSEAS COMPANY` — 制裁リスト（OFAC：SDN）
-- `شرکت بانک بین المللی چابهار برون مرزی` — 制裁リスト（OFAC：SDN）
-- `Razavi Sayyed Ruhollah` — 制裁リスト（OFAC：SDN）
-- `رضوی سید روح اله` — 制裁リスト（OFAC：SDN）
-- `Roohullah Razavi Seyed` — 制裁リスト（OFAC：SDN）
-- `Razavi Rouhollah` — 制裁リスト（OFAC：SDN）
-- `Razavi Ruhollah` — 制裁リスト（OFAC：SDN）
-- `Tejarat Gostar Atlas Parsian Kish Company` — 制裁リスト（OFAC：SDN）
-- `شرکت تجارت گستراطلس پارسیان کیش` — 制裁リスト（OFAC：SDN）
-- `Farzanegan Energy Pars Company` — 制裁リスト（OFAC：SDN）
-- `شرکت فرزانگان انرژی پارس` — 制裁リスト（OFAC：SDN）
-- `BANCO INTERNACIONAL DE COMERCIO S.A.` — 制裁リスト（OFAC：SDN）
-- `MOHAMMADI, Zhila` — 制裁リスト（OFAC：SDN）
-- `MOHIESNEJAD, Khaled` — 制裁リスト（OFAC：SDN）
-- `HOSSEINI PARSA, Seyyed Abbas` — 制裁リスト（OFAC：SDN）
-- `BAVI, Sadegh` — 制裁リスト（OFAC：SDN）
-- `JALALI, Abolhasan` — 制裁リスト（OFAC：SDN）
-- `KATEBI, Milad` — 制裁リスト（OFAC：SDN）
-- `SABETI, Amir` — 制裁リスト（OFAC：SDN）
-- `MULLAH MOHAMMADI, Ensiyeh` — 制裁リスト（OFAC：SDN）
-- `BORJI, Nazanin` — 制裁リスト（OFAC：SDN）
-- `ALLAHYAR, Farzad` — 制裁リスト（OFAC：SDN）
-- `VASIGHI MERAJI, Fatemeh` — 制裁リスト（OFAC：SDN）
-- `ABDOLALIPUR, Azadeh` — 制裁リスト（OFAC：SDN）
-- `NAJAFZADEH, Sorush` — 制裁リスト（OFAC：SDN）
-- `NAJAFZADEH, Soheil` — 制裁リスト（OFAC：SDN）
-- `MIRMOHAMMADI, Mansureh` — 制裁リスト（OFAC：SDN）
-- `RAZAVI, Sayyed Ruhollah` — 制裁リスト（OFAC：SDN）
-- `MOHAMADI, Jela` — 制裁リスト（OFAC：SDN）
-- `MOHAMMADI ALIABAD, Zhila` — 制裁リスト（OFAC：SDN）
-- `VASIGHI, Fatemeh` — 制裁リスト（OFAC：SDN）
-- `ALIPUR, Azadeh` — 制裁リスト（OFAC：SDN）
-- `NAJAFZADEH, Sorosh` — 制裁リスト（OFAC：SDN）
-- `NAJAFZADEH, Suhail` — 制裁リスト（OFAC：SDN）
-- `ROOHULLAH RAZAVI, Seyed` — 制裁リスト（OFAC：SDN）
-- `RAZAVI, Rouhollah` — 制裁リスト（OFAC：SDN）
-- `RAZAVI, Ruhollah` — 制裁リスト（OFAC：SDN）
+- `Qiji Chuangtan Beijing Investment Management Co Ltd` — 制裁リスト（OFAC：Consolidated）
+- `奇绩创坛 北京 投资管理有限责任公司` — 制裁リスト（OFAC：Consolidated）
+- `MiraclePlus` — 制裁リスト（OFAC：Consolidated）
+- `Mengxi Chuangtan Beijing Investment Management Co Ltd` — 制裁リスト（OFAC：Consolidated）
+- `Beijing Qiji Chuangtan Phase I Venture Capital Center Limited Partnership` — 制裁リスト（OFAC：Consolidated）
+- `北京奇绩创坛一期创业投资中心 有限合伙` — 制裁リスト（OFAC：Consolidated）
+- `Miracle Plus RMB Fund I` — 制裁リスト（OFAC：Consolidated）
+- `Beijing Qiji Chuangtan Phase II Venture Capital Center Limited Partnership` — 制裁リスト（OFAC：Consolidated）
+- `北京奇绩创坛二期创业投资中心 有限合伙` — 制裁リスト（OFAC：Consolidated）
+- `Miracle Plus RMB Fund II` — 制裁リスト（OFAC：Consolidated）
+- `Beijing Qijichuangtanerqi Chuangye Investment Center (Limited Partnership)` — 制裁リスト（OFAC：Consolidated）
+- `Beijing Qiji Chuangtan Zhiyuan Enterprise Management Center Limited Partnership` — 制裁リスト（OFAC：Consolidated）
+- `北京奇绩创坛致远企业管理中心 有限合伙` — 制裁リスト（OFAC：Consolidated）
+- `Shanghai Zhisuan Technology Co Ltd` — 制裁リスト（OFAC：Consolidated）
+- `上海至算科技有限公司` — 制裁リスト（OFAC：Consolidated）
 
