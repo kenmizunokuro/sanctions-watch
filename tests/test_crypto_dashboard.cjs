@@ -153,19 +153,27 @@ test('chain overlay validates precise integers, identity, states and counts',()=
   {...chain,rows:[{...chain.rows[0],probes:[{...chain.rows[0].probes[0],status:'SUCCESS',last_success:null}]}]}
  ]) assert.throws(()=>context.caValidateChain_(bad,snap),/チェーン/);
 });
-test('chain fetch shares official SHA and failure remains visible with official data',()=>{
- const sha='b'.repeat(40);let urls=[];
- context.UrlFetchApp={fetch(url){urls.push(url);return response(200,JSON.stringify(url.includes('/commits/')?{sha}:
-  url.endsWith('/dashboard.json')?snap:chain));}};
+test('chain fetch uses published immutable commit and preserves secondary failures',()=>{
+ const sha='b'.repeat(40),urls=[],ptr={schema_version:1,commit_sha:sha};
+ context.UrlFetchApp={fetch(url){urls.push(url);return response(200,JSON.stringify(url.endsWith('/published_commit.json')?ptr:
+  url.endsWith('/dashboard.json')?snap:url.endsWith('/chain_observations.json')?chain:snap));}};
  const loaded=context.caFetchSnapshot_({repo:'kenmizunokuro/sanctions-watch',branch:'main'});
  assert.equal(loaded.chain_data.rows.length,1);
+ assert.ok(urls[0].endsWith('/main/data/crypto/published_commit.json'));
  assert.ok(urls[2].includes('/'+sha+'/data/crypto/chain_observations.json'));
+ assert.ok(!urls.some(u=>u.startsWith('https://api.github.com/')));
  context.UrlFetchApp={fetch(url){return response(url.endsWith('/chain_observations.json')?403:200,
-  JSON.stringify(url.includes('/commits/')?{sha}:snap));}};
+  JSON.stringify(url.endsWith('/published_commit.json')?ptr:snap));}};
  const failed=context.caFetchSnapshot_({repo:'kenmizunokuro/sanctions-watch',branch:'main'});
  assert.equal(failed.rows.length,1);assert.match(failed.chain_error,/HTTP 403/);
  const tables=context.caBuildTables_(failed,{warningMinutes:120,criticalMinutes:360});
  assert.ok(tables['チェーン検証'].some(r=>r.join(' ').includes('HTTP 403')));
+});
+test('malformed published commit stops before any dashboard read',()=>{
+ let calls=0;
+ context.UrlFetchApp={fetch(){calls++;return response(200,JSON.stringify({schema_version:1,commit_sha:'main'}));}};
+ assert.throws(()=>context.caFetchSnapshot_({repo:'kenmizunokuro/sanctions-watch',branch:'main'}),/構造変更/);
+ assert.equal(calls,1);
 });
 test('chain view preserves reviews and official changes and exposes failed attempts and old successes',()=>{
  const tables=context.caBuildTables_({...snap,chain_data:chain},{warningMinutes:120,criticalMinutes:360},new Date('2026-10-08T00:00:00Z'));
@@ -222,9 +230,9 @@ test('history failed refresh labels preserved proof as old and never current suc
  assert.ok(tables['トークン履歴検証'].some(r=>r.includes('HTTP 429')));
 });
 test('history unavailable JSON keeps official sync and shows separate error',()=>{
- const sha='c'.repeat(40);const urls=[];
+ const sha='c'.repeat(40),urls=[],ptr={schema_version:1,commit_sha:sha};
  context.UrlFetchApp={fetch(url){urls.push(url);return response(url.endsWith('/token_history.json')?403:200,
-  JSON.stringify(url.includes('/commits/')?{sha}:url.endsWith('/token_history.json')?{}:snap));}};
+  JSON.stringify(url.endsWith('/published_commit.json')?ptr:snap));}};
  const s=context.caFetchSnapshot_({repo:'kenmizunokuro/sanctions-watch',branch:'main'});
  assert.equal(s.rows.length,1);assert.match(s.token_history_error,/HTTP 403/);
  assert.ok(urls.some(u=>u.includes('/'+sha+'/data/crypto/token_history.json')));
