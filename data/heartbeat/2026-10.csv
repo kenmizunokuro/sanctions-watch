@@ -665,3 +665,5 @@ checked_at,source,status,content_hash,source_updated,record_count,raw_path
 2026-10-20T21:10:48Z,ofac_sdn,review_required,c0e5e5a4d7fda18490625ee6a9ca668ea3872a4dbbe737a99439a89c22ab3997,"Thu, 15 Oct 2026 16:34:32 GMT",89717,
 2026-10-20T21:10:48Z,ofac_cons,unchanged,dc3f61dce650a4661ff69d6c1847f0d5a90f2fa63951267af68fcfacdb6d8a75,"Mon, 19 Oct 2026 14:02:15 GMT",3396,
 2026-10-20T21:49:43Z,mof,unchanged,f8e1038419ab0146cbce89ae9fa7b5f9d298548c8bca4953f970c01f87b3f7bc,令和8年10月21日,15284,
+2026-10-20T22:21:45Z,ofac_sdn,review_required,c0e5e5a4d7fda18490625ee6a9ca668ea3872a4dbbe737a99439a89c22ab3997,"Thu, 15 Oct 2026 16:34:32 GMT",89717,
+2026-10-20T22:21:45Z,ofac_cons,unchanged,dc3f61dce650a4661ff69d6c1847f0d5a90f2fa63951267af68fcfacdb6d8a75,"Mon, 19 Oct 2026 14:02:15 GMT",3396,
