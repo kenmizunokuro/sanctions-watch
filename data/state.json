@@ -1,13 +1,13 @@
 {
   "mof": {
-    "asof": "令和8年10月14日",
+    "asof": "令和8年10月21日",
     "baseline_synced": true,
-    "etag": "\"32c397-65db4342b18c0\"",
-    "filename": "shisantouketsu20261014.csv",
-    "last_modified": "Tue, 13 Oct 2026 08:00:11 GMT",
-    "record_count": 15285,
-    "sha256": "97fcac891ad3b9b31ddabf2408f3d5c673af84a0ed4102d9e548ff249f81dc3d",
-    "url": "https://www.mof.go.jp/policy/international_policy/gaitame_kawase/gaitame/economic_sanctions/shisantouketsu20261014.csv"
+    "etag": "\"32c4de-65e41051dfb00\"",
+    "filename": "shisantouketsu20261021.csv",
+    "last_modified": "Tue, 20 Oct 2026 08:00:12 GMT",
+    "record_count": 15284,
+    "sha256": "f8e1038419ab0146cbce89ae9fa7b5f9d298548c8bca4953f970c01f87b3f7bc",
+    "url": "https://www.mof.go.jp/policy/international_policy/gaitame_kawase/gaitame/economic_sanctions/shisantouketsu20261021.csv"
   },
   "ofac_cons": {
     "advanced_baseline_synced": true,

@@ -1,21 +1,29 @@
 # 制裁リスト差分レポート
 
-## OFAC　追加 15 / 削除 0 / 変更 0
+## 財務省　追加 1 / 削除 4 / 変更 2
 
 ### 追加
-- `Qiji Chuangtan Beijing Investment Management Co Ltd` — 制裁リスト（OFAC：Consolidated）
-- `奇绩创坛 北京 投资管理有限责任公司` — 制裁リスト（OFAC：Consolidated）
-- `MiraclePlus` — 制裁リスト（OFAC：Consolidated）
-- `Mengxi Chuangtan Beijing Investment Management Co Ltd` — 制裁リスト（OFAC：Consolidated）
-- `Beijing Qiji Chuangtan Phase I Venture Capital Center Limited Partnership` — 制裁リスト（OFAC：Consolidated）
-- `北京奇绩创坛一期创业投资中心 有限合伙` — 制裁リスト（OFAC：Consolidated）
-- `Miracle Plus RMB Fund I` — 制裁リスト（OFAC：Consolidated）
-- `Beijing Qiji Chuangtan Phase II Venture Capital Center Limited Partnership` — 制裁リスト（OFAC：Consolidated）
-- `北京奇绩创坛二期创业投资中心 有限合伙` — 制裁リスト（OFAC：Consolidated）
-- `Miracle Plus RMB Fund II` — 制裁リスト（OFAC：Consolidated）
-- `Beijing Qijichuangtanerqi Chuangye Investment Center (Limited Partnership)` — 制裁リスト（OFAC：Consolidated）
-- `Beijing Qiji Chuangtan Zhiyuan Enterprise Management Center Limited Partnership` — 制裁リスト（OFAC：Consolidated）
-- `北京奇绩创坛致远企业管理中心 有限合伙` — 制裁リスト（OFAC：Consolidated）
-- `Shanghai Zhisuan Technology Co Ltd` — 制裁リスト（OFAC：Consolidated）
-- `上海至算科技有限公司` — 制裁リスト（OFAC：Consolidated）
+- `ヌール・ワリ・メへスード` — 制裁リスト（財務省：タリバーン関係者等）
+
+### 掲載終了（行は無効化して残す）
+- `TEHRIK-E TALIBAN PAKISTAN` — 無効
+- `TTP` — 無効
+- `تحريک طالبان پاکستان` — 無効
+- `ヌール・ワリ・メヘスード` — 無効
+
+### 変更
+#### `TEHRIK-E TALIBAN PAKISTAN (TTP)`
+| 項目 | 変更前 | 変更後 |
+| --- | --- | --- |
+| sources | OFAC | OFAC;財務省 |
+| categories | OFAC:SDN | OFAC:SDN;財務省:タリバーン関係者等 |
+| remark | 制裁リスト（OFAC：SDN） | 制裁リスト（財務省：タリバーン関係者等／OFAC：SDN） |
+
+#### `تحریک طالبان پاکستان`
+| 項目 | 変更前 | 変更後 |
+| --- | --- | --- |
+| status | 無効 | 有効 |
+| sources | — | 財務省 |
+| categories | — | 財務省:タリバーン関係者等 |
+| remark | 制裁リスト | 制裁リスト（財務省：タリバーン関係者等） |
 

@@ -1,16 +1,8 @@
 出所,種別,受取人名,変更前,変更後
-OFAC,追加,Qiji Chuangtan Beijing Investment Management Co Ltd,,制裁リスト（OFAC：Consolidated）
-OFAC,追加,奇绩创坛 北京 投资管理有限责任公司,,制裁リスト（OFAC：Consolidated）
-OFAC,追加,MiraclePlus,,制裁リスト（OFAC：Consolidated）
-OFAC,追加,Mengxi Chuangtan Beijing Investment Management Co Ltd,,制裁リスト（OFAC：Consolidated）
-OFAC,追加,Beijing Qiji Chuangtan Phase I Venture Capital Center Limited Partnership,,制裁リスト（OFAC：Consolidated）
-OFAC,追加,北京奇绩创坛一期创业投资中心 有限合伙,,制裁リスト（OFAC：Consolidated）
-OFAC,追加,Miracle Plus RMB Fund I,,制裁リスト（OFAC：Consolidated）
-OFAC,追加,Beijing Qiji Chuangtan Phase II Venture Capital Center Limited Partnership,,制裁リスト（OFAC：Consolidated）
-OFAC,追加,北京奇绩创坛二期创业投资中心 有限合伙,,制裁リスト（OFAC：Consolidated）
-OFAC,追加,Miracle Plus RMB Fund II,,制裁リスト（OFAC：Consolidated）
-OFAC,追加,Beijing Qijichuangtanerqi Chuangye Investment Center (Limited Partnership),,制裁リスト（OFAC：Consolidated）
-OFAC,追加,Beijing Qiji Chuangtan Zhiyuan Enterprise Management Center Limited Partnership,,制裁リスト（OFAC：Consolidated）
-OFAC,追加,北京奇绩创坛致远企业管理中心 有限合伙,,制裁リスト（OFAC：Consolidated）
-OFAC,追加,Shanghai Zhisuan Technology Co Ltd,,制裁リスト（OFAC：Consolidated）
-OFAC,追加,上海至算科技有限公司,,制裁リスト（OFAC：Consolidated）
+財務省,追加,ヌール・ワリ・メへスード,,制裁リスト（財務省：タリバーン関係者等）
+財務省,掲載終了,TEHRIK-E TALIBAN PAKISTAN,制裁リスト（財務省：タリバーン関係者等）,制裁リスト
+財務省,掲載終了,TTP,制裁リスト（財務省：タリバーン関係者等）,制裁リスト
+財務省,掲載終了,تحريک طالبان پاکستان,制裁リスト（財務省：タリバーン関係者等）,制裁リスト
+財務省,掲載終了,ヌール・ワリ・メヘスード,制裁リスト（財務省：タリバーン関係者等）,制裁リスト
+財務省,変更,TEHRIK-E TALIBAN PAKISTAN (TTP),制裁リスト（OFAC：SDN）,制裁リスト（財務省：タリバーン関係者等／OFAC：SDN）
+財務省,変更,تحریک طالبان پاکستان,制裁リスト,制裁リスト（財務省：タリバーン関係者等）

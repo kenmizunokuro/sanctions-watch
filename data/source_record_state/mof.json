@@ -1,21 +1,21 @@
 {
-  "processed_raw": "data/raw/mof/20261013T143134Z__shisantouketsu20261014.csv.gz",
-  "processed_content_sha256": "97fcac891ad3b9b31ddabf2408f3d5c673af84a0ed4102d9e548ff249f81dc3d",
-  "processed_at": "2026-10-13 23:31:39+0900",
+  "processed_raw": "data/raw/mof/20261020T120119Z__shisantouketsu20261021.csv.gz",
+  "processed_content_sha256": "f8e1038419ab0146cbce89ae9fa7b5f9d298548c8bca4953f970c01f87b3f7bc",
+  "processed_at": "2026-10-20 21:01:25+0900",
   "record_count": 2900,
   "last_diff": {
     "source_changed": true,
-    "material_changed": false,
+    "material_changed": true,
     "added": 0,
     "removed": 0,
-    "amended": 0,
-    "raw_amended": 10,
-    "field_changes": 0,
-    "raw_field_changes": 10,
-    "cosmetic_changes": 8,
-    "aggregate_changes": 2,
-    "structure_changes": 0,
-    "dashboard_rows": 0,
+    "amended": 3,
+    "raw_amended": 3,
+    "field_changes": 15,
+    "raw_field_changes": 26,
+    "cosmetic_changes": 3,
+    "aggregate_changes": 3,
+    "structure_changes": 5,
+    "dashboard_rows": 15,
     "transitions": 1
   }
 }
