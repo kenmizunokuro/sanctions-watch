@@ -1,29 +1,34 @@
 # 制裁リスト差分レポート
 
-## 財務省　追加 1 / 削除 4 / 変更 2
+## OFAC　追加 21 / 削除 0 / 変更 1
 
 ### 追加
-- `ヌール・ワリ・メへスード` — 制裁リスト（財務省：タリバーン関係者等）
-
-### 掲載終了（行は無効化して残す）
-- `TEHRIK-E TALIBAN PAKISTAN` — 無効
-- `TTP` — 無効
-- `تحريک طالبان پاکستان` — 無効
-- `ヌール・ワリ・メヘスード` — 無効
+- `Whales Shipping Line LLC` — 制裁リスト（OFAC：SDN）
+- `وايلس شيبينغ لاين ذ م م` — 制裁リスト（OFAC：SDN）
+- `Amigoz Singapore PTE. LTD.` — 制裁リスト（OFAC：SDN）
+- `Whales Diamond` — 制裁リスト（OFAC：SDN）
+- `Whales Pearl` — 制裁リスト（OFAC：SDN）
+- `Roxette Maritime Shipping and Trading S.A.` — 制裁リスト（OFAC：SDN）
+- `Karnakis and Karnakis` — 制裁リスト（OFAC：SDN）
+- `ANEMOS` — 制裁リスト（OFAC：SDN）
+- `GLORIS` — 制裁リスト（OFAC：SDN）
+- `PRIDE` — 制裁リスト（OFAC：SDN）
+- `Sofianos Kosmas Karnakis` — 制裁リスト（OFAC：SDN）
+- `Konstantinos Kosmas Karnakis` — 制裁リスト（OFAC：SDN）
+- `Ioanis Kosmas Karnakis` — 制裁リスト（OFAC：SDN）
+- `Pedro Jones Ortega` — 制裁リスト（OFAC：SDN）
+- `Roberto Jones Ortega` — 制裁リスト（OFAC：SDN）
+- `FLAMINGO 1` — 制裁リスト（OFAC：SDN）
+- `KARNAKIS KOSMAS, Sofianos` — 制裁リスト（OFAC：SDN）
+- `KARNAKIS KOSMAS, Konstantinos` — 制裁リスト（OFAC：SDN）
+- `KARNAKIS KOSMAS, Ioanis` — 制裁リスト（OFAC：SDN）
+- `ORTEGA JONES, Pedro` — 制裁リスト（OFAC：SDN）
+- `ORTEGA JONES, Roberto` — 制裁リスト（OFAC：SDN）
 
 ### 変更
-#### `TEHRIK-E TALIBAN PAKISTAN (TTP)`
+#### `Prince`
 | 項目 | 変更前 | 変更後 |
 | --- | --- | --- |
-| sources | OFAC | OFAC;財務省 |
-| categories | OFAC:SDN | OFAC:SDN;財務省:タリバーン関係者等 |
-| remark | 制裁リスト（OFAC：SDN） | 制裁リスト（財務省：タリバーン関係者等／OFAC：SDN） |
-
-#### `تحریک طالبان پاکستان`
-| 項目 | 変更前 | 変更後 |
-| --- | --- | --- |
-| status | 無効 | 有効 |
-| sources | — | 財務省 |
-| categories | — | 財務省:タリバーン関係者等 |
-| remark | 制裁リスト | 制裁リスト（財務省：タリバーン関係者等） |
+| categories | — | OFAC:SDN |
+| remark | 制裁リスト（OFAC） | 制裁リスト（OFAC：SDN） |
 

@@ -31448,11 +31448,11 @@ SDN,31004,"CHACON MIRANDA, Alejandro",alejandrochaconmiranda,1788483946814,17884
 SDN,31005,"CITY PLAZA, S.A. DE C.V.","cityplaza,s.a.dec.v.",1788483946814,1788483946814,1,1,advanced_xml_v3;classic_csv,0,0
 SDN,31005,"CITY PLAZA, SOCIEDAD ANOMINA DE CAPITAL VARIABLE",sociedadanominadecapitalvariablecityplaza,1788483946814,1788483946814,1,1,classic_csv,0,0
 SDN,31005,"City Plaza, Sociedad anomina de capital variable",sociedadanominadecapitalvariablecityplaza,1788483946814,1788483946814,1,1,advanced_xml_v3,1,0
-SDN,31042,MOXING CARTOON,moxingcartoon,1788483946814,1788483946814,1,1,classic_csv,0,0
-SDN,31042,Moxing Cartoon,moxingcartoon,1788483946814,1788483946814,1,1,advanced_xml_v3,1,0
-SDN,31042,SHANGHAI MOXING CULTURAL MEDIA CO LTD,shanghaimoxingculturalmediacoltd,1788483946814,1788483946814,1,1,classic_csv,0,0
-SDN,31042,Shanghai Moxing Cultural Media Co Ltd,shanghaimoxingculturalmediacoltd,1788483946814,1788483946814,1,1,advanced_xml_v3,0,0
-SDN,31042,上海墨星⽂化传播有限公司,上海墨星文化传播有限公司,1788483946814,1788483946814,1,1,advanced_xml_v3,0,0
+SDN,31042,MOXING CARTOON,moxingcartoon,1788483946814,1792605067335,0,0,classic_csv,0,0
+SDN,31042,Moxing Cartoon,moxingcartoon,1788483946814,1792605067335,0,0,advanced_xml_v3,1,0
+SDN,31042,SHANGHAI MOXING CULTURAL MEDIA CO LTD,shanghaimoxingculturalmediacoltd,1788483946814,1792605067335,0,0,classic_csv,0,0
+SDN,31042,Shanghai Moxing Cultural Media Co Ltd,shanghaimoxingculturalmediacoltd,1788483946814,1792605067335,0,0,advanced_xml_v3,0,0
+SDN,31042,上海墨星⽂化传播有限公司,上海墨星文化传播有限公司,1788483946814,1792605067335,0,0,advanced_xml_v3,0,0
 SDN,31082,ABOUZAID EL BAYEH Juan Manuel,abouzaidelbayehjuanmanuel,1788483946814,1788483946814,1,1,advanced_xml_v3,1,0
 SDN,31082,"ABOUZAID EL BAYEH, Juan Manuel",juanmanuelabouzaidelbayeh,1788483946814,1788483946814,1,1,classic_csv,0,0
 SDN,31082,El Arabe,elarabe,1788483946814,1788483946814,1,1,advanced_xml_v3,0,1
@@ -33187,14 +33187,14 @@ SDN,32696,Oleksin Alexey,oleksinalexey,1788483946814,1788483946814,1,1,advanced_
 SDN,32696,Алексiн Аляксей,алексiналяксей,1788483946814,1788483946814,1,1,advanced_xml_v3,0,0
 SDN,32696,Алексiн Аляксей Iванавiч,алексiналяксейiванавiч,1788483946814,1788483946814,1,1,advanced_xml_v3,1,0
 SDN,32696,Олексин Алексей Иванович,олексиналексейиванович,1788483946814,1788483946814,1,1,advanced_xml_v3,0,0
-SDN,32711,"RYBAKOU, Andrei",andreirybakou,1788483946814,1788483946814,1,1,classic_csv,0,0
-SDN,32711,"RYBAKOU, Andrei Aliakseevich",andreialiakseevichrybakou,1788483946814,1788483946814,1,1,classic_csv,0,0
-SDN,32711,"RYBAKOV, Andrei Alekseevich",andreialekseevichrybakov,1788483946814,1788483946814,1,1,classic_csv,0,0
-SDN,32711,Rybakou Andrei,rybakouandrei,1788483946814,1788483946814,1,1,advanced_xml_v3,0,0
-SDN,32711,Rybakou Andrei Aliakseevich,rybakouandreialiakseevich,1788483946814,1788483946814,1,1,advanced_xml_v3,0,0
-SDN,32711,Rybakov Andrei Alekseevich,rybakovandreialekseevich,1788483946814,1788483946814,1,1,advanced_xml_v3,1,0
-SDN,32711,Рыбаков Андрей Алексеевич,рыбаковандрейалексеевич,1788483946814,1788483946814,1,1,advanced_xml_v3,1,0
-SDN,32711,Рыбакоў Андрэй Аляксеевіч,рыбакоўандрэйаляксеевіч,1788483946814,1788483946814,1,1,advanced_xml_v3,0,0
+SDN,32711,"RYBAKOU, Andrei",andreirybakou,1788483946814,1792605067335,0,0,classic_csv,0,0
+SDN,32711,"RYBAKOU, Andrei Aliakseevich",andreialiakseevichrybakou,1788483946814,1792605067335,0,0,classic_csv,0,0
+SDN,32711,"RYBAKOV, Andrei Alekseevich",andreialekseevichrybakov,1788483946814,1792605067335,0,0,classic_csv,0,0
+SDN,32711,Rybakou Andrei,rybakouandrei,1788483946814,1792605067335,0,0,advanced_xml_v3,0,0
+SDN,32711,Rybakou Andrei Aliakseevich,rybakouandreialiakseevich,1788483946814,1792605067335,0,0,advanced_xml_v3,0,0
+SDN,32711,Rybakov Andrei Alekseevich,rybakovandreialekseevich,1788483946814,1792605067335,0,0,advanced_xml_v3,1,0
+SDN,32711,Рыбаков Андрей Алексеевич,рыбаковандрейалексеевич,1788483946814,1792605067335,0,0,advanced_xml_v3,1,0
+SDN,32711,Рыбакоў Андрэй Аляксеевіч,рыбакоўандрэйаляксеевіч,1788483946814,1792605067335,0,0,advanced_xml_v3,0,0
 SDN,32712,"BUNAKOV, Andrei",andreibunakov,1788483946814,1788483946814,1,1,classic_csv,0,0
 SDN,32712,"BUNAKOV, Andrei Nikolayevich",andreinikolayevichbunakov,1788483946814,1788483946814,1,1,classic_csv,0,0
 SDN,32712,"BUNAKOV, Andrey",andreybunakov,1788483946814,1788483946814,1,1,classic_csv,0,0
@@ -34841,13 +34841,13 @@ SDN,34023,"Chongqing Ningse Cartoon and Animation Development Co., Ltd.","chongq
 SDN,34023,NINGS CARTOON STUDIO,ningscartoonstudio,1788483946814,1788483946814,1,1,classic_csv,0,0
 SDN,34023,Nings Cartoon Studio,ningscartoonstudio,1788483946814,1788483946814,1,1,advanced_xml_v3,1,0
 SDN,34023,重庆市柠⾊动漫发展有限公司,重庆市柠色动漫发展有限公司,1788483946814,1788483946814,1,1,advanced_xml_v3,0,0
-SDN,34024,"LU, Hezheng",hezhenglu,1788483946814,1788483946814,1,1,classic_csv,0,0
-SDN,34024,Lu Hezheng,luhezheng,1788483946814,1788483946814,1,1,advanced_xml_v3,1,0
-SDN,34025,SHANGHAI HONGMAN ANIMATION DESIGN STUDIO,shanghaihongmananimationdesignstudio,1788483946814,1788483946814,1,1,classic_csv,0,0
-SDN,34025,SHANGHAI HONGMAN CARTOON AND ANIMATION DESIGN STUDIO,shanghaihongmancartoonandanimationdesignstudio,1788483946814,1788483946814,1,1,classic_csv,0,0
-SDN,34025,Shanghai Hongman Animation Design Studio,shanghaihongmananimationdesignstudio,1788483946814,1788483946814,1,1,advanced_xml_v3,0,0
-SDN,34025,Shanghai Hongman Cartoon and Animation Design Studio,shanghaihongmancartoonandanimationdesignstudio,1788483946814,1788483946814,1,1,advanced_xml_v3,1,0
-SDN,34025,上海弘漫动漫设计工作室,上海弘漫动漫设计工作室,1788483946814,1788483946814,1,1,advanced_xml_v3,0,0
+SDN,34024,"LU, Hezheng",hezhenglu,1788483946814,1792605067335,0,0,classic_csv,0,0
+SDN,34024,Lu Hezheng,luhezheng,1788483946814,1792605067335,0,0,advanced_xml_v3,1,0
+SDN,34025,SHANGHAI HONGMAN ANIMATION DESIGN STUDIO,shanghaihongmananimationdesignstudio,1788483946814,1792605067335,0,0,classic_csv,0,0
+SDN,34025,SHANGHAI HONGMAN CARTOON AND ANIMATION DESIGN STUDIO,shanghaihongmancartoonandanimationdesignstudio,1788483946814,1792605067335,0,0,classic_csv,0,0
+SDN,34025,Shanghai Hongman Animation Design Studio,shanghaihongmananimationdesignstudio,1788483946814,1792605067335,0,0,advanced_xml_v3,0,0
+SDN,34025,Shanghai Hongman Cartoon and Animation Design Studio,shanghaihongmancartoonandanimationdesignstudio,1788483946814,1792605067335,0,0,advanced_xml_v3,1,0
+SDN,34025,上海弘漫动漫设计工作室,上海弘漫动漫设计工作室,1788483946814,1792605067335,0,0,advanced_xml_v3,0,0
 SDN,34036,RDIF,rdif,1788483946814,1788483946814,1,1,advanced_xml_v3,0,1
 SDN,34036,RUSSIAN DIRECT INVESTMENT FUND,russiandirectinvestmentfund,1788483946814,1788483946814,1,1,advanced_xml_v3;classic_csv,1,0
 SDN,34036,РФПИ,рфпи,1788483946814,1788483946814,1,1,advanced_xml_v3,0,1
@@ -77698,6 +77698,11 @@ SDN,58789,شرکت تولیدی و صنعتی نیرو موتور شیراز,ش�
 SDN,58790,NIROO MOTOR DAMAVAND COMPANY,niroomotordamavandcompany,1790883385224,1790883385224,1,1,classic_csv,0,0
 SDN,58790,Niroo Motor Damavand Company,niroomotordamavandcompany,1790883385224,1790883385224,1,1,advanced_xml_v3,1,0
 SDN,58790,شرکت نیرو موتور دماوند,شرکتنیروموتوردماوند,1790883385224,1790883385224,1,1,advanced_xml_v3,1,0
+SDN,58810,WHALES SHIPPING LINE LLC,whalesshippinglinellc,1792605067335,1792605067335,1,1,classic_csv,0,0
+SDN,58810,Whales Shipping Line LLC,whalesshippinglinellc,1792605067335,1792605067335,1,1,advanced_xml_v3,1,0
+SDN,58810,وايلس شيبينغ لاين ذ م م,وايلسشيبينغلاينذمم,1792605067335,1792605067335,1,1,advanced_xml_v3,1,0
+SDN,58811,AMIGOZ SINGAPORE PTE. LTD.,amigozsingaporepte.ltd.,1792605067335,1792605067335,1,1,classic_csv,0,0
+SDN,58811,Amigoz Singapore PTE. LTD.,amigozsingaporepte.ltd.,1792605067335,1792605067335,1,1,advanced_xml_v3,1,0
 SDN,58812,TINA 5,tina5,1791481869597,1791481869597,1,1,advanced_xml_v3;classic_csv,1,0
 SDN,58813,"NOSTALGIA CO., LTD","nostalgiaco.,ltd",1791481869597,1791481869597,1,1,classic_csv,0,0
 SDN,58813,"NOSTALGIA Co., Ltd","nostalgiaco.,ltd",1791481869597,1791481869597,1,1,advanced_xml_v3,1,0
@@ -77719,6 +77724,10 @@ SDN,58830,Yong Sing Shipping Company Limited,yongsingshippingcompanylimited,1791
 SDN,58831,NOBLE SEA,noblesea,1791481869597,1791481869597,1,1,advanced_xml_v3;classic_csv,1,0
 SDN,58832,SHENZHEN,shenzhen,1791481869597,1791481869597,1,1,advanced_xml_v3;classic_csv,1,0
 SDN,58834,EXFLAME,exflame,1791481869597,1791481869597,1,1,advanced_xml_v3;classic_csv,1,0
+SDN,58873,WHALES DIAMOND,whalesdiamond,1792605067335,1792605067335,1,1,classic_csv,0,0
+SDN,58873,Whales Diamond,whalesdiamond,1792605067335,1792605067335,1,1,advanced_xml_v3,1,0
+SDN,58874,WHALES PEARL,whalespearl,1792605067335,1792605067335,1,1,classic_csv,0,0
+SDN,58874,Whales Pearl,whalespearl,1792605067335,1792605067335,1,1,advanced_xml_v3,1,0
 SDN,589,"CRYMSA - ARGENTINA, S.A.","crymsa-argentina,s.a.",1788483946814,1788483946814,1,1,advanced_xml_v3;classic_csv,1,0
 SDN,58930,"MOHAMADI, Jela",jelamohamadi,1792085450706,1792085450706,1,1,classic_csv,0,0
 SDN,58930,"MOHAMMADI ALIABAD, Zhila",zhilamohammadialiabad,1792085450706,1792085450706,1,1,classic_csv,0,0
@@ -77728,6 +77737,10 @@ SDN,58930,Mohammadi Aliabad Zhila,mohammadialiabadzhila,1792085450706,1792085450
 SDN,58930,Mohammadi Zhila,mohammadizhila,1792085450706,1792085450706,1,1,advanced_xml_v3,1,0
 SDN,58930,محمدی علی آباد ژیلا,محمدیعلیآبادژیلا,1792085450706,1792085450706,1,1,advanced_xml_v3,0,0
 SDN,58930,محمدی ژیلا,محمدیژیلا,1792085450706,1792085450706,1,1,advanced_xml_v3,1,0
+SDN,58931,ROXETTE MARITIME SHIPPING AND TRADING S.A.,roxettemaritimeshippingandtradings.a.,1792605067335,1792605067335,1,1,classic_csv,0,0
+SDN,58931,Roxette Maritime Shipping and Trading S.A.,roxettemaritimeshippingandtradings.a.,1792605067335,1792605067335,1,1,advanced_xml_v3,1,0
+SDN,58932,KARNAKIS AND KARNAKIS,karnakisandkarnakis,1792605067335,1792605067335,1,1,classic_csv,0,0
+SDN,58932,Karnakis and Karnakis,karnakisandkarnakis,1792605067335,1792605067335,1,1,advanced_xml_v3,1,0
 SDN,58934,"ELITESPHERE TRADING CO., LIMITED",limitedelitespheretradingco.,1792085450706,1792085450706,1,1,classic_csv,0,0
 SDN,58934,"Elitesphere Trading Co., Limited",limitedelitespheretradingco.,1792085450706,1792085450706,1,1,advanced_xml_v3,1,0
 SDN,58935,SEYYED ABBAS HOSSEINI PARSA AND PARTNERS QESHM GENERAL PARTNERSHIP COMPANY,seyyedabbashosseiniparsaandpartnersqeshmgeneralpartnershipcompany,1792085450706,1792085450706,1,1,classic_csv,0,0
@@ -77799,6 +77812,23 @@ SDN,58953,Jazireh International Bank Company,jazirehinternationalbankcompany,179
 SDN,58953,بانک بین المللی جزیره,بانکبینالمللیجزیره,1792085450706,1792085450706,1,1,advanced_xml_v3,1,0
 SDN,58954,CHABAHAR INTERNATIONAL BANK OVERSEAS COMPANY,chabaharinternationalbankoverseascompany,1792085450706,1792085450706,1,1,advanced_xml_v3;classic_csv,1,0
 SDN,58954,شرکت بانک بین المللی چابهار برون مرزی,شرکتبانکبینالمللیچابهاربرونمرزی,1792085450706,1792085450706,1,1,advanced_xml_v3,1,0
+SDN,58955,ANEMOS,anemos,1792605067335,1792605067335,1,1,advanced_xml_v3;classic_csv,1,0
+SDN,58956,GLORIS,gloris,1792605067335,1792605067335,1,1,advanced_xml_v3;classic_csv,1,0
+SDN,58957,PRIDE,pride,1792605067335,1792605067335,1,1,advanced_xml_v3;classic_csv,1,0
+SDN,58958,"KARNAKIS KOSMAS, Sofianos",sofianoskarnakiskosmas,1792605067335,1792605067335,1,1,classic_csv,0,0
+SDN,58958,Sofianos Kosmas Karnakis,sofianoskosmaskarnakis,1792605067335,1792605067335,1,1,advanced_xml_v3,1,0
+SDN,58959,"KARNAKIS KOSMAS, Konstantinos",konstantinoskarnakiskosmas,1792605067335,1792605067335,1,1,classic_csv,0,0
+SDN,58959,Konstantinos Kosmas Karnakis,konstantinoskosmaskarnakis,1792605067335,1792605067335,1,1,advanced_xml_v3,1,0
+SDN,58960,Ioanis Kosmas Karnakis,ioaniskosmaskarnakis,1792605067335,1792605067335,1,1,advanced_xml_v3,1,0
+SDN,58960,"KARNAKIS KOSMAS, Ioanis",ioaniskarnakiskosmas,1792605067335,1792605067335,1,1,classic_csv,0,0
+SDN,58961,"ORTEGA JONES, Pedro",pedroortegajones,1792605067335,1792605067335,1,1,classic_csv,0,0
+SDN,58961,Pedro Jones Ortega,pedrojonesortega,1792605067335,1792605067335,1,1,advanced_xml_v3,1,0
+SDN,58962,"ORTEGA JONES, Roberto",robertoortegajones,1792605067335,1792605067335,1,1,classic_csv,0,0
+SDN,58962,Roberto Jones Ortega,robertojonesortega,1792605067335,1792605067335,1,1,advanced_xml_v3,1,0
+SDN,58963,DESTINY,destiny,1792605067335,1792605067335,1,1,advanced_xml_v3;classic_csv,1,0
+SDN,58964,FLAMINGO 1,flamingo1,1792605067335,1792605067335,1,1,advanced_xml_v3;classic_csv,1,0
+SDN,58965,HARMONY,harmony,1792605067335,1792605067335,1,1,advanced_xml_v3;classic_csv,1,0
+SDN,58966,PRINCE,prince,1792605067335,1792605067335,1,1,advanced_xml_v3;classic_csv,1,0
 SDN,58990,"RAZAVI, Rouhollah",rouhollahrazavi,1792085450706,1792085450706,1,1,classic_csv,0,0
 SDN,58990,"RAZAVI, Ruhollah",ruhollahrazavi,1792085450706,1792085450706,1,1,classic_csv,0,0
 SDN,58990,"RAZAVI, Sayyed Ruhollah","razavi,sayyedruhollah",1792085450706,1792085450706,1,1,classic_csv,0,0

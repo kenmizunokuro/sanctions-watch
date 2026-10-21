@@ -1,8 +1,23 @@
 出所,種別,受取人名,変更前,変更後
-財務省,追加,ヌール・ワリ・メへスード,,制裁リスト（財務省：タリバーン関係者等）
-財務省,掲載終了,TEHRIK-E TALIBAN PAKISTAN,制裁リスト（財務省：タリバーン関係者等）,制裁リスト
-財務省,掲載終了,TTP,制裁リスト（財務省：タリバーン関係者等）,制裁リスト
-財務省,掲載終了,تحريک طالبان پاکستان,制裁リスト（財務省：タリバーン関係者等）,制裁リスト
-財務省,掲載終了,ヌール・ワリ・メヘスード,制裁リスト（財務省：タリバーン関係者等）,制裁リスト
-財務省,変更,TEHRIK-E TALIBAN PAKISTAN (TTP),制裁リスト（OFAC：SDN）,制裁リスト（財務省：タリバーン関係者等／OFAC：SDN）
-財務省,変更,تحریک طالبان پاکستان,制裁リスト,制裁リスト（財務省：タリバーン関係者等）
+OFAC,追加,Whales Shipping Line LLC,,制裁リスト（OFAC：SDN）
+OFAC,追加,وايلس شيبينغ لاين ذ م م,,制裁リスト（OFAC：SDN）
+OFAC,追加,Amigoz Singapore PTE. LTD.,,制裁リスト（OFAC：SDN）
+OFAC,追加,Whales Diamond,,制裁リスト（OFAC：SDN）
+OFAC,追加,Whales Pearl,,制裁リスト（OFAC：SDN）
+OFAC,追加,Roxette Maritime Shipping and Trading S.A.,,制裁リスト（OFAC：SDN）
+OFAC,追加,Karnakis and Karnakis,,制裁リスト（OFAC：SDN）
+OFAC,追加,ANEMOS,,制裁リスト（OFAC：SDN）
+OFAC,追加,GLORIS,,制裁リスト（OFAC：SDN）
+OFAC,追加,PRIDE,,制裁リスト（OFAC：SDN）
+OFAC,追加,Sofianos Kosmas Karnakis,,制裁リスト（OFAC：SDN）
+OFAC,追加,Konstantinos Kosmas Karnakis,,制裁リスト（OFAC：SDN）
+OFAC,追加,Ioanis Kosmas Karnakis,,制裁リスト（OFAC：SDN）
+OFAC,追加,Pedro Jones Ortega,,制裁リスト（OFAC：SDN）
+OFAC,追加,Roberto Jones Ortega,,制裁リスト（OFAC：SDN）
+OFAC,追加,FLAMINGO 1,,制裁リスト（OFAC：SDN）
+OFAC,追加,"KARNAKIS KOSMAS, Sofianos",,制裁リスト（OFAC：SDN）
+OFAC,追加,"KARNAKIS KOSMAS, Konstantinos",,制裁リスト（OFAC：SDN）
+OFAC,追加,"KARNAKIS KOSMAS, Ioanis",,制裁リスト（OFAC：SDN）
+OFAC,追加,"ORTEGA JONES, Pedro",,制裁リスト（OFAC：SDN）
+OFAC,追加,"ORTEGA JONES, Roberto",,制裁リスト（OFAC：SDN）
+OFAC,変更,Prince,制裁リスト（OFAC）,制裁リスト（OFAC：SDN）
