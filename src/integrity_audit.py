@@ -35,7 +35,9 @@ def _surface(name):
 
 def _finish(result):
     result['counts'] = dict(sorted(Counter(f['kind'] for f in result['findings']).items()))
-    result['status'] = 'BLOCKED' if result['findings'] else 'PASS'
+    blocked=any(f.get('blocking',True) for f in result['findings'])
+    result['publication_allowed']=not blocked
+    result['status'] = 'BLOCKED' if blocked else ('REVIEW' if result['findings'] else 'PASS')
     return result
 
 
@@ -47,8 +49,9 @@ def compare(expected: list[dict], master_rows: list[dict], index_rows: list[dict
     """
     result = dict(findings=[], lineage=[], regression=[])
 
-    def finding(kind, detail, *, official=None, master=None, index=None):
-        item = dict(kind=kind, detail=detail)
+    def finding(kind, detail, *, official=None, master=None, index=None, blocking=True, checked_source=None):
+        item = dict(kind=kind, detail=detail, blocking=blocking)
+        if checked_source is not None:item['checked_source']=checked_source
         if official is not None: item['official'] = official
         if master is not None: item['master'] = master
         if index is not None: item['index'] = index
@@ -93,7 +96,10 @@ def compare(expected: list[dict], master_rows: list[dict], index_rows: list[dict
                         '公式掲載名称に対応するmaster行が無い',official=record)
                 continue
             category = categories.get(record['category'])
-            if not category:
+            if record['source']=='財務省' and record['category'] in categories and category is None:
+                finding('CATEGORY_LABEL_UNRESOLVED','原本の区分番号は確認済み。設定の表示名が意図的に未確定',
+                        official=record,blocking=False)
+            elif not category:
                 finding('UNDETERMINED','公式カテゴリとmasterカテゴリの対応未定義',official=record)
             for row in rows:
                 if row.get('status') != '有効':
@@ -120,7 +126,7 @@ def compare(expected: list[dict], master_rows: list[dict], index_rows: list[dict
                     finding('SOURCE_MISMATCH','原本に根拠の無いカテゴリ関係: '+ ';'.join(sorted(surplus)),
                             official=records[0],master=row)
             if (source,key) not in expected_keys:
-                finding('EXTRA_REGISTRATION','現在原本に根拠の無い出典付き登録（保持行を含む。削除禁止）',master=row)
+                finding('EXTRA_REGISTRATION','現在原本に根拠の無い出典付き登録（保持行を含む。削除禁止）',master=row,checked_source=source)
 
     official_parties={(key[0],key[1]) for key in expected_index}
     index_map = defaultdict(list)
@@ -247,7 +253,7 @@ def audit(root: Path, sources: list[str], upstream_failed: bool = False) -> dict
                 kmap=json.loads(kpath.read_text(encoding='utf-8'))['map']
                 if not isinstance(kmap,dict) or any(not isinstance(v,str) for v in kmap.values()):
                     raise R.ReadError('財務省カテゴリ対応表構造が不明')
-                categories.update({k:'財務省:'+v for k,v in kmap.items()})
+                categories.update({k:('財務省:'+v if v else None) for k,v in kmap.items()})
                 body,document=_pinned(root,key,prev,'mof',result['documents'])
                 part=R.read_mof(body)
                 document['name_count']=len(part)
@@ -283,6 +289,19 @@ def audit(root: Path, sources: list[str], upstream_failed: bool = False) -> dict
     result['lineage']=comparison['lineage'];result['regression']=comparison['regression']
     result['official_name_count']=len(expected)
     result['master_row_count']=len(master_rows)
+    result=_finish(result)
+    decision_path=root/'data/review/integrity_retention_decisions.json'
+    if decision_path.exists():
+        try:
+            from . import integrity_triage as T
+            from . import integrity_decisions as D
+            body=decision_path.read_bytes()
+            result['inputs']['data/review/integrity_retention_decisions.json']=sha(body)
+            ledger=json.loads(body)
+            investigation=T.triage(root,result)
+            result=D.apply(result,investigation,ledger)
+        except (OSError,ValueError,KeyError,csv.Error) as exc:
+            result['findings'].append(dict(kind='RETENTION_DECISION_ERROR',detail=str(exc),blocking=True))
     return _finish(result)
 
 
@@ -302,16 +321,29 @@ def main(argv=None):
     parser.add_argument('--root',type=Path,default=ROOT)
     parser.add_argument('--sources',nargs='+',choices=['ofac','mof','all'],default=['all'])
     parser.add_argument('--upstream-failed',action='store_true')
+    parser.add_argument('--triage',action='store_true',help='全findingを根拠付き分類して監査Artifactに保存')
     args=parser.parse_args(argv)
     sources=['ofac','mof'] if 'all' in args.sources else args.sources
     result=audit(args.root,sources,args.upstream_failed)
+    triage_paths=[]
+    if args.triage:
+        try:
+            from . import integrity_triage as T
+            investigation=T.triage(args.root,result)
+            paths=T.write_outputs(args.root/'data/integrity_audit',investigation,stem='triage-'+uuid.uuid4().hex)
+            result['triage_summary']=dict(counts=investigation['counts'],retention_candidates=investigation['retention_candidates'],
+                                         report_sha256=T.digest(investigation),approved_count=sum(f.get('retention_approved',False) for f in result['findings']))
+            triage_paths=[str(p) for p in paths]
+        except (OSError,ValueError,KeyError,csv.Error) as exc:
+            result['findings'].append(dict(kind='TRIAGE_FAILED',detail=str(exc),blocking=True))
+            _finish(result)
     try:
         path=write_report(args.root,result)
     except OSError as exc:
         print(f'AUDIT BLOCKED: 証跡保存失敗: {exc}',file=sys.stderr)
         return 1
-    print(json.dumps(dict(status=result['status'],counts=result['counts'],report=str(path)),ensure_ascii=False))
-    return 0 if result['status']=='PASS' else 1
+    print(json.dumps(dict(status=result['status'],counts=result['counts'],report=str(path),triage_paths=triage_paths),ensure_ascii=False))
+    return 0 if result['publication_allowed'] else 1
 
 
 if __name__=='__main__':

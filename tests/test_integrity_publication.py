@@ -30,7 +30,7 @@ class GateTests(unittest.TestCase):
         before=self.mpath.read_bytes()
         p=self.run_gate('success');self.assertNotEqual(p.returncode,0)
         self.assertFalse((self.root/'published').exists());self.assertEqual(self.mpath.read_bytes(),before)
-        reports=list(self.root.glob('data/integrity_audit/*.json.gz'))
+        reports=[p for p in self.root.glob('data/integrity_audit/*.json.gz') if not p.name.startswith('triage-')]
         self.assertEqual(len(reports),1)
 
     def test_declared_mof_cache_path_passes_relative_root(self):
@@ -78,13 +78,13 @@ class GateTests(unittest.TestCase):
         # cannot make this test pass without exercising unknown-list handling.
         p=subprocess.run([sys.executable,'-m','src.integrity_audit','--root',str(self.root),'--sources','ofac'],capture_output=True,text=True)
         self.assertNotEqual(p.returncode,0,p.stdout+p.stderr)
-        r=json.loads(gzip.decompress(next(self.root.glob('data/integrity_audit/*.json.gz')).read_bytes()))
+        r=json.loads(gzip.decompress(next(p for p in self.root.glob('data/integrity_audit/*.json.gz') if not p.name.startswith('triage-')).read_bytes()))
         self.assertIn('SOURCE_ID_MISMATCH',r['counts'])
 
     def test_fetch_failure_blocks_even_if_cached_candidate_is_good(self):
         p=self.run_gate('failure');self.assertNotEqual(p.returncode,0)
         self.assertFalse((self.root/'published').exists())
-        r=json.loads(gzip.decompress(next(self.root.glob('data/integrity_audit/*.json.gz')).read_bytes()))
+        r=json.loads(gzip.decompress(next(p for p in self.root.glob('data/integrity_audit/*.json.gz') if not p.name.startswith('triage-')).read_bytes()))
         self.assertIn('UPSTREAM_FAILED',r['counts'])
 
 

@@ -17,3 +17,5 @@ data/dashboard/screening.csv
 # Full per-run integrity evidence is retained as an Actions artifact.
 # Keep hourly reports out of git; curated baseline evidence lives in docs/evidence.
 data/integrity_audit/*.json.gz
+
+data/integrity_audit/*.csv

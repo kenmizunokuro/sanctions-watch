@@ -8,4 +8,4 @@ flags=()
 if [[ "$outcome" != "success" ]]; then
   flags+=(--upstream-failed)
 fi
-python -m src.integrity_audit --root . --sources "$sources" "${flags[@]}"
+python -m src.integrity_audit --root . --triage --sources "$sources" "${flags[@]}"
