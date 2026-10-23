@@ -41,6 +41,83 @@ class CategoryAndKeyTests(unittest.TestCase):
         self.assertEqual(match_key("O'BRIEN, Sean"),"seano'brien")
 
 
+class PinnedArchiveTests(unittest.TestCase):
+    def setUp(self):
+        from src import integrity_triage as T
+        self.T = T
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name).resolve()
+        self.folder = self.root / 'docs/evidence/integrity-archives'
+        self.folder.mkdir(parents=True)
+        self.body = b'1,1,a.k.a.,Jane Doe,-0-\n'
+        self.doc = dict(raw_path='docs/evidence/integrity-archives/ofac_sdn/old__alt.csv.gz',
+                        source='ofac_sdn', role='alias', source_hash=hashlib.sha256(self.body).hexdigest(),
+                        source_url='https://sanctionslistservice.ofac.treas.gov/api/download/ALT.CSV')
+        self.path = self.root / self.doc['raw_path']
+        self.path.parent.mkdir()
+        self.path.write_bytes(gzip.compress(self.body, mtime=0))
+        self.manifest()
+
+    def manifest(self, **updates):
+        document = dict(self.doc, **updates)
+        (self.folder / 'manifest.json').write_text(json.dumps(dict(schema_version=1, documents=[document])))
+
+    def collect(self):
+        return self.T.collect_witnesses(self.root, {'documents': []}, {'janedoe'})
+
+    def test_pinned_original_is_available_without_normal_raw_archive(self):
+        witnesses, manifest, errors = self.collect()
+        self.assertEqual(errors, [])
+        proof = witnesses['janedoe'][0]
+        self.assertEqual(proof['source_id'], '1')
+        self.assertFalse(proof['current'])
+        self.assertEqual(proof['source_hash'], self.doc['source_hash'])
+        self.assertEqual(manifest[0]['status'], 'parsed')
+
+    def test_pinned_body_hash_mismatch_blocks_triage(self):
+        self.manifest(source_hash='a' * 64)
+        with self.assertRaises(self.T.TriageError):
+            self.collect()
+
+    def test_pinned_parse_failure_blocks_triage(self):
+        self.body = b'unknown,columns\n'
+        self.path.write_bytes(gzip.compress(self.body, mtime=0))
+        self.manifest(source_hash=hashlib.sha256(self.body).hexdigest())
+        with self.assertRaises(self.T.TriageError):
+            self.collect()
+
+    def test_invalid_metadata_and_path_are_rejected(self):
+        for updates in ({'source': 'mof'}, {'role': 'notice'}, {'raw_path': 'data/master/master.csv'},
+                        {'source_url': 'https://example.test/raw'}, {'source_url': {}}, {'source_hash': 'invalid'}):
+            with self.subTest(updates=updates):
+                self.manifest(**updates)
+                with self.assertRaises(self.T.TriageError):
+                    self.collect()
+
+    def test_missing_pinned_body_blocks_triage(self):
+        self.path.unlink()
+        with self.assertRaises(self.T.TriageError):
+            self.collect()
+
+    def test_missing_manifest_does_not_silently_ignore_pinned_bodies(self):
+        (self.folder / 'manifest.json').unlink()
+        with self.assertRaises(self.T.TriageError):
+            self.collect()
+
+    def test_duplicate_manifest_record_and_escaping_symlink_block(self):
+        (self.folder / 'manifest.json').write_text(json.dumps(dict(schema_version=1, documents=[self.doc, self.doc])))
+        with self.assertRaises(self.T.TriageError):
+            self.collect()
+        self.manifest()
+        self.path.unlink()
+        outside = self.root / 'outside.csv.gz'
+        outside.write_bytes(gzip.compress(self.body, mtime=0))
+        self.path.symlink_to(outside)
+        with self.assertRaises(self.T.TriageError):
+            self.collect()
+
+
 
 
 class TriageTests(unittest.TestCase):
@@ -307,6 +384,44 @@ class RetentionGateTests(unittest.TestCase):
         self.assertEqual(p.returncode,0,p.stdout+p.stderr)
         self.assertIn('REVIEW',p.stdout);self.assertTrue((self.root/'published').exists())
         self.assertEqual(before,self.mpath.read_bytes())
+
+    def pin_old_archive(self):
+        source = self.root/'data/raw/ofac_sdn/20200101T000000Z__sdn.csv.gz'
+        target = self.root/'docs/evidence/integrity-archives/ofac_sdn/old.csv.gz'
+        target.parent.mkdir(parents=True)
+        target.write_bytes(source.read_bytes())
+        manifest = dict(schema_version=1, documents=[dict(
+            raw_path=target.relative_to(self.root).as_posix(), source='ofac_sdn', role='primary',
+            source_hash=hashlib.sha256(gzip.decompress(target.read_bytes())).hexdigest(),
+            source_url='https://sanctionslistservice.ofac.treas.gov/api/download/SDN.CSV')])
+        (target.parent.parent/'manifest.json').write_text(json.dumps(manifest))
+        source.unlink()
+        return target
+
+    def test_pinned_proof_survives_normal_raw_cache_pruning(self):
+        self.pin_old_archive()
+        before=self.mpath.read_bytes();p=self.run_gate()
+        self.assertEqual(p.returncode,0,p.stdout+p.stderr)
+        self.assertEqual(before,self.mpath.read_bytes())
+        self.assertIn('REVIEW',p.stdout)
+
+    def test_pinned_hash_failure_blocks_even_an_existing_approval_and_writes_evidence(self):
+        target=self.pin_old_archive();target.write_bytes(gzip.compress(b'corrupted'))
+        p=self.run_gate();self.assertNotEqual(p.returncode,0,p.stdout+p.stderr)
+        self.assertFalse((self.root/'published').exists())
+        files=[p for p in self.root.glob('data/integrity_audit/*.json.gz') if not p.name.startswith('triage-')]
+        self.assertEqual(len(files),1)
+        report=json.loads(gzip.decompress(files[0].read_bytes()))
+        self.assertIn('TRIAGE_FAILED',report['counts'])
+
+    def test_pinned_symlink_loop_stops_publication_and_preserves_failure_evidence(self):
+        target=self.pin_old_archive();target.unlink();target.symlink_to(target.name)
+        p=self.run_gate();self.assertNotEqual(p.returncode,0,p.stdout+p.stderr)
+        self.assertFalse((self.root/'published').exists())
+        files=[p for p in self.root.glob('data/integrity_audit/*.json.gz') if not p.name.startswith('triage-')]
+        self.assertEqual(len(files),1,p.stdout+p.stderr)
+        report=json.loads(gzip.decompress(files[0].read_bytes()))
+        self.assertIn('TRIAGE_FAILED',report['counts'])
 
     def test_bad_approval_date_still_writes_audit_failure_evidence(self):
         path=self.root/'data/review/integrity_retention_decisions.json'

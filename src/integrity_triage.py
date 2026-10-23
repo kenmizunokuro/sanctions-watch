@@ -16,6 +16,7 @@ import uuid
 import zlib
 from collections import Counter, defaultdict
 from pathlib import Path
+from urllib.parse import urlsplit
 
 from . import integrity_readers as R
 from .normalize import match_key
@@ -138,6 +139,47 @@ def _csv(path):
         return rows
 
 
+def _pinned_archives(root):
+    """Curated historical originals survive normal raw-cache pruning.
+
+    These are never current-list evidence. Missing, changed or unparseable
+    pinned evidence invalidates triage instead of silently withdrawing proof.
+    """
+    directory=root/'docs/evidence/integrity-archives'
+    path=directory/'manifest.json'
+    if not path.exists():
+        if directory.exists() and any(p.is_file() for p in directory.rglob('*')):
+            raise TriageError('監査用過去原本manifest欠落')
+        return {}
+    try:
+        if not directory.resolve().is_relative_to(root) or not path.resolve().is_relative_to(directory.resolve()):
+            raise ValueError('監査用過去原本manifestが証跡領域外')
+        manifest=json.loads(path.read_text(encoding='utf-8'))
+        if not isinstance(manifest,dict) or manifest.get('schema_version')!=1 or not isinstance(manifest.get('documents'),list):
+            raise ValueError('監査用過去原本manifest構造不明')
+        result={}
+        for document in manifest['documents']:
+            if not isinstance(document,dict):raise ValueError('監査用過去原本レコード不正')
+            rel=document.get('raw_path')
+            if (not isinstance(rel,str) or Path(rel).is_absolute() or '..' in Path(rel).parts
+                    or not (root/rel).resolve().is_relative_to(directory.resolve())):
+                raise ValueError('監査用過去原本パスが証跡領域外')
+            if rel in result:raise ValueError('監査用過去原本パス重複')
+            if document.get('source') not in {'ofac_sdn','ofac_cons'} or document.get('role') not in {'primary','alias','advanced'}:
+                raise ValueError('監査用過去原本source/role不明')
+            if not isinstance(document.get('source_hash'),str) or not re.fullmatch('[a-f0-9]{64}',document['source_hash']):
+                raise ValueError('監査用過去原本hash不正')
+            if not isinstance(document.get('source_url'),str):raise ValueError('監査用過去原本URL不正')
+            url=urlsplit(document['source_url'])
+            if (url.scheme!='https' or url.netloc not in {'sanctionslistservice.ofac.treas.gov','ofac.treasury.gov'}
+                    or not url.path or url.query or url.fragment):
+                raise ValueError('監査用過去原本の公式URL不明')
+            result[rel]=document
+        return result
+    except (ValueError,OSError,TypeError,RuntimeError) as exc:
+        raise TriageError(f'監査用過去原本manifest不正: {exc}') from exc
+
+
 def collect_witnesses(root, report, target_keys):
     """Read fixed current bodies and locally archived bodies. Never fetch URLs.
 
@@ -146,24 +188,29 @@ def collect_witnesses(root, report, target_keys):
     """
     current={d['raw_path']:d for d in report.get('documents',[]) if d['source'].startswith('ofac_')}
     urls={(d['source'],d['role']):d['source_url'] for d in current.values()}
+    pinned=_pinned_archives(root)
     paths=set(current)
+    paths.update(pinned)
     for folder in ('ofac_sdn','ofac_cons','ofac_sdn_advanced','ofac_cons_advanced'):
         paths.update(p.relative_to(root).as_posix() for p in (root/'data/raw'/folder).glob('*') if p.is_file())
     found=defaultdict(dict);manifest=[];errors=[]
     for rel in sorted(paths):
         path=(root/rel).resolve()
-        if not path.is_relative_to(root/'data/raw'):
+        if not path.is_relative_to(root/'data/raw') and rel not in pinned:
             raise TriageError('原本パスがdata/raw外')
-        source='ofac_cons' if 'ofac_cons' in rel else 'ofac_sdn'
+        source=pinned[rel]['source'] if rel in pinned else ('ofac_cons' if 'ofac_cons' in rel else 'ofac_sdn')
         label='Consolidated' if source=='ofac_cons' else 'SDN'
         advanced='advanced' in rel
-        role=current[rel]['role'] if rel in current else ('advanced' if advanced else ('alias' if 'alt.csv' in rel.lower() else 'primary'))
+        role=pinned[rel]['role'] if rel in pinned else (current[rel]['role'] if rel in current else ('advanced' if advanced else ('alias' if 'alt.csv' in rel.lower() else 'primary')))
         advanced=role=='advanced'
         entry=dict(raw_path=rel,source=source,role=role,current=rel in current,
-                   source_url=urls.get((source,role),''),status='unread')
+                   source_url=pinned[rel]['source_url'] if rel in pinned else urls.get((source,role),''),status='unread')
+        if rel in pinned:entry['pinned_provenance']=pinned[rel]
         manifest.append(entry)
         try:
             body=_read_body(path);entry['source_hash']=hashlib.sha256(body).hexdigest()
+            if rel in pinned and entry['source_hash']!=pinned[rel]['source_hash']:
+                raise TriageError(f'監査用過去原本hash不一致: {rel}: {entry["source_hash"]}')
             if rel in current and entry['source_hash']!=current[rel]['sha256']:
                 raise TriageError(f'監査時原本から変更された: {rel}')
             records=R.read_ofac_xml(body,label) if advanced else R.read_classic(body,label,alias=role=='alias')
@@ -190,8 +237,8 @@ def collect_witnesses(root, report, target_keys):
                             found[key][_key_json(_facts(proof))]=proof
         except (ValueError,OSError,EOFError,csv.Error) as exc:
             entry.update(status='unreadable',error=str(exc));errors.append(dict(raw_path=rel,error=str(exc),current=entry['current']))
-            if rel in current:
-                raise TriageError(f'現行原本のtriage失敗: {rel}: {exc}') from exc
+            if rel in current or rel in pinned:
+                raise TriageError(f'現行/固定原本のtriage失敗: {rel}: {exc}') from exc
     return {key:sorted(vals.values(),key=_key_json) for key,vals in found.items()},manifest,errors
 
 

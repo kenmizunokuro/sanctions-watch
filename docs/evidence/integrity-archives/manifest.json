@@ -1,0 +1,53 @@
+{
+  "documents": [
+    {
+      "raw_path": "docs/evidence/integrity-archives/ofac_sdn/20260829T214252Z__alt.csv.gz",
+      "repository_provenance": {
+        "original_commit": "283b090b6822f6fffb3226728ff83003072eb443",
+        "original_git_blob": "1047b923340cd27f6511a53ba4b6429e13482caa",
+        "original_path": "data/raw/ofac_sdn/20260829T214252Z__alt.csv",
+        "stored_commit": "102ab2f64d192a66afbe26f50260c9b0ba9abf9d",
+        "stored_git_blob": "582e7f8fbd1b722ce7e180379f3f73df9393e848",
+        "stored_path": "data/raw/ofac_sdn/20260829T214252Z__alt.csv.gz"
+      },
+      "retrieval": "Restored from existing Git history; not a new remote retrieval or evidence of current listing.",
+      "role": "alias",
+      "source": "ofac_sdn",
+      "source_hash": "a4cae601ae9cd8ef977dc08da48d47a2cc59a1383cc0677fa812421b48025e39",
+      "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/ALT.CSV"
+    },
+    {
+      "raw_path": "docs/evidence/integrity-archives/ofac_sdn/20260829T214252Z__sdn.csv.gz",
+      "repository_provenance": {
+        "original_commit": "283b090b6822f6fffb3226728ff83003072eb443",
+        "original_git_blob": "73cf4a0f9aa2e3d57e9a7195a44c07ae8cb05c40",
+        "original_path": "data/raw/ofac_sdn/20260829T214252Z__sdn.csv",
+        "stored_commit": "102ab2f64d192a66afbe26f50260c9b0ba9abf9d",
+        "stored_git_blob": "04f0b58c8e90c2f9506dc87d8828723d5516e66c",
+        "stored_path": "data/raw/ofac_sdn/20260829T214252Z__sdn.csv.gz"
+      },
+      "retrieval": "Restored from existing Git history; not a new remote retrieval or evidence of current listing.",
+      "role": "primary",
+      "source": "ofac_sdn",
+      "source_hash": "a2ccea04237a13459009bc527502bb6a08d4e84fe97b46fcce1ed621e9a8301e",
+      "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/SDN.CSV"
+    },
+    {
+      "raw_path": "docs/evidence/integrity-archives/ofac_sdn_advanced/20260904T010536Z__sdn_advanced.xml.gz",
+      "repository_provenance": {
+        "original_commit": "fb258464ac7c5d297ac7ead4d8e164b909909d77",
+        "original_git_blob": "d5c41c31a9906bded38a2bacd19fa154a1725ef9",
+        "original_path": "data/raw/ofac_sdn_advanced/20260904T010536Z__sdn_advanced.xml.gz",
+        "stored_commit": "fb258464ac7c5d297ac7ead4d8e164b909909d77",
+        "stored_git_blob": "d5c41c31a9906bded38a2bacd19fa154a1725ef9",
+        "stored_path": "data/raw/ofac_sdn_advanced/20260904T010536Z__sdn_advanced.xml.gz"
+      },
+      "retrieval": "Restored from existing Git history; not a new remote retrieval or evidence of current listing.",
+      "role": "advanced",
+      "source": "ofac_sdn",
+      "source_hash": "657e2ecd8ed722d5640e4076058a24982c6e722aac2a631eea3da1e052861f93",
+      "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML"
+    }
+  ],
+  "schema_version": 1
+}

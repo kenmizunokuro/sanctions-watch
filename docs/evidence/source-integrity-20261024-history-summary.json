@@ -1,0 +1,2045 @@
+{
+  "limitations": [
+    "An initial-master source label is a historical claim, not primary-source verification.",
+    "Name associations share match_key; homonyms are not proven to be the same party.",
+    "A matching Party ID is reported separately; a name-only match never proves identity.",
+    "Git commit timestamps show repository observations, not designation or original import dates.",
+    "The first-parent master trajectory is inspected, not every abandoned branch.",
+    "Raw bodies come from all ancestors of the fixed base; this is not fresh remote retrieval.",
+    "No archive match does not prove that the name was never officially listed.",
+    "Additional-body counts use the selected earliest witness per semantic name/Party relation, not every matching document.",
+    "No results are fed into audit exemptions or the retention approval ledger."
+  ],
+  "manifest": {
+    "archived_documents": [
+      {
+        "category": "Consolidated",
+        "name_count": 1110,
+        "occurrences": [
+          {
+            "commit": "283b090b6822f6fffb3226728ff83003072eb443",
+            "git_blob": "67bb9976efc65fafbc20664b5cd27dd513a80485",
+            "path": "data/raw/ofac_cons/20260829T214253Z__cons_alt.csv",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/283b090b6822f6fffb3226728ff83003072eb443/data/raw/ofac_cons/20260829T214253Z__cons_alt.csv",
+            "sha256": "303059e2484bfa7d669e6a5c202259c181d634eefe293528be8580706da33741",
+            "stored_sha256": "303059e2484bfa7d669e6a5c202259c181d634eefe293528be8580706da33741"
+          },
+          {
+            "commit": "283b090b6822f6fffb3226728ff83003072eb443",
+            "git_blob": "67bb9976efc65fafbc20664b5cd27dd513a80485",
+            "path": "data/raw/ofac_cons/20260829T214653Z__cons_alt.csv",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/283b090b6822f6fffb3226728ff83003072eb443/data/raw/ofac_cons/20260829T214653Z__cons_alt.csv",
+            "sha256": "303059e2484bfa7d669e6a5c202259c181d634eefe293528be8580706da33741",
+            "stored_sha256": "303059e2484bfa7d669e6a5c202259c181d634eefe293528be8580706da33741"
+          },
+          {
+            "commit": "283b090b6822f6fffb3226728ff83003072eb443",
+            "git_blob": "67bb9976efc65fafbc20664b5cd27dd513a80485",
+            "path": "data/raw/ofac_cons/20260829T214756Z__cons_alt.csv",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/283b090b6822f6fffb3226728ff83003072eb443/data/raw/ofac_cons/20260829T214756Z__cons_alt.csv",
+            "sha256": "303059e2484bfa7d669e6a5c202259c181d634eefe293528be8580706da33741",
+            "stored_sha256": "303059e2484bfa7d669e6a5c202259c181d634eefe293528be8580706da33741"
+          },
+          {
+            "commit": "39f1bd69d5beb58e74c53d0ae7f453f9b27aa360",
+            "git_blob": "67bb9976efc65fafbc20664b5cd27dd513a80485",
+            "path": "data/raw/ofac_cons/20260829T215217Z__cons_alt.csv",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/39f1bd69d5beb58e74c53d0ae7f453f9b27aa360/data/raw/ofac_cons/20260829T215217Z__cons_alt.csv",
+            "sha256": "303059e2484bfa7d669e6a5c202259c181d634eefe293528be8580706da33741",
+            "stored_sha256": "303059e2484bfa7d669e6a5c202259c181d634eefe293528be8580706da33741"
+          },
+          {
+            "commit": "102ab2f64d192a66afbe26f50260c9b0ba9abf9d",
+            "git_blob": "c3c5429b2260e445e8351227d7f48ad71b9ec9b1",
+            "path": "data/raw/ofac_cons/20260829T214253Z__cons_alt.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/102ab2f64d192a66afbe26f50260c9b0ba9abf9d/data/raw/ofac_cons/20260829T214253Z__cons_alt.csv.gz",
+            "sha256": "303059e2484bfa7d669e6a5c202259c181d634eefe293528be8580706da33741",
+            "stored_sha256": "b8b9621a0ca98e4aa674e642954bdb8fec15da0452b5eaa66df18b6aa13bb633"
+          },
+          {
+            "commit": "88f3ba45e0823880752678a88f98cc649b8d8d09",
+            "git_blob": "c3c5429b2260e445e8351227d7f48ad71b9ec9b1",
+            "path": "data/raw/ofac_cons/20260829T214253Z__cons_alt.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/88f3ba45e0823880752678a88f98cc649b8d8d09/data/raw/ofac_cons/20260829T214253Z__cons_alt.csv.gz",
+            "sha256": "303059e2484bfa7d669e6a5c202259c181d634eefe293528be8580706da33741",
+            "stored_sha256": "b8b9621a0ca98e4aa674e642954bdb8fec15da0452b5eaa66df18b6aa13bb633"
+          },
+          {
+            "commit": "fb258464ac7c5d297ac7ead4d8e164b909909d77",
+            "git_blob": "0331f2d1bd273066c9798f5712045dda1e7fb44f",
+            "path": "data/raw/ofac_cons/20260904T010546Z__cons_alt.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/fb258464ac7c5d297ac7ead4d8e164b909909d77/data/raw/ofac_cons/20260904T010546Z__cons_alt.csv.gz",
+            "sha256": "303059e2484bfa7d669e6a5c202259c181d634eefe293528be8580706da33741",
+            "stored_sha256": "f62e6c4ba831e51e405909b51eb7fee66c36e7a9daa5adc957d2606a291280c0"
+          },
+          {
+            "commit": "513bd9154a2317849c2aaf205cb92c427a514386",
+            "git_blob": "0331f2d1bd273066c9798f5712045dda1e7fb44f",
+            "path": "data/raw/ofac_cons/20260913T163015Z__cons_alt.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/513bd9154a2317849c2aaf205cb92c427a514386/data/raw/ofac_cons/20260913T163015Z__cons_alt.csv.gz",
+            "sha256": "303059e2484bfa7d669e6a5c202259c181d634eefe293528be8580706da33741",
+            "stored_sha256": "f62e6c4ba831e51e405909b51eb7fee66c36e7a9daa5adc957d2606a291280c0"
+          }
+        ],
+        "role": "alias",
+        "source_hash": "303059e2484bfa7d669e6a5c202259c181d634eefe293528be8580706da33741",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/CONS_ALT.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "Consolidated",
+        "name_count": 481,
+        "occurrences": [
+          {
+            "commit": "283b090b6822f6fffb3226728ff83003072eb443",
+            "git_blob": "d4c3affb6db8d7caac65be6cf309e3b2746d40d9",
+            "path": "data/raw/ofac_cons/20260829T214253Z__cons_prim.csv",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/283b090b6822f6fffb3226728ff83003072eb443/data/raw/ofac_cons/20260829T214253Z__cons_prim.csv",
+            "sha256": "fa681487dfd865c189177b478a171178ab8e7133402342acc51f638a7bc121de",
+            "stored_sha256": "fa681487dfd865c189177b478a171178ab8e7133402342acc51f638a7bc121de"
+          },
+          {
+            "commit": "283b090b6822f6fffb3226728ff83003072eb443",
+            "git_blob": "d4c3affb6db8d7caac65be6cf309e3b2746d40d9",
+            "path": "data/raw/ofac_cons/20260829T214653Z__cons_prim.csv",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/283b090b6822f6fffb3226728ff83003072eb443/data/raw/ofac_cons/20260829T214653Z__cons_prim.csv",
+            "sha256": "fa681487dfd865c189177b478a171178ab8e7133402342acc51f638a7bc121de",
+            "stored_sha256": "fa681487dfd865c189177b478a171178ab8e7133402342acc51f638a7bc121de"
+          },
+          {
+            "commit": "283b090b6822f6fffb3226728ff83003072eb443",
+            "git_blob": "d4c3affb6db8d7caac65be6cf309e3b2746d40d9",
+            "path": "data/raw/ofac_cons/20260829T214756Z__cons_prim.csv",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/283b090b6822f6fffb3226728ff83003072eb443/data/raw/ofac_cons/20260829T214756Z__cons_prim.csv",
+            "sha256": "fa681487dfd865c189177b478a171178ab8e7133402342acc51f638a7bc121de",
+            "stored_sha256": "fa681487dfd865c189177b478a171178ab8e7133402342acc51f638a7bc121de"
+          },
+          {
+            "commit": "39f1bd69d5beb58e74c53d0ae7f453f9b27aa360",
+            "git_blob": "d4c3affb6db8d7caac65be6cf309e3b2746d40d9",
+            "path": "data/raw/ofac_cons/20260829T215217Z__cons_prim.csv",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/39f1bd69d5beb58e74c53d0ae7f453f9b27aa360/data/raw/ofac_cons/20260829T215217Z__cons_prim.csv",
+            "sha256": "fa681487dfd865c189177b478a171178ab8e7133402342acc51f638a7bc121de",
+            "stored_sha256": "fa681487dfd865c189177b478a171178ab8e7133402342acc51f638a7bc121de"
+          },
+          {
+            "commit": "102ab2f64d192a66afbe26f50260c9b0ba9abf9d",
+            "git_blob": "04c04da1abd5bcee9bac4a9a38019026f3098cde",
+            "path": "data/raw/ofac_cons/20260829T214253Z__cons_prim.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/102ab2f64d192a66afbe26f50260c9b0ba9abf9d/data/raw/ofac_cons/20260829T214253Z__cons_prim.csv.gz",
+            "sha256": "fa681487dfd865c189177b478a171178ab8e7133402342acc51f638a7bc121de",
+            "stored_sha256": "663eee2864411a9f04aa0071ef8bf3d044db94ab5621eb7a0492bdf82795773b"
+          },
+          {
+            "commit": "88f3ba45e0823880752678a88f98cc649b8d8d09",
+            "git_blob": "04c04da1abd5bcee9bac4a9a38019026f3098cde",
+            "path": "data/raw/ofac_cons/20260829T214253Z__cons_prim.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/88f3ba45e0823880752678a88f98cc649b8d8d09/data/raw/ofac_cons/20260829T214253Z__cons_prim.csv.gz",
+            "sha256": "fa681487dfd865c189177b478a171178ab8e7133402342acc51f638a7bc121de",
+            "stored_sha256": "663eee2864411a9f04aa0071ef8bf3d044db94ab5621eb7a0492bdf82795773b"
+          },
+          {
+            "commit": "fb258464ac7c5d297ac7ead4d8e164b909909d77",
+            "git_blob": "a527a46140edaff8887d7a815acabf557ec48ce2",
+            "path": "data/raw/ofac_cons/20260904T010546Z__cons_prim.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/fb258464ac7c5d297ac7ead4d8e164b909909d77/data/raw/ofac_cons/20260904T010546Z__cons_prim.csv.gz",
+            "sha256": "fa681487dfd865c189177b478a171178ab8e7133402342acc51f638a7bc121de",
+            "stored_sha256": "935cdd25d4ec49a15be5716b35696c8ed5188758d6bc870012e669fef26f5f48"
+          },
+          {
+            "commit": "513bd9154a2317849c2aaf205cb92c427a514386",
+            "git_blob": "a527a46140edaff8887d7a815acabf557ec48ce2",
+            "path": "data/raw/ofac_cons/20260913T163015Z__cons_prim.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/513bd9154a2317849c2aaf205cb92c427a514386/data/raw/ofac_cons/20260913T163015Z__cons_prim.csv.gz",
+            "sha256": "fa681487dfd865c189177b478a171178ab8e7133402342acc51f638a7bc121de",
+            "stored_sha256": "935cdd25d4ec49a15be5716b35696c8ed5188758d6bc870012e669fef26f5f48"
+          }
+        ],
+        "role": "primary",
+        "source_hash": "fa681487dfd865c189177b478a171178ab8e7133402342acc51f638a7bc121de",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/CONS_PRIM.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 20147,
+        "occurrences": [
+          {
+            "commit": "283b090b6822f6fffb3226728ff83003072eb443",
+            "git_blob": "1047b923340cd27f6511a53ba4b6429e13482caa",
+            "path": "data/raw/ofac_sdn/20260829T214252Z__alt.csv",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/283b090b6822f6fffb3226728ff83003072eb443/data/raw/ofac_sdn/20260829T214252Z__alt.csv",
+            "sha256": "a4cae601ae9cd8ef977dc08da48d47a2cc59a1383cc0677fa812421b48025e39",
+            "stored_sha256": "a4cae601ae9cd8ef977dc08da48d47a2cc59a1383cc0677fa812421b48025e39"
+          },
+          {
+            "commit": "283b090b6822f6fffb3226728ff83003072eb443",
+            "git_blob": "1047b923340cd27f6511a53ba4b6429e13482caa",
+            "path": "data/raw/ofac_sdn/20260829T214652Z__alt.csv",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/283b090b6822f6fffb3226728ff83003072eb443/data/raw/ofac_sdn/20260829T214652Z__alt.csv",
+            "sha256": "a4cae601ae9cd8ef977dc08da48d47a2cc59a1383cc0677fa812421b48025e39",
+            "stored_sha256": "a4cae601ae9cd8ef977dc08da48d47a2cc59a1383cc0677fa812421b48025e39"
+          },
+          {
+            "commit": "283b090b6822f6fffb3226728ff83003072eb443",
+            "git_blob": "1047b923340cd27f6511a53ba4b6429e13482caa",
+            "path": "data/raw/ofac_sdn/20260829T214755Z__alt.csv",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/283b090b6822f6fffb3226728ff83003072eb443/data/raw/ofac_sdn/20260829T214755Z__alt.csv",
+            "sha256": "a4cae601ae9cd8ef977dc08da48d47a2cc59a1383cc0677fa812421b48025e39",
+            "stored_sha256": "a4cae601ae9cd8ef977dc08da48d47a2cc59a1383cc0677fa812421b48025e39"
+          },
+          {
+            "commit": "39f1bd69d5beb58e74c53d0ae7f453f9b27aa360",
+            "git_blob": "1047b923340cd27f6511a53ba4b6429e13482caa",
+            "path": "data/raw/ofac_sdn/20260829T215216Z__alt.csv",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/39f1bd69d5beb58e74c53d0ae7f453f9b27aa360/data/raw/ofac_sdn/20260829T215216Z__alt.csv",
+            "sha256": "a4cae601ae9cd8ef977dc08da48d47a2cc59a1383cc0677fa812421b48025e39",
+            "stored_sha256": "a4cae601ae9cd8ef977dc08da48d47a2cc59a1383cc0677fa812421b48025e39"
+          },
+          {
+            "commit": "102ab2f64d192a66afbe26f50260c9b0ba9abf9d",
+            "git_blob": "582e7f8fbd1b722ce7e180379f3f73df9393e848",
+            "path": "data/raw/ofac_sdn/20260829T214252Z__alt.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/102ab2f64d192a66afbe26f50260c9b0ba9abf9d/data/raw/ofac_sdn/20260829T214252Z__alt.csv.gz",
+            "sha256": "a4cae601ae9cd8ef977dc08da48d47a2cc59a1383cc0677fa812421b48025e39",
+            "stored_sha256": "6e079e3cafabf1d3fd91d9cb73f6a42848e28737033db98c7f1dbcc0181f564e"
+          },
+          {
+            "commit": "88f3ba45e0823880752678a88f98cc649b8d8d09",
+            "git_blob": "582e7f8fbd1b722ce7e180379f3f73df9393e848",
+            "path": "data/raw/ofac_sdn/20260829T214252Z__alt.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/88f3ba45e0823880752678a88f98cc649b8d8d09/data/raw/ofac_sdn/20260829T214252Z__alt.csv.gz",
+            "sha256": "a4cae601ae9cd8ef977dc08da48d47a2cc59a1383cc0677fa812421b48025e39",
+            "stored_sha256": "6e079e3cafabf1d3fd91d9cb73f6a42848e28737033db98c7f1dbcc0181f564e"
+          }
+        ],
+        "role": "alias",
+        "source_hash": "a4cae601ae9cd8ef977dc08da48d47a2cc59a1383cc0677fa812421b48025e39",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/ALT.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 19321,
+        "occurrences": [
+          {
+            "commit": "283b090b6822f6fffb3226728ff83003072eb443",
+            "git_blob": "73cf4a0f9aa2e3d57e9a7195a44c07ae8cb05c40",
+            "path": "data/raw/ofac_sdn/20260829T214252Z__sdn.csv",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/283b090b6822f6fffb3226728ff83003072eb443/data/raw/ofac_sdn/20260829T214252Z__sdn.csv",
+            "sha256": "a2ccea04237a13459009bc527502bb6a08d4e84fe97b46fcce1ed621e9a8301e",
+            "stored_sha256": "a2ccea04237a13459009bc527502bb6a08d4e84fe97b46fcce1ed621e9a8301e"
+          },
+          {
+            "commit": "283b090b6822f6fffb3226728ff83003072eb443",
+            "git_blob": "73cf4a0f9aa2e3d57e9a7195a44c07ae8cb05c40",
+            "path": "data/raw/ofac_sdn/20260829T214652Z__sdn.csv",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/283b090b6822f6fffb3226728ff83003072eb443/data/raw/ofac_sdn/20260829T214652Z__sdn.csv",
+            "sha256": "a2ccea04237a13459009bc527502bb6a08d4e84fe97b46fcce1ed621e9a8301e",
+            "stored_sha256": "a2ccea04237a13459009bc527502bb6a08d4e84fe97b46fcce1ed621e9a8301e"
+          },
+          {
+            "commit": "283b090b6822f6fffb3226728ff83003072eb443",
+            "git_blob": "73cf4a0f9aa2e3d57e9a7195a44c07ae8cb05c40",
+            "path": "data/raw/ofac_sdn/20260829T214755Z__sdn.csv",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/283b090b6822f6fffb3226728ff83003072eb443/data/raw/ofac_sdn/20260829T214755Z__sdn.csv",
+            "sha256": "a2ccea04237a13459009bc527502bb6a08d4e84fe97b46fcce1ed621e9a8301e",
+            "stored_sha256": "a2ccea04237a13459009bc527502bb6a08d4e84fe97b46fcce1ed621e9a8301e"
+          },
+          {
+            "commit": "39f1bd69d5beb58e74c53d0ae7f453f9b27aa360",
+            "git_blob": "73cf4a0f9aa2e3d57e9a7195a44c07ae8cb05c40",
+            "path": "data/raw/ofac_sdn/20260829T215216Z__sdn.csv",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/39f1bd69d5beb58e74c53d0ae7f453f9b27aa360/data/raw/ofac_sdn/20260829T215216Z__sdn.csv",
+            "sha256": "a2ccea04237a13459009bc527502bb6a08d4e84fe97b46fcce1ed621e9a8301e",
+            "stored_sha256": "a2ccea04237a13459009bc527502bb6a08d4e84fe97b46fcce1ed621e9a8301e"
+          },
+          {
+            "commit": "102ab2f64d192a66afbe26f50260c9b0ba9abf9d",
+            "git_blob": "04f0b58c8e90c2f9506dc87d8828723d5516e66c",
+            "path": "data/raw/ofac_sdn/20260829T214252Z__sdn.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/102ab2f64d192a66afbe26f50260c9b0ba9abf9d/data/raw/ofac_sdn/20260829T214252Z__sdn.csv.gz",
+            "sha256": "a2ccea04237a13459009bc527502bb6a08d4e84fe97b46fcce1ed621e9a8301e",
+            "stored_sha256": "7078d8bc23d06f3f166dcd92952c4885c7dbcf2817a696b2b444212a44cf1f0c"
+          },
+          {
+            "commit": "88f3ba45e0823880752678a88f98cc649b8d8d09",
+            "git_blob": "04f0b58c8e90c2f9506dc87d8828723d5516e66c",
+            "path": "data/raw/ofac_sdn/20260829T214252Z__sdn.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/88f3ba45e0823880752678a88f98cc649b8d8d09/data/raw/ofac_sdn/20260829T214252Z__sdn.csv.gz",
+            "sha256": "a2ccea04237a13459009bc527502bb6a08d4e84fe97b46fcce1ed621e9a8301e",
+            "stored_sha256": "7078d8bc23d06f3f166dcd92952c4885c7dbcf2817a696b2b444212a44cf1f0c"
+          }
+        ],
+        "role": "primary",
+        "source_hash": "a2ccea04237a13459009bc527502bb6a08d4e84fe97b46fcce1ed621e9a8301e",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/SDN.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 20144,
+        "occurrences": [
+          {
+            "commit": "24b446931703edc65de117bb52286e47a6e5b543",
+            "git_blob": "422b545eca10d723088422a5410c4121db64b942",
+            "path": "data/raw/ofac_sdn/20260903T163043Z__alt.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/24b446931703edc65de117bb52286e47a6e5b543/data/raw/ofac_sdn/20260903T163043Z__alt.csv.gz",
+            "sha256": "4511702ccd96b06ae8d5b55b1a9a12e938fc37a38da371e1285d1321b7a4aba6",
+            "stored_sha256": "5641556f64e710438c0f6c51935586dff91f89bd1eef6cebce7624bdc88feda2"
+          },
+          {
+            "commit": "fb258464ac7c5d297ac7ead4d8e164b909909d77",
+            "git_blob": "422b545eca10d723088422a5410c4121db64b942",
+            "path": "data/raw/ofac_sdn/20260904T010536Z__alt.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/fb258464ac7c5d297ac7ead4d8e164b909909d77/data/raw/ofac_sdn/20260904T010536Z__alt.csv.gz",
+            "sha256": "4511702ccd96b06ae8d5b55b1a9a12e938fc37a38da371e1285d1321b7a4aba6",
+            "stored_sha256": "5641556f64e710438c0f6c51935586dff91f89bd1eef6cebce7624bdc88feda2"
+          }
+        ],
+        "role": "alias",
+        "source_hash": "4511702ccd96b06ae8d5b55b1a9a12e938fc37a38da371e1285d1321b7a4aba6",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/ALT.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 19326,
+        "occurrences": [
+          {
+            "commit": "24b446931703edc65de117bb52286e47a6e5b543",
+            "git_blob": "4a6bfbe37a9c5d1cc5ee435bb81983c39d72f199",
+            "path": "data/raw/ofac_sdn/20260903T163043Z__sdn.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/24b446931703edc65de117bb52286e47a6e5b543/data/raw/ofac_sdn/20260903T163043Z__sdn.csv.gz",
+            "sha256": "447d09384cf840252569a30b5db51d8cc4aefb396c085168246ee04e7ba2693c",
+            "stored_sha256": "ff25ec7729f9aa7887924ebfae87c8cc3f9d8187907e16b7fe88c28099fe2b0f"
+          },
+          {
+            "commit": "fb258464ac7c5d297ac7ead4d8e164b909909d77",
+            "git_blob": "4a6bfbe37a9c5d1cc5ee435bb81983c39d72f199",
+            "path": "data/raw/ofac_sdn/20260904T010536Z__sdn.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/fb258464ac7c5d297ac7ead4d8e164b909909d77/data/raw/ofac_sdn/20260904T010536Z__sdn.csv.gz",
+            "sha256": "447d09384cf840252569a30b5db51d8cc4aefb396c085168246ee04e7ba2693c",
+            "stored_sha256": "ff25ec7729f9aa7887924ebfae87c8cc3f9d8187907e16b7fe88c28099fe2b0f"
+          }
+        ],
+        "role": "primary",
+        "source_hash": "447d09384cf840252569a30b5db51d8cc4aefb396c085168246ee04e7ba2693c",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/SDN.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "Consolidated",
+        "name_count": 1783,
+        "occurrences": [
+          {
+            "commit": "fb258464ac7c5d297ac7ead4d8e164b909909d77",
+            "git_blob": "1da3a9a5e910bacd7b036858fa5dd61aa64fbf4f",
+            "path": "data/raw/ofac_cons_advanced/20260904T010546Z__cons_advanced.xml.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/fb258464ac7c5d297ac7ead4d8e164b909909d77/data/raw/ofac_cons_advanced/20260904T010546Z__cons_advanced.xml.gz",
+            "sha256": "c0cdbcc3c7cb9c6bc4af5e1cff6110220aaa7628cb8216882a4feac5e71ab971",
+            "stored_sha256": "1be987d6af7d3b456202a5802e91fc17a984efc076b7a26aef1e52d0c87f3b11"
+          },
+          {
+            "commit": "513bd9154a2317849c2aaf205cb92c427a514386",
+            "git_blob": "1da3a9a5e910bacd7b036858fa5dd61aa64fbf4f",
+            "path": "data/raw/ofac_cons_advanced/20260913T163015Z__cons_advanced.xml.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/513bd9154a2317849c2aaf205cb92c427a514386/data/raw/ofac_cons_advanced/20260913T163015Z__cons_advanced.xml.gz",
+            "sha256": "c0cdbcc3c7cb9c6bc4af5e1cff6110220aaa7628cb8216882a4feac5e71ab971",
+            "stored_sha256": "1be987d6af7d3b456202a5802e91fc17a984efc076b7a26aef1e52d0c87f3b11"
+          }
+        ],
+        "role": "advanced",
+        "source_hash": "c0cdbcc3c7cb9c6bc4af5e1cff6110220aaa7628cb8216882a4feac5e71ab971",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/CONS_ADVANCED.XML",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 49791,
+        "occurrences": [
+          {
+            "commit": "fb258464ac7c5d297ac7ead4d8e164b909909d77",
+            "git_blob": "d5c41c31a9906bded38a2bacd19fa154a1725ef9",
+            "path": "data/raw/ofac_sdn_advanced/20260904T010536Z__sdn_advanced.xml.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/fb258464ac7c5d297ac7ead4d8e164b909909d77/data/raw/ofac_sdn_advanced/20260904T010536Z__sdn_advanced.xml.gz",
+            "sha256": "657e2ecd8ed722d5640e4076058a24982c6e722aac2a631eea3da1e052861f93",
+            "stored_sha256": "8649de3ff009061a0519d9592b1c809d046e23ebba4859012b3ba8d86124761e"
+          }
+        ],
+        "role": "advanced",
+        "source_hash": "657e2ecd8ed722d5640e4076058a24982c6e722aac2a631eea3da1e052861f93",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 20145,
+        "occurrences": [
+          {
+            "commit": "f15356efa2dbbf79b04b19e7116b9736fddb992c",
+            "git_blob": "55d0dfa362a9293e1941036d78535f4373fdd1aa",
+            "path": "data/raw/ofac_sdn/20260904T142950Z__alt.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/f15356efa2dbbf79b04b19e7116b9736fddb992c/data/raw/ofac_sdn/20260904T142950Z__alt.csv.gz",
+            "sha256": "e75323a6eec852a0ff304dbd8c852b71cdffdc4cc0ff763004d83c122d10f61f",
+            "stored_sha256": "4db2eb4e0d286f4a68c6d48591446b1aafb3367a8d2be8b9b505f70b4a75ca64"
+          }
+        ],
+        "role": "alias",
+        "source_hash": "e75323a6eec852a0ff304dbd8c852b71cdffdc4cc0ff763004d83c122d10f61f",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/ALT.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 19329,
+        "occurrences": [
+          {
+            "commit": "f15356efa2dbbf79b04b19e7116b9736fddb992c",
+            "git_blob": "84b0030bf4b4c59f08127c0104aa6c5e2b5ed587",
+            "path": "data/raw/ofac_sdn/20260904T142950Z__sdn.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/f15356efa2dbbf79b04b19e7116b9736fddb992c/data/raw/ofac_sdn/20260904T142950Z__sdn.csv.gz",
+            "sha256": "0ffb4504696e2f5adecbd23a3f27c27e8264447a8021752f1043c74422650f5f",
+            "stored_sha256": "5d47e975e2d220a2385d60a91b08c51d5b134acee033d849a944dc1fc579c4a9"
+          }
+        ],
+        "role": "primary",
+        "source_hash": "0ffb4504696e2f5adecbd23a3f27c27e8264447a8021752f1043c74422650f5f",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/SDN.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 49798,
+        "occurrences": [
+          {
+            "commit": "f15356efa2dbbf79b04b19e7116b9736fddb992c",
+            "git_blob": "59991dfabdb7f43045f5f87fa15bf610359726e1",
+            "path": "data/raw/ofac_sdn_advanced/20260904T142950Z__sdn_advanced.xml.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/f15356efa2dbbf79b04b19e7116b9736fddb992c/data/raw/ofac_sdn_advanced/20260904T142950Z__sdn_advanced.xml.gz",
+            "sha256": "0ec4e7e77fb184ecab51f6e2979a2107e72f967c83097e2ade6cc3e01039027b",
+            "stored_sha256": "f7d6f5c78578a5d98cebe97dae59b867373e506707e34a8845c239f48fff03fc"
+          }
+        ],
+        "role": "advanced",
+        "source_hash": "0ec4e7e77fb184ecab51f6e2979a2107e72f967c83097e2ade6cc3e01039027b",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 20182,
+        "occurrences": [
+          {
+            "commit": "02bfd3ba7b3b07bb5c3b981e46a740ea56854e8b",
+            "git_blob": "1bdfbd37216f5b0efaecf657eb71ac22d92debc7",
+            "path": "data/raw/ofac_sdn/20260908T143328Z__alt.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/02bfd3ba7b3b07bb5c3b981e46a740ea56854e8b/data/raw/ofac_sdn/20260908T143328Z__alt.csv.gz",
+            "sha256": "e79d7db3dc738dad57cdfe5c426742dac75f4fee79b743b46b117aadccbbc10d",
+            "stored_sha256": "5f462b277146be9a3d3bdcc66869633966f127480af82a04563054719837f519"
+          },
+          {
+            "commit": "337ef614218bd3faeac566218bef446327e6bfe7",
+            "git_blob": "1bdfbd37216f5b0efaecf657eb71ac22d92debc7",
+            "path": "data/raw/ofac_sdn/20260908T143328Z__alt.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/337ef614218bd3faeac566218bef446327e6bfe7/data/raw/ofac_sdn/20260908T143328Z__alt.csv.gz",
+            "sha256": "e79d7db3dc738dad57cdfe5c426742dac75f4fee79b743b46b117aadccbbc10d",
+            "stored_sha256": "5f462b277146be9a3d3bdcc66869633966f127480af82a04563054719837f519"
+          }
+        ],
+        "role": "alias",
+        "source_hash": "e79d7db3dc738dad57cdfe5c426742dac75f4fee79b743b46b117aadccbbc10d",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/ALT.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 19365,
+        "occurrences": [
+          {
+            "commit": "02bfd3ba7b3b07bb5c3b981e46a740ea56854e8b",
+            "git_blob": "aca3be8f085d9aaa8b19f74e076d5284a8cc1756",
+            "path": "data/raw/ofac_sdn/20260908T143328Z__sdn.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/02bfd3ba7b3b07bb5c3b981e46a740ea56854e8b/data/raw/ofac_sdn/20260908T143328Z__sdn.csv.gz",
+            "sha256": "1c878982988268de843cd09f5fbc511bd0f0591928db5af5e8e0a5807064c520",
+            "stored_sha256": "2f9fb9cd06a80175a78dec8b4510a102ce399af848cbbf72847a0ca4182f1a01"
+          },
+          {
+            "commit": "337ef614218bd3faeac566218bef446327e6bfe7",
+            "git_blob": "aca3be8f085d9aaa8b19f74e076d5284a8cc1756",
+            "path": "data/raw/ofac_sdn/20260908T143328Z__sdn.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/337ef614218bd3faeac566218bef446327e6bfe7/data/raw/ofac_sdn/20260908T143328Z__sdn.csv.gz",
+            "sha256": "1c878982988268de843cd09f5fbc511bd0f0591928db5af5e8e0a5807064c520",
+            "stored_sha256": "2f9fb9cd06a80175a78dec8b4510a102ce399af848cbbf72847a0ca4182f1a01"
+          }
+        ],
+        "role": "primary",
+        "source_hash": "1c878982988268de843cd09f5fbc511bd0f0591928db5af5e8e0a5807064c520",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/SDN.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 49881,
+        "occurrences": [
+          {
+            "commit": "02bfd3ba7b3b07bb5c3b981e46a740ea56854e8b",
+            "git_blob": "6d172369287139f3125aa1043be45130bf607afe",
+            "path": "data/raw/ofac_sdn_advanced/20260908T143328Z__sdn_advanced.xml.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/02bfd3ba7b3b07bb5c3b981e46a740ea56854e8b/data/raw/ofac_sdn_advanced/20260908T143328Z__sdn_advanced.xml.gz",
+            "sha256": "220b2d92a1d033dee582b43d964b73d3d659a2e5e0de175ea1ea6b848251943a",
+            "stored_sha256": "8219e934eb91c9b5c478b10ded03c28137fb14b3f4ffec79160b9212062b3438"
+          },
+          {
+            "commit": "337ef614218bd3faeac566218bef446327e6bfe7",
+            "git_blob": "6d172369287139f3125aa1043be45130bf607afe",
+            "path": "data/raw/ofac_sdn_advanced/20260908T143328Z__sdn_advanced.xml.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/337ef614218bd3faeac566218bef446327e6bfe7/data/raw/ofac_sdn_advanced/20260908T143328Z__sdn_advanced.xml.gz",
+            "sha256": "220b2d92a1d033dee582b43d964b73d3d659a2e5e0de175ea1ea6b848251943a",
+            "stored_sha256": "8219e934eb91c9b5c478b10ded03c28137fb14b3f4ffec79160b9212062b3438"
+          }
+        ],
+        "role": "advanced",
+        "source_hash": "220b2d92a1d033dee582b43d964b73d3d659a2e5e0de175ea1ea6b848251943a",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 20181,
+        "occurrences": [
+          {
+            "commit": "e67e9d318a6c0a96d2632c24e629d1645c3df132",
+            "git_blob": "e42ec2a0d9e3f196fde101b14cb90d2c7b278b33",
+            "path": "data/raw/ofac_sdn/20260909T133331Z__alt.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/e67e9d318a6c0a96d2632c24e629d1645c3df132/data/raw/ofac_sdn/20260909T133331Z__alt.csv.gz",
+            "sha256": "862f73453e94cadaaee200c8413492a827d49c62028f74715fbe3c99df0fd482",
+            "stored_sha256": "144620ea8b1178db6c75937d4cf4733bd9c9e4444a4100f2302a54ed61abfc0c"
+          },
+          {
+            "commit": "337ef614218bd3faeac566218bef446327e6bfe7",
+            "git_blob": "e42ec2a0d9e3f196fde101b14cb90d2c7b278b33",
+            "path": "data/raw/ofac_sdn/20260909T133331Z__alt.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/337ef614218bd3faeac566218bef446327e6bfe7/data/raw/ofac_sdn/20260909T133331Z__alt.csv.gz",
+            "sha256": "862f73453e94cadaaee200c8413492a827d49c62028f74715fbe3c99df0fd482",
+            "stored_sha256": "144620ea8b1178db6c75937d4cf4733bd9c9e4444a4100f2302a54ed61abfc0c"
+          }
+        ],
+        "role": "alias",
+        "source_hash": "862f73453e94cadaaee200c8413492a827d49c62028f74715fbe3c99df0fd482",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/ALT.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 19369,
+        "occurrences": [
+          {
+            "commit": "e67e9d318a6c0a96d2632c24e629d1645c3df132",
+            "git_blob": "45af9f1f95bc4a36f1e2cddf2f356b8dc2fc7344",
+            "path": "data/raw/ofac_sdn/20260909T133331Z__sdn.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/e67e9d318a6c0a96d2632c24e629d1645c3df132/data/raw/ofac_sdn/20260909T133331Z__sdn.csv.gz",
+            "sha256": "1420bb7f85703354657128718c8e670f94c01d461b6dff9c446582bb0eaeeb70",
+            "stored_sha256": "ccf2f986b9eaaa35e96c286cc3e2790d435524d4ba02648e561d4439f999cbf4"
+          },
+          {
+            "commit": "337ef614218bd3faeac566218bef446327e6bfe7",
+            "git_blob": "45af9f1f95bc4a36f1e2cddf2f356b8dc2fc7344",
+            "path": "data/raw/ofac_sdn/20260909T133331Z__sdn.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/337ef614218bd3faeac566218bef446327e6bfe7/data/raw/ofac_sdn/20260909T133331Z__sdn.csv.gz",
+            "sha256": "1420bb7f85703354657128718c8e670f94c01d461b6dff9c446582bb0eaeeb70",
+            "stored_sha256": "ccf2f986b9eaaa35e96c286cc3e2790d435524d4ba02648e561d4439f999cbf4"
+          }
+        ],
+        "role": "primary",
+        "source_hash": "1420bb7f85703354657128718c8e670f94c01d461b6dff9c446582bb0eaeeb70",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/SDN.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 49890,
+        "occurrences": [
+          {
+            "commit": "e67e9d318a6c0a96d2632c24e629d1645c3df132",
+            "git_blob": "f544d2e3708c7afabef3393f4777d8ae49450a9c",
+            "path": "data/raw/ofac_sdn_advanced/20260909T133331Z__sdn_advanced.xml.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/e67e9d318a6c0a96d2632c24e629d1645c3df132/data/raw/ofac_sdn_advanced/20260909T133331Z__sdn_advanced.xml.gz",
+            "sha256": "994f8983546138b7f0f87c34ea55462bedae325aa156921d308ae63d6472368b",
+            "stored_sha256": "ab81405b3fd9579d2080d0903d9af2f7447bdbefbb661f78740be6f5a9ccb5c5"
+          },
+          {
+            "commit": "337ef614218bd3faeac566218bef446327e6bfe7",
+            "git_blob": "f544d2e3708c7afabef3393f4777d8ae49450a9c",
+            "path": "data/raw/ofac_sdn_advanced/20260909T133331Z__sdn_advanced.xml.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/337ef614218bd3faeac566218bef446327e6bfe7/data/raw/ofac_sdn_advanced/20260909T133331Z__sdn_advanced.xml.gz",
+            "sha256": "994f8983546138b7f0f87c34ea55462bedae325aa156921d308ae63d6472368b",
+            "stored_sha256": "ab81405b3fd9579d2080d0903d9af2f7447bdbefbb661f78740be6f5a9ccb5c5"
+          }
+        ],
+        "role": "advanced",
+        "source_hash": "994f8983546138b7f0f87c34ea55462bedae325aa156921d308ae63d6472368b",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 20206,
+        "occurrences": [
+          {
+            "commit": "06ed5ee7bb6f33d0d3c4e5caf6f929f4f42ac7c3",
+            "git_blob": "ba9c8c924fc28a34b2479f2a3f8c55f45b1fbed3",
+            "path": "data/raw/ofac_sdn/20260910T183231Z__alt.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/06ed5ee7bb6f33d0d3c4e5caf6f929f4f42ac7c3/data/raw/ofac_sdn/20260910T183231Z__alt.csv.gz",
+            "sha256": "84a188c3ca7648d49390a4985996f54e467929a2f47f5c2508bcd842731054a9",
+            "stored_sha256": "545a469d2becd56a4dec892af0ee040be1fda1c5ae98b5dea835fc624ebb2a83"
+          },
+          {
+            "commit": "513bd9154a2317849c2aaf205cb92c427a514386",
+            "git_blob": "ba9c8c924fc28a34b2479f2a3f8c55f45b1fbed3",
+            "path": "data/raw/ofac_sdn/20260913T163004Z__alt.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/513bd9154a2317849c2aaf205cb92c427a514386/data/raw/ofac_sdn/20260913T163004Z__alt.csv.gz",
+            "sha256": "84a188c3ca7648d49390a4985996f54e467929a2f47f5c2508bcd842731054a9",
+            "stored_sha256": "545a469d2becd56a4dec892af0ee040be1fda1c5ae98b5dea835fc624ebb2a83"
+          }
+        ],
+        "role": "alias",
+        "source_hash": "84a188c3ca7648d49390a4985996f54e467929a2f47f5c2508bcd842731054a9",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/ALT.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 19388,
+        "occurrences": [
+          {
+            "commit": "06ed5ee7bb6f33d0d3c4e5caf6f929f4f42ac7c3",
+            "git_blob": "13e351d7c6dbaf49bea7bb00939384927a8d29f0",
+            "path": "data/raw/ofac_sdn/20260910T183231Z__sdn.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/06ed5ee7bb6f33d0d3c4e5caf6f929f4f42ac7c3/data/raw/ofac_sdn/20260910T183231Z__sdn.csv.gz",
+            "sha256": "4da825621635b7d3c36039be0e83fdb2619200616292b5204bcffda78be9c89d",
+            "stored_sha256": "a37ed7ef04a8d651ffacc312e031d6d3c177bbcd630962782295ae94056dc97c"
+          },
+          {
+            "commit": "513bd9154a2317849c2aaf205cb92c427a514386",
+            "git_blob": "13e351d7c6dbaf49bea7bb00939384927a8d29f0",
+            "path": "data/raw/ofac_sdn/20260913T163004Z__sdn.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/513bd9154a2317849c2aaf205cb92c427a514386/data/raw/ofac_sdn/20260913T163004Z__sdn.csv.gz",
+            "sha256": "4da825621635b7d3c36039be0e83fdb2619200616292b5204bcffda78be9c89d",
+            "stored_sha256": "a37ed7ef04a8d651ffacc312e031d6d3c177bbcd630962782295ae94056dc97c"
+          }
+        ],
+        "role": "primary",
+        "source_hash": "4da825621635b7d3c36039be0e83fdb2619200616292b5204bcffda78be9c89d",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/SDN.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 49945,
+        "occurrences": [
+          {
+            "commit": "06ed5ee7bb6f33d0d3c4e5caf6f929f4f42ac7c3",
+            "git_blob": "9a00ff5ff14b916f10ec9ac4d1491ec043a4f34b",
+            "path": "data/raw/ofac_sdn_advanced/20260910T183231Z__sdn_advanced.xml.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/06ed5ee7bb6f33d0d3c4e5caf6f929f4f42ac7c3/data/raw/ofac_sdn_advanced/20260910T183231Z__sdn_advanced.xml.gz",
+            "sha256": "a1b8f07ec5b08700e006c2aaf7fd942d78123deab7bb07360bb3ee3ec733d0d9",
+            "stored_sha256": "2eafad1bdafa61d563b4b4d142bd41bf0695227fc722a2cff79b8fa1c282fb65"
+          },
+          {
+            "commit": "513bd9154a2317849c2aaf205cb92c427a514386",
+            "git_blob": "9a00ff5ff14b916f10ec9ac4d1491ec043a4f34b",
+            "path": "data/raw/ofac_sdn_advanced/20260913T163004Z__sdn_advanced.xml.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/513bd9154a2317849c2aaf205cb92c427a514386/data/raw/ofac_sdn_advanced/20260913T163004Z__sdn_advanced.xml.gz",
+            "sha256": "a1b8f07ec5b08700e006c2aaf7fd942d78123deab7bb07360bb3ee3ec733d0d9",
+            "stored_sha256": "2eafad1bdafa61d563b4b4d142bd41bf0695227fc722a2cff79b8fa1c282fb65"
+          }
+        ],
+        "role": "advanced",
+        "source_hash": "a1b8f07ec5b08700e006c2aaf7fd942d78123deab7bb07360bb3ee3ec733d0d9",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+        "status": "parsed"
+      },
+      {
+        "category": "Consolidated",
+        "name_count": 1110,
+        "occurrences": [
+          {
+            "commit": "0961011258f00af2b8af05ef7c0731ebcbe5596f",
+            "git_blob": "18e534dfe5594ea5aa48f8b220fa4ad768318a3d",
+            "path": "data/raw/ofac_cons/20260914T193104Z__cons_alt.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/0961011258f00af2b8af05ef7c0731ebcbe5596f/data/raw/ofac_cons/20260914T193104Z__cons_alt.csv.gz",
+            "sha256": "ee4e86b664c7a11aacd0fe227f35336cff3467602bb9607653bb4ce193811474",
+            "stored_sha256": "9a468fb59d9fc955438ac2a5c1fdcbe5133a78ff44e34dc2ea9b72ae55b0f47a"
+          }
+        ],
+        "role": "alias",
+        "source_hash": "ee4e86b664c7a11aacd0fe227f35336cff3467602bb9607653bb4ce193811474",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/CONS_ALT.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "Consolidated",
+        "name_count": 481,
+        "occurrences": [
+          {
+            "commit": "0961011258f00af2b8af05ef7c0731ebcbe5596f",
+            "git_blob": "5dc153be736e1742fb5dbf5630db10b81306d877",
+            "path": "data/raw/ofac_cons/20260914T193104Z__cons_prim.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/0961011258f00af2b8af05ef7c0731ebcbe5596f/data/raw/ofac_cons/20260914T193104Z__cons_prim.csv.gz",
+            "sha256": "0a3b74f6eb28450a9993b42a234c1801471d4dcb41220f6a7b8e466575bc3889",
+            "stored_sha256": "8a35e176bffe9f4e4e6ad3ff7a6918fcd5101146d9de00a4a662b20da3e429a6"
+          }
+        ],
+        "role": "primary",
+        "source_hash": "0a3b74f6eb28450a9993b42a234c1801471d4dcb41220f6a7b8e466575bc3889",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/CONS_PRIM.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "Consolidated",
+        "name_count": 1783,
+        "occurrences": [
+          {
+            "commit": "0961011258f00af2b8af05ef7c0731ebcbe5596f",
+            "git_blob": "0b14753d5433d65ea5fdad417ec2c517e1a76d2f",
+            "path": "data/raw/ofac_cons_advanced/20260914T193104Z__cons_advanced.xml.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/0961011258f00af2b8af05ef7c0731ebcbe5596f/data/raw/ofac_cons_advanced/20260914T193104Z__cons_advanced.xml.gz",
+            "sha256": "43033832780a55ed4b3c28291184b60dc63242082c223dd83702a014d5825a65",
+            "stored_sha256": "25fb58204708ac77b3ee7bda0b2366a30d3f44933b2cb7dfd97539588571cedf"
+          }
+        ],
+        "role": "advanced",
+        "source_hash": "43033832780a55ed4b3c28291184b60dc63242082c223dd83702a014d5825a65",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/CONS_ADVANCED.XML",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 20206,
+        "occurrences": [
+          {
+            "commit": "0961011258f00af2b8af05ef7c0731ebcbe5596f",
+            "git_blob": "ba1ad222fde44781417c6cc5fd14b649b1980fc5",
+            "path": "data/raw/ofac_sdn/20260914T193054Z__alt.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/0961011258f00af2b8af05ef7c0731ebcbe5596f/data/raw/ofac_sdn/20260914T193054Z__alt.csv.gz",
+            "sha256": "fa40fd1d5143e534477735ca01f03d3bec190dcbb549c1c9685361817c71852c",
+            "stored_sha256": "a5a1fa48b047c19a4e902a1fe406d72f8fdaf6325665fc203c892bbd5d98b993"
+          },
+          {
+            "commit": "8df4cd870063f5922bd7c71147493763bf798bcd",
+            "git_blob": "ba1ad222fde44781417c6cc5fd14b649b1980fc5",
+            "path": "data/raw/ofac_sdn/20260917T015833Z__alt.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/8df4cd870063f5922bd7c71147493763bf798bcd/data/raw/ofac_sdn/20260917T015833Z__alt.csv.gz",
+            "sha256": "fa40fd1d5143e534477735ca01f03d3bec190dcbb549c1c9685361817c71852c",
+            "stored_sha256": "a5a1fa48b047c19a4e902a1fe406d72f8fdaf6325665fc203c892bbd5d98b993"
+          }
+        ],
+        "role": "alias",
+        "source_hash": "fa40fd1d5143e534477735ca01f03d3bec190dcbb549c1c9685361817c71852c",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/ALT.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 19388,
+        "occurrences": [
+          {
+            "commit": "0961011258f00af2b8af05ef7c0731ebcbe5596f",
+            "git_blob": "609844d2d00fe50f5db4e2da600f1e28d6a5fc0e",
+            "path": "data/raw/ofac_sdn/20260914T193054Z__sdn.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/0961011258f00af2b8af05ef7c0731ebcbe5596f/data/raw/ofac_sdn/20260914T193054Z__sdn.csv.gz",
+            "sha256": "1ac8e3cbbb07ba74d799e53297c97c814dd57630ce2700fcd27902e20183fa79",
+            "stored_sha256": "95f7c2228c725b5d1a3565d69e04b57397e206c46e9bac55d58cfe8ed1187bc6"
+          }
+        ],
+        "role": "primary",
+        "source_hash": "1ac8e3cbbb07ba74d799e53297c97c814dd57630ce2700fcd27902e20183fa79",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/SDN.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 49945,
+        "occurrences": [
+          {
+            "commit": "0961011258f00af2b8af05ef7c0731ebcbe5596f",
+            "git_blob": "18350da73d67ec7531589edc28d3bb45f01ada65",
+            "path": "data/raw/ofac_sdn_advanced/20260914T193054Z__sdn_advanced.xml.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/0961011258f00af2b8af05ef7c0731ebcbe5596f/data/raw/ofac_sdn_advanced/20260914T193054Z__sdn_advanced.xml.gz",
+            "sha256": "3154ed8f492f5645c4197da60abec0b22534c55ee87e20bf415a0ac7d58b8b2b",
+            "stored_sha256": "c5b6144ddf18166337783125b5de78370ea989232c4f7e425f668327a7cfa590"
+          }
+        ],
+        "role": "advanced",
+        "source_hash": "3154ed8f492f5645c4197da60abec0b22534c55ee87e20bf415a0ac7d58b8b2b",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 19385,
+        "occurrences": [
+          {
+            "commit": "8df4cd870063f5922bd7c71147493763bf798bcd",
+            "git_blob": "86b9523df5e8dcbe5a1f0145cbe970574d0e70a8",
+            "path": "data/raw/ofac_sdn/20260917T015833Z__sdn.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/8df4cd870063f5922bd7c71147493763bf798bcd/data/raw/ofac_sdn/20260917T015833Z__sdn.csv.gz",
+            "sha256": "f4424647eb39496c234a1586ef1af11f9d202813aaac732f3ceeaba21bed0884",
+            "stored_sha256": "a843afe50c6974b0b5a49182f561272fccb855d3a3b138ca093f98d2ac6f54ca"
+          }
+        ],
+        "role": "primary",
+        "source_hash": "f4424647eb39496c234a1586ef1af11f9d202813aaac732f3ceeaba21bed0884",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/SDN.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 49942,
+        "occurrences": [
+          {
+            "commit": "8df4cd870063f5922bd7c71147493763bf798bcd",
+            "git_blob": "0f4e6962f3d4bb972400db34f44a9da325066e6e",
+            "path": "data/raw/ofac_sdn_advanced/20260917T015833Z__sdn_advanced.xml.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/8df4cd870063f5922bd7c71147493763bf798bcd/data/raw/ofac_sdn_advanced/20260917T015833Z__sdn_advanced.xml.gz",
+            "sha256": "8f81d70e91b4481bd04ac0acebb896d9743095170250dda89c0704f579fab6b3",
+            "stored_sha256": "50cffd1ee675e874f0b610ac4de81ec89594a572dc81a94652a02a3e869c9f97"
+          }
+        ],
+        "role": "advanced",
+        "source_hash": "8f81d70e91b4481bd04ac0acebb896d9743095170250dda89c0704f579fab6b3",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 20215,
+        "occurrences": [
+          {
+            "commit": "288d2bb2516e61f2692e658975c843b3f3805377",
+            "git_blob": "30a78badaa15c3a7f44dcca52c618453b7c18e0d",
+            "path": "data/raw/ofac_sdn/20260918T012129Z__alt.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/288d2bb2516e61f2692e658975c843b3f3805377/data/raw/ofac_sdn/20260918T012129Z__alt.csv.gz",
+            "sha256": "5aa36573f317e3c34fc342f78c6bb29a3cad28e476bf48396b1e9fab6ed4730c",
+            "stored_sha256": "4373d4e5ce7de454ae8fffbec4cdf4d67d261dafe8be5b2658cc9081aca60d64"
+          }
+        ],
+        "role": "alias",
+        "source_hash": "5aa36573f317e3c34fc342f78c6bb29a3cad28e476bf48396b1e9fab6ed4730c",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/ALT.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 19399,
+        "occurrences": [
+          {
+            "commit": "288d2bb2516e61f2692e658975c843b3f3805377",
+            "git_blob": "add27e76cb824aff01842c01e10ecdc4d6d02aae",
+            "path": "data/raw/ofac_sdn/20260918T012129Z__sdn.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/288d2bb2516e61f2692e658975c843b3f3805377/data/raw/ofac_sdn/20260918T012129Z__sdn.csv.gz",
+            "sha256": "01df2c64828bd5471d0e512c5d609d45f80ea13972d3397491b90e375899e09b",
+            "stored_sha256": "8aa46cd6b74cbddd84121420090e762f4203b09874b28f77bd9f96fbc0a82696"
+          }
+        ],
+        "role": "primary",
+        "source_hash": "01df2c64828bd5471d0e512c5d609d45f80ea13972d3397491b90e375899e09b",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/SDN.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 49977,
+        "occurrences": [
+          {
+            "commit": "288d2bb2516e61f2692e658975c843b3f3805377",
+            "git_blob": "8701f48254a02acecf222a6a85c8443e3bad20ae",
+            "path": "data/raw/ofac_sdn_advanced/20260918T012129Z__sdn_advanced.xml.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/288d2bb2516e61f2692e658975c843b3f3805377/data/raw/ofac_sdn_advanced/20260918T012129Z__sdn_advanced.xml.gz",
+            "sha256": "a092172349e389c768852b3600295f0296da017f756575954ef0efbcdb49b745",
+            "stored_sha256": "f6fdeb2b6b6fe6ef7d1858cb91e8721085df7657aa953794e31d06f5601b2a74"
+          }
+        ],
+        "role": "advanced",
+        "source_hash": "a092172349e389c768852b3600295f0296da017f756575954ef0efbcdb49b745",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 20210,
+        "occurrences": [
+          {
+            "commit": "5b60e21832b6b108bdc551e8fc469e1619480b54",
+            "git_blob": "2438bb80b81d5b50a55c4901c941bc0045c00b3d",
+            "path": "data/raw/ofac_sdn/20260923T133732Z__alt.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/5b60e21832b6b108bdc551e8fc469e1619480b54/data/raw/ofac_sdn/20260923T133732Z__alt.csv.gz",
+            "sha256": "c19a3cdcab83dec2c637103ed24c7bff84340c180b90a9eda3cbee8fa1b279c2",
+            "stored_sha256": "d23d606fe2e96100185b9fab645ed3f0c2423465f357020271b5478b31976ee9"
+          }
+        ],
+        "role": "alias",
+        "source_hash": "c19a3cdcab83dec2c637103ed24c7bff84340c180b90a9eda3cbee8fa1b279c2",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/ALT.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 19393,
+        "occurrences": [
+          {
+            "commit": "5b60e21832b6b108bdc551e8fc469e1619480b54",
+            "git_blob": "5c2bab027d0dcd626dd336c2700f2364b412f9ee",
+            "path": "data/raw/ofac_sdn/20260923T133732Z__sdn.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/5b60e21832b6b108bdc551e8fc469e1619480b54/data/raw/ofac_sdn/20260923T133732Z__sdn.csv.gz",
+            "sha256": "2739bd07a7401aa19930b959e3665772b900924fd54a0d63fd41d20d459f9dce",
+            "stored_sha256": "99222c378373e490072108c9dfe8a93b882f6c55f78bd002a4fd077aa4db2a15"
+          }
+        ],
+        "role": "primary",
+        "source_hash": "2739bd07a7401aa19930b959e3665772b900924fd54a0d63fd41d20d459f9dce",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/SDN.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 49966,
+        "occurrences": [
+          {
+            "commit": "5b60e21832b6b108bdc551e8fc469e1619480b54",
+            "git_blob": "7ff6f386f0b527ec401f2195e6a239c56605ff6b",
+            "path": "data/raw/ofac_sdn_advanced/20260923T133732Z__sdn_advanced.xml.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/5b60e21832b6b108bdc551e8fc469e1619480b54/data/raw/ofac_sdn_advanced/20260923T133732Z__sdn_advanced.xml.gz",
+            "sha256": "8d64eef6932ad713709f1ea7cc0e0e003d68308eb9d1ac5637268d666fdc056f",
+            "stored_sha256": "ca0bbe22202d82a6724e83117597c4c0495792bfd5137bfb52e8a2eae768991d"
+          }
+        ],
+        "role": "advanced",
+        "source_hash": "8d64eef6932ad713709f1ea7cc0e0e003d68308eb9d1ac5637268d666fdc056f",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 19391,
+        "occurrences": [
+          {
+            "commit": "7e294ae6b54a8f3e875fe3642564014f46f2e894",
+            "git_blob": "961ba953babeba0f19ba0ec6de91b8e7f8023233",
+            "path": "data/raw/ofac_sdn/20260923T143211Z__sdn.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/7e294ae6b54a8f3e875fe3642564014f46f2e894/data/raw/ofac_sdn/20260923T143211Z__sdn.csv.gz",
+            "sha256": "cf3ffced4675aa1542f616a15c285266bd0466d8d4508c08a1aa9851a639b276",
+            "stored_sha256": "7ab1d977958fdb5ec8191f4dc4e3d023af0fd9ecc88ae9db6d39361ef9c0dc06"
+          }
+        ],
+        "role": "primary",
+        "source_hash": "cf3ffced4675aa1542f616a15c285266bd0466d8d4508c08a1aa9851a639b276",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/SDN.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 20205,
+        "occurrences": [
+          {
+            "commit": "7e294ae6b54a8f3e875fe3642564014f46f2e894",
+            "git_blob": "b837b38fc7642cc93bd8f8fa2668dadb903646a9",
+            "path": "data/raw/ofac_sdn/20260923T143212Z__alt.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/7e294ae6b54a8f3e875fe3642564014f46f2e894/data/raw/ofac_sdn/20260923T143212Z__alt.csv.gz",
+            "sha256": "356fe4834921500408a4bc801fb2622d813485715b356c78cffa0baedcba7ff1",
+            "stored_sha256": "ec9d1c10b5bea22b62e0d0cc97b4dd2b95a2de1dfd70100bdfb247a5393a8870"
+          }
+        ],
+        "role": "alias",
+        "source_hash": "356fe4834921500408a4bc801fb2622d813485715b356c78cffa0baedcba7ff1",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/ALT.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 49954,
+        "occurrences": [
+          {
+            "commit": "7e294ae6b54a8f3e875fe3642564014f46f2e894",
+            "git_blob": "60cde4a690d3ae0672a4b6e3c325552051ba92bc",
+            "path": "data/raw/ofac_sdn_advanced/20260923T143212Z__sdn_advanced.xml.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/7e294ae6b54a8f3e875fe3642564014f46f2e894/data/raw/ofac_sdn_advanced/20260923T143212Z__sdn_advanced.xml.gz",
+            "sha256": "83553ea89120cba98271cd3724531dd3d603e27521c4b47be6548a3856ed068b",
+            "stored_sha256": "1381424123a7d9f549c6c34bc7654b189a64d76efb6bb98b490028cc71c7f7db"
+          }
+        ],
+        "role": "advanced",
+        "source_hash": "83553ea89120cba98271cd3724531dd3d603e27521c4b47be6548a3856ed068b",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 20220,
+        "occurrences": [
+          {
+            "commit": "8d466e76b8f22245be1b8ffbcfcefb3994c5fdfa",
+            "git_blob": "65c7acc5da751a4e1b57910ce20a4dfa9b053314",
+            "path": "data/raw/ofac_sdn/20260929T205223Z__alt.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/8d466e76b8f22245be1b8ffbcfcefb3994c5fdfa/data/raw/ofac_sdn/20260929T205223Z__alt.csv.gz",
+            "sha256": "d6437f5b6b58ab87a14e3fd33ee02d9c6b4e94ce052434b0e6367bd3edd803cf",
+            "stored_sha256": "0d1f9177b8789e3d76ca7b925d83f907e8462eb78d635f99f199019bc34a0637"
+          }
+        ],
+        "role": "alias",
+        "source_hash": "d6437f5b6b58ab87a14e3fd33ee02d9c6b4e94ce052434b0e6367bd3edd803cf",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/ALT.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 19444,
+        "occurrences": [
+          {
+            "commit": "8d466e76b8f22245be1b8ffbcfcefb3994c5fdfa",
+            "git_blob": "320011099f6b522bf1890f7fa9696fd8fe862dad",
+            "path": "data/raw/ofac_sdn/20260929T205223Z__sdn.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/8d466e76b8f22245be1b8ffbcfcefb3994c5fdfa/data/raw/ofac_sdn/20260929T205223Z__sdn.csv.gz",
+            "sha256": "26206e164ec23658ba0282536a0b0b5295e508dfd6a03387f1a84fdde8bdf932",
+            "stored_sha256": "228b3dbc4757aaa50bbdadbe7f8093ec485f0d84e3314d5296ea378ae2d286da"
+          }
+        ],
+        "role": "primary",
+        "source_hash": "26206e164ec23658ba0282536a0b0b5295e508dfd6a03387f1a84fdde8bdf932",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/SDN.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 50035,
+        "occurrences": [
+          {
+            "commit": "8d466e76b8f22245be1b8ffbcfcefb3994c5fdfa",
+            "git_blob": "28cd1daf7ce1b9cbc1cfc4501f66abc837166fda",
+            "path": "data/raw/ofac_sdn_advanced/20260929T205223Z__sdn_advanced.xml.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/8d466e76b8f22245be1b8ffbcfcefb3994c5fdfa/data/raw/ofac_sdn_advanced/20260929T205223Z__sdn_advanced.xml.gz",
+            "sha256": "84d61007538afd22a92ed18a27f0fc8e489bcf9f048f6a135c3a39526ff7a8b5",
+            "stored_sha256": "cd3a8fa1477f34259b25f24a2d069bec035bb0976280113b6344ba96b91e3af3"
+          }
+        ],
+        "role": "advanced",
+        "source_hash": "84d61007538afd22a92ed18a27f0fc8e489bcf9f048f6a135c3a39526ff7a8b5",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 20220,
+        "occurrences": [
+          {
+            "commit": "c290b544f218be85dcb490fca5956246f451be89",
+            "git_blob": "bca510b7b150190c68edb7809e8a93bd1c51908f",
+            "path": "data/raw/ofac_sdn/20260930T192649Z__alt.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/c290b544f218be85dcb490fca5956246f451be89/data/raw/ofac_sdn/20260930T192649Z__alt.csv.gz",
+            "sha256": "85c9d8db3cf58c588060489cd843b23d444ff1b821f48b5beb4d39037e419924",
+            "stored_sha256": "ddb436c004001269f1c9a1646c1cc8f310a59a23dee2fcb0f4c7a2a120f2a6c9"
+          }
+        ],
+        "role": "alias",
+        "source_hash": "85c9d8db3cf58c588060489cd843b23d444ff1b821f48b5beb4d39037e419924",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/ALT.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 19452,
+        "occurrences": [
+          {
+            "commit": "c290b544f218be85dcb490fca5956246f451be89",
+            "git_blob": "20ef1539b72a3ac0c48653c1ded386cf755abdb1",
+            "path": "data/raw/ofac_sdn/20260930T192649Z__sdn.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/c290b544f218be85dcb490fca5956246f451be89/data/raw/ofac_sdn/20260930T192649Z__sdn.csv.gz",
+            "sha256": "04e849cec43e2d1149fe8cafb24c5ba8c6d8f1442469d92ea19b8202e12a99d8",
+            "stored_sha256": "f1be25f15df1271f4a06b299ed8373f3d7099246b3b90c0ff18e1575e85994f5"
+          }
+        ],
+        "role": "primary",
+        "source_hash": "04e849cec43e2d1149fe8cafb24c5ba8c6d8f1442469d92ea19b8202e12a99d8",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/SDN.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 50048,
+        "occurrences": [
+          {
+            "commit": "c290b544f218be85dcb490fca5956246f451be89",
+            "git_blob": "c4ea6ba2b6ac2419497b98022e8ade8bbe750880",
+            "path": "data/raw/ofac_sdn_advanced/20260930T192649Z__sdn_advanced.xml.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/c290b544f218be85dcb490fca5956246f451be89/data/raw/ofac_sdn_advanced/20260930T192649Z__sdn_advanced.xml.gz",
+            "sha256": "5afe67d5b6709be142c09ddd3550b58593d7a706e82cbd68a8001ffc3c90e28b",
+            "stored_sha256": "6b1cc173e4f1770d678713d84a791bd38e06df5b0ea978beace1bfa1db54cc93"
+          }
+        ],
+        "role": "advanced",
+        "source_hash": "5afe67d5b6709be142c09ddd3550b58593d7a706e82cbd68a8001ffc3c90e28b",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 20233,
+        "occurrences": [
+          {
+            "commit": "133a458e18d01ea578cbcd0460a0dc7ea8e80c06",
+            "git_blob": "f2fcd134b5955b0197aa24ae3a59733cd5a73d51",
+            "path": "data/raw/ofac_sdn/20261001T193616Z__alt.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/133a458e18d01ea578cbcd0460a0dc7ea8e80c06/data/raw/ofac_sdn/20261001T193616Z__alt.csv.gz",
+            "sha256": "8f395a60e00b77891a0b1acc12401b829beb51304efbdc5e4f440cae16654ef2",
+            "stored_sha256": "54fe9a277d873bbc68d1b3bf0f6e50e83cd42aa6780177ccd9f2134f94107c39"
+          }
+        ],
+        "role": "alias",
+        "source_hash": "8f395a60e00b77891a0b1acc12401b829beb51304efbdc5e4f440cae16654ef2",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/ALT.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 19483,
+        "occurrences": [
+          {
+            "commit": "133a458e18d01ea578cbcd0460a0dc7ea8e80c06",
+            "git_blob": "81f60fc52a7a356499fbdd8aec7debc7ac8547e6",
+            "path": "data/raw/ofac_sdn/20261001T193616Z__sdn.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/133a458e18d01ea578cbcd0460a0dc7ea8e80c06/data/raw/ofac_sdn/20261001T193616Z__sdn.csv.gz",
+            "sha256": "4297a36558e1a73053460d37d7fa8eba83b2668dd2a72be1dc7c263a2d389b59",
+            "stored_sha256": "76c316436d7c0a97f083cce11ac416d47f36047957f36dc5e251b2293bddd99a"
+          }
+        ],
+        "role": "primary",
+        "source_hash": "4297a36558e1a73053460d37d7fa8eba83b2668dd2a72be1dc7c263a2d389b59",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/SDN.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 50118,
+        "occurrences": [
+          {
+            "commit": "133a458e18d01ea578cbcd0460a0dc7ea8e80c06",
+            "git_blob": "4968e24c28196dc235a952c6e5c82646dd91d966",
+            "path": "data/raw/ofac_sdn_advanced/20261001T193616Z__sdn_advanced.xml.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/133a458e18d01ea578cbcd0460a0dc7ea8e80c06/data/raw/ofac_sdn_advanced/20261001T193616Z__sdn_advanced.xml.gz",
+            "sha256": "302ac5948298d82165e7c7211dfa623a404b2ef936749e598007cbc366611e41",
+            "stored_sha256": "14df3529f57a6593e97d312c65b3996151e844be498944f420cca07a11841234"
+          }
+        ],
+        "role": "advanced",
+        "source_hash": "302ac5948298d82165e7c7211dfa623a404b2ef936749e598007cbc366611e41",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 20236,
+        "occurrences": [
+          {
+            "commit": "c8ea4703434ac48fbe2e64262832c5ffafb7de57",
+            "git_blob": "7c675194fdfaf066cd7e191d258dbb63a3d46779",
+            "path": "data/raw/ofac_sdn/20261002T182936Z__alt.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/c8ea4703434ac48fbe2e64262832c5ffafb7de57/data/raw/ofac_sdn/20261002T182936Z__alt.csv.gz",
+            "sha256": "e8602c7309956acb1167164c85c01d7e139ada119261670d0472a9bcef44baba",
+            "stored_sha256": "25ba82c2ee195857f59ef0d5b0b6a7d7e988708a6d9334e412217d338ce2956c"
+          }
+        ],
+        "role": "alias",
+        "source_hash": "e8602c7309956acb1167164c85c01d7e139ada119261670d0472a9bcef44baba",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/ALT.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 19488,
+        "occurrences": [
+          {
+            "commit": "c8ea4703434ac48fbe2e64262832c5ffafb7de57",
+            "git_blob": "5e8903dc7423ee4981aa4296f7931a00efa2b685",
+            "path": "data/raw/ofac_sdn/20261002T182936Z__sdn.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/c8ea4703434ac48fbe2e64262832c5ffafb7de57/data/raw/ofac_sdn/20261002T182936Z__sdn.csv.gz",
+            "sha256": "49215a8e749832b34dbb577c83f00f4c3c1b8baf0f14a9bd91bdcf19de3a51e1",
+            "stored_sha256": "9af30784a1c7b4bd597ca4280503d68cb8d8b9987f6d166a2e5d5871ac71e885"
+          }
+        ],
+        "role": "primary",
+        "source_hash": "49215a8e749832b34dbb577c83f00f4c3c1b8baf0f14a9bd91bdcf19de3a51e1",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/SDN.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 50128,
+        "occurrences": [
+          {
+            "commit": "c8ea4703434ac48fbe2e64262832c5ffafb7de57",
+            "git_blob": "a3bb359975fa3482b206ccd4e54517bca4aedeca",
+            "path": "data/raw/ofac_sdn_advanced/20261002T182936Z__sdn_advanced.xml.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/c8ea4703434ac48fbe2e64262832c5ffafb7de57/data/raw/ofac_sdn_advanced/20261002T182936Z__sdn_advanced.xml.gz",
+            "sha256": "828a8c3c6e3152bdedb31d214607aaef4d48f1ce2a6aa222ca6e1c55328b5017",
+            "stored_sha256": "449f6f66db446b9437b9f2c1834fee7d4c5f5334b127ab331292c87dbf719d80"
+          }
+        ],
+        "role": "advanced",
+        "source_hash": "828a8c3c6e3152bdedb31d214607aaef4d48f1ce2a6aa222ca6e1c55328b5017",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 20179,
+        "occurrences": [
+          {
+            "commit": "cfd1fb32b88fabb7c67464061773428e57e53b3d",
+            "git_blob": "ecd5a98754fb81071fdb95ebcf19c8fba7c21253",
+            "path": "data/raw/ofac_sdn/20261005T224323Z__alt.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/cfd1fb32b88fabb7c67464061773428e57e53b3d/data/raw/ofac_sdn/20261005T224323Z__alt.csv.gz",
+            "sha256": "0f4be77775c6aa9f79761e6b99570d396c1f15cb631397baa51d97643be4a5a1",
+            "stored_sha256": "d7dd57eadd3ae9836bdd44f4455b6a4bcbbe161d138138d7b22eb16f1903b1de"
+          }
+        ],
+        "role": "alias",
+        "source_hash": "0f4be77775c6aa9f79761e6b99570d396c1f15cb631397baa51d97643be4a5a1",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/ALT.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 19363,
+        "occurrences": [
+          {
+            "commit": "cfd1fb32b88fabb7c67464061773428e57e53b3d",
+            "git_blob": "6ac1e29d1f8479b40bb0442a8b670763f2d5fc6c",
+            "path": "data/raw/ofac_sdn/20261005T224323Z__sdn.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/cfd1fb32b88fabb7c67464061773428e57e53b3d/data/raw/ofac_sdn/20261005T224323Z__sdn.csv.gz",
+            "sha256": "880ce3f23ac99e766f90a93b00b939ca2ff80c4d6aca6380d6a8c58825fea9e0",
+            "stored_sha256": "2c6a819bb77e5f138daad40206df1f961534ebdf40bc258471c329d0e8e4c023"
+          }
+        ],
+        "role": "primary",
+        "source_hash": "880ce3f23ac99e766f90a93b00b939ca2ff80c4d6aca6380d6a8c58825fea9e0",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/SDN.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 49926,
+        "occurrences": [
+          {
+            "commit": "cfd1fb32b88fabb7c67464061773428e57e53b3d",
+            "git_blob": "d92ab7f37fe8fe47febbca52f94e8cda04f81a91",
+            "path": "data/raw/ofac_sdn_advanced/20261005T224323Z__sdn_advanced.xml.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/cfd1fb32b88fabb7c67464061773428e57e53b3d/data/raw/ofac_sdn_advanced/20261005T224323Z__sdn_advanced.xml.gz",
+            "sha256": "1919d7ccdad5a6a4542ca196b746613ae7cdf218b94192ab77cf04f06b9793dd",
+            "stored_sha256": "735cfc4211ff8b316d1a8c441e7859ff5fee79ae36e7ce2b0e417023368378fa"
+          }
+        ],
+        "role": "advanced",
+        "source_hash": "1919d7ccdad5a6a4542ca196b746613ae7cdf218b94192ab77cf04f06b9793dd",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 20182,
+        "occurrences": [
+          {
+            "commit": "86b6dec609ec622f7dcf734a0705071066fc97de",
+            "git_blob": "9674cc46a173a0945cd698227244c982083eb8c1",
+            "path": "data/raw/ofac_sdn/20261008T175057Z__alt.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/86b6dec609ec622f7dcf734a0705071066fc97de/data/raw/ofac_sdn/20261008T175057Z__alt.csv.gz",
+            "sha256": "ff6075fc9635c5034475fa49c0c2e0e03300e1c9375771d75f99c4d4bf799c1b",
+            "stored_sha256": "c2592abaf609a58e8b45e7d56f845706b790dfaea22ff81b2e47db37db736f72"
+          },
+          {
+            "commit": "c140543a748d05953ae716adf5dfb1a4a9a526cf",
+            "git_blob": "9674cc46a173a0945cd698227244c982083eb8c1",
+            "path": "data/raw/ofac_sdn/20261009T144053Z__alt.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/c140543a748d05953ae716adf5dfb1a4a9a526cf/data/raw/ofac_sdn/20261009T144053Z__alt.csv.gz",
+            "sha256": "ff6075fc9635c5034475fa49c0c2e0e03300e1c9375771d75f99c4d4bf799c1b",
+            "stored_sha256": "c2592abaf609a58e8b45e7d56f845706b790dfaea22ff81b2e47db37db736f72"
+          }
+        ],
+        "role": "alias",
+        "source_hash": "ff6075fc9635c5034475fa49c0c2e0e03300e1c9375771d75f99c4d4bf799c1b",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/ALT.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 19416,
+        "occurrences": [
+          {
+            "commit": "86b6dec609ec622f7dcf734a0705071066fc97de",
+            "git_blob": "f3b2ede6bd2d236648444b8fbf94c011f843bb55",
+            "path": "data/raw/ofac_sdn/20261008T175057Z__sdn.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/86b6dec609ec622f7dcf734a0705071066fc97de/data/raw/ofac_sdn/20261008T175057Z__sdn.csv.gz",
+            "sha256": "ee1929c0ced314687c7385bf491daae45d8ce5a5395d4c20908d8c22c405de86",
+            "stored_sha256": "1d42f4715d9b9241d2c7b52fe136fabc97d0cf319f1970737b4c8ed97ab556f2"
+          }
+        ],
+        "role": "primary",
+        "source_hash": "ee1929c0ced314687c7385bf491daae45d8ce5a5395d4c20908d8c22c405de86",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/SDN.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 49989,
+        "occurrences": [
+          {
+            "commit": "86b6dec609ec622f7dcf734a0705071066fc97de",
+            "git_blob": "152f4c10cbc6c1d3860fd716b89b97ab5a1f78bc",
+            "path": "data/raw/ofac_sdn_advanced/20261008T175057Z__sdn_advanced.xml.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/86b6dec609ec622f7dcf734a0705071066fc97de/data/raw/ofac_sdn_advanced/20261008T175057Z__sdn_advanced.xml.gz",
+            "sha256": "3d43f641650e7c3cb11303784d6329e3a50d2df14a1497541ddeef5d69090695",
+            "stored_sha256": "e060d0d18bb607c8b4c74be371c30f9fcd4ec909cc36b7098648f65454598ad2"
+          }
+        ],
+        "role": "advanced",
+        "source_hash": "3d43f641650e7c3cb11303784d6329e3a50d2df14a1497541ddeef5d69090695",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 19416,
+        "occurrences": [
+          {
+            "commit": "c140543a748d05953ae716adf5dfb1a4a9a526cf",
+            "git_blob": "3ccf762e153da6bb12461170067b3ff77f2990e8",
+            "path": "data/raw/ofac_sdn/20261009T144053Z__sdn.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/c140543a748d05953ae716adf5dfb1a4a9a526cf/data/raw/ofac_sdn/20261009T144053Z__sdn.csv.gz",
+            "sha256": "64be7a7991059f59a2ebb43bc5dcc7e2951e1e27cbed8cbe41b0231b3a161946",
+            "stored_sha256": "ad2cd6bfe29f9fb9d141f82d4f1d3cfe58d2396ce3ec34b2a0a94413f36b37c7"
+          }
+        ],
+        "role": "primary",
+        "source_hash": "64be7a7991059f59a2ebb43bc5dcc7e2951e1e27cbed8cbe41b0231b3a161946",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/SDN.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 49989,
+        "occurrences": [
+          {
+            "commit": "c140543a748d05953ae716adf5dfb1a4a9a526cf",
+            "git_blob": "513f4320ca74dffac6adb87a65af0f143e07cc72",
+            "path": "data/raw/ofac_sdn_advanced/20261009T144053Z__sdn_advanced.xml.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/c140543a748d05953ae716adf5dfb1a4a9a526cf/data/raw/ofac_sdn_advanced/20261009T144053Z__sdn_advanced.xml.gz",
+            "sha256": "df65bed201df2dc1f5fbccb581e7c683b5673aa7674066b6f99fef506db93662",
+            "stored_sha256": "2fa85295b0f030b74830dcaab6851e4f39feafff04ff38422b36e7137ca72122"
+          }
+        ],
+        "role": "advanced",
+        "source_hash": "df65bed201df2dc1f5fbccb581e7c683b5673aa7674066b6f99fef506db93662",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 20188,
+        "occurrences": [
+          {
+            "commit": "2d8d4ad4305b51a4b507f47f45d32be0a9fd05e6",
+            "git_blob": "909ff87cb9531bf3cc00a3b0af6491779dd956a0",
+            "path": "data/raw/ofac_sdn/20261013T145054Z__alt.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/2d8d4ad4305b51a4b507f47f45d32be0a9fd05e6/data/raw/ofac_sdn/20261013T145054Z__alt.csv.gz",
+            "sha256": "d23c57050401072b80e99d128470d0ae61bad2b5cde2d1c546940a140e1d38c9",
+            "stored_sha256": "536dcb634585fafe70b604aff6bad58dbb023c2ef7268dd9a0e28788fc93846f"
+          }
+        ],
+        "role": "alias",
+        "source_hash": "d23c57050401072b80e99d128470d0ae61bad2b5cde2d1c546940a140e1d38c9",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/ALT.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 19431,
+        "occurrences": [
+          {
+            "commit": "2d8d4ad4305b51a4b507f47f45d32be0a9fd05e6",
+            "git_blob": "f9b8a33625dd760b9e6d3f3ef4d3146ccac71eef",
+            "path": "data/raw/ofac_sdn/20261013T145054Z__sdn.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/2d8d4ad4305b51a4b507f47f45d32be0a9fd05e6/data/raw/ofac_sdn/20261013T145054Z__sdn.csv.gz",
+            "sha256": "a472434fd73854d52b8c0e53d4348f50a73c2cd5651cb2db1d6b8917e6b7f405",
+            "stored_sha256": "aefcba9b17297ed8ee903db910d8b05da20b3618d672f0081876691673b4ab45"
+          }
+        ],
+        "role": "primary",
+        "source_hash": "a472434fd73854d52b8c0e53d4348f50a73c2cd5651cb2db1d6b8917e6b7f405",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/SDN.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 50012,
+        "occurrences": [
+          {
+            "commit": "2d8d4ad4305b51a4b507f47f45d32be0a9fd05e6",
+            "git_blob": "3d692e6adc395c5549820e960f1b03f2a8feae05",
+            "path": "data/raw/ofac_sdn_advanced/20261013T145054Z__sdn_advanced.xml.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/2d8d4ad4305b51a4b507f47f45d32be0a9fd05e6/data/raw/ofac_sdn_advanced/20261013T145054Z__sdn_advanced.xml.gz",
+            "sha256": "170afea859f29d2451e8cf9d3fc9628392cc838a1640810b4c28d2160c3d4082",
+            "stored_sha256": "2fb1ea4056ffa9ea73d7511144722b1b8ddea20553b1b024d09dd4d12ef74e65"
+          }
+        ],
+        "role": "advanced",
+        "source_hash": "170afea859f29d2451e8cf9d3fc9628392cc838a1640810b4c28d2160c3d4082",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 20184,
+        "occurrences": [
+          {
+            "commit": "ebcb1b77db542e4064b5afc7444023c82b0f71ab",
+            "git_blob": "d0aa8c6592696a40e5867cba7d4419f1a45f0af5",
+            "path": "data/raw/ofac_sdn/20261014T151048Z__alt.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/ebcb1b77db542e4064b5afc7444023c82b0f71ab/data/raw/ofac_sdn/20261014T151048Z__alt.csv.gz",
+            "sha256": "6f5609ca611580e919f406f41c7ac499761af082c7955fa025afba2e0b8bb99c",
+            "stored_sha256": "1ab2318f3a87b8aec04e76a405323d07bd64a47d8bbd583af7d14264f13f9fdb"
+          }
+        ],
+        "role": "alias",
+        "source_hash": "6f5609ca611580e919f406f41c7ac499761af082c7955fa025afba2e0b8bb99c",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/ALT.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 19430,
+        "occurrences": [
+          {
+            "commit": "ebcb1b77db542e4064b5afc7444023c82b0f71ab",
+            "git_blob": "cba0be83964f9b844e52ce67729e42279caf6988",
+            "path": "data/raw/ofac_sdn/20261014T151048Z__sdn.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/ebcb1b77db542e4064b5afc7444023c82b0f71ab/data/raw/ofac_sdn/20261014T151048Z__sdn.csv.gz",
+            "sha256": "1022b462f33c607007d671c59f6cbd692d7dd1479b736c243e9f747695bf01cb",
+            "stored_sha256": "ac88bd84139b326f709ab5416745beb4cf58485ef1103fffca5391308936402b"
+          }
+        ],
+        "role": "primary",
+        "source_hash": "1022b462f33c607007d671c59f6cbd692d7dd1479b736c243e9f747695bf01cb",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/SDN.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 50007,
+        "occurrences": [
+          {
+            "commit": "ebcb1b77db542e4064b5afc7444023c82b0f71ab",
+            "git_blob": "1971c30863fe6a2246578151aa35366cacbd2e4c",
+            "path": "data/raw/ofac_sdn_advanced/20261014T151048Z__sdn_advanced.xml.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/ebcb1b77db542e4064b5afc7444023c82b0f71ab/data/raw/ofac_sdn_advanced/20261014T151048Z__sdn_advanced.xml.gz",
+            "sha256": "2364ca6e126dd009cc91e13330d585d965e696029642933e91e3e9c3d4cd4668",
+            "stored_sha256": "0b13390ee570ebcb01258efe07edb790dbe043d56bc16f6cf141e11a466ab4ce"
+          }
+        ],
+        "role": "advanced",
+        "source_hash": "2364ca6e126dd009cc91e13330d585d965e696029642933e91e3e9c3d4cd4668",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 20196,
+        "occurrences": [
+          {
+            "commit": "a499b707d6bb1152c22b7477f6801b2f58c34393",
+            "git_blob": "fa7f8f3ed08cd1daac134f865998d6fc625bccc5",
+            "path": "data/raw/ofac_sdn/20261015T173043Z__alt.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/a499b707d6bb1152c22b7477f6801b2f58c34393/data/raw/ofac_sdn/20261015T173043Z__alt.csv.gz",
+            "sha256": "7b76ad83a434083be9525f5effda986b1c1a70afd028836cf4cae031a13fb365",
+            "stored_sha256": "4ec2de50a55daccf94100e52c7a5a2a73c79e6b93f89570e55024f67d20ad327"
+          }
+        ],
+        "role": "alias",
+        "source_hash": "7b76ad83a434083be9525f5effda986b1c1a70afd028836cf4cae031a13fb365",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/ALT.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 19457,
+        "occurrences": [
+          {
+            "commit": "a499b707d6bb1152c22b7477f6801b2f58c34393",
+            "git_blob": "1b6d1d07522b5b3e686dd18d884cf91e532ce52e",
+            "path": "data/raw/ofac_sdn/20261015T173043Z__sdn.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/a499b707d6bb1152c22b7477f6801b2f58c34393/data/raw/ofac_sdn/20261015T173043Z__sdn.csv.gz",
+            "sha256": "0dee0d2de5e5a240e3e545741ee2903cfa3508666d2f2841d5d1ff2d59f0ce71",
+            "stored_sha256": "867e8b9ce8efae657959f8c7f364a0d730dca8f3c6b57be2f5977617b7a76a59"
+          }
+        ],
+        "role": "primary",
+        "source_hash": "0dee0d2de5e5a240e3e545741ee2903cfa3508666d2f2841d5d1ff2d59f0ce71",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/SDN.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 50074,
+        "occurrences": [
+          {
+            "commit": "a499b707d6bb1152c22b7477f6801b2f58c34393",
+            "git_blob": "b8793f15708e582dd9364194c6f16b84e82f710b",
+            "path": "data/raw/ofac_sdn_advanced/20261015T173043Z__sdn_advanced.xml.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/a499b707d6bb1152c22b7477f6801b2f58c34393/data/raw/ofac_sdn_advanced/20261015T173043Z__sdn_advanced.xml.gz",
+            "sha256": "c0e5e5a4d7fda18490625ee6a9ca668ea3872a4dbbe737a99439a89c22ab3997",
+            "stored_sha256": "e709bf291ba2bc2a2d615df06ec1e1ae35ba63e35db7283aa0c8958b456d3448"
+          }
+        ],
+        "role": "advanced",
+        "source_hash": "c0e5e5a4d7fda18490625ee6a9ca668ea3872a4dbbe737a99439a89c22ab3997",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+        "status": "parsed"
+      },
+      {
+        "category": "Consolidated",
+        "name_count": 1115,
+        "occurrences": [
+          {
+            "commit": "ac4ca87c71f9dec732d2b28fd5aed5f0058ed398",
+            "git_blob": "e8c294c27c3572227161610df8cbe04da836c685",
+            "path": "data/raw/ofac_cons/20261019T145058Z__cons_alt.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/ac4ca87c71f9dec732d2b28fd5aed5f0058ed398/data/raw/ofac_cons/20261019T145058Z__cons_alt.csv.gz",
+            "sha256": "106ba0e33579c5d20693e414ad66a9145329f1db012a18c3bdc8f84491a32b81",
+            "stored_sha256": "831915cfa45acc6cca9f3e8edf9576b75222d982454af8c977daacbc26c3fed7"
+          }
+        ],
+        "role": "alias",
+        "source_hash": "106ba0e33579c5d20693e414ad66a9145329f1db012a18c3bdc8f84491a32b81",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/CONS_ALT.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "Consolidated",
+        "name_count": 486,
+        "occurrences": [
+          {
+            "commit": "ac4ca87c71f9dec732d2b28fd5aed5f0058ed398",
+            "git_blob": "56f47f0278e1bc0dc14807ba6cced2512264e3ec",
+            "path": "data/raw/ofac_cons/20261019T145058Z__cons_prim.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/ac4ca87c71f9dec732d2b28fd5aed5f0058ed398/data/raw/ofac_cons/20261019T145058Z__cons_prim.csv.gz",
+            "sha256": "48068ff381b20ba05db297e5744b790e69e9921c738ce88efcaed7e0c3d55033",
+            "stored_sha256": "f665b1f87255307f353d70a5698cf9b587199ad7652ad4ad9419cc835e9107d4"
+          }
+        ],
+        "role": "primary",
+        "source_hash": "48068ff381b20ba05db297e5744b790e69e9921c738ce88efcaed7e0c3d55033",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/CONS_PRIM.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "Consolidated",
+        "name_count": 1798,
+        "occurrences": [
+          {
+            "commit": "ac4ca87c71f9dec732d2b28fd5aed5f0058ed398",
+            "git_blob": "32cb625d78e3ced3b1e04b31c77644b35bee5601",
+            "path": "data/raw/ofac_cons_advanced/20261019T145058Z__cons_advanced.xml.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/ac4ca87c71f9dec732d2b28fd5aed5f0058ed398/data/raw/ofac_cons_advanced/20261019T145058Z__cons_advanced.xml.gz",
+            "sha256": "dc3f61dce650a4661ff69d6c1847f0d5a90f2fa63951267af68fcfacdb6d8a75",
+            "stored_sha256": "f8a8909422b6493dcdc4343f12388c2078cad2eb967b0a2dd53ab75ed195d841"
+          }
+        ],
+        "role": "advanced",
+        "source_hash": "dc3f61dce650a4661ff69d6c1847f0d5a90f2fa63951267af68fcfacdb6d8a75",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/CONS_ADVANCED.XML",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 20192,
+        "occurrences": [
+          {
+            "commit": "97e0bed0877366fcadfe207ddf48c2411e3a9fb7",
+            "git_blob": "bb7cd36b3d71029e6253919a0d0fb2f507f2ec9b",
+            "path": "data/raw/ofac_sdn/20261021T175055Z__alt.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/97e0bed0877366fcadfe207ddf48c2411e3a9fb7/data/raw/ofac_sdn/20261021T175055Z__alt.csv.gz",
+            "sha256": "e489fe41709a1d38693c16be8448d55a05cd4b39c9c2ffa98fbcc76bb5ec8050",
+            "stored_sha256": "7162e1342877d178d52306f1f77179f056a331f232c6e5bd5f8b7d2d8a82cc71"
+          }
+        ],
+        "role": "alias",
+        "source_hash": "e489fe41709a1d38693c16be8448d55a05cd4b39c9c2ffa98fbcc76bb5ec8050",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/ALT.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 19471,
+        "occurrences": [
+          {
+            "commit": "97e0bed0877366fcadfe207ddf48c2411e3a9fb7",
+            "git_blob": "a6604215e0f120fc6bfbc90b48d71a795043e599",
+            "path": "data/raw/ofac_sdn/20261021T175055Z__sdn.csv.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/97e0bed0877366fcadfe207ddf48c2411e3a9fb7/data/raw/ofac_sdn/20261021T175055Z__sdn.csv.gz",
+            "sha256": "96dade5a1cde8c9746937b4859ad75d8f2a34eed1a4046cc1f2240a830f70bda",
+            "stored_sha256": "2b58d0aa8d9fcdfc348621cf9c21411b87331082a0f31e201d236ba20219a395"
+          }
+        ],
+        "role": "primary",
+        "source_hash": "96dade5a1cde8c9746937b4859ad75d8f2a34eed1a4046cc1f2240a830f70bda",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/SDN.CSV",
+        "status": "parsed"
+      },
+      {
+        "category": "SDN",
+        "name_count": 50081,
+        "occurrences": [
+          {
+            "commit": "97e0bed0877366fcadfe207ddf48c2411e3a9fb7",
+            "git_blob": "4245497a292d8c6f6d6091e68ea6ef24978a7beb",
+            "path": "data/raw/ofac_sdn_advanced/20261021T175055Z__sdn_advanced.xml.gz",
+            "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/97e0bed0877366fcadfe207ddf48c2411e3a9fb7/data/raw/ofac_sdn_advanced/20261021T175055Z__sdn_advanced.xml.gz",
+            "sha256": "0d805bf58997908c8b5ba3233bc9b2b6d59bb04ea7881cfdc3c4c47d90d36e27",
+            "stored_sha256": "f4e765da7e535071ed032ce84e0a27d8631ccfd704cc86553e14234bc75bd74e"
+          }
+        ],
+        "role": "advanced",
+        "source_hash": "0d805bf58997908c8b5ba3233bc9b2b6d59bb04ea7881cfdc3c4c47d90d36e27",
+        "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+        "status": "parsed"
+      }
+    ],
+    "base_commit": "ea4ac7f0319ea3ea285d8d26c77be1fd17e92cda",
+    "master_snapshots": [
+      {
+        "commit": "d88c913aab4b5754c396c541a3b496629aac880d",
+        "committed_at": "2026-08-30T05:49:12+09:00",
+        "git_blob": "feebe0ba98f83fcb4911704615c96f9c36aa00f2",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/d88c913aab4b5754c396c541a3b496629aac880d/data/master/master.csv",
+        "row_count": 74552,
+        "sha256": "e64b46e22a2934d05a2e0f9bf153299ce11e0614f04631b91d3015335626c605"
+      },
+      {
+        "commit": "283b090b6822f6fffb3226728ff83003072eb443",
+        "committed_at": "2026-08-30T06:50:55+09:00",
+        "git_blob": "b3014cfe244e79ded971c74061cfd47bfe02c133",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/283b090b6822f6fffb3226728ff83003072eb443/data/master/master.csv",
+        "row_count": 68533,
+        "sha256": "6e81d208a7ddccf6dad386a4a93f601ffcc12284acaf46be7e38017b13a6b6fb"
+      },
+      {
+        "commit": "39f1bd69d5beb58e74c53d0ae7f453f9b27aa360",
+        "committed_at": "2026-08-30T07:01:41+09:00",
+        "git_blob": "242bbcf5d4591a3090082fb4207510024922a0a5",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/39f1bd69d5beb58e74c53d0ae7f453f9b27aa360/data/master/master.csv",
+        "row_count": 70893,
+        "sha256": "da330da3d961a7080b2419acb85c841a6b20a911fccba1e162050bec9677d7ea"
+      },
+      {
+        "commit": "065266a44464f2c1b444322e47569fa9f505227a",
+        "committed_at": "2026-09-01T12:49:19Z",
+        "git_blob": "c9f8bc0cf1e04a8520aaa1e14c7e5b1e383ad2ab",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/065266a44464f2c1b444322e47569fa9f505227a/data/master/master.csv",
+        "row_count": 70893,
+        "sha256": "de5c88ef4b9d494e44177ed214cb7f91a64678b6328538e96b978117a185260e"
+      },
+      {
+        "commit": "243dd05b63e0fc9ccfd3afd7c885bf18a4989d02",
+        "committed_at": "2026-09-02T05:11:56+09:00",
+        "git_blob": "b298ff7c54e7d8acab195241bf67ab475598f826",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/243dd05b63e0fc9ccfd3afd7c885bf18a4989d02/data/master/master.csv",
+        "row_count": 70893,
+        "sha256": "45802d918568cf1f49b0a151479a12e190ef33cde884b0d715a2ec5251e4197e"
+      },
+      {
+        "commit": "d048a9c2aec0aeb4f8b19d795c721fdf600ea579",
+        "committed_at": "2026-09-03T10:16:31+09:00",
+        "git_blob": "a1526ffe3c1b22b3d3e79d6c1a575f63dd8a04af",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/d048a9c2aec0aeb4f8b19d795c721fdf600ea579/data/master/master.csv",
+        "row_count": 70888,
+        "sha256": "ecfc4665836db6dfe9ddeb789bc66b8d680e229182fc586f7d4a28532c605f2a"
+      },
+      {
+        "commit": "24b446931703edc65de117bb52286e47a6e5b543",
+        "committed_at": "2026-09-03T16:31:02Z",
+        "git_blob": "9b36935eb3ab1bc4ee0b9cca2611e562fe82f284",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/24b446931703edc65de117bb52286e47a6e5b543/data/master/master.csv",
+        "row_count": 70894,
+        "sha256": "bfcea75791800d2d1188c1a8cc82a0ccf0499c46d2f313a465dbfcb45a16afd7"
+      },
+      {
+        "commit": "35580d3e56ffd5adc9fb0d35989caaab4faff67f",
+        "committed_at": "2026-09-04T01:28:17Z",
+        "git_blob": "b30abf68981f528bfcd1bfa18a24b79b0f17d047",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/35580d3e56ffd5adc9fb0d35989caaab4faff67f/data/master/master.csv",
+        "row_count": 88052,
+        "sha256": "81286e0eb418bfd71ddc82b441eec9299246a0323deac8402586e4c09761016a"
+      },
+      {
+        "commit": "f15356efa2dbbf79b04b19e7116b9736fddb992c",
+        "committed_at": "2026-09-04T14:30:25Z",
+        "git_blob": "1e4287ba525b58d8efcbe00f6b99d0f900eadde5",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/f15356efa2dbbf79b04b19e7116b9736fddb992c/data/master/master.csv",
+        "row_count": 88059,
+        "sha256": "5a8cb9b1ece52bbf44c45866ff71567a27a4fb5b8bafc04b770a8c51c9c45f16"
+      },
+      {
+        "commit": "aba9b0ed6246f9b97b236f3c11d57d2cc2fd7e81",
+        "committed_at": "2026-09-06T06:27:12+09:00",
+        "git_blob": "3ca4af651c83fbe522310d1738e022de82bbce53",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/aba9b0ed6246f9b97b236f3c11d57d2cc2fd7e81/data/master/master.csv",
+        "row_count": 88373,
+        "sha256": "f9032645a88c2172016c58c46a1f02cdc24e5a9917519acaf2faa1bfbcd63f0f"
+      },
+      {
+        "commit": "d67bd8511e9b2bd2c0e9199165dba32354eaa5c7",
+        "committed_at": "2026-09-07T01:01:52+09:00",
+        "git_blob": "55f23205ee4d01b0523b081115533961e8fde815",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/d67bd8511e9b2bd2c0e9199165dba32354eaa5c7/data/master/master.csv",
+        "row_count": 88373,
+        "sha256": "d61828dc24870ecbf405963fdb4b1ae984e383e1c54df8336d1183f0ac8c576d"
+      },
+      {
+        "commit": "3ac93c536982b23386fd36f70cdefd51858bf0d3",
+        "committed_at": "2026-09-07T02:00:35+09:00",
+        "git_blob": "f274cac0ae48a0e439309652d48513a5ce337a34",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/3ac93c536982b23386fd36f70cdefd51858bf0d3/data/master/master.csv",
+        "row_count": 88467,
+        "sha256": "2e715fc3383e0911ae30e3aa031f37a8d85df13db71fca27461bd956fec7da26"
+      },
+      {
+        "commit": "49eb81c0e62227e6e7ac06fae5e66dcbcd89bb07",
+        "committed_at": "2026-09-07T02:09:51+09:00",
+        "git_blob": "7d8fbb9915f3b78ea57bba789e8f078522cf4139",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/49eb81c0e62227e6e7ac06fae5e66dcbcd89bb07/data/master/master.csv",
+        "row_count": 88467,
+        "sha256": "b3ccd435fa452ae9bd262d784900a6c219d3675e2aac8369c74951e52a5e2294"
+      },
+      {
+        "commit": "337ef614218bd3faeac566218bef446327e6bfe7",
+        "committed_at": "2026-09-10T11:00:12+09:00",
+        "git_blob": "111451520a8290c89aac8e4a93d48cd9ef54f09d",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/337ef614218bd3faeac566218bef446327e6bfe7/data/master/master.csv",
+        "row_count": 88558,
+        "sha256": "088bdb0ae6edf51a94893f019568da10c80b9a591b5270f1fb3127212cdc02e8"
+      },
+      {
+        "commit": "06ed5ee7bb6f33d0d3c4e5caf6f929f4f42ac7c3",
+        "committed_at": "2026-09-10T18:33:01Z",
+        "git_blob": "54b183ab026777ba3faa924cfee613f3acca3644",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/06ed5ee7bb6f33d0d3c4e5caf6f929f4f42ac7c3/data/master/master.csv",
+        "row_count": 88637,
+        "sha256": "e6f93709b5b20c0d50c53af4996462efa290308a33ce670f915e3dde75684493"
+      },
+      {
+        "commit": "8df4cd870063f5922bd7c71147493763bf798bcd",
+        "committed_at": "2026-09-17T01:59:16Z",
+        "git_blob": "1116f6ff83e88cb2979fea0fab3cb608b0aeec48",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/8df4cd870063f5922bd7c71147493763bf798bcd/data/master/master.csv",
+        "row_count": 88637,
+        "sha256": "b865ec33cf8c81ad9d9cea58e3b633abff0c4707639e9d8eb19e0d9aa0525278"
+      },
+      {
+        "commit": "288d2bb2516e61f2692e658975c843b3f3805377",
+        "committed_at": "2026-09-18T01:22:10Z",
+        "git_blob": "d47969ccf87dcae1039766b78b12b617ce3031c3",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/288d2bb2516e61f2692e658975c843b3f3805377/data/master/master.csv",
+        "row_count": 88676,
+        "sha256": "59700cf6b8d1a7dd25355724f64674002794239fb6e8beee25abacb455a00489"
+      },
+      {
+        "commit": "5b60e21832b6b108bdc551e8fc469e1619480b54",
+        "committed_at": "2026-09-23T13:38:02Z",
+        "git_blob": "dacc23ec305cfbb3cb4cad003548b45c5c44fa93",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/5b60e21832b6b108bdc551e8fc469e1619480b54/data/master/master.csv",
+        "row_count": 88676,
+        "sha256": "46c43e165b7f34cc36ee32d689226745bc08c62958f15d8d1eb4ef7191834deb"
+      },
+      {
+        "commit": "3d56d307a78b48b9222b0d57c5481819ef58e609",
+        "committed_at": "2026-09-29T06:06:38Z",
+        "git_blob": "819c4e3403eabd97c82d208291aad53915c008fd",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/3d56d307a78b48b9222b0d57c5481819ef58e609/data/master/master.csv",
+        "row_count": 88676,
+        "sha256": "9d94b7bda1ab99d6bba8e613ce4fb3c6596af023102296859d8d73fabbf07e2f"
+      },
+      {
+        "commit": "a18d962c1c35e8de0da948056229516cebe0db50",
+        "committed_at": "2026-09-29T08:39:02Z",
+        "git_blob": "9672bef1962c876feaa9832c6c27066049a55cd5",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/a18d962c1c35e8de0da948056229516cebe0db50/data/master/master.csv",
+        "row_count": 88676,
+        "sha256": "814e740bc2844486987f365c40bfe499b6cbeb100694f0f8f2e3c55dfbabc15b"
+      },
+      {
+        "commit": "8d466e76b8f22245be1b8ffbcfcefb3994c5fdfa",
+        "committed_at": "2026-09-29T20:52:47Z",
+        "git_blob": "e274a02dbda4b17df5202272029503c3d38143da",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/8d466e76b8f22245be1b8ffbcfcefb3994c5fdfa/data/master/master.csv",
+        "row_count": 88776,
+        "sha256": "bfad9fcbb6faa37d444002ff91483e698898bd3363cdfbd56e18cd2519b1f867"
+      },
+      {
+        "commit": "c290b544f218be85dcb490fca5956246f451be89",
+        "committed_at": "2026-09-30T19:27:31Z",
+        "git_blob": "80e90899028b203ad326e2c312ebebea48778b14",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/c290b544f218be85dcb490fca5956246f451be89/data/master/master.csv",
+        "row_count": 88802,
+        "sha256": "8aff631609706100a64eb1ebd86a9a148e3d45f320d573a7a2da86cdecf0f4e8"
+      },
+      {
+        "commit": "2f8497348bfd595682df15222052672bafb8cdce",
+        "committed_at": "2026-10-01T13:50:18Z",
+        "git_blob": "abcc03599f31fd6879e5ef42faa1688fe63b2160",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/2f8497348bfd595682df15222052672bafb8cdce/data/master/master.csv",
+        "row_count": 88810,
+        "sha256": "cf70c193a5a134e0d5396c6164be31b69ccc40792bb4a6fa32c2bb820446c2e8"
+      },
+      {
+        "commit": "2bf7641833b7cb8857af1da64e75491508107190",
+        "committed_at": "2026-10-01T16:22:22Z",
+        "git_blob": "3b28514ba7b1bfd594eba6309770d011efad6f64",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/2bf7641833b7cb8857af1da64e75491508107190/data/master/master.csv",
+        "row_count": 88810,
+        "sha256": "1b3bbf0bc9f7d7d8eda859fe449e4e600d40105930ade306f764a22f2fc0fc01"
+      },
+      {
+        "commit": "133a458e18d01ea578cbcd0460a0dc7ea8e80c06",
+        "committed_at": "2026-10-01T19:36:45Z",
+        "git_blob": "c0f6f4af9a8a35976264c6c3c851256609b08986",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/133a458e18d01ea578cbcd0460a0dc7ea8e80c06/data/master/master.csv",
+        "row_count": 88880,
+        "sha256": "615a2618fefdc0a01e470bc802682d1935b0435615c58c85e330c9353a86d8a9"
+      },
+      {
+        "commit": "b3399534b63c71d1250ef31ba25196ab6a95a85d",
+        "committed_at": "2026-10-02T13:05:42Z",
+        "git_blob": "c492ea3d59e0501aaf7e6088e621de704c025bd3",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/b3399534b63c71d1250ef31ba25196ab6a95a85d/data/master/master.csv",
+        "row_count": 89059,
+        "sha256": "489b2fe63b6b722be81ab6d619d1658d46fa1718a4fd6bf9f6d48deb9c1bdf2f"
+      },
+      {
+        "commit": "c8ea4703434ac48fbe2e64262832c5ffafb7de57",
+        "committed_at": "2026-10-02T18:30:10Z",
+        "git_blob": "b265a3af5cf8a42c262a1d1ae698f6cabd6611d9",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/c8ea4703434ac48fbe2e64262832c5ffafb7de57/data/master/master.csv",
+        "row_count": 89074,
+        "sha256": "c682ffbf861c63a189ac7ffd95c696dec0c233f085d21ef22556d2b02da987d5"
+      },
+      {
+        "commit": "cfd1fb32b88fabb7c67464061773428e57e53b3d",
+        "committed_at": "2026-10-05T22:44:06Z",
+        "git_blob": "8b3a5e2a637e16a8c31ee3d01aac7def95d4b936",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/cfd1fb32b88fabb7c67464061773428e57e53b3d/data/master/master.csv",
+        "row_count": 89087,
+        "sha256": "0aa62359a5e3a684f9070b12b8ef8a6dc01eee2fba5297fb3e837059e9491a62"
+      },
+      {
+        "commit": "bd98052aea093a7174ea1a7edff34b31771ba053",
+        "committed_at": "2026-10-08T13:59:15Z",
+        "git_blob": "28b897091b811a3937acd6a7d4750058cb52e3e0",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/bd98052aea093a7174ea1a7edff34b31771ba053/data/master/master.csv",
+        "row_count": 89115,
+        "sha256": "a4e5f821b3d499a793271fa58d2e9f6c499fee963d8af1c32b6adcda872dc7f0"
+      },
+      {
+        "commit": "86b6dec609ec622f7dcf734a0705071066fc97de",
+        "committed_at": "2026-10-08T17:51:38Z",
+        "git_blob": "21566b5e364ca329e5caba79b638ca86ebecfdb6",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/86b6dec609ec622f7dcf734a0705071066fc97de/data/master/master.csv",
+        "row_count": 89187,
+        "sha256": "967dceda32fe69316c8b00ab8619abc4d257759552d435bdea1c132535f3ccef"
+      },
+      {
+        "commit": "c140543a748d05953ae716adf5dfb1a4a9a526cf",
+        "committed_at": "2026-10-09T14:41:35Z",
+        "git_blob": "2db27f6f2ace2ecd39ccf8d4700d9e9e28b654dc",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/c140543a748d05953ae716adf5dfb1a4a9a526cf/data/master/master.csv",
+        "row_count": 89188,
+        "sha256": "57b7fbdfa8ca97d29e21b31143d1411b3996b689e6562878f6c932208ee7d135"
+      },
+      {
+        "commit": "2d8d4ad4305b51a4b507f47f45d32be0a9fd05e6",
+        "committed_at": "2026-10-13T14:51:33Z",
+        "git_blob": "a1c994a3af6baef4cdc8588d83b2f90029dcb3c1",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/2d8d4ad4305b51a4b507f47f45d32be0a9fd05e6/data/master/master.csv",
+        "row_count": 89214,
+        "sha256": "692d5d2f1c04480b4c5a0947334c57b14b8f12a48c9a7c9a9e14c02993ba6335"
+      },
+      {
+        "commit": "a499b707d6bb1152c22b7477f6801b2f58c34393",
+        "committed_at": "2026-10-15T17:31:08Z",
+        "git_blob": "0ee675814dea7e7929ca893f173155135e1a4b8d",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/a499b707d6bb1152c22b7477f6801b2f58c34393/data/master/master.csv",
+        "row_count": 89304,
+        "sha256": "eae2cf78e4cc4962dd8a29d725610b29cfdd1c79f8e53336ee538c5e65b871fc"
+      },
+      {
+        "commit": "ac4ca87c71f9dec732d2b28fd5aed5f0058ed398",
+        "committed_at": "2026-10-19T14:51:37Z",
+        "git_blob": "6ac87884e37e5fd761eca30b504df42c225bd815",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/ac4ca87c71f9dec732d2b28fd5aed5f0058ed398/data/master/master.csv",
+        "row_count": 89319,
+        "sha256": "38223f5295b25a48d12453df304449fc30dfddbdbf9154e04d04f02fd2409629"
+      },
+      {
+        "commit": "992e88059fc61d8b860f45ca18f0d9196e1c3d61",
+        "committed_at": "2026-10-20T12:01:43Z",
+        "git_blob": "da4113568fd1a42a353c229026762248693e2dca",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/992e88059fc61d8b860f45ca18f0d9196e1c3d61/data/master/master.csv",
+        "row_count": 89320,
+        "sha256": "7ce78577549d76fc5b4e1048f8209457550264db9dff8f13852797b7c6ecb867"
+      },
+      {
+        "commit": "97e0bed0877366fcadfe207ddf48c2411e3a9fb7",
+        "committed_at": "2026-10-21T17:51:36Z",
+        "git_blob": "393ddfde9260d3680a309e7133672980aeb5486b",
+        "path": "data/master/master.csv",
+        "repository_url": "https://github.com/kenmizunokuro/sanctions-watch/blob/97e0bed0877366fcadfe207ddf48c2411e3a9fb7/data/master/master.csv",
+        "row_count": 89341,
+        "sha256": "70fa1fa08bc87ccbef1896eb8908dfbfa1d730944f2a0ff6d208ff1445138a5d"
+      }
+    ],
+    "source_audit_inputs": {
+      "data/kubun_map.json": "007da2fec65dd0357f5d3f91b2b68927f8dcf1c97b95253cc1c0c51a1d55e3f6",
+      "data/master/master.csv": "70fa1fa08bc87ccbef1896eb8908dfbfa1d730944f2a0ff6d208ff1445138a5d",
+      "data/master/ofac_alias_history.csv": "d57da2573d90010f3f6f962d6b07963511f320a2f6e67c09000c4613f294138a",
+      "data/state.json": "b354595930d020bdcbea1bc4cb77c4703229acea1bfb66facc07a0f3f4fd907a"
+    },
+    "triage_path": "docs/evidence/source-integrity-20261023-triage.json.gz",
+    "triage_sha256": "624bb52d78479d4401e4552593e3ab78bcaad73db80c4bc28d5c98ba58d6338b"
+  },
+  "summary": {
+    "business_data_modified": false,
+    "counts": {
+      "CATEGORY_LABEL_UNRESOLVED": {
+        "additional_archived_body_candidates": 4,
+        "archived_name_and_index_party": 4,
+        "archived_name_candidates": 4,
+        "findings": 8,
+        "initial_name_candidates": 8,
+        "initial_name_with_ofac_claim": 1
+      },
+      "CURRENT_FORMAT_VARIANT": {
+        "additional_archived_body_candidates": 17,
+        "archived_name_and_index_party": 17,
+        "archived_name_candidates": 17,
+        "findings": 41,
+        "initial_name_candidates": 24,
+        "initial_name_with_ofac_claim": 24
+      },
+      "CURRENT_WEAK_ONLY": {
+        "additional_archived_body_candidates": 2878,
+        "archived_name_and_index_party": 2878,
+        "archived_name_candidates": 2878,
+        "findings": 2878,
+        "initial_name_candidates": 2878,
+        "initial_name_with_ofac_claim": 2878
+      },
+      "HISTORICAL_ALIAS_CONFIRMED": {
+        "additional_archived_body_candidates": 17,
+        "archived_name_and_index_party": 17,
+        "archived_name_candidates": 17,
+        "findings": 17,
+        "initial_name_candidates": 17,
+        "initial_name_with_ofac_claim": 17
+      },
+      "HISTORICAL_PARTY_CONFIRMED": {
+        "additional_archived_body_candidates": 203,
+        "archived_name_and_index_party": 203,
+        "archived_name_candidates": 203,
+        "findings": 203,
+        "initial_name_candidates": 193,
+        "initial_name_with_ofac_claim": 193
+      },
+      "HISTORY_WITHOUT_ORIGINAL": {
+        "additional_archived_body_candidates": 149,
+        "archived_name_and_index_party": 149,
+        "archived_name_candidates": 149,
+        "findings": 149,
+        "initial_name_candidates": 17,
+        "initial_name_with_ofac_claim": 17
+      },
+      "KEY_COLLISION_REVIEW": {
+        "additional_archived_body_candidates": 2,
+        "archived_name_and_index_party": 0,
+        "archived_name_candidates": 2,
+        "findings": 2,
+        "initial_name_candidates": 2,
+        "initial_name_with_ofac_claim": 2
+      },
+      "NON_NAME_FIELD_ONLY": {
+        "additional_archived_body_candidates": 0,
+        "archived_name_and_index_party": 0,
+        "archived_name_candidates": 0,
+        "findings": 33,
+        "initial_name_candidates": 33,
+        "initial_name_with_ofac_claim": 33
+      },
+      "NOTICE_MENTION_ONLY": {
+        "additional_archived_body_candidates": 0,
+        "archived_name_and_index_party": 0,
+        "archived_name_candidates": 0,
+        "findings": 840,
+        "initial_name_candidates": 840,
+        "initial_name_with_ofac_claim": 840
+      },
+      "ORIGIN_UNRESOLVED": {
+        "additional_archived_body_candidates": 4,
+        "archived_name_and_index_party": 0,
+        "archived_name_candidates": 4,
+        "findings": 5743,
+        "initial_name_candidates": 5743,
+        "initial_name_with_ofac_claim": 5743
+      }
+    },
+    "distinct_body_count": 72,
+    "finding_count": 9914,
+    "master_snapshot_count": 36,
+    "parse_errors": 0,
+    "publication_audit_status": "BLOCKED",
+    "publication_audit_status_basis": "Pinned previous audit, not a new live audit",
+    "raw_occurrence_count": 110,
+    "retention_approvals_created": 0
+  }
+}
