@@ -39,6 +39,15 @@ runs:
           python -m src.watch --sources ${{ inputs.sources }}
         fi
 
+    - name: 一次ソース完全性監査（公開前必須）
+      id: integrity
+      if: always() && steps.watch.outcome != 'skipped'
+      shell: bash
+      env:
+        UPSTREAM_OUTCOME: ${{ steps.watch.outcome }}
+        AUDIT_SOURCES: ${{ inputs.sources }}
+      run: bash .github/scripts/integrity-gate.sh "$AUDIT_SOURCES" "$UPSTREAM_OUTCOME"
+
     - name: 財務省 原本レコード差分
       id: mof_record_diff
       if: contains(inputs.sources, 'mof') || inputs.sources == 'all'
@@ -50,35 +59,10 @@ runs:
       shell: bash
       run: python -m src.mof_re_review
 
-    - name: Excel を再生成
-      # マスターに実変更があった回だけ作り直す。毎時バイナリをコミットすると
-      # リポジトリが膨らむため。
-      if: steps.watch.outputs.has_diff == 'true'
-      shell: bash
-      run: python -m src.export_excel
-
-    - name: 社内取込用差分 Excel を生成
-      id: internal_diff
-      if: steps.watch.outputs.has_diff == 'true'
-      shell: bash
-      run: |
-        TS="$(TZ=Asia/Tokyo date +'%Y%m%d_%H%M%S')"
-        OUT="dist/internal_import_${TS}.xlsx"
-
-        python -m src.export_diff_excel --out "$OUT"
-
-        if [ -f "$OUT" ]; then
-          cp "$OUT" dist/internal_import_latest.xlsx
-          echo "has_actionable=true" >> "$GITHUB_OUTPUT"
-          echo "path=$OUT" >> "$GITHUB_OUTPUT"
-          echo "artifact_name=internal-import-${TS}" >> "$GITHUB_OUTPUT"
-        else
-          echo "has_actionable=false" >> "$GITHUB_OUTPUT"
-        fi
-
     - name: コミット
       shell: bash
       env:
+        AUDIT_SOURCES: ${{ inputs.sources }}
         HAS_DIFF: ${{ steps.watch.outputs.has_diff }}
         MOF_SOURCE_CHANGED: ${{ steps.mof_record_diff.outputs.source_changed }}
         MOF_MATERIAL_CHANGED: ${{ steps.mof_record_diff.outputs.material_changed }}
@@ -107,10 +91,41 @@ runs:
         fi
         git commit -m "$MSG"
         for i in 1 2 3; do
-          git pull --rebase --autostash && git push && exit 0
+          if git pull --rebase --autostash; then
+            # Rebase can change the candidate. Re-audit these exact bytes before
+            # every push; never push an unexamined conflict resolution.
+            bash .github/scripts/integrity-gate.sh "$AUDIT_SOURCES" success || exit 1
+            git push && exit 0
+          fi
           sleep $((i * 5))
         done
         exit 1
+
+    - name: Excel を再生成
+      # push前のrebase・再監査後のmasterから生成する。
+      # 古い候補から生成したExcelを配布しない。
+      if: steps.watch.outputs.has_diff == 'true'
+      shell: bash
+      run: python -m src.export_excel
+
+    - name: 社内取込用差分 Excel を生成
+      id: internal_diff
+      if: steps.watch.outputs.has_diff == 'true'
+      shell: bash
+      run: |
+        TS="$(TZ=Asia/Tokyo date +'%Y%m%d_%H%M%S')"
+        OUT="dist/internal_import_${TS}.xlsx"
+
+        python -m src.export_diff_excel --out "$OUT"
+
+        if [ -f "$OUT" ]; then
+          cp "$OUT" dist/internal_import_latest.xlsx
+          echo "has_actionable=true" >> "$GITHUB_OUTPUT"
+          echo "path=$OUT" >> "$GITHUB_OUTPUT"
+          echo "artifact_name=internal-import-${TS}" >> "$GITHUB_OUTPUT"
+        else
+          echo "has_actionable=false" >> "$GITHUB_OUTPUT"
+        fi
 
     - name: GitHub Release の最新版を更新
       if: steps.watch.outputs.has_diff == 'true'
@@ -248,6 +263,15 @@ runs:
       if: failure() && (contains(inputs.sources, 'ofac') || inputs.sources == 'all')
       shell: bash
       run: python -m src.persist_monitor_failure
+
+    - name: 完全性監査証跡を保存（成功・失敗共通）
+      if: always() && steps.watch.outcome != 'skipped'
+      uses: actions/upload-artifact@v4
+      with:
+        name: source-integrity-${{ github.run_id }}-${{ github.run_attempt }}
+        path: data/integrity_audit/
+        retention-days: 90
+        if-no-files-found: error
 
     - name: 失敗を通知
       id: notify_failure

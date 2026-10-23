@@ -1,0 +1,292 @@
+{
+  "counts": {
+    "CATEGORY_LABEL_UNRESOLVED": 8,
+    "EXTRA_REGISTRATION": 7027,
+    "MISGENERATED": 1,
+    "WEAK_ALIAS_ACTIVE": 2878
+  },
+  "documents": [
+    {
+      "bytes": 3327198,
+      "name_count": 15693,
+      "raw_path": "data/raw/mof/20261020T120119Z__shisantouketsu20261021.csv.gz",
+      "role": "mof",
+      "sha256": "f8e1038419ab0146cbce89ae9fa7b5f9d298548c8bca4953f970c01f87b3f7bc",
+      "source": "mof",
+      "source_url": "https://www.mof.go.jp/policy/international_policy/gaitame_kawase/gaitame/economic_sanctions/shisantouketsu20261021.csv"
+    },
+    {
+      "bytes": 5744136,
+      "name_count": 19471,
+      "raw_path": "data/raw/ofac_sdn/20261021T175055Z__sdn.csv.gz",
+      "role": "primary",
+      "sha256": "96dade5a1cde8c9746937b4859ad75d8f2a34eed1a4046cc1f2240a830f70bda",
+      "source": "ofac_sdn",
+      "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/SDN.CSV"
+    },
+    {
+      "bytes": 1063745,
+      "name_count": 20192,
+      "raw_path": "data/raw/ofac_sdn/20261021T175055Z__alt.csv.gz",
+      "role": "alias",
+      "sha256": "e489fe41709a1d38693c16be8448d55a05cd4b39c9c2ffa98fbcc76bb5ec8050",
+      "source": "ofac_sdn",
+      "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/ALT.CSV"
+    },
+    {
+      "bytes": 127668232,
+      "name_count": 50081,
+      "raw_path": "data/raw/ofac_sdn_advanced/20261021T175055Z__sdn_advanced.xml.gz",
+      "role": "advanced",
+      "sha256": "0d805bf58997908c8b5ba3233bc9b2b6d59bb04ea7881cfdc3c4c47d90d36e27",
+      "source": "ofac_sdn",
+      "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML"
+    },
+    {
+      "bytes": 268508,
+      "name_count": 486,
+      "raw_path": "data/raw/ofac_cons/20261019T145058Z__cons_prim.csv.gz",
+      "role": "primary",
+      "sha256": "48068ff381b20ba05db297e5744b790e69e9921c738ce88efcaed7e0c3d55033",
+      "source": "ofac_cons",
+      "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/CONS_PRIM.CSV"
+    },
+    {
+      "bytes": 69622,
+      "name_count": 1115,
+      "raw_path": "data/raw/ofac_cons/20261019T145058Z__cons_alt.csv.gz",
+      "role": "alias",
+      "sha256": "106ba0e33579c5d20693e414ad66a9145329f1db012a18c3bdc8f84491a32b81",
+      "source": "ofac_cons",
+      "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/CONS_ALT.CSV"
+    },
+    {
+      "bytes": 4580537,
+      "name_count": 1798,
+      "raw_path": "data/raw/ofac_cons_advanced/20261019T145058Z__cons_advanced.xml.gz",
+      "role": "advanced",
+      "sha256": "dc3f61dce650a4661ff69d6c1847f0d5a90f2fa63951267af68fcfacdb6d8a75",
+      "source": "ofac_cons",
+      "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/CONS_ADVANCED.XML"
+    }
+  ],
+  "inputs": {
+    "data/kubun_map.json": "007da2fec65dd0357f5d3f91b2b68927f8dcf1c97b95253cc1c0c51a1d55e3f6",
+    "data/master/master.csv": "70fa1fa08bc87ccbef1896eb8908dfbfa1d730944f2a0ff6d208ff1445138a5d",
+    "data/master/ofac_alias_history.csv": "d57da2573d90010f3f6f962d6b07963511f320a2f6e67c09000c4613f294138a",
+    "data/state.json": "b354595930d020bdcbea1bc4cb77c4703229acea1bfb66facc07a0f3f4fd907a"
+  },
+  "limitations": [
+    "match_key normalization is shared with master; this is not independent proof of matching quality.",
+    "MOF master has no persisted Party ID: ID links are reconstructed from official number/name/category, not independently stored master IDs.",
+    "Only explicit MOF name fields and bounded original-script labels are interpreted; implicit free-text aliases require review.",
+    "Archived hash-pinned snapshot audit, not proof that a remote website is currently unchanged."
+  ],
+  "master_row_count": 89341,
+  "official_name_count": 108836,
+  "publication_allowed": false,
+  "regression": [
+    {
+      "master_key": "sebastienuwimbabazi",
+      "master_rows": [
+        {
+          "categories": "OFAC:SDN;財務省:コンゴ民主共和国(個人)",
+          "display_name": "UWIMBABAZI, Sebastien",
+          "first_seen_ms": "1745545941000",
+          "invalid_reason": "",
+          "last_updated_ms": "1791467929509",
+          "match_key": "sebastienuwimbabazi",
+          "remark": "制裁リスト（財務省：コンゴ民主共和国(個人)／OFAC：SDN）",
+          "review_flag": "",
+          "risk_level": "高",
+          "risk_type": "制裁リスト",
+          "sources": "OFAC;財務省",
+          "status": "有効",
+          "variants": "[\"Sebastien UWIMBABAZI\", \"UWIMBABAZI, Sebastien\"]"
+        }
+      ],
+      "name": "SEBASTIEN UWIMBABAZI",
+      "primary": true,
+      "source_hash": "f8e1038419ab0146cbce89ae9fa7b5f9d298548c8bca4953f970c01f87b3f7bc",
+      "source_id": "009-000046",
+      "un_id": "CDi.046"
+    },
+    {
+      "master_key": "muhammedlumisa",
+      "master_rows": [
+        {
+          "categories": "OFAC:SDN;財務省:コンゴ民主共和国(個人)",
+          "display_name": "LUMISA, Muhammed",
+          "first_seen_ms": "1745545941000",
+          "invalid_reason": "",
+          "last_updated_ms": "1791467929509",
+          "match_key": "muhammedlumisa",
+          "remark": "制裁リスト（財務省：コンゴ民主共和国(個人)／OFAC：SDN）",
+          "review_flag": "",
+          "risk_level": "高",
+          "risk_type": "制裁リスト",
+          "sources": "OFAC;財務省",
+          "status": "有効",
+          "variants": "[\"LUMISA, Muhammed\", \"Muhammed Lumisa\"]"
+        }
+      ],
+      "name": "MUHAMMED LUMISA",
+      "primary": true,
+      "source_hash": "f8e1038419ab0146cbce89ae9fa7b5f9d298548c8bca4953f970c01f87b3f7bc",
+      "source_id": "009-000047",
+      "un_id": "CDi.047"
+    },
+    {
+      "master_key": "muhamadlumisa",
+      "master_rows": [
+        {
+          "categories": "OFAC:SDN;財務省:コンゴ民主共和国(個人)",
+          "display_name": "Muhamad Lumisa",
+          "first_seen_ms": "1748573587000",
+          "invalid_reason": "",
+          "last_updated_ms": "1791467929509",
+          "match_key": "muhamadlumisa",
+          "remark": "制裁リスト（財務省：コンゴ民主共和国(個人)／OFAC：SDN）",
+          "review_flag": "",
+          "risk_level": "高",
+          "risk_type": "制裁リスト",
+          "sources": "OFAC;財務省",
+          "status": "有効",
+          "variants": "[\"Muhamad Lumisa\"]"
+        }
+      ],
+      "name": "LUMISA, MUHAMAD",
+      "primary": false,
+      "source_hash": "f8e1038419ab0146cbce89ae9fa7b5f9d298548c8bca4953f970c01f87b3f7bc",
+      "source_id": "009-000047",
+      "un_id": "CDi.047"
+    },
+    {
+      "master_key": "charlessematama",
+      "master_rows": [
+        {
+          "categories": "OFAC:SDN;財務省:コンゴ民主共和国(個人)",
+          "display_name": "SEMATAMA, Charles",
+          "first_seen_ms": "1745545941000",
+          "invalid_reason": "",
+          "last_updated_ms": "1791467929509",
+          "match_key": "charlessematama",
+          "remark": "制裁リスト（財務省：コンゴ民主共和国(個人)／OFAC：SDN）",
+          "review_flag": "",
+          "risk_level": "高",
+          "risk_type": "制裁リスト",
+          "sources": "OFAC;財務省",
+          "status": "有効",
+          "variants": "[\"Charles Sematama\", \"SEMATAMA, Charles\"]"
+        }
+      ],
+      "name": "CHARLES SEMATAMA",
+      "primary": true,
+      "source_hash": "f8e1038419ab0146cbce89ae9fa7b5f9d298548c8bca4953f970c01f87b3f7bc",
+      "source_id": "009-000048",
+      "un_id": "CDi.048"
+    }
+  ],
+  "schema_version": 1,
+  "scope": [
+    "mof",
+    "ofac"
+  ],
+  "status": "BLOCKED",
+  "triage_summary": {
+    "approved_count": 0,
+    "counts": {
+      "CATEGORY_LABEL_UNRESOLVED": 8,
+      "CURRENT_FORMAT_VARIANT": 41,
+      "CURRENT_WEAK_ONLY": 2878,
+      "HISTORICAL_ALIAS_CONFIRMED": 17,
+      "HISTORICAL_PARTY_CONFIRMED": 203,
+      "HISTORY_WITHOUT_ORIGINAL": 149,
+      "KEY_COLLISION_REVIEW": 2,
+      "NON_NAME_FIELD_ONLY": 33,
+      "NOTICE_MENTION_ONLY": 840,
+      "ORIGIN_UNRESOLVED": 5743
+    },
+    "report_sha256": "19fb55daed3b23d6b925da277dfe15635b7e62f4fa75a9dbe3bd65abacb9919e",
+    "retention_candidates": 3139
+  },
+  "triage_counts": {
+    "CATEGORY_LABEL_UNRESOLVED": 8,
+    "CURRENT_FORMAT_VARIANT": 41,
+    "CURRENT_WEAK_ONLY": 2878,
+    "HISTORICAL_ALIAS_CONFIRMED": 17,
+    "HISTORICAL_PARTY_CONFIRMED": 203,
+    "HISTORY_WITHOUT_ORIGINAL": 149,
+    "KEY_COLLISION_REVIEW": 2,
+    "NON_NAME_FIELD_ONLY": 33,
+    "NOTICE_MENTION_ONLY": 840,
+    "ORIGIN_UNRESOLVED": 5743
+  },
+  "retention_candidates": 3139,
+  "approved_count": 0,
+  "blocking_finding_count": 9906,
+  "reviewed_groups": [
+    {
+      "group_id": "f397d13c9f5d4edb49cba18b1a7e15123fe60c791ae75eff5632dfa22ac57ea5",
+      "classification": "CURRENT_FORMAT_VARIANT",
+      "count": 41,
+      "decision": "PENDING",
+      "approved": false,
+      "examples": [
+        "ARELLANO FELIX Enedina",
+        "ARELLANO FELIX Francisco Javier",
+        "BARRAGAN BALDERAS Gilberto",
+        "CANO FLORES Aurelio",
+        "CASARRUBIA POSADA Elkin"
+      ]
+    },
+    {
+      "group_id": "eff1609edd23f5a0808ef5417f4b73fa1bcfa732df21551d8c83c2663530eb82",
+      "classification": "CURRENT_WEAK_ONLY",
+      "count": 2878,
+      "decision": "PENDING",
+      "approved": false,
+      "examples": [
+        "#66 Division",
+        "108 Institute",
+        "148SH LTD",
+        "179 SRZ AO",
+        "223rd Flight Detachment"
+      ]
+    },
+    {
+      "group_id": "346df941c622c20e96258498961800f6f52bed0822a5e50d1f8ba3cbc4a8bf05",
+      "classification": "HISTORICAL_ALIAS_CONFIRMED",
+      "count": 17,
+      "decision": "PENDING",
+      "approved": false,
+      "examples": [
+        "Beatriz Raquel LOPEZ PORTILLO",
+        "ARELLANO FELIX, Eduardo Ramon",
+        "Efrain SANCHEZ CASTILLO",
+        "ELITE",
+        "EVER SHINING LIMITED"
+      ]
+    },
+    {
+      "group_id": "24c3d74867435255688268c41b31c8d47508034cc48c0c6a689e0e25023a40d0",
+      "classification": "HISTORICAL_PARTY_CONFIRMED",
+      "count": 203,
+      "decision": "PENDING",
+      "approved": false,
+      "examples": [
+        "ABBAS, Abdul Hussein",
+        "ABDULMALIK, Abdul Hameed",
+        "ABU SHANAB METALS ESTABLISHMENT",
+        "ACCIRENT S.A.",
+        "AL-AMIRI, Adnan Talib Hassim"
+      ]
+    }
+  ],
+  "archive_document_count": 43,
+  "archive_errors": [],
+  "triage_sha256": "19fb55daed3b23d6b925da277dfe15635b7e62f4fa75a9dbe3bd65abacb9919e",
+  "triage_gzip_sha256": "624bb52d78479d4401e4552593e3ab78bcaad73db80c4bc28d5c98ba58d6338b",
+  "original_master_and_apps_script_changed": false,
+  "correction": "The prior 8 SOURCE_MISMATCH were auditor false positives: blank MOF category labels must not create a required 財務省: category."
+}

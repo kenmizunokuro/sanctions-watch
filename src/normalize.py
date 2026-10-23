@@ -39,7 +39,7 @@ def match_key(name: str) -> str:
     空白を全除去して casefold する.
     実データ検証では 83,733 件 -> 74,792 件に統合され, 誤統合は 0 件だった.
     """
-    s = swap_surname_first(clean_name(name))
+    s = swap_surname_first(canonical_display_name(name))
     s = unicodedata.normalize("NFKC", s).translate(_PUNCT)
     s = _WS.sub("", s)
     # 囲みの引用符は実体の違いを表さないので落とす。

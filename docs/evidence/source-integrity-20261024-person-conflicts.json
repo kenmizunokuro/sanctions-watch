@@ -1,0 +1,431 @@
+{
+  "approved_count": 0,
+  "items": [
+    {
+      "approved": false,
+      "checked_source": "OFAC",
+      "classification": "WEAK_EVIDENCE_CONFLICT",
+      "display_name": "Abu Faris",
+      "evidence": [
+        {
+          "category": "SDN",
+          "current": false,
+          "field": "name",
+          "locator": "Party:23335/DocumentedName:30317/Script:215",
+          "name": "Abu Faris",
+          "primary": false,
+          "raw_path": "docs/evidence/integrity-archives/ofac_sdn_advanced/20260904T010536Z__sdn_advanced.xml.gz",
+          "source_hash": "657e2ecd8ed722d5640e4076058a24982c6e722aac2a631eea3da1e052861f93",
+          "source_id": "23335",
+          "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+          "transform": "exact",
+          "weak": true
+        },
+        {
+          "category": "SDN",
+          "current": false,
+          "field": "name",
+          "locator": "Party:43817/DocumentedName:65382/Script:215",
+          "name": "Abu Faris",
+          "primary": false,
+          "raw_path": "docs/evidence/integrity-archives/ofac_sdn_advanced/20260904T010536Z__sdn_advanced.xml.gz",
+          "source_hash": "657e2ecd8ed722d5640e4076058a24982c6e722aac2a631eea3da1e052861f93",
+          "source_id": "43817",
+          "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+          "transform": "exact",
+          "weak": true
+        },
+        {
+          "category": "SDN",
+          "current": true,
+          "field": "name",
+          "locator": "Party:23335/DocumentedName:30317/Script:215",
+          "name": "Abu Faris",
+          "primary": false,
+          "raw_path": "data/raw/ofac_sdn_advanced/20261021T175055Z__sdn_advanced.xml.gz",
+          "source_hash": "0d805bf58997908c8b5ba3233bc9b2b6d59bb04ea7881cfdc3c4c47d90d36e27",
+          "source_id": "23335",
+          "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+          "transform": "exact",
+          "weak": true
+        },
+        {
+          "category": "SDN",
+          "current": true,
+          "field": "name",
+          "locator": "Party:43817/DocumentedName:65382/Script:215",
+          "name": "Abu Faris",
+          "primary": false,
+          "raw_path": "data/raw/ofac_sdn_advanced/20261021T175055Z__sdn_advanced.xml.gz",
+          "source_hash": "0d805bf58997908c8b5ba3233bc9b2b6d59bb04ea7881cfdc3c4c47d90d36e27",
+          "source_id": "43817",
+          "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+          "transform": "exact",
+          "weak": true
+        },
+        {
+          "category": "SDN",
+          "current": true,
+          "field": "person_name_parts",
+          "locator": "Party:13367/DocumentedName:8125/Script:215/typed-order",
+          "name": "Abu FARIS",
+          "name_parts": [
+            {
+              "group_id": "12313",
+              "type": "First Name",
+              "type_id": "1521",
+              "value": "Abu"
+            },
+            {
+              "group_id": "12312",
+              "type": "Last Name",
+              "type_id": "1520",
+              "value": "FARIS"
+            }
+          ],
+          "primary": false,
+          "raw_path": "data/raw/ofac_sdn_advanced/20261021T175055Z__sdn_advanced.xml.gz",
+          "script_id": "215",
+          "source": "OFAC",
+          "source_hash": "0d805bf58997908c8b5ba3233bc9b2b6d59bb04ea7881cfdc3c4c47d90d36e27",
+          "source_id": "13367",
+          "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+          "transform": "given_middle_family",
+          "weak": false
+        }
+      ],
+      "evidence_sha256": "1ab7777e09f1d90aee6b566400c9dd1b1bba624aa8ccdc95c084339d72eb1947",
+      "finding": {
+        "blocking": true,
+        "detail": "Weak-only名称が通常masterで有効",
+        "kind": "WEAK_ALIAS_ACTIVE",
+        "master": {
+          "categories": "",
+          "display_name": "Abu Faris",
+          "first_seen_ms": "1748573582000",
+          "invalid_reason": "",
+          "last_updated_ms": "1748573582000",
+          "match_key": "abufaris",
+          "remark": "制裁リスト（OFAC）",
+          "review_flag": "",
+          "risk_level": "高",
+          "risk_type": "制裁リスト",
+          "sources": "OFAC",
+          "status": "有効",
+          "variants": "[\"Abu Faris\"]"
+        },
+        "official": {
+          "category": "SDN",
+          "format": "advanced_xml_v3",
+          "locator": "Party:23335/DocumentedName:30317/Script:215",
+          "name": "Abu Faris",
+          "primary": false,
+          "raw_path": "data/raw/ofac_sdn_advanced/20261021T175055Z__sdn_advanced.xml.gz",
+          "raw_record": {
+            "parts": [
+              "Abu Faris"
+            ],
+            "primary": false,
+            "weak": true
+          },
+          "script_id": "215",
+          "source": "OFAC",
+          "source_hash": "0d805bf58997908c8b5ba3233bc9b2b6d59bb04ea7881cfdc3c4c47d90d36e27",
+          "source_id": "23335",
+          "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+          "weak": true
+        }
+      },
+      "index_links": [
+        {
+          "alias_current": "1",
+          "first_seen_ms": "1788483946814",
+          "formats": "advanced_xml_v3",
+          "last_changed_ms": "1788483946814",
+          "list": "SDN",
+          "low_quality": "1",
+          "match_key": "abufaris",
+          "name": "Abu Faris",
+          "party_current": "1",
+          "party_id": "23335",
+          "primary": "0"
+        },
+        {
+          "alias_current": "1",
+          "first_seen_ms": "1788483946814",
+          "formats": "advanced_xml_v3",
+          "last_changed_ms": "1788483946814",
+          "list": "SDN",
+          "low_quality": "1",
+          "match_key": "abufaris",
+          "name": "Abu Faris",
+          "party_current": "1",
+          "party_id": "43817",
+          "primary": "0"
+        }
+      ],
+      "kind": "WEAK_ALIAS_ACTIVE",
+      "master_key": "abufaris",
+      "master_sha256": "d6bd1a5f9b2b0c0f863c8205a27af4db717cbd05373c277359abdcfd78cb08d4",
+      "retention_eligible": false,
+      "review_id": "f16b312b7ce024dfc8deca1b1a35508803007aaa0d23ff447b24fa3729edb149"
+    },
+    {
+      "approved": false,
+      "checked_source": "OFAC",
+      "classification": "WEAK_EVIDENCE_CONFLICT",
+      "display_name": "ABU KHALID",
+      "evidence": [
+        {
+          "category": "SDN",
+          "current": false,
+          "field": "name",
+          "locator": "Party:9595/DocumentedName:10059/Script:215",
+          "name": "ABU KHALID",
+          "primary": false,
+          "raw_path": "docs/evidence/integrity-archives/ofac_sdn_advanced/20260904T010536Z__sdn_advanced.xml.gz",
+          "source_hash": "657e2ecd8ed722d5640e4076058a24982c6e722aac2a631eea3da1e052861f93",
+          "source_id": "9595",
+          "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+          "transform": "exact",
+          "weak": true
+        },
+        {
+          "category": "SDN",
+          "current": true,
+          "field": "name",
+          "locator": "Party:9595/DocumentedName:10059/Script:215",
+          "name": "ABU KHALID",
+          "primary": false,
+          "raw_path": "data/raw/ofac_sdn_advanced/20261021T175055Z__sdn_advanced.xml.gz",
+          "source_hash": "0d805bf58997908c8b5ba3233bc9b2b6d59bb04ea7881cfdc3c4c47d90d36e27",
+          "source_id": "9595",
+          "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+          "transform": "exact",
+          "weak": true
+        },
+        {
+          "category": "SDN",
+          "current": true,
+          "field": "person_name_parts",
+          "locator": "Party:2681/DocumentedName:13226/Script:215/typed-order",
+          "name": "Abu KHALID",
+          "name_parts": [
+            {
+              "group_id": "19460",
+              "type": "First Name",
+              "type_id": "1521",
+              "value": "Abu"
+            },
+            {
+              "group_id": "19459",
+              "type": "Last Name",
+              "type_id": "1520",
+              "value": "KHALID"
+            }
+          ],
+          "primary": false,
+          "raw_path": "data/raw/ofac_sdn_advanced/20261021T175055Z__sdn_advanced.xml.gz",
+          "script_id": "215",
+          "source": "OFAC",
+          "source_hash": "0d805bf58997908c8b5ba3233bc9b2b6d59bb04ea7881cfdc3c4c47d90d36e27",
+          "source_id": "2681",
+          "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+          "transform": "given_middle_family",
+          "weak": false
+        }
+      ],
+      "evidence_sha256": "809a37794f3c3ddb296723fede91f4ee11bca74bd755ce0cbc261ee09f7ae7bb",
+      "finding": {
+        "blocking": true,
+        "detail": "Weak-only名称が通常masterで有効",
+        "kind": "WEAK_ALIAS_ACTIVE",
+        "master": {
+          "categories": "",
+          "display_name": "ABU KHALID",
+          "first_seen_ms": "1748573582000",
+          "invalid_reason": "",
+          "last_updated_ms": "1748573582000",
+          "match_key": "abukhalid",
+          "remark": "制裁リスト（OFAC）",
+          "review_flag": "",
+          "risk_level": "高",
+          "risk_type": "制裁リスト",
+          "sources": "OFAC",
+          "status": "有効",
+          "variants": "[\"ABU KHALID\"]"
+        },
+        "official": {
+          "category": "SDN",
+          "format": "advanced_xml_v3",
+          "locator": "Party:9595/DocumentedName:10059/Script:215",
+          "name": "ABU KHALID",
+          "primary": false,
+          "raw_path": "data/raw/ofac_sdn_advanced/20261021T175055Z__sdn_advanced.xml.gz",
+          "raw_record": {
+            "parts": [
+              "ABU KHALID"
+            ],
+            "primary": false,
+            "weak": true
+          },
+          "script_id": "215",
+          "source": "OFAC",
+          "source_hash": "0d805bf58997908c8b5ba3233bc9b2b6d59bb04ea7881cfdc3c4c47d90d36e27",
+          "source_id": "9595",
+          "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+          "weak": true
+        }
+      },
+      "index_links": [
+        {
+          "alias_current": "1",
+          "first_seen_ms": "1788483946814",
+          "formats": "advanced_xml_v3",
+          "last_changed_ms": "1788483946814",
+          "list": "SDN",
+          "low_quality": "1",
+          "match_key": "abukhalid",
+          "name": "ABU KHALID",
+          "party_current": "1",
+          "party_id": "9595",
+          "primary": "0"
+        }
+      ],
+      "kind": "WEAK_ALIAS_ACTIVE",
+      "master_key": "abukhalid",
+      "master_sha256": "08778402d8310ff726dfc53a28fa3f89d9944c0d65450ca83b5964787fecd314",
+      "retention_eligible": false,
+      "review_id": "dffa8c81fd51217c316983c71365065805975b4ac426202441c37d354ef6af7a"
+    },
+    {
+      "approved": false,
+      "checked_source": "OFAC",
+      "classification": "WEAK_EVIDENCE_CONFLICT",
+      "display_name": "ABU TAHIR",
+      "evidence": [
+        {
+          "category": "SDN",
+          "current": false,
+          "field": "name",
+          "locator": "Party:22267/DocumentedName:28536/Script:215",
+          "name": "ABU TAHIR",
+          "primary": false,
+          "raw_path": "docs/evidence/integrity-archives/ofac_sdn_advanced/20260904T010536Z__sdn_advanced.xml.gz",
+          "source_hash": "657e2ecd8ed722d5640e4076058a24982c6e722aac2a631eea3da1e052861f93",
+          "source_id": "22267",
+          "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+          "transform": "exact",
+          "weak": true
+        },
+        {
+          "category": "SDN",
+          "current": true,
+          "field": "name",
+          "locator": "Party:22267/DocumentedName:28536/Script:215",
+          "name": "ABU TAHIR",
+          "primary": false,
+          "raw_path": "data/raw/ofac_sdn_advanced/20261021T175055Z__sdn_advanced.xml.gz",
+          "source_hash": "0d805bf58997908c8b5ba3233bc9b2b6d59bb04ea7881cfdc3c4c47d90d36e27",
+          "source_id": "22267",
+          "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+          "transform": "exact",
+          "weak": true
+        },
+        {
+          "category": "SDN",
+          "current": true,
+          "field": "person_name_parts",
+          "locator": "Party:57424/DocumentedName:89362/Script:215/typed-order",
+          "name": "Abu Tahir",
+          "name_parts": [
+            {
+              "group_id": "148693",
+              "type": "First Name",
+              "type_id": "1521",
+              "value": "Abu"
+            },
+            {
+              "group_id": "148692",
+              "type": "Last Name",
+              "type_id": "1520",
+              "value": "Tahir"
+            }
+          ],
+          "primary": false,
+          "raw_path": "data/raw/ofac_sdn_advanced/20261021T175055Z__sdn_advanced.xml.gz",
+          "script_id": "215",
+          "source": "OFAC",
+          "source_hash": "0d805bf58997908c8b5ba3233bc9b2b6d59bb04ea7881cfdc3c4c47d90d36e27",
+          "source_id": "57424",
+          "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+          "transform": "given_middle_family",
+          "weak": false
+        }
+      ],
+      "evidence_sha256": "1c921c21b741fd5032c407a850951d122c15e6aae7a89d6be53a58a7a7e8b415",
+      "finding": {
+        "blocking": true,
+        "detail": "Weak-only名称が通常masterで有効",
+        "kind": "WEAK_ALIAS_ACTIVE",
+        "master": {
+          "categories": "",
+          "display_name": "ABU TAHIR",
+          "first_seen_ms": "1748573582000",
+          "invalid_reason": "",
+          "last_updated_ms": "1748573582000",
+          "match_key": "abutahir",
+          "remark": "制裁リスト（OFAC）",
+          "review_flag": "",
+          "risk_level": "高",
+          "risk_type": "制裁リスト",
+          "sources": "OFAC",
+          "status": "有効",
+          "variants": "[\"ABU TAHIR\"]"
+        },
+        "official": {
+          "category": "SDN",
+          "format": "advanced_xml_v3",
+          "locator": "Party:22267/DocumentedName:28536/Script:215",
+          "name": "ABU TAHIR",
+          "primary": false,
+          "raw_path": "data/raw/ofac_sdn_advanced/20261021T175055Z__sdn_advanced.xml.gz",
+          "raw_record": {
+            "parts": [
+              "ABU TAHIR"
+            ],
+            "primary": false,
+            "weak": true
+          },
+          "script_id": "215",
+          "source": "OFAC",
+          "source_hash": "0d805bf58997908c8b5ba3233bc9b2b6d59bb04ea7881cfdc3c4c47d90d36e27",
+          "source_id": "22267",
+          "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+          "weak": true
+        }
+      },
+      "index_links": [
+        {
+          "alias_current": "1",
+          "first_seen_ms": "1788483946814",
+          "formats": "advanced_xml_v3",
+          "last_changed_ms": "1788483946814",
+          "list": "SDN",
+          "low_quality": "1",
+          "match_key": "abutahir",
+          "name": "ABU TAHIR",
+          "party_current": "1",
+          "party_id": "22267",
+          "primary": "0"
+        }
+      ],
+      "kind": "WEAK_ALIAS_ACTIVE",
+      "master_key": "abutahir",
+      "master_sha256": "bc7f60de62c108022f0ff36fe5f7ede3751105d6878b72a348989bf2d23973b2",
+      "retention_eligible": false,
+      "review_id": "d66dde2c51cc3ade31ae0d12ea2b55d357ff5c0fe59d7331915af9f411f10514"
+    }
+  ],
+  "retention_eligible": false
+}

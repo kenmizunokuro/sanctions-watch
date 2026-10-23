@@ -1,0 +1,8 @@
+[
+  {
+    "source_url": "https://ofac.treasury.gov/recent-actions/20250630",
+    "source_hash": "8b3104be07a2851ce84ef36c05827aa10119cf2077174f659139b7dd31e9e5dd",
+    "raw_path": "docs/evidence/integrity-notices/ofac-20250630.html.gz",
+    "retrieval": "HTTPS 200 via existing src.fetch; supplemental historical notice, not current status evidence"
+  }
+]

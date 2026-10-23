@@ -1,0 +1,83 @@
+{
+  "approved_count": 0,
+  "archive_errors": [],
+  "audit_counts": {
+    "CATEGORY_LABEL_UNRESOLVED": 8,
+    "EXTRA_REGISTRATION": 7027,
+    "MISGENERATED": 1,
+    "WEAK_ALIAS_ACTIVE": 2878
+  },
+  "candidate_names_are_derived_representations_not_new_aliases": true,
+  "classification_transitions": {
+    "CURRENT_WEAK_ONLY -> WEAK_EVIDENCE_CONFLICT": 3,
+    "HISTORICAL_ALIAS_CONFIRMED -> CURRENT_PERSON_ORDER_VARIANT": 1,
+    "NOTICE_MENTION_ONLY -> CURRENT_PERSON_ORDER_VARIANT": 72,
+    "NOTICE_MENTION_ONLY -> CURRENT_WEAK_PERSON_ORDER_VARIANT": 8,
+    "ORIGIN_UNRESOLVED -> CURRENT_PERSON_ORDER_VARIANT": 3445,
+    "ORIGIN_UNRESOLVED -> CURRENT_WEAK_PERSON_ORDER_VARIANT": 661
+  },
+  "inputs": {
+    "data/kubun_map.json": "007da2fec65dd0357f5d3f91b2b68927f8dcf1c97b95253cc1c0c51a1d55e3f6",
+    "data/master/master.csv": "70fa1fa08bc87ccbef1896eb8908dfbfa1d730944f2a0ff6d208ff1445138a5d",
+    "data/master/ofac_alias_history.csv": "d57da2573d90010f3f6f962d6b07963511f320a2f6e67c09000c4613f294138a",
+    "data/state.json": "b354595930d020bdcbea1bc4cb77c4703229acea1bfb66facc07a0f3f4fd907a"
+  },
+  "master_row_count": 89341,
+  "newly_explained_origins": 4106,
+  "official_name_count": 108836,
+  "person_form_documents": [
+    {
+      "current": true,
+      "name_count": 1798,
+      "person_form_summary": {
+        "count": 309,
+        "skipped_counts": {
+          "not_declared_individual": 1488,
+          "unsupported_or_unresolved_part_type": 1
+        }
+      },
+      "raw_path": "data/raw/ofac_cons_advanced/20261019T145058Z__cons_advanced.xml.gz",
+      "role": "advanced",
+      "source": "ofac_cons",
+      "source_hash": "dc3f61dce650a4661ff69d6c1847f0d5a90f2fa63951267af68fcfacdb6d8a75",
+      "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/CONS_ADVANCED.XML",
+      "status": "parsed"
+    },
+    {
+      "current": true,
+      "name_count": 50081,
+      "person_form_summary": {
+        "count": 18510,
+        "skipped_counts": {
+          "incomplete_or_ambiguous_parts": 1148,
+          "not_declared_individual": 28840,
+          "unsupported_or_unresolved_part_type": 1583
+        }
+      },
+      "raw_path": "data/raw/ofac_sdn_advanced/20261021T175055Z__sdn_advanced.xml.gz",
+      "role": "advanced",
+      "source": "ofac_sdn",
+      "source_hash": "0d805bf58997908c8b5ba3233bc9b2b6d59bb04ea7881cfdc3c4c47d90d36e27",
+      "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+      "status": "parsed"
+    }
+  ],
+  "publication_allowed": false,
+  "retention_candidates": 7475,
+  "status": "BLOCKED",
+  "triage_counts": {
+    "ARCHIVED_NAME_WITHOUT_INDEX": 4,
+    "CATEGORY_LABEL_UNRESOLVED": 8,
+    "CURRENT_FORMAT_VARIANT": 41,
+    "CURRENT_PERSON_ORDER_VARIANT": 3518,
+    "CURRENT_WEAK_ONLY": 2875,
+    "CURRENT_WEAK_PERSON_ORDER_VARIANT": 669,
+    "HISTORICAL_ALIAS_CONFIRMED": 33,
+    "HISTORICAL_PARTY_CONFIRMED": 335,
+    "KEY_COLLISION_REVIEW": 2,
+    "NON_NAME_FIELD_ONLY": 33,
+    "NOTICE_MENTION_ONLY": 760,
+    "ORIGIN_UNRESOLVED": 1633,
+    "WEAK_EVIDENCE_CONFLICT": 3
+  }
+}
