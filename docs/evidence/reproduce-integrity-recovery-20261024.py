@@ -73,6 +73,11 @@ def run():
             shutil.copyfile(ROOT / relative, target)
         shutil.copytree(ROOT / 'docs/evidence/integrity-notices', sandbox / 'docs/evidence/integrity-notices')
         validate_baseline(sandbox, previous)
+        # Input hashes alone do not pin parser behavior. Refuse to attribute a
+        # later parser's changes to the three historical bodies being restored.
+        baseline = T.triage(sandbox, A.audit(sandbox, ['ofac', 'mof']))
+        if T.digest(baseline) != T.digest(previous):
+            raise ValueError('Parser semantic baseline differs; reproduce the historical experiment at commit 3d2ad868cd8ada8e5b3afe8d2cbb18f3feb78309.')
         for commit, path, expected in RECOVER:
             raw = subprocess.check_output(['git', '-C', str(ROOT), 'show', f'{commit}:{path}'])
             body = gzip.decompress(raw) if path.endswith('.gz') else raw

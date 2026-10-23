@@ -1,5 +1,7 @@
 # Phase 1 過去原本の回収と登録経路の追跡
 
+次の追補：[明示姓名フィールドの監査](source-integrity-person-forms.md)。以下は3原本回収時点の結果として保存する。現在の候補数・分類は次の追補を参照。
+
 2026年10月24日（日本時間）の追補。前回の原本未確認149件について、Git履歴に残っていた公式原本を回収し、名称と履歴のParty IDを確認できた。さらに由来未確認群の4名称に過去原本の名称根拠が見つかった。承認は作成せず、公開判定はBLOCKEDのまま。
 
 ## 調査で確定したこと
@@ -67,6 +69,8 @@
 - `docs/evidence/source-integrity-20261024-evidence-needed.csv.gz`：追加資料が必要な6,612件。対象名・出典主張・初回master参照URLを付け、元原本を確認するための一覧とした。
 
 完全なGit履歴を取得したcheckoutで、次のコマンドを実行する。調査用出力先は新しいディレクトリを指定する。既存証跡への上書きは拒否する。
+
+履歴回収実験を当時と同じ意味で再現する場合は、別の作業コピーでコミット `3d2ad868cd8ada8e5b3afe8d2cbb18f3feb78309` を使用する。後から追加した姓名型パーサの効果はこの実験に混ぜない。現在の回収スクリプトは意味的baselineの相違も拒否する。
 
 ```bash
 python docs/evidence/reproduce-integrity-history-20261024.py --output-dir /tmp/integrity-history-new

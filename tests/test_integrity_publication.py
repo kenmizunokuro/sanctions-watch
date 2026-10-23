@@ -13,7 +13,9 @@ REPO=Path(__file__).resolve().parent.parent
 
 
 class GateTests(unittest.TestCase):
-    setUp=fixtures.AuditIOTests.setUp
+    def setUp(self):
+        fixtures.AuditIOTests.setUp(self)
+        GateTests.install_ofac(self)
 
     def run_gate(self,outcome,sources="mof"):
         env=dict(os.environ,PYTHONPATH=str(REPO),PATH=str(Path(sys.executable).parent)+os.pathsep+os.environ['PATH'])
@@ -42,9 +44,12 @@ class GateTests(unittest.TestCase):
         import csv,hashlib
         from tests import test_integrity_readers as fixtures_r
         from tests import test_integrity_audit as fixtures_a
-        state={}
+        state_path=self.root/'data/state.json'
+        state=json.loads(state_path.read_text())
+        with self.mpath.open() as stream:
+            existing={r['match_key']:r for r in csv.DictReader(stream)}
         for key in ['ofac_sdn','ofac_cons']:
-            folder=self.root/'data/raw'/key;folder.mkdir(parents=True)
+            folder=self.root/'data/raw'/key;folder.mkdir(parents=True,exist_ok=True)
             item={}
             for role,body in [('prim',b'1,"Jane Doe",individual,SDGT,-0-,-0-,-0-,-0-,-0-,-0-,-0-,-0-\n'),
                               ('alt',b'1,99,aka,"Jane Other",-0-\n'),('advanced',fixtures_r.xml())]:
@@ -54,9 +59,13 @@ class GateTests(unittest.TestCase):
                 item[prefix+'url']='https://official.test/'+key+'/'+role
                 item['raw_'+role]=path.relative_to(self.root).as_posix()
             state[key]=item
-        (self.root/'data/state.json').write_text(json.dumps(state))
+        state_path.write_text(json.dumps(state))
         rows=[fixtures_a.master(),fixtures_a.master('Jane Other','janeother'),fixtures_a.master('ジェーン','ジェ-ン')]
-        for row in rows: row['categories']='OFAC:SDN;OFAC:Consolidated'
+        for row in rows:
+            prior=existing.pop(row['match_key'],{})
+            row['sources']=';'.join(sorted(set(filter(None,(prior.get('sources','')+';OFAC').split(';')))))
+            row['categories']=';'.join(sorted(set(filter(None,(prior.get('categories','')+';OFAC:SDN;OFAC:Consolidated').split(';')))))
+        rows.extend(existing.values())
         with self.mpath.open('w') as stream:
             writer=csv.DictWriter(stream,fieldnames=rows[0]);writer.writeheader();writer.writerows(rows)
         rows=[]
@@ -66,6 +75,28 @@ class GateTests(unittest.TestCase):
         if orphan: rows.append(dict(rows[0],list='SDNN'))
         with (self.root/'data/master/ofac_alias_history.csv').open('w') as stream:
             writer=csv.DictWriter(stream,fieldnames=rows[0]);writer.writeheader();writer.writerows(rows)
+
+    def test_mof_run_cannot_publish_an_ofac_alias_omission(self):
+        import csv
+        self.install_ofac()
+        with self.mpath.open() as stream:
+            reader=csv.DictReader(stream);header=reader.fieldnames;rows=list(reader)
+        with self.mpath.open('w') as stream:
+            writer=csv.DictWriter(stream,fieldnames=header);writer.writeheader()
+            writer.writerows(r for r in rows if r['display_name']!='Jane Other')
+        result=self.run_gate('success','mof')
+        self.assertNotEqual(result.returncode,0,result.stdout+result.stderr)
+        self.assertFalse((self.root/'published').exists())
+        self.assertIn('MISSING_ALIAS',result.stdout)
+
+    def test_ofac_run_cannot_publish_with_corrupt_mof_original(self):
+        self.install_ofac()
+        path=next((self.root/'data/raw/mof').glob('*.gz'))
+        path.write_bytes(gzip.compress(b'corrupted'))
+        result=self.run_gate('success','ofac')
+        self.assertNotEqual(result.returncode,0,result.stdout+result.stderr)
+        self.assertFalse((self.root/'published').exists())
+        self.assertIn('UNDETERMINED',result.stdout)
 
     def test_complete_ofac_gate_accepts_realistic_hash_pinned_fixture(self):
         self.install_ofac()

@@ -106,10 +106,11 @@ class RecoveryBaselineTests(unittest.TestCase):
         notice = self.root / 'docs/evidence/integrity-notices'
         notice.mkdir(parents=True)
         (notice / 'manifest.json').write_text('[]')
-        previous = dict(source_audit_inputs={}, items=[], counts={}, archive_manifest=[])
+        previous = dict(source_audit_inputs={}, items=[], counts={}, archive_manifest=[],
+                        archive_errors=[], approved_count=0, retention_candidates=0)
         triage = self.root / 'previous.json.gz'
         triage.write_bytes(gzip.compress(json.dumps(previous).encode(), mtime=0))
-        investigation = dict(items=[], archive_errors=[], archive_manifest=[], approved_count=0, counts={}, retention_candidates=0)
+        investigation = dict(previous)
         audit = dict(status='BLOCKED', publication_allowed=False, counts={}, inputs={})
         for patcher in (
             patch.object(self.module, 'ROOT', self.root),
@@ -128,6 +129,11 @@ class RecoveryBaselineTests(unittest.TestCase):
     def test_unexpected_historical_body_rejects_baseline(self):
         (self.root / 'data/raw/ofac_sdn/fourth__alt.csv').write_text('22504,1,a.k.a.,EXTRA NAME,-0-\n')
         with self.assertRaisesRegex(ValueError, 'baseline'):
+            self.module.run()
+
+    def test_changed_parser_semantics_reject_the_recovery_baseline(self):
+        self.module.T.triage.return_value = dict(self.module.T.triage.return_value, counts={'NEW_PARSER_CATEGORY': 1})
+        with self.assertRaisesRegex(ValueError, 'semantic baseline'):
             self.module.run()
 
 

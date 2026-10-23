@@ -33,7 +33,10 @@ def digest(value):
 def _facts(proof):
     # Bind the party/name relationship, not unrelated changes to the whole file.
     # The full byte hashes and locations remain separately in review evidence.
-    return {k:proof.get(k) for k in ('name','source_id','category','current','field','transform','weak','primary')}
+    facts={k:proof.get(k) for k in ('name','source_id','category','current','field','transform','weak','primary')}
+    if proof.get('field')=='person_name_parts':
+        facts['name_parts']=[{k:p.get(k) for k in ('type','value')} for p in proof.get('name_parts',[])]
+    return facts
 
 
 def classify(report, master_rows, index_rows, witnesses):
@@ -62,7 +65,10 @@ def classify(report, master_rows, index_rows, witnesses):
                           applied=False)
         elif kind=='WEAK_ALIAS_ACTIVE':
             current=[p for p in proofs if p['current'] and p['field']=='name' and p['transform']=='exact']
-            if current and all(p['weak'] for p in current):
+            typed=[p for p in proofs if p['current'] and p['field']=='person_name_parts']
+            if typed and any(not p['weak'] for p in typed):
+                classification='WEAK_EVIDENCE_CONFLICT'
+            elif current and all(p['weak'] for p in current):
                 classification='CURRENT_WEAK_ONLY';eligible=True
             else:classification='WEAK_EVIDENCE_MISSING'
         elif kind=='EXTRA_REGISTRATION' and checked_source!='OFAC':
@@ -70,6 +76,7 @@ def classify(report, master_rows, index_rows, witnesses):
         elif kind=='EXTRA_REGISTRATION':
             current_forms=[p for p in proofs if p['current'] and p['field']=='name' and p['transform']=='comma_removed']
             literal_current=[p for p in proofs if p['current'] and p['field']=='name' and p['transform']=='exact']
+            typed_current=[p for p in proofs if p['current'] and p['field']=='person_name_parts' and p['transform']=='given_middle_family']
             named_past=[p for p in proofs if not p['current'] and p['field']=='name' and p['transform']=='exact']
             historical={(p['category'],p['source_id']) for p in named_past}
             corroborated=[x for x in links if (x['list'],x['party_id']) in historical]
@@ -79,6 +86,9 @@ def classify(report, master_rows, index_rows, witnesses):
                 # A claimed EXTRA with current literal evidence is inconsistent:
                 # never turn that into a retention approval silently.
                 classification='AUDIT_EVIDENCE_CONFLICT'
+            elif typed_current:
+                classification='CURRENT_WEAK_PERSON_ORDER_VARIANT' if all(p['weak'] for p in typed_current) else 'CURRENT_PERSON_ORDER_VARIANT'
+                eligible=True
             elif current_forms:
                 classification='CURRENT_FORMAT_VARIANT';eligible=True
             elif corroborated:
@@ -91,7 +101,7 @@ def classify(report, master_rows, index_rows, witnesses):
                 classification='HISTORY_WITHOUT_ORIGINAL'
             elif named_past:
                 classification='ARCHIVED_NAME_WITHOUT_INDEX';eligible=True
-            elif any(p['field'] not in {'name','notice_text'} for p in proofs):
+            elif any(p['field'] not in {'name','notice_text','person_name_parts'} for p in proofs):
                 classification='NON_NAME_FIELD_ONLY'
             elif any(p['field']=='notice_text' for p in proofs):
                 classification='NOTICE_MENTION_ONLY'
@@ -215,6 +225,15 @@ def collect_witnesses(root, report, target_keys):
                 raise TriageError(f'監査時原本から変更された: {rel}')
             records=R.read_ofac_xml(body,label) if advanced else R.read_classic(body,label,alias=role=='alias')
             entry.update(status='parsed',name_count=len(records))
+            if advanced and rel in current:
+                from .integrity_person_forms import read_person_forms
+                structured=read_person_forms(body,label)
+                entry['person_form_summary']=dict(count=len(structured['forms']),skipped_counts=structured['skipped_counts'])
+                for record in structured['forms']:
+                    key=match_key(record['name'])
+                    if key in target_keys:
+                        proof=dict(record,**{k:entry[k] for k in ('raw_path','source_url','source_hash','current')})
+                        found[key][_key_json(_facts(proof))]=proof
             for record in records:
                 raw_name=record['name']
                 forms=[('exact',raw_name)]
