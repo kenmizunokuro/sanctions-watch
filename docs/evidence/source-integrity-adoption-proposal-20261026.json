@@ -1,0 +1,168 @@
+{
+  "actual_approval_count": 0,
+  "approved": false,
+  "current_master_sha256": "70fa1fa08bc87ccbef1896eb8908dfbfa1d730944f2a0ff6d208ff1445138a5d",
+  "expires_at": null,
+  "gate_relaxation_proposed": false,
+  "judgment_targets": {
+    "classification_counts": {
+      "NON_NAME_FIELD_ONLY": 33,
+      "NOTICE_ALIAS_FIELD_REVIEW": 603,
+      "NOTICE_MENTION_ONLY": 567,
+      "ORIGIN_UNRESOLVED": 1223,
+      "WEAK_EVIDENCE_CONFLICT": 3
+    },
+    "decision": "NO_WAIVER",
+    "evidence_needed_file": "docs/evidence/source-integrity-20261026-alias-fields-evidence-needed.csv.gz",
+    "total": 2429
+  },
+  "key_repair": {
+    "decision": "PENDING",
+    "merged_rows": 1,
+    "ofac_party_id": "22504",
+    "original_rows": 2,
+    "preserve": [
+      "both name variants",
+      "active status",
+      "source and category",
+      "earliest registration",
+      "latest update",
+      "immutable original rows and prior audit evidence"
+    ],
+    "scope_file": "docs/evidence/source-integrity-key-repair-proposal.json"
+  },
+  "limitations": [
+    "This is a proposal and cannot be read as an APPROVED_RETAIN ledger.",
+    "Approval of 7475 retention candidates and the key merge still leaves 2429 blocking findings.",
+    "No baseline or grandfather exemption is proposed."
+  ],
+  "next_actions": [
+    "obtain original material",
+    "verify judgment targets without auto-delisting",
+    "present exact retention/key-repair decisions for authorization",
+    "apply only authorized changes on feature branch",
+    "run final full-source audit, tests and release-path verification before any merge"
+  ],
+  "production_change_authorized": false,
+  "proposed_retention_term_days": 30,
+  "required_original_material": {
+    "acceptable_sources": [
+      "original pre-import workbook",
+      "source-system export with original full fields",
+      "original URL/source identifiers and saved historical raw list",
+      "documented registration reason/retention policy for each affected group"
+    ],
+    "limitations": [
+      "A generated distribution workbook is a copy of master, not independent provenance.",
+      "An original workbook without original source identifiers or context may not resolve every judgment target."
+    ],
+    "status": "NOT_IDENTIFIED_IN_CURRENT_SEARCH",
+    "useful_columns": [
+      "original unsplit name",
+      "original remarks",
+      "source ID or URL",
+      "registration timestamp",
+      "registration reason or policy"
+    ]
+  },
+  "retention_groups": [
+    {
+      "classification": "ARCHIVED_NAME_WITHOUT_INDEX",
+      "count": 4,
+      "decision": "PENDING",
+      "examples": [
+        "AK Dyulak Kepital Ltd Predstavitelstvo",
+        "DULAC CAPITAL LTD",
+        "Predstavitelstvo Aktsionernogo Obshchestva Dyulak Kepital Ltd Shveitsariya v g Moscow",
+        "Predstavitelstvo Aktsionernogo Obshchestva Dyulak Kepital Ltd Shveitsariya v g Sankt Peterburge"
+      ],
+      "review_ids_sha256": "e4200ee8cab58d26df91cfc98a8dfeee437ecba19f49306ac7f3473e9aa730bf"
+    },
+    {
+      "classification": "CURRENT_FORMAT_VARIANT",
+      "count": 41,
+      "decision": "PENDING",
+      "examples": [
+        "ARELLANO FELIX Enedina",
+        "ARELLANO FELIX Francisco Javier",
+        "BARRAGAN BALDERAS Gilberto",
+        "CANO FLORES Aurelio",
+        "CASARRUBIA POSADA Elkin"
+      ],
+      "review_ids_sha256": "e603b85a394d69c15ac844d761a60337094b3e4ec174ae58b55108092dc68f24"
+    },
+    {
+      "classification": "CURRENT_PERSON_ORDER_VARIANT",
+      "count": 3518,
+      "decision": "PENDING",
+      "examples": [
+        "A.S. MUJEL",
+        "Abas Sartaji",
+        "Abass Hussein HARB",
+        "Abbas'Ali Mohammadian Musaabadi",
+        "Abbas-Ali Mohammadian"
+      ],
+      "review_ids_sha256": "270742faae55f9242125cb9f8881be1515e1678559c46921f6fbe3dc1d61f4d0"
+    },
+    {
+      "classification": "CURRENT_WEAK_ONLY",
+      "count": 2875,
+      "decision": "PENDING",
+      "examples": [
+        "#66 Division",
+        "108 Institute",
+        "148SH LTD",
+        "179 SRZ AO",
+        "223rd Flight Detachment"
+      ],
+      "review_ids_sha256": "5c7c6de7eb2f916dd559be3f0d04fbe4e2b0cd6070d816d90b6f624f3bcacd8e"
+    },
+    {
+      "classification": "CURRENT_WEAK_PERSON_ORDER_VARIANT",
+      "count": 669,
+      "decision": "PENDING",
+      "examples": [
+        "A. AHMED",
+        "A.R. CHATAEV",
+        "A. Tontarhovnov",
+        "Aam Peijnenburg",
+        "Abbass Gharib"
+      ],
+      "review_ids_sha256": "42b760cbfdab38715cdf2cd501312e76a8e9ad5d81d50818d4ac92fe6a4d3fb2"
+    },
+    {
+      "classification": "HISTORICAL_ALIAS_CONFIRMED",
+      "count": 33,
+      "decision": "PENDING",
+      "examples": [
+        "ARELLANO FELIX Eduardo Ramon",
+        "ARELLANO FELIX Javier",
+        "ARELLANO FELIX Javier Eduardo",
+        "Beatriz Raquel LOPEZ PORTILLO",
+        "BELTRAN MEZA Ramon"
+      ],
+      "review_ids_sha256": "7ed7bb09d253f7b2fd188fc512e99d0220c224d185d38876cb8cb564a7cd4565"
+    },
+    {
+      "classification": "HISTORICAL_PARTY_CONFIRMED",
+      "count": 335,
+      "decision": "PENDING",
+      "examples": [
+        "ABBAS, Abdul Hussein",
+        "ABBAS Abdul Hussein",
+        "ABDULMALIK, Abdul Hameed",
+        "ABDULMALIK Abdul Hameed",
+        "ABDUL RAHIM Ali Mohamad"
+      ],
+      "review_ids_sha256": "ad8778af939e4e89d5cc328b679c1fad9a76a2c903f2cc8b0a0c04012f7fb9e6"
+    }
+  ],
+  "retention_scope_count": 7475,
+  "retention_scope_file": "docs/evidence/source-integrity-20261026-alias-fields-retention-review-groups.json",
+  "retention_scope_file_sha256": "c07a1162194d91ce08d4634937b3177bff0b3155911072d06641a0ef1a2d6c92",
+  "reviewed_at": null,
+  "reviewed_by": null,
+  "schema_version": 1,
+  "simulation_file": "docs/evidence/source-integrity-adoption-simulation-20261026.json",
+  "state": "PENDING_HUMAN_REVIEW"
+}
