@@ -20,7 +20,7 @@ from .integrity_readers import clean, decode
 
 BASELINE = 'docs/evidence/source-integrity-20261024-person-triage.json.gz'
 BASELINE_SHA256 = '737760c156f89a7f6275785d5c20d2596368590c012d59332163e0e221381c69'
-TARGET_CLASSES = {'ORIGIN_UNRESOLVED', 'NOTICE_MENTION_ONLY', 'NON_NAME_FIELD_ONLY', 'WEAK_EVIDENCE_CONFLICT'}
+TARGET_CLASSES = {'ORIGIN_UNRESOLVED', 'NOTICE_MENTION_ONLY', 'NON_NAME_FIELD_ONLY', 'WEAK_EVIDENCE_CONFLICT', 'NOTICE_ALIAS_FIELD_REVIEW'}
 
 
 def sha(body):
@@ -155,20 +155,25 @@ class _Contexts(HTMLParser):
             self.text.append(data)
 
 
-def read_contexts(body: bytes, names: set[str]) -> dict:
+def read_records(body: bytes) -> list[dict]:
     parser = _Contexts()
     parser.feed(decode(body))
     parser.close()
     if not parser.found or parser.stack or parser.header or not parser.records:
         raise ValueError('missing/unclosed Recent Actions body')
+    return parser.records
+
+
+def read_contexts(body: bytes, names: set[str]) -> dict:
+    records = read_records(body)
     matches = []
     patterns = [(name, re.compile(r'(?<!\w)' + re.escape(name) + r'(?!\w)', re.I))
                 for name in sorted(names) if name.strip()]
-    for record in parser.records:
+    for record in records:
         for name, pattern in patterns:
             for hit in pattern.finditer(record['record']):
                 matches.append(dict(record, name=name, start=hit.start(), end=hit.end()))
-    return dict(record_count=len(parser.records), matches=matches,
+    return dict(record_count=len(records), matches=matches,
                 matched_names=sorted({hit['name'] for hit in matches}))
 
 

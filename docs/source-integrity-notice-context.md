@@ -1,5 +1,7 @@
 # Phase 1 過去の公式発表と未確認名称の文脈追跡
 
+次の追補：[明示別名欄の監査](source-integrity-notice-alias-fields.md)。以下の数値は文脈追跡段階の証跡。BUGAYENKOの説明は10月26日の別名欄検証で訂正した（原本・JSONは不変）。
+
 2026年10月26日（日本時間）。前回の出典未確認1,633件から147件に過去のOFAC公式発表での言及根拠を追加し、未確認は1,486件となった。147件を掲載名として確認できた、現在制裁対象である、解除すべきである、という結論ではない。追加判断対象は2,429件のまま、保持候補7,475件は全て未承認、公開判定もBLOCKEDを維持する。
 
 ## 回収した原本
@@ -17,7 +19,7 @@
 
 - **365 DAYS FREIGHT SERVICES FZCO**：20251218発表のSDN List / “The following deletions…”の欄に、同名で始まるレコードがある。
 - **A.T.E. INTERNATIONAL LTD.**：20260727発表の同欄に、同名で始まるレコードとRWR INTERNATIONAL COMMODITIESのa.k.a.欄での言及がある。
-- **BUGAYENKO, Dmitry Vitalyevich**：20251218発表で5レコードに言及があるが、今回の一致箇所はVELES INTERNATIONAL LIMITED等の **Linked To欄**。削除見出しの下に文字列があることだけで、この人物の削除レコードだと判断してはいけない。
+- **BUGAYENKO, Dmitry Vitalyevich**：20251218発表の5レコードのうち、VELES INTERNATIONAL LIMITED等の **Linked To欄が2件、先頭名称が1件、a.k.a.欄が2件**。前版は5件全てがLinked To欄であるかのように説明しており誤りだったため訂正した。原本と既存context JSONは正しく5件を保存しており変更していない。各一致の役割を確認し、見出しと名前の一致だけで現在の掲載状態や解除を判断しない。
 
 見出しは発表当時の操作を説明するもの。現在の掲載状態、masterの元登録対象との同一性、保持の意図を独立確認したものではない。旧masterの出典ラベルや同名一致だけで解除・誤登録を断定しない。
 

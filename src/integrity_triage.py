@@ -36,6 +36,8 @@ def _facts(proof):
     facts={k:proof.get(k) for k in ('name','source_id','category','current','field','transform','weak','primary')}
     if proof.get('field')=='person_name_parts':
         facts['name_parts']=[{k:p.get(k) for k in ('type','value')} for p in proof.get('name_parts',[])]
+    if proof.get('field')=='notice_alias_name':
+        facts.update({k:proof.get(k) for k in ('alias_marker','notice_record_sha256','section','heading')})
     return facts
 
 
@@ -101,7 +103,9 @@ def classify(report, master_rows, index_rows, witnesses):
                 classification='HISTORY_WITHOUT_ORIGINAL'
             elif named_past:
                 classification='ARCHIVED_NAME_WITHOUT_INDEX';eligible=True
-            elif any(p['field'] not in {'name','notice_text','person_name_parts'} for p in proofs):
+            elif any(p['field']=='notice_alias_name' for p in proofs):
+                classification='NOTICE_ALIAS_FIELD_REVIEW'
+            elif any(p['field'] not in {'name','notice_text','person_name_parts','notice_alias_name'} for p in proofs):
                 classification='NON_NAME_FIELD_ONLY'
             elif any(p['field']=='notice_text' for p in proofs):
                 classification='NOTICE_MENTION_ONLY'
@@ -292,7 +296,9 @@ def add_notice_witnesses(root,masters,witnesses,manifest):
     index=root/'docs/evidence/integrity-notices/manifest.json'
     if not index.exists():return
     documents=json.loads(index.read_text(encoding='utf-8'))
+    from .integrity_notice_aliases import read_notice_aliases
     byname=defaultdict(set)
+    target_keys={row['match_key'] for row in masters}
     for row in masters:byname[row['display_name']].add(row['match_key'])
     for doc in documents:
         path=(root/doc['raw_path']).resolve()
@@ -302,7 +308,18 @@ def add_notice_witnesses(root,masters,witnesses,manifest):
         if hashlib.sha256(body).hexdigest()!=doc['source_hash']:
             raise TriageError('補助報道発表hash不一致')
         names=notice_mentions(body,byname)
-        manifest.append(dict(doc,status='parsed',role='notice_mention',name_count=len(names),current=False))
+        aliases=read_notice_aliases(body)
+        manifest.append(dict(doc,status='parsed',role='notice_mention',name_count=len(names),
+                             alias_field_count=len(aliases),current=False))
+        for alias in aliases:
+            key=match_key(alias['name'])
+            if key not in target_keys:continue
+            proof=dict(alias,source_id=None,category='OFAC_NOTICE',current=False,field='notice_alias_name',
+                       transform='normalized_alias_field',weak=None,primary=False,
+                       notice_record_sha256=hashlib.sha256(alias['record'].encode()).hexdigest(),
+                       locator=f"Recent Actions Body / record {alias['record_number']} / alias {alias['alias_start']}:{alias['alias_end']}",
+                       **{k:doc[k] for k in ('raw_path','source_url','source_hash')})
+            witnesses.setdefault(key,[]).append(proof)
         for name in sorted(names):
             proof=dict(name=name,source_id=None,category='OFAC_NOTICE',current=False,field='notice_text',
                        transform='exact',weak=False,primary=False,locator='Recent Actions Body / literal bounded mention',
