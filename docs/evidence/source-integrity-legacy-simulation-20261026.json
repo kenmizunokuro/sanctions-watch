@@ -1,0 +1,190 @@
+{
+  "actual_active_ledgers_created": 0,
+  "actual_approvals": 0,
+  "actual_master_changes": 0,
+  "business_input_hashes": {
+    "data/kubun_map.json": "007da2fec65dd0357f5d3f91b2b68927f8dcf1c97b95253cc1c0c51a1d55e3f6",
+    "data/master/master.csv": "70fa1fa08bc87ccbef1896eb8908dfbfa1d730944f2a0ff6d208ff1445138a5d",
+    "data/master/ofac_alias_history.csv": "d57da2573d90010f3f6f962d6b07963511f320a2f6e67c09000c4613f294138a",
+    "data/state.json": "b354595930d020bdcbea1bc4cb77c4703229acea1bfb66facc07a0f3f4fd907a"
+  },
+  "business_inputs_unchanged": true,
+  "candidate_artifact": {
+    "body_sha256": "3edb85db362c855c337a8c7243ac58110f3d15e61a7fdaba0fa9244fc7c78b76",
+    "file": "source-integrity-legacy-candidate-20261026.json.gz",
+    "file_sha256": "fe12110b58eada16a94ee6a7038149c35096ff5f8c8631d2d38b79e279d21d37"
+  },
+  "code_hashes": {
+    "src/export_diff_excel.py": "0d44e18ad5fd507f9f85b66326a8e6708ce3bf16ebef276888eb44c8706bd9c0",
+    "src/export_excel.py": "9b6eda18e05ddc07f68a4223202130e0d0e1e61ebfabc7212e4cc035f7ea465d",
+    "src/integrity_audit.py": "59730920dd771cdfd4d8d1d46b2d2b60f2a7cb33db9d45e403e16b783b9d5725",
+    "src/integrity_decisions.py": "bd4fca69512be6893bda69f7791968dd85fb9983f883e1fd4ae0a0537fcdf50d",
+    "src/integrity_legacy.py": "40acc79d716d129264a6ec634c231cfd3eae9be1e8a635a01c75f4d8baaa8914",
+    "src/integrity_triage.py": "6a163f7d1397ecd58ff09faec153c8925b8bdd9ec19386edd79cf5d24f00b424"
+  },
+  "fixed_clock": "2026-10-26T12:00:00+00:00",
+  "implementation_authorized": true,
+  "limitations": [
+    "All approvals in scenarios are hypothetical. The saved candidate ledger is DRAFT.",
+    "7475 ordinary retentions, one duplicate merge, production annotations and ledger activation remain unapproved.",
+    "Original import intent, identity and current official listing of legacy strings remain unresolved.",
+    "Activation requires fresh source checks and a freshly approved term of at most30days."
+  ],
+  "production_authorized": false,
+  "proposed_expires_at": "2026-11-25T00:00:00Z",
+  "proposed_reviewed_at": "2026-10-26T00:00:00Z",
+  "scenarios": {
+    "corrupt_official_original": {
+      "blocking": 9905,
+      "findings": 9905,
+      "kinds": {
+        "EXTRA_REGISTRATION": 7026,
+        "UNDETERMINED": 1,
+        "WEAK_ALIAS_ACTIVE": 2878
+      },
+      "legacy_accepted": 0,
+      "ordinary_retention_approved": 0,
+      "publication_allowed_in_simulation": false,
+      "status": "BLOCKED"
+    },
+    "current_unapproved": {
+      "blocking": 9906,
+      "findings": 9914,
+      "kinds": {
+        "CATEGORY_LABEL_UNRESOLVED": 8,
+        "EXTRA_REGISTRATION": 7027,
+        "MISGENERATED": 1,
+        "WEAK_ALIAS_ACTIVE": 2878
+      },
+      "legacy_accepted": 0,
+      "ordinary_retention_approved": 0,
+      "publication_allowed_in_simulation": false,
+      "status": "BLOCKED"
+    },
+    "expired_legacy": {
+      "blocking": 9907,
+      "findings": 9915,
+      "kinds": {
+        "CATEGORY_LABEL_UNRESOLVED": 8,
+        "EXTRA_REGISTRATION": 7027,
+        "LEGACY_ACCEPTANCE_INVALID": 1,
+        "MISGENERATED": 1,
+        "WEAK_ALIAS_ACTIVE": 2878
+      },
+      "legacy_accepted": 0,
+      "ordinary_retention_approved": 0,
+      "publication_allowed_in_simulation": false,
+      "status": "BLOCKED"
+    },
+    "extra_unmarked_search_copy": {
+      "blocking": 9907,
+      "findings": 9915,
+      "kinds": {
+        "CATEGORY_LABEL_UNRESOLVED": 8,
+        "EXTRA_REGISTRATION": 7027,
+        "LEGACY_DISPLAY_MISMATCH": 1,
+        "MISGENERATED": 1,
+        "WEAK_ALIAS_ACTIVE": 2878
+      },
+      "legacy_accepted": 0,
+      "ordinary_retention_approved": 0,
+      "publication_allowed_in_simulation": false,
+      "status": "BLOCKED"
+    },
+    "hypothetical_all_separate_approvals_and_key_merge": {
+      "blocking": 0,
+      "findings": 9912,
+      "kinds": {
+        "CATEGORY_LABEL_UNRESOLVED": 8,
+        "EXTRA_REGISTRATION": 7026,
+        "WEAK_ALIAS_ACTIVE": 2878
+      },
+      "legacy_accepted": 2429,
+      "ordinary_retention_approved": 7475,
+      "publication_allowed_in_simulation": true,
+      "status": "REVIEW"
+    },
+    "hypothetical_legacy_only": {
+      "blocking": 7477,
+      "findings": 9914,
+      "kinds": {
+        "CATEGORY_LABEL_UNRESOLVED": 8,
+        "EXTRA_REGISTRATION": 7027,
+        "MISGENERATED": 1,
+        "WEAK_ALIAS_ACTIVE": 2878
+      },
+      "legacy_accepted": 2429,
+      "ordinary_retention_approved": 0,
+      "publication_allowed_in_simulation": false,
+      "status": "BLOCKED"
+    }
+  },
+  "schema_version": 1,
+  "simulation_only": true,
+  "source_documents": [
+    {
+      "bytes": 3327198,
+      "name_count": 15693,
+      "raw_path": "data/raw/mof/20261020T120119Z__shisantouketsu20261021.csv.gz",
+      "role": "mof",
+      "sha256": "f8e1038419ab0146cbce89ae9fa7b5f9d298548c8bca4953f970c01f87b3f7bc",
+      "source": "mof",
+      "source_url": "https://www.mof.go.jp/policy/international_policy/gaitame_kawase/gaitame/economic_sanctions/shisantouketsu20261021.csv"
+    },
+    {
+      "bytes": 5744136,
+      "name_count": 19471,
+      "raw_path": "data/raw/ofac_sdn/20261021T175055Z__sdn.csv.gz",
+      "role": "primary",
+      "sha256": "96dade5a1cde8c9746937b4859ad75d8f2a34eed1a4046cc1f2240a830f70bda",
+      "source": "ofac_sdn",
+      "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/SDN.CSV"
+    },
+    {
+      "bytes": 1063745,
+      "name_count": 20192,
+      "raw_path": "data/raw/ofac_sdn/20261021T175055Z__alt.csv.gz",
+      "role": "alias",
+      "sha256": "e489fe41709a1d38693c16be8448d55a05cd4b39c9c2ffa98fbcc76bb5ec8050",
+      "source": "ofac_sdn",
+      "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/ALT.CSV"
+    },
+    {
+      "bytes": 127668232,
+      "name_count": 50081,
+      "raw_path": "data/raw/ofac_sdn_advanced/20261021T175055Z__sdn_advanced.xml.gz",
+      "role": "advanced",
+      "sha256": "0d805bf58997908c8b5ba3233bc9b2b6d59bb04ea7881cfdc3c4c47d90d36e27",
+      "source": "ofac_sdn",
+      "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML"
+    },
+    {
+      "bytes": 268508,
+      "name_count": 486,
+      "raw_path": "data/raw/ofac_cons/20261019T145058Z__cons_prim.csv.gz",
+      "role": "primary",
+      "sha256": "48068ff381b20ba05db297e5744b790e69e9921c738ce88efcaed7e0c3d55033",
+      "source": "ofac_cons",
+      "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/CONS_PRIM.CSV"
+    },
+    {
+      "bytes": 69622,
+      "name_count": 1115,
+      "raw_path": "data/raw/ofac_cons/20261019T145058Z__cons_alt.csv.gz",
+      "role": "alias",
+      "sha256": "106ba0e33579c5d20693e414ad66a9145329f1db012a18c3bdc8f84491a32b81",
+      "source": "ofac_cons",
+      "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/CONS_ALT.CSV"
+    },
+    {
+      "bytes": 4580537,
+      "name_count": 1798,
+      "raw_path": "data/raw/ofac_cons_advanced/20261019T145058Z__cons_advanced.xml.gz",
+      "role": "advanced",
+      "sha256": "dc3f61dce650a4661ff69d6c1847f0d5a90f2fa63951267af68fcfacdb6d8a75",
+      "source": "ofac_cons",
+      "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/CONS_ADVANCED.XML"
+    }
+  ],
+  "source_scope": "Saved official bodies; independently reparsed offline; no current remote freshness claim"
+}

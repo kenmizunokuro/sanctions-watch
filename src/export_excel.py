@@ -134,6 +134,8 @@ def main() -> None:
     master = _read(d / "master.csv")
     if not master:
         raise SystemExit(f"マスターが空: {d / 'master.csv'}")
+    from .integrity_legacy import validate_for_export
+    validate_for_export(d.resolve().parent.parent, master)
     wb = build_workbook(master, _read(d / "cleanup_log.csv"))
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)

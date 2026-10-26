@@ -41,6 +41,17 @@ def _facts(proof):
     return facts
 
 
+def review_id(finding, classification, links, proofs):
+    """Stable semantic identity shared by triage and fixed legacy scopes."""
+    official=finding.get('official') or {}
+    semantic_links=[{k:x.get(k) for k in ('list','party_id','name','alias_current','party_current','low_quality','primary')} for x in links]
+    semantic_proofs=sorted({_key_json(_facts(p)) for p in proofs})
+    identity=dict(kind=finding['kind'],checked_source=finding.get('checked_source') or official.get('source'),master=finding.get('master') or {},classification=classification,
+                  official={k:official.get(k) for k in ('source','category','source_id','name','weak','primary')},
+                  links=sorted(semantic_links,key=_key_json),proofs=semantic_proofs)
+    return digest(identity)
+
+
 def classify(report, master_rows, index_rows, witnesses):
     bykey=defaultdict(list);masters=defaultdict(list)
     for row in index_rows:bykey[row['match_key']].append(row)
@@ -110,22 +121,20 @@ def classify(report, master_rows, index_rows, witnesses):
             elif any(p['field']=='notice_text' for p in proofs):
                 classification='NOTICE_MENTION_ONLY'
             else:classification='ORIGIN_UNRESOLVED'
-        semantic_links=[{k:x.get(k) for k in ('list','party_id','name','alias_current','party_current','low_quality','primary')} for x in links]
-        semantic_proofs=sorted({_key_json(_facts(p)) for p in proofs})
-        identity=dict(kind=kind,checked_source=checked_source,master=row,classification=classification,
-                      official={k:official.get(k) for k in ('source','category','source_id','name','weak','primary')},
-                      links=sorted(semantic_links,key=_key_json),proofs=semantic_proofs)
-        item=dict(review_id=digest(identity),kind=kind,checked_source=checked_source,classification=classification,
+        item=dict(review_id=review_id(finding,classification,links,proofs),kind=kind,checked_source=checked_source,classification=classification,
                   master_key=key,display_name=(row.get('display_name') or official.get('name','')) if isinstance(row,dict) else official.get('name',''),
                   master_sha256=digest(row),finding=finding,index_links=links,evidence=proofs,
-                  evidence_sha256=digest(proofs),retention_eligible=eligible,approved=bool(finding.get('retention_approved',False)))
+                  evidence_sha256=digest(proofs),retention_eligible=eligible,approved=bool(finding.get('retention_approved',False)),
+                  legacy_accepted=bool(finding.get('legacy_accepted',False)),
+                  uncertainty_status=finding.get('uncertainty_status',''))
         if proposal:item['repair_proposal']=proposal
         items.append(item)
     return dict(schema_version=1,source_audit_inputs=report.get('inputs',{}),
                 source_audit_status=report['status'],items=items,
                 counts=dict(sorted(Counter(x['classification'] for x in items).items())),
                 retention_candidates=sum(x['retention_eligible'] for x in items),
-                approved_count=sum(x['approved'] for x in items),limitations=[
+                approved_count=sum(x['approved'] for x in items),
+                legacy_accepted_count=sum(x['legacy_accepted'] for x in items),limitations=[
                     'Classification does not prove intent to retain and never grants approval.',
                     'Historical index flags alone are not primary-source evidence.',
                     'Name and comma-removed matches are evidence candidates; no fuzzy identity inference.',
@@ -331,7 +340,10 @@ def triage(root,report):
     root=root.resolve()
     for rel,expected in report.get('inputs',{}).items():
         path=(root/rel).resolve()
-        if not path.is_relative_to(root/'data') or not path.exists() or hashlib.sha256(path.read_bytes()).hexdigest()!=expected:
+        fixed_scope_paths={'docs/evidence/source-integrity-legacy-retention-policy-proposal-20261026.json',
+                           'docs/evidence/source-integrity-legacy-scope-20261026.json.gz'}
+        allowed=path.is_relative_to(root/'data') or (rel in fixed_scope_paths and path.is_relative_to(root/'docs/evidence'))
+        if not allowed or not path.exists() or hashlib.sha256(path.read_bytes()).hexdigest()!=expected:
             raise TriageError(f'監査入力が一致しない: {rel}')
     masters=_csv(root/'data/master/master.csv')
     index_path=root/'data/master/ofac_alias_history.csv'
@@ -351,7 +363,7 @@ def write_outputs(directory,result,stem=None):
     path=directory/(stem+'.json.gz')
     with path.open('xb') as stream:stream.write(gzip.compress((_key_json(result)+'\n').encode(),mtime=0))
     csv_path=directory/(stem+'.csv')
-    fields=['review_id','kind','checked_source','classification','master_key','display_name','retention_eligible','approved','master_sha256','evidence_sha256']
+    fields=['review_id','kind','checked_source','classification','master_key','display_name','retention_eligible','approved','master_sha256','evidence_sha256','legacy_accepted','uncertainty_status']
     with csv_path.open('x',encoding='utf-8-sig',newline='') as stream:
         writer=csv.DictWriter(stream,fieldnames=fields,extrasaction='ignore');writer.writeheader();writer.writerows(result['items'])
     return path,csv_path

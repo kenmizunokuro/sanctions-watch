@@ -302,6 +302,19 @@ def audit(root: Path, sources: list[str], upstream_failed: bool = False) -> dict
             result=D.apply(result,investigation,ledger)
         except (OSError,ValueError,KeyError,csv.Error) as exc:
             result['findings'].append(dict(kind='RETENTION_DECISION_ERROR',detail=str(exc),blocking=True))
+    legacy_path=root/'data/review/integrity_legacy_acceptances.json'
+    if legacy_path.exists():
+        try:
+            from . import integrity_triage as T
+            from . import integrity_legacy as L
+            body=legacy_path.read_bytes()
+            result['inputs']['data/review/integrity_legacy_acceptances.json']=sha(body)
+            scope=L.load_scope(root)
+            for rel in (L.POLICY_PATH,L.SCOPE_PATH):result['inputs'][rel]=sha((root/rel).read_bytes())
+            ledger=json.loads(body)
+            result=L.apply(root,result,T.triage(root,result),ledger,scope)
+        except (OSError,ValueError,KeyError,TypeError,csv.Error,EOFError,zlib.error) as exc:
+            result['findings'].append(dict(kind='LEGACY_ACCEPTANCE_ERROR',detail=str(exc),blocking=True))
     return _finish(result)
 
 

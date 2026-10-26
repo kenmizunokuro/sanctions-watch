@@ -273,6 +273,9 @@ def main() -> int:
             f"マスターが空です: {args.master}"
         )
 
+    from .integrity_legacy import validate_for_export
+    validate_for_export(Path(args.master).resolve().parent.parent.parent, master_rows)
+
     if not diff_rows:
         print("actionable_count=0")
         print("held_count=0")
