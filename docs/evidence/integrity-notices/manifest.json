@@ -4,5 +4,17 @@
     "source_hash": "8b3104be07a2851ce84ef36c05827aa10119cf2077174f659139b7dd31e9e5dd",
     "raw_path": "docs/evidence/integrity-notices/ofac-20250630.html.gz",
     "retrieval": "HTTPS 200 via existing src.fetch; supplemental historical notice, not current status evidence"
+  },
+  {
+    "source_url": "https://ofac.treasury.gov/recent-actions/20260727",
+    "source_hash": "feb7f91b4ac027cdb123fa8a2b4033410a21fc5a00dbd09967de77e6d62919b3",
+    "raw_path": "docs/evidence/integrity-notices/ofac-20260727.html.gz",
+    "retrieval": "HTTPS 200 via existing src.fetch on 2026-10-26 JST; final URL equals source_url; historical notice, not current listing evidence"
+  },
+  {
+    "source_url": "https://ofac.treasury.gov/recent-actions/20251218",
+    "source_hash": "58a55b051f58ac9f684c3f2d70460e97ffd7acf230005362bf0e89dd1429ea34",
+    "raw_path": "docs/evidence/integrity-notices/ofac-20251218.html.gz",
+    "retrieval": "HTTPS 200 via existing src.fetch on 2026-10-26 JST; final URL equals source_url; historical notice, not current listing evidence"
   }
 ]

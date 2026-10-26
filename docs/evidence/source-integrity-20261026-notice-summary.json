@@ -1,0 +1,43 @@
+{
+  "additional_evidence_or_judgment_needed": 2429,
+  "approved_count": 0,
+  "audit_counts": {
+    "CATEGORY_LABEL_UNRESOLVED": 8,
+    "EXTRA_REGISTRATION": 7027,
+    "MISGENERATED": 1,
+    "WEAK_ALIAS_ACTIVE": 2878
+  },
+  "baseline": "docs/evidence/source-integrity-20261024-person-triage.json.gz",
+  "candidate_review_ids_changed": 30,
+  "changed_evidence_items": 180,
+  "changed_review_ids": 177,
+  "current_listing_newly_verified": false,
+  "identity_newly_verified": false,
+  "inputs": {
+    "data/kubun_map.json": "007da2fec65dd0357f5d3f91b2b68927f8dcf1c97b95253cc1c0c51a1d55e3f6",
+    "data/master/master.csv": "70fa1fa08bc87ccbef1896eb8908dfbfa1d730944f2a0ff6d208ff1445138a5d",
+    "data/master/ofac_alias_history.csv": "d57da2573d90010f3f6f962d6b07963511f320a2f6e67c09000c4613f294138a",
+    "data/state.json": "b354595930d020bdcbea1bc4cb77c4703229acea1bfb66facc07a0f3f4fd907a"
+  },
+  "master_row_count": 89341,
+  "new_notice_mentions": 147,
+  "official_name_count": 108836,
+  "publication_allowed": false,
+  "retention_candidates": 7475,
+  "status": "BLOCKED",
+  "triage_counts": {
+    "ARCHIVED_NAME_WITHOUT_INDEX": 4,
+    "CATEGORY_LABEL_UNRESOLVED": 8,
+    "CURRENT_FORMAT_VARIANT": 41,
+    "CURRENT_PERSON_ORDER_VARIANT": 3518,
+    "CURRENT_WEAK_ONLY": 2875,
+    "CURRENT_WEAK_PERSON_ORDER_VARIANT": 669,
+    "HISTORICAL_ALIAS_CONFIRMED": 33,
+    "HISTORICAL_PARTY_CONFIRMED": 335,
+    "KEY_COLLISION_REVIEW": 2,
+    "NON_NAME_FIELD_ONLY": 33,
+    "NOTICE_MENTION_ONLY": 907,
+    "ORIGIN_UNRESOLVED": 1486,
+    "WEAK_EVIDENCE_CONFLICT": 3
+  }
+}
