@@ -1,4 +1,4 @@
-const VERSION = '0.4.3';
+const VERSION = '0.5.0';
 const DEFAULT_TZ = 'Asia/Tokyo';
 const LOCK_WAIT_MS = 15000;
 const MAX_RETRIES = 2;
@@ -17,6 +17,7 @@ const TAB = {
   RE_REVIEW: '09_再審査分',
   SETTINGS: '99_設定',
   MOFA: '10_外務省資料',
+  UN: '11_国連レビュー',
 };
 
 const QUEUE_CHANGE_TYPES = new Set([
@@ -52,8 +53,10 @@ const ROW = {
 };
 
 const MOFA_DOCUMENTS_URL = 'https://raw.githubusercontent.com/kenmizunokuro/sanctions-watch/main/data/dashboard/mofa_documents.csv';
+const UN_REVIEWS_URL = 'https://raw.githubusercontent.com/kenmizunokuro/sanctions-watch/main/data/dashboard/un_reviews.csv';
 
 const EXPECTED = {
+  unReviews: ['イベントID','検知日時','区分','国連参照番号','対象名／発表','状態','追加対象者','掲載終了候補','変更対象者','SHA256','一次ソースURL'],
   mofaDocuments: ['資料イベントID','検知日時','資料区分','タイトル','公表日','公表日時精度','検知理由','取得状態','レビュー状態','発表URL','資料URL','SHA256','原本'],
   status: [
     '出所',
@@ -113,6 +116,8 @@ const SOURCE_LABEL = {
   ofac_cons: 'OFAC Consolidated',
   mofa_catalog: '外務省（現行リスト）',
   mofa_press: '外務省（報道発表）',
+  un_xml: '国連（統合リスト）',
+  un_press: '国連（委員会発表）',
 };
 
 const STATUS_LABEL = {
@@ -400,6 +405,7 @@ function syncAll_(executionType) {
 
     syncMofaDocuments_(ss, payload.mofaDocuments.notModified ? null : payload.mofaDocuments.rows);
     commitMofaHttpMeta_(payload.mofaDocuments, props);
+    syncUnReviews_(ss, payload.unReviews.rows);
 
     const status =
       payload.status.rows;
@@ -974,7 +980,12 @@ function requireSheet_(
 
 function ensureStructure_(ss) {
   ensureMofaStructure_(ss);
+  ensureUnStructure_(ss);
   ensureTimezone_(ss);
+  const unDash = requireSheet_(ss, TAB.DASH);
+  unDash.getRange('A17:H19').clearContent();
+  unDash.getRange('A20').setValue('直近変更');
+  unDash.getRange('A21:F21').setValues([EXPECTED.changes]);
 
   const audit =
     requireSheet_(
@@ -1465,6 +1476,7 @@ function fetchSyncPayload_(
 
   const specs = [
     {key: 'mofa_documents', url: MOFA_DOCUMENTS_URL, expected: EXPECTED.mofaDocuments, optional: false, conditional: true},
+    {key: 'un_reviews', url: UN_REVIEWS_URL, expected: EXPECTED.unReviews, optional: false, conditional: false},
     {
       key:
         'status',
@@ -1589,6 +1601,7 @@ function fetchSyncPayload_(
 
   return {
     mofaDocuments: result.mofa_documents,
+    unReviews: result.un_reviews,
 
     status:
       result.status,
@@ -2218,6 +2231,8 @@ function updateDashboard_(
     'OFAC Consolidated',
     '外務省（現行リスト）',
     '外務省（報道発表）',
+    '国連（統合リスト）',
+    '国連（委員会発表）',
   ];
 
   const bySource =
@@ -2402,7 +2417,7 @@ function refreshRecentChanges_(ss) {
 
   dash
     .getRange(
-      'A16:F19'
+      'A22:F25'
     )
     .clearContent();
 
@@ -2433,7 +2448,7 @@ function refreshRecentChanges_(ss) {
 
   dash
     .getRange(
-      16,
+      22,
       1,
       count,
       6
@@ -2557,6 +2572,9 @@ function freshness_(
         ] || 600
       );
 
+  } else if (source.indexOf('国連') === 0) {
+    warn = Number(settings['UN警告(分)'] || 45);
+    critical = Number(settings['UN重大(分)'] || 90);
   } else {
     return {
       label:
@@ -2600,6 +2618,11 @@ function freshness_(
       d.getTime()
     ) /
     60000;
+
+  if (source.indexOf('国連') === 0 && state.indexOf('要レビュー') >= 0 && age <= warn) {
+    return {label: '要確認', severity: 1, anomalyType: '国連レビュー待ち',
+      note: '11_国連レビューで公式根拠と反映状況を確認。名簿反映は未完了。'};
+  }
 
   if (
     age >

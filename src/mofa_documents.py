@@ -174,7 +174,7 @@ def _document_status_rows(root, state):
     if not saved or saved[0] != STATUS_COLS:
         raise DocumentStateError('invalid existing dashboard status columns')
     known = set(SOURCE_LABEL.values())
-    other = {label for key, label in SOURCE_LABEL.items() if not key.startswith('mofa_')}
+    other = {row[0] for row in rows if not row[0].startswith('外務省')}
     seen = set()
     preserved = {}
     for row in saved[1:]:
