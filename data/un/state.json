@@ -32879,7 +32879,7 @@
       "source": "press:2745"
     }
   ],
-  "last_checked_at": "2026-10-27T15:56:49Z",
+  "last_checked_at": "2026-10-27T20:40:48Z",
   "notices": {},
   "press_status": "error",
   "record_count": 1007,
@@ -32887,6 +32887,6 @@
   "snapshot_digest": "3eb9debda020cbd6ec01b8e55ff8f3a9dc1219ff40f6a9b354a35ee01ab2f406",
   "snapshot_hash": "aa72a8d5e7370697c60d2e0dbe6a4d41d273517d12492eaf4305a2e5dfbb0bae",
   "source_updated": "2026-10-26T23:00:02.307Z",
-  "xml_last_success_at": "2026-10-27T15:56:49Z",
+  "xml_last_success_at": "2026-10-27T20:40:48Z",
   "xml_status": "review_required"
 }
