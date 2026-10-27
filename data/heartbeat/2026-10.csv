@@ -949,3 +949,5 @@ checked_at,source,status,content_hash,source_updated,record_count,raw_path
 2026-10-27T05:51:01Z,ofac_cons,unchanged,dc3f61dce650a4661ff69d6c1847f0d5a90f2fa63951267af68fcfacdb6d8a75,"Mon, 19 Oct 2026 14:02:15 GMT",3396,
 2026-10-27T06:23:14Z,ofac_sdn,review_required,0d805bf58997908c8b5ba3233bc9b2b6d59bb04ea7881cfdc3c4c47d90d36e27,"Wed, 21 Oct 2026 16:35:21 GMT",89734,
 2026-10-27T06:23:14Z,ofac_cons,unchanged,dc3f61dce650a4661ff69d6c1847f0d5a90f2fa63951267af68fcfacdb6d8a75,"Mon, 19 Oct 2026 14:02:15 GMT",3396,
+2026-10-27T07:40:56Z,ofac_sdn,review_required,0d805bf58997908c8b5ba3233bc9b2b6d59bb04ea7881cfdc3c4c47d90d36e27,"Wed, 21 Oct 2026 16:35:21 GMT",89734,
+2026-10-27T07:40:56Z,ofac_cons,unchanged,dc3f61dce650a4661ff69d6c1847f0d5a90f2fa63951267af68fcfacdb6d8a75,"Mon, 19 Oct 2026 14:02:15 GMT",3396,
