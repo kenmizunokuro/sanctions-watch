@@ -98,6 +98,31 @@ class UNWatchTests(unittest.TestCase):
         self.assertFalse(result['ok'])
         self.assertEqual(self.state()['snapshot_hash'], state['snapshot_hash'])
         self.assertEqual(self.state()['xml_status'], 'error')
+        with (self.root / 'data/source_audit/2026-10.csv').open() as file:
+            audit = list(csv.DictReader(file))
+        row = [r for r in audit if r['source'] == 'un_xml'][-1]
+        self.assertEqual(row['http_status'], '304')
+        self.assertEqual(row['raw_path'], state['documents']['xml']['raw_path'])
+
+    def test_empty_response_preserves_http_evidence_without_advancing_cache(self):
+        def fetcher(url, **kwargs):
+            result = self.feed(url, **kwargs)
+            if url != U.XML_URL:
+                result.body = b''
+                result.sha256 = hashlib.sha256(b'').hexdigest()
+                result.http_status = 202
+            return result
+        result = W.run(self.root, fetcher=fetcher, now=NOW)
+        self.assertFalse(result['ok'])
+        self.assertEqual(self.state()['press_status'], 'error')
+        self.assertFalse(any(key.startswith('press:') for key in self.state()['documents']))
+        with (self.root / 'data/source_audit/2026-10.csv').open() as file:
+            rows = [r for r in csv.DictReader(file) if r['source'] == 'un_press']
+        self.assertEqual(len(rows), 14)
+        for row in rows:
+            self.assertEqual(row['http_status'], '202')
+            self.assertEqual(row['content_hash'], 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855')
+            self.assertTrue((self.root / row['raw_path']).is_file())
 
     def test_schema_and_network_failures_preserve_valid_snapshot_and_raw_evidence(self):
         self.run_watch()
