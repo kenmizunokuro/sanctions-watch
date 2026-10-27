@@ -26,6 +26,15 @@ jobs:
       - run: pip install -r requirements.txt
       - run: python -m tests.test_offline
       - run: python -m src.import_legacy --src "${{ inputs.xlsx_path }}"
+      - run: bash .github/scripts/integrity-gate.sh all success
+      - name: 完全性監査証跡
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bootstrap-integrity-${{ github.run_id }}-${{ github.run_attempt }}
+          path: data/integrity_audit/
+          retention-days: 90
+          if-no-files-found: error
       - run: python -m src.export_excel
       - name: コミット
         run: |

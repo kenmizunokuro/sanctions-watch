@@ -1,0 +1,33 @@
+{
+  "blocking": 0,
+  "checked_at_utc": "2026-10-27T01:14:42Z",
+  "counts": {
+    "CATEGORY_LABEL_UNRESOLVED": 8,
+    "EXTRA_REGISTRATION": 7026,
+    "WEAK_ALIAS_ACTIVE": 2878
+  },
+  "distribution": "One-time workflow builds and publishes full workbook plus separately named metadata adoption workbook after merge. Not yet run.",
+  "full_tests": 599,
+  "independent_review": "No Critical or Important findings; unchanged OFAC cycle preserves annotations.",
+  "inputs": {
+    "data/kubun_map.json": "007da2fec65dd0357f5d3f91b2b68927f8dcf1c97b95253cc1c0c51a1d55e3f6",
+    "data/master/master.csv": "a8a9e10594c45565811fdab0bb347750b5577cd5bebf43146f35e8678999cdf9",
+    "data/master/ofac_alias_history.csv": "d57da2573d90010f3f6f962d6b07963511f320a2f6e67c09000c4613f294138a",
+    "data/review/integrity_legacy_acceptances.json": "c4698e8f222276aeccfffe4004a961e796718cd227630be9a0abd88e7a02e14e",
+    "data/review/integrity_retention_decisions.json": "8671fc39de114fb94cb858cf03ff9da07a1b4104c59c5ed42ac587b2ec701d35",
+    "data/state.json": "b354595930d020bdcbea1bc4cb77c4703229acea1bfb66facc07a0f3f4fd907a",
+    "docs/evidence/source-integrity-legacy-retention-policy-proposal-20261026.json": "7d54d514a3c9dfa6708dce5bbec0c6dc595ad6defa5dad4ab0cf26c48c0c4881",
+    "docs/evidence/source-integrity-legacy-scope-20261026.json.gz": "83713003dc24b7efafa4683c703f9f40b31b0721015abe655aff3c88694a0289"
+  },
+  "legacy_accepted": 2429,
+  "master_rows": 89340,
+  "official_relations": 108836,
+  "offline_tests": 213,
+  "ordinary_approved": 7475,
+  "publication_allowed": true,
+  "retention_expires_at": "2026-11-25T08:21:15Z",
+  "schema_version": 1,
+  "source_refetch": "docs/evidence/source-integrity-production-refetch-20261027.json",
+  "status": "REVIEW",
+  "total_findings": 9912
+}

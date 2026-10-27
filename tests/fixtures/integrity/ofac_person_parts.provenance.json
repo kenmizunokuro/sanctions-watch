@@ -1,0 +1,11 @@
+{
+  "extraction": "Literal source byte slices: name/party reference declarations and the complete Identity blocks for each selected Party. Feature blocks omitted. No name values or field declarations were synthesized.",
+  "fragment_sha256": "2d6eadfe34bf5e04c1f1d115a26751042bc99f0c3191ef6bfc69c1504d34ee7a",
+  "party_ids": [
+    "39585",
+    "28545"
+  ],
+  "source_body_sha256": "0d805bf58997908c8b5ba3233bc9b2b6d59bb04ea7881cfdc3c4c47d90d36e27",
+  "source_raw_path": "data/raw/ofac_sdn_advanced/20261021T175055Z__sdn_advanced.xml.gz",
+  "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML"
+}

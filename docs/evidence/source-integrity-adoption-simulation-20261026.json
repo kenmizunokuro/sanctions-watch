@@ -1,0 +1,134 @@
+{
+  "actual_approvals": 0,
+  "actual_ledger_created": false,
+  "actual_master_changes": 0,
+  "business_input_hashes": {
+    "data/kubun_map.json": "007da2fec65dd0357f5d3f91b2b68927f8dcf1c97b95253cc1c0c51a1d55e3f6",
+    "data/master/master.csv": "70fa1fa08bc87ccbef1896eb8908dfbfa1d730944f2a0ff6d208ff1445138a5d",
+    "data/master/ofac_alias_history.csv": "d57da2573d90010f3f6f962d6b07963511f320a2f6e67c09000c4613f294138a",
+    "data/state.json": "b354595930d020bdcbea1bc4cb77c4703229acea1bfb66facc07a0f3f4fd907a"
+  },
+  "business_inputs_unchanged": true,
+  "code_hashes": {
+    "src/integrity_audit.py": "f1a11fc7aba3782bfa04b51f60d5b3175d5bbc75a7c8cfe1137ac4656abd7f00",
+    "src/integrity_decisions.py": "bd4fca69512be6893bda69f7791968dd85fb9983f883e1fd4ae0a0537fcdf50d",
+    "src/integrity_triage.py": "f17b64c5120dbdc66f9af02c95daf67ecd59d297321f16c838b0b3cbc3f5f403",
+    "src/normalize.py": "e7ae198800bc67be75870ea1bf30a8ae698a4d614bfff832fa3a610d357c9a02"
+  },
+  "fixed_inputs": {
+    "docs/evidence/source-integrity-20261026-alias-fields-audit.json.gz": "2a8c219d58eae466436a245c29bf5698a24856373c1886768fee0472f38d53b7",
+    "docs/evidence/source-integrity-20261026-alias-fields-triage.json.gz": "0e696ee6f5879a9f23eb0e7b6d3365e4a3c3fa120c8ca0eb7aa6ba75756ec890",
+    "docs/evidence/source-integrity-key-repair-proposal.json": "95b5b56ef00b683002efc0feaa5cedad500bedb4fce7acf6dbdbcfbcacf9cb92"
+  },
+  "limitations": [
+    "Hypothetical aggregate scenarios are not approvals and never create a decision ledger.",
+    "Uses fixed saved lineage/document roles, not a fresh independent source parse or current remote listing.",
+    "Unknown history is not grandfathered; all 2429 judgment targets retain their veto."
+  ],
+  "proposed_key_merge": {
+    "applied": false,
+    "master_rows_after": 89340,
+    "master_rows_before": 89341,
+    "merged_fields": {
+      "categories": "OFAC:SDN",
+      "display_name": "CHERNOMORSKI BANK RAZVITIYA I REKONSTRUKTSII, OTKRYTOE AKTSIONERNOE OBSHCHESTVO",
+      "first_seen_ms": "1749171596000",
+      "invalid_reason": "",
+      "last_updated_ms": "1788453044465",
+      "match_key": "otkrytoeaktsionernoeobshchestvochernomorskibankrazvitiyairekonstruktsii",
+      "remark": "制裁リスト（OFAC：SDN）",
+      "review_flag": "",
+      "risk_level": "高",
+      "risk_type": "制裁リスト",
+      "sources": "OFAC",
+      "status": "有効",
+      "variants": "[\"'CHERNOMORSKI BANK RAZVITIYA I REKONSTRUKTSII, OTKRYTOE AKTSIONERNOE OBSHCHESTVO'\", \"CHERNOMORSKI BANK RAZVITIYA I REKONSTRUKTSII, OTKRYTOE AKTSIONERNOE OBSHCHESTVO\"]"
+    },
+    "ofac_party_id": "22504",
+    "resulting_rows": 1,
+    "same_display_and_active_status": true,
+    "separate_original_rows_preserved_in": "docs/evidence/source-integrity-key-repair-proposal.json",
+    "source_rows": 2
+  },
+  "publication_authorized": false,
+  "scenarios": {
+    "current_unapproved": {
+      "blocking_findings": 9906,
+      "hypothetical_retention_applied": 0,
+      "publication_allowed_in_simulation": false,
+      "remaining_classifications": {
+        "ARCHIVED_NAME_WITHOUT_INDEX": 4,
+        "CURRENT_FORMAT_VARIANT": 41,
+        "CURRENT_PERSON_ORDER_VARIANT": 3518,
+        "CURRENT_WEAK_ONLY": 2875,
+        "CURRENT_WEAK_PERSON_ORDER_VARIANT": 669,
+        "HISTORICAL_ALIAS_CONFIRMED": 33,
+        "HISTORICAL_PARTY_CONFIRMED": 335,
+        "KEY_COLLISION_REVIEW": 2,
+        "NON_NAME_FIELD_ONLY": 33,
+        "NOTICE_ALIAS_FIELD_REVIEW": 603,
+        "NOTICE_MENTION_ONLY": 567,
+        "ORIGIN_UNRESOLVED": 1223,
+        "WEAK_EVIDENCE_CONFLICT": 3
+      },
+      "simulation_only": true,
+      "status": "BLOCKED",
+      "total_findings": 9914
+    },
+    "hypothetical_key_merge_and_retention": {
+      "blocking_findings": 2429,
+      "hypothetical_retention_applied": 7475,
+      "publication_allowed_in_simulation": false,
+      "remaining_classifications": {
+        "NON_NAME_FIELD_ONLY": 33,
+        "NOTICE_ALIAS_FIELD_REVIEW": 603,
+        "NOTICE_MENTION_ONLY": 567,
+        "ORIGIN_UNRESOLVED": 1223,
+        "WEAK_EVIDENCE_CONFLICT": 3
+      },
+      "simulation_only": true,
+      "status": "BLOCKED",
+      "total_findings": 9912
+    },
+    "hypothetical_key_merge_only": {
+      "blocking_findings": 9904,
+      "hypothetical_retention_applied": 0,
+      "publication_allowed_in_simulation": false,
+      "remaining_classifications": {
+        "ARCHIVED_NAME_WITHOUT_INDEX": 4,
+        "CURRENT_FORMAT_VARIANT": 41,
+        "CURRENT_PERSON_ORDER_VARIANT": 3518,
+        "CURRENT_WEAK_ONLY": 2875,
+        "CURRENT_WEAK_PERSON_ORDER_VARIANT": 669,
+        "HISTORICAL_ALIAS_CONFIRMED": 33,
+        "HISTORICAL_PARTY_CONFIRMED": 335,
+        "NON_NAME_FIELD_ONLY": 33,
+        "NOTICE_ALIAS_FIELD_REVIEW": 603,
+        "NOTICE_MENTION_ONLY": 567,
+        "ORIGIN_UNRESOLVED": 1223,
+        "WEAK_EVIDENCE_CONFLICT": 3
+      },
+      "simulation_only": true,
+      "status": "BLOCKED",
+      "total_findings": 9912
+    },
+    "hypothetical_retention_7475": {
+      "blocking_findings": 2431,
+      "hypothetical_retention_applied": 7475,
+      "publication_allowed_in_simulation": false,
+      "remaining_classifications": {
+        "KEY_COLLISION_REVIEW": 2,
+        "NON_NAME_FIELD_ONLY": 33,
+        "NOTICE_ALIAS_FIELD_REVIEW": 603,
+        "NOTICE_MENTION_ONLY": 567,
+        "ORIGIN_UNRESOLVED": 1223,
+        "WEAK_EVIDENCE_CONFLICT": 3
+      },
+      "simulation_only": true,
+      "status": "BLOCKED",
+      "total_findings": 9914
+    }
+  },
+  "schema_version": 1,
+  "simulation_only": true
+}

@@ -1,0 +1,77 @@
+name: publish-integrity-adoption
+
+# One-time publication of the approved metadata migration. Keep this separate
+# from official additions/delistings and from internal_import_latest.xlsx.
+on:
+  push:
+    branches: [main]
+    paths:
+      - docs/evidence/source-integrity-production-refetch-20261027.json
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sanctions-watch-commit
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: 承認済みmasterと今回の再取得を照合
+        run: |
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          approval=json.loads(Path('docs/evidence/source-integrity-production-approval-20261026.json').read_text())
+          fresh=json.loads(Path('docs/evidence/source-integrity-production-refetch-20261027.json').read_text())
+          assert approval['approved'] and approval['approved_scope']['merge_and_production_publication']
+          assert fresh['retrieval_success'] and len(fresh['records'])==8
+          assert hashlib.sha256(Path('data/master/master.csv').read_bytes()).hexdigest()==approval['master_after_sha256']
+          assert all(r['http_status']==200 and (r['role']=='index' or r['verified_byte_equal_to_approved_snapshot']) for r in fresh['records'])
+          PY
+      - name: 一次ソース完全性と期限を検証
+        run: bash .github/scripts/integrity-gate.sh all success
+      - name: 承認済み注記のExcelを生成
+        run: |
+          python -m src.export_excel
+          python -m src.export_diff_excel \
+            --diff docs/evidence/source-integrity-production-metadata-changes-20261026.csv \
+            --out dist/internal_import_integrity_adoption_20261026.xlsx
+      - name: 配布用Releaseを更新
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$(git ls-remote origin refs/heads/main | cut -f1)"
+          gh release upload latest \
+            dist/black_receiver_name_all.xlsx \
+            dist/internal_import_integrity_adoption_20261026.xlsx \
+            --clobber --repo "$GITHUB_REPOSITORY"
+      - name: 検証済み配布物
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: integrity-adoption-${{ github.run_id }}
+          path: |
+            dist/black_receiver_name_all.xlsx
+            dist/internal_import_integrity_adoption_20261026.xlsx
+          retention-days: 90
+          if-no-files-found: error
+      - name: 監査証跡
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: integrity-adoption-audit-${{ github.run_id }}
+          path: data/integrity_audit/
+          retention-days: 90
+          if-no-files-found: warn

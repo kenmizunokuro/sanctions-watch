@@ -1,0 +1,140 @@
+{
+  "all_bodies_byte_equal": true,
+  "all_http200": true,
+  "artifacts": {
+    "dist/black_receiver_name_all.xlsx": "4bc026b1d853fecf7f508ac11d43ae000c5dab183a5ee707323dc5dd2b71575f",
+    "dist/internal_import_integrity_adoption_20261026.xlsx": "061affdf7006b99d846329a43a5ba396fa015475748834f3a88d5e80dfe49b39",
+    "docs/evidence/source-integrity-production-audit-20261026.json.gz": "0bcf4a8071201baef68064faafe77ba5b2ddf64bb346b7b1a01de90097c16a2e",
+    "docs/evidence/source-integrity-production-triage-20261026.json.gz": "ceb99d6694fa086328e82449715243e28ecfd50076ecf52327b899c2e9052175"
+  },
+  "automatic_delistings": 0,
+  "blocking": 0,
+  "changed_field_counts": {
+    "remark": 2429,
+    "review_flag": 2429,
+    "risk_type": 2429,
+    "variants": 1
+  },
+  "expires_at": "2026-11-25T08:21:15Z",
+  "full_tests": 599,
+  "legacy_accepted": 2429,
+  "master_rows": 89340,
+  "official_designation_events": 0,
+  "official_relations": 108836,
+  "offline_tests": 213,
+  "ordinary_approved": 7475,
+  "publication_allowed": true,
+  "real_gate_exit": 0,
+  "regression": [
+    {
+      "master_key": "sebastienuwimbabazi",
+      "master_rows": [
+        {
+          "categories": "OFAC:SDN;財務省:コンゴ民主共和国(個人)",
+          "display_name": "UWIMBABAZI, Sebastien",
+          "first_seen_ms": "1745545941000",
+          "invalid_reason": "",
+          "last_updated_ms": "1791467929509",
+          "match_key": "sebastienuwimbabazi",
+          "remark": "制裁リスト（財務省：コンゴ民主共和国(個人)／OFAC：SDN）",
+          "review_flag": "",
+          "risk_level": "高",
+          "risk_type": "制裁リスト",
+          "sources": "OFAC;財務省",
+          "status": "有効",
+          "variants": "[\"Sebastien UWIMBABAZI\", \"UWIMBABAZI, Sebastien\"]"
+        }
+      ],
+      "name": "SEBASTIEN UWIMBABAZI",
+      "primary": true,
+      "source_hash": "f8e1038419ab0146cbce89ae9fa7b5f9d298548c8bca4953f970c01f87b3f7bc",
+      "source_id": "009-000046",
+      "un_id": "CDi.046"
+    },
+    {
+      "master_key": "muhammedlumisa",
+      "master_rows": [
+        {
+          "categories": "OFAC:SDN;財務省:コンゴ民主共和国(個人)",
+          "display_name": "LUMISA, Muhammed",
+          "first_seen_ms": "1745545941000",
+          "invalid_reason": "",
+          "last_updated_ms": "1791467929509",
+          "match_key": "muhammedlumisa",
+          "remark": "制裁リスト（財務省：コンゴ民主共和国(個人)／OFAC：SDN）",
+          "review_flag": "",
+          "risk_level": "高",
+          "risk_type": "制裁リスト",
+          "sources": "OFAC;財務省",
+          "status": "有効",
+          "variants": "[\"LUMISA, Muhammed\", \"Muhammed Lumisa\"]"
+        }
+      ],
+      "name": "MUHAMMED LUMISA",
+      "primary": true,
+      "source_hash": "f8e1038419ab0146cbce89ae9fa7b5f9d298548c8bca4953f970c01f87b3f7bc",
+      "source_id": "009-000047",
+      "un_id": "CDi.047"
+    },
+    {
+      "master_key": "muhamadlumisa",
+      "master_rows": [
+        {
+          "categories": "OFAC:SDN;財務省:コンゴ民主共和国(個人)",
+          "display_name": "Muhamad Lumisa",
+          "first_seen_ms": "1748573587000",
+          "invalid_reason": "",
+          "last_updated_ms": "1791467929509",
+          "match_key": "muhamadlumisa",
+          "remark": "制裁リスト（財務省：コンゴ民主共和国(個人)／OFAC：SDN）",
+          "review_flag": "",
+          "risk_level": "高",
+          "risk_type": "制裁リスト",
+          "sources": "OFAC;財務省",
+          "status": "有効",
+          "variants": "[\"Muhamad Lumisa\"]"
+        }
+      ],
+      "name": "LUMISA, MUHAMAD",
+      "primary": false,
+      "source_hash": "f8e1038419ab0146cbce89ae9fa7b5f9d298548c8bca4953f970c01f87b3f7bc",
+      "source_id": "009-000047",
+      "un_id": "CDi.047"
+    },
+    {
+      "master_key": "charlessematama",
+      "master_rows": [
+        {
+          "categories": "OFAC:SDN;財務省:コンゴ民主共和国(個人)",
+          "display_name": "SEMATAMA, Charles",
+          "first_seen_ms": "1745545941000",
+          "invalid_reason": "",
+          "last_updated_ms": "1791467929509",
+          "match_key": "charlessematama",
+          "remark": "制裁リスト（財務省：コンゴ民主共和国(個人)／OFAC：SDN）",
+          "review_flag": "",
+          "risk_level": "高",
+          "risk_type": "制裁リスト",
+          "sources": "OFAC;財務省",
+          "status": "有効",
+          "variants": "[\"Charles Sematama\", \"SEMATAMA, Charles\"]"
+        }
+      ],
+      "name": "CHARLES SEMATAMA",
+      "primary": true,
+      "source_hash": "f8e1038419ab0146cbce89ae9fa7b5f9d298548c8bca4953f970c01f87b3f7bc",
+      "source_id": "009-000048",
+      "un_id": "CDi.048"
+    }
+  ],
+  "removed_duplicate_keys": [
+    "otkrytoeaktsionernoeobshchestvo''chernomorskibankrazvitiyairekonstruktsii"
+  ],
+  "reviewed_at": "2026-10-26T08:21:15Z",
+  "schema_version": 1,
+  "source_bodies": 7,
+  "source_fetches": 8,
+  "status": "REVIEW",
+  "total_findings": 9912,
+  "unresolved_category_labels": 8
+}

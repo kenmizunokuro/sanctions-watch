@@ -1,0 +1,84 @@
+name: prepare-integrity-adoption
+
+# Materialize the already approved exact master bytes inside Actions. The
+# connector transport cannot send the 20MB master in one request. Draft only;
+# never runs on main and never relaxes the publication gate.
+on:
+  push:
+    branches: [feat/source-integrity-audit-20261023]
+    paths:
+      - docs/evidence/source-integrity-production-approval-20261026.json
+      - .github/workflows/prepare-integrity-adoption.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: integrity-adoption-prepare
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: feat/source-integrity-audit-20261023
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: 承認済みの元行だけを決定的に変換
+        run: |
+          python - <<'PY'
+          import csv,hashlib,json
+          from pathlib import Path
+          from src import integrity_legacy as L
+          root=Path.cwd()
+          approval=json.loads((root/'docs/evidence/source-integrity-production-approval-20261026.json').read_text())
+          assert approval['approved'] and approval['approved_scope']==dict(duplicate_merge_party_id='22504',duplicate_merge_rows_after=1,duplicate_merge_rows_before=2,legacy_count=2429,merge_and_production_publication=True,ordinary_retention_count=7475)
+          path=root/'data/master/master.csv'
+          digest=hashlib.sha256(path.read_bytes()).hexdigest()
+          if digest==approval['master_after_sha256']:
+              print('already materialized; gate still required')
+          else:
+              assert digest==approval['master_before_sha256'],'Unexpected master; stop without overwriting'
+              with path.open(encoding='utf-8-sig',newline='') as stream:
+                  reader=csv.DictReader(stream);fields=reader.fieldnames;original=list(reader)
+              rows,draft=L.prepare(original,L.load_scope(root),approval['recorded_at_utc'],approval['expires_at_utc'])
+              repair_path=root/'docs/evidence/source-integrity-key-repair-proposal.json'
+              assert hashlib.sha256(repair_path.read_bytes()).hexdigest()==approval['key_repair_proposal_sha256']
+              repair=json.loads(repair_path.read_text())
+              assert [r for r in rows if r['match_key']==repair['source_key']]==[repair['source_row']]
+              assert [r for r in rows if r['match_key']==repair['target_key']]==repair['target_rows']
+              rows=[repair['proposed_merged_fields'] if r['match_key']==repair['target_key'] else r for r in rows if r['match_key']!=repair['source_key']]
+              import io
+              buf=io.StringIO(newline='');writer=csv.DictWriter(buf,fieldnames=fields);writer.writeheader();writer.writerows(rows)
+              body=buf.getvalue().encode('utf-8')
+              assert len(rows)==89340 and hashlib.sha256(body).hexdigest()==approval['master_after_sha256']
+              path.write_bytes(body)
+          PY
+      - name: 全回帰と公開ゲート
+        run: |
+          python -m unittest discover -s tests
+          python -m tests.test_offline
+          bash .github/scripts/integrity-gate.sh all success
+      - name: 検証済みmasterだけをDraft PRへ記録
+        run: |
+          git config user.name 'sanctions-watch[bot]'
+          git config user.email 'sanctions-watch@users.noreply.github.com'
+          git add data/master/master.csv
+          if ! git diff --cached --quiet; then
+            git commit -m 'feat(audit): materialize exact approved retention master'
+            git push origin HEAD:refs/heads/feat/source-integrity-audit-20261023
+          fi
+      - name: 監査証跡
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: integrity-adoption-prepare-${{ github.run_id }}
+          path: data/integrity_audit/
+          retention-days: 90
+          if-no-files-found: warn

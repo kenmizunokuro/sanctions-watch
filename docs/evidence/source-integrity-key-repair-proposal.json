@@ -1,0 +1,65 @@
+{
+  "action": "REVIEW_MERGE",
+  "applied": false,
+  "preserve": [
+    "first_seen_ms",
+    "last_updated_ms",
+    "variants",
+    "sources",
+    "categories",
+    "status",
+    "all prior audit history"
+  ],
+  "source_key": "otkrytoeaktsionernoeobshchestvo''chernomorskibankrazvitiyairekonstruktsii",
+  "source_row": {
+    "categories": "OFAC:SDN",
+    "display_name": "CHERNOMORSKI BANK RAZVITIYA I REKONSTRUKTSII, OTKRYTOE AKTSIONERNOE OBSHCHESTVO",
+    "first_seen_ms": "1788040337525",
+    "invalid_reason": "",
+    "last_updated_ms": "1788040337525",
+    "match_key": "otkrytoeaktsionernoeobshchestvo''chernomorskibankrazvitiyairekonstruktsii",
+    "remark": "制裁リスト（OFAC：SDN）",
+    "review_flag": "",
+    "risk_level": "高",
+    "risk_type": "制裁リスト",
+    "sources": "OFAC",
+    "status": "有効",
+    "variants": "[\"'CHERNOMORSKI BANK RAZVITIYA I REKONSTRUKTSII, OTKRYTOE AKTSIONERNOE OBSHCHESTVO'\"]"
+  },
+  "target_key": "otkrytoeaktsionernoeobshchestvochernomorskibankrazvitiyairekonstruktsii",
+  "target_rows": [
+    {
+      "categories": "OFAC:SDN",
+      "display_name": "CHERNOMORSKI BANK RAZVITIYA I REKONSTRUKTSII, OTKRYTOE AKTSIONERNOE OBSHCHESTVO",
+      "first_seen_ms": "1749171596000",
+      "invalid_reason": "",
+      "last_updated_ms": "1788453044465",
+      "match_key": "otkrytoeaktsionernoeobshchestvochernomorskibankrazvitiyairekonstruktsii",
+      "remark": "制裁リスト（OFAC：SDN）",
+      "review_flag": "",
+      "risk_level": "高",
+      "risk_type": "制裁リスト",
+      "sources": "OFAC",
+      "status": "有効",
+      "variants": "[\"CHERNOMORSKI BANK RAZVITIYA I REKONSTRUKTSII, OTKRYTOE AKTSIONERNOE OBSHCHESTVO\"]"
+    }
+  ],
+  "proposed_merged_fields": {
+    "categories": "OFAC:SDN",
+    "display_name": "CHERNOMORSKI BANK RAZVITIYA I REKONSTRUKTSII, OTKRYTOE AKTSIONERNOE OBSHCHESTVO",
+    "first_seen_ms": "1749171596000",
+    "invalid_reason": "",
+    "last_updated_ms": "1788453044465",
+    "match_key": "otkrytoeaktsionernoeobshchestvochernomorskibankrazvitiyairekonstruktsii",
+    "remark": "制裁リスト（OFAC：SDN）",
+    "review_flag": "",
+    "risk_level": "高",
+    "risk_type": "制裁リスト",
+    "sources": "OFAC",
+    "status": "有効",
+    "variants": "[\"'CHERNOMORSKI BANK RAZVITIYA I REKONSTRUKTSII, OTKRYTOE AKTSIONERNOE OBSHCHESTVO'\", \"CHERNOMORSKI BANK RAZVITIYA I REKONSTRUKTSII, OTKRYTOE AKTSIONERNOE OBSHCHESTVO\"]"
+  },
+  "master_input_sha256": "70fa1fa08bc87ccbef1896eb8908dfbfa1d730944f2a0ff6d208ff1445138a5d",
+  "ofac_party_id": "22504",
+  "warning": "Proposal only. Neither source nor target has been changed; no deletion or deactivation is authorized."
+}

@@ -1,0 +1,7 @@
+{
+  "source_url": "https://www.mof.go.jp/policy/international_policy/gaitame_kawase/gaitame/economic_sanctions/shisantouketsu20261021.csv",
+  "source_sha256": "f8e1038419ab0146cbce89ae9fa7b5f9d298548c8bca4953f970c01f87b3f7bc",
+  "raw_path": "data/raw/mof/20261020T120119Z__shisantouketsu20261021.csv.gz",
+  "selection": "\u756a\u53f7 009-000046 / 009-000047 / 009-000048; CSV reserialized, all original cell values preserved",
+  "fixture_sha256": "4d811b1b7ec164b6776ff9029f522cbd4297f4c3678be9d4da7636d193aed312"
+}
