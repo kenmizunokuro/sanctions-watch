@@ -18,7 +18,7 @@ import csv
 import re
 from datetime import datetime, timezone
 from pathlib import Path
-from urllib.parse import urlsplit, urlunsplit
+from urllib.parse import parse_qs, urlsplit, urlunsplit
 
 
 AUDIT_DIR = "data/source_audit"
@@ -76,7 +76,9 @@ def safe_audit_url(value: str) -> str:
     if not parts.query:
         return raw
 
-    if "x-amz-" not in parts.query.lower():
+    azure_signed = ((parts.hostname or '').endswith('.blob.core.windows.net')
+                    and 'sig' in parse_qs(parts.query))
+    if "x-amz-" not in parts.query.lower() and not azure_signed:
         return raw
 
     return urlunsplit((

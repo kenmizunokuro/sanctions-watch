@@ -1,5 +1,9 @@
 # sanctions-watch
 
+国連安保理の統合制裁XMLと全14制裁委員会の発表一覧を、独立した`watch-un.yml`で監視する。
+検知・レビューとmaster反映を分離し、Low quality alias・掲載終了を未承認で反映しない。
+[国連監視の範囲・導入・承認手順](docs/un-sanctions.md)を参照。
+
 [![watch-ofac](https://github.com/kenmizunokuro/sanctions-watch/actions/workflows/watch-ofac.yml/badge.svg)](https://github.com/kenmizunokuro/sanctions-watch/actions/workflows/watch-ofac.yml)
 [![watch-jp](https://github.com/kenmizunokuro/sanctions-watch/actions/workflows/watch-jp.yml/badge.svg)](https://github.com/kenmizunokuro/sanctions-watch/actions/workflows/watch-jp.yml)
 

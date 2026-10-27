@@ -58,6 +58,8 @@ SOURCE_LABEL = {
     "ofac_cons": "OFAC Consolidated",
     "mofa_catalog": "外務省（現行リスト）",
     "mofa_press": "外務省（報道発表）",
+    "un_xml": "国連（統合リスト）",
+    "un_press": "国連（委員会発表）",
 }
 
 STATUS_LABEL = {
@@ -235,6 +237,7 @@ def build_status_rows(
     now: datetime | None = None,
     meti_state: dict | None = None,
     mofa_state: dict | None = None,
+    un_state: dict | None = None,
 ) -> list[list[str]]:
     """全監視ソースの現在状態を固定順で投影する。"""
 
@@ -275,8 +278,25 @@ def build_status_rows(
             mofa_state = {}
     rows: list[list[str]] = []
 
+    if un_state is None:
+        un_path = root / 'data/un/state.json'
+        un_state = json.loads(un_path.read_text(encoding='utf-8')) if un_path.exists() else {}
+
     # 順序を毎回固定する。
     for key, source_label in SOURCE_LABEL.items():
+        if key.startswith('un_'):
+            if not un_state:
+                continue  # Enable these rows only after UN monitoring is initialized.
+            family = 'xml' if key == 'un_xml' else 'press'
+            raw = (un_state or {}).get(family + '_status', '')
+            label = {'error': 'エラー', 'review_required': '更新候補・要レビュー',
+                     'unchanged': '変更なし'}.get(raw, '未確認')
+            rows.append([source_label, label, _jst((un_state or {}).get('last_checked_at', '')),
+                         (un_state or {}).get('source_updated', '') if family == 'xml' else '',
+                         str((un_state or {}).get('record_count', '')) if family == 'xml' else
+                         str(len((un_state or {}).get('notices', {}))),
+                         (un_state or {}).get('snapshot_hash', '')[:12] if family == 'xml' else ''])
+            continue
         if key.startswith('mofa_'):
             family = (mofa_state or {}).get('families', {}).get(key, {})
             label = {'unchanged': '変更なし', 'document_updated': '資料更新・要レビュー',

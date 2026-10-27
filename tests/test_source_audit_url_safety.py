@@ -41,6 +41,12 @@ class FetchError(RuntimeError):
 
 class SourceAuditUrlSafetyTest(unittest.TestCase):
 
+    def test_un_azure_distribution_signature_is_removed(self):
+        value = 'https://unsolprodfiles.blob.core.windows.net/publiclegacyxmlfiles/EN/list.xml?sv=2024&sig=SECRET&se=2026'
+        self.assertEqual(audit.safe_audit_url(value),
+                         'https://unsolprodfiles.blob.core.windows.net/publiclegacyxmlfiles/EN/list.xml')
+        self.assertNotIn('SECRET', audit.error_entry('un_xml', 'xml', RuntimeError(value))['error_message'])
+
     def test_signed_final_url_is_sanitized(self):
         row = audit.entry(
             source="ofac_sdn",

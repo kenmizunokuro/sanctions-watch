@@ -1,0 +1,107 @@
+name: watch-un
+on:
+  schedule:
+    - cron: '8,23,38,53 * * * *'
+  workflow_dispatch:
+  pull_request:
+    paths: ['src/**', 'tests/**', 'apps_script/**', '.github/workflows/watch-un.yml', 'requirements*.txt']
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: pip
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - run: pip install -r requirements.txt
+      - name: Offline regression
+        run: |
+          python -m unittest discover -s tests -p 'test_*.py'
+          python -m tests.test_offline
+          python -m tests.test_e2e
+          python -m tests.test_mof_record_diff
+          python -m tests.test_mof_re_review
+          node --test tests/test_un_gas.cjs tests/test_mofa_gas.cjs tests/test_ofac_watchdog.cjs tests/test_ofac_watchdog_status.cjs
+          node tests/test_crypto_dashboard.cjs
+          git diff --check
+
+  monitor:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: write
+    concurrency:
+      group: sanctions-watch-commit
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: UN XML and all committee indexes
+        id: watch
+        run: python -m src.un_watch
+      - name: Publish validated observations including explicit failures
+        id: publish
+        if: always() && (steps.watch.outcome == 'success' || steps.watch.outcome == 'failure')
+        run: |
+          test -f data/un/state.json
+          git config user.name 'sanctions-watch[bot]'
+          git config user.email 'sanctions-watch@users.noreply.github.com'
+          git add data/un/ data/raw/un/ data/source_audit/ data/heartbeat/ data/dashboard/status.csv data/dashboard/un_reviews.csv
+          git diff --cached --check
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'chore(un): 国連の取得・検証・レビュー状態を記録'
+          # Do not rebase computed status/ledger files onto unseen inputs. A
+          # concurrent external push fails here; the next run starts from main.
+          git push origin HEAD:main
+      - name: UN detection and validation notices
+        if: always() && steps.publish.outcome == 'success'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          NEW_XML: ${{ steps.watch.outputs.new_xml_events }}
+          NEW_NOTICES: ${{ steps.watch.outputs.new_notices }}
+          MONITOR_OUTCOME: ${{ steps.watch.outcome }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          from src.notify import post
+          state = json.loads(Path('data/un/state.json').read_text())
+          if os.environ['MONITOR_OUTCOME'] != 'success':
+              post('【国連 監視エラー】取得・解析・監視範囲を確認してください。直前の有効snapshotとmasterは保持。')
+          if int(os.environ.get('NEW_NOTICES') or 0):
+              post('【国連 更新発表検知】新着・改訂発表 ' + os.environ['NEW_NOTICES'] + '件。XML検証・名簿反映とは別に要確認。data/dashboard/un_reviews.csv を参照。')
+          if int(os.environ.get('NEW_XML') or 0):
+              event = state['events'][-1]
+              kind = '初回収録' if event['baseline'] else '差分候補'
+              post('【国連 XML検証済・' + kind + '】追加 ' + str(len(event['added'])) + ' / 掲載終了候補 ' + str(len(event['removed'])) + ' / 変更 ' + str(len(event['changed'])) + '\nSHA256: ' + event['source_hash'] + '\n状態: 要レビュー・master未反映')
+          PY
+      - name: Retain UN evidence on success or failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: un-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            data/un/
+            data/raw/un/
+            data/source_audit/
+            data/dashboard/un_reviews.csv
+          retention-days: 90
+          if-no-files-found: warn
