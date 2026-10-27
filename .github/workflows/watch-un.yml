@@ -2,7 +2,7 @@ name: watch-un
 on:
   push:
     branches: [main]
-    paths: ['.github/workflows/watch-un.yml']
+    paths: ['.github/workflows/watch-un.yml', 'src/un_*.py', 'src/fetch.py', 'src/source_audit.py']
   schedule:
     - cron: '8,23,38,53 * * * *'
   workflow_dispatch:

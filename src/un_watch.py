@@ -133,6 +133,14 @@ def projections(root: Path, state: dict, *, now: datetime) -> list[FileWrite]:
 def _document(root, key, url, previous, parser, fetcher):
     fetched = fetcher(url, prev=previous, url_validator=U.validate_un_url,
                       max_bytes=U.MAX_BYTES, timeout=30)
+    try:
+        return _read_document(root, key, url, previous, parser, fetched)
+    except Exception as error:
+        error.fetched = fetched
+        raise
+
+
+def _read_document(root, key, url, previous, parser, fetched):
     U.validate_un_url(fetched.final_url or url)
     if fetched.not_modified:
         path = previous.get('raw_path', '')
@@ -141,14 +149,14 @@ def _document(root, key, url, previous, parser, fetcher):
         raw = root / path
         if not raw.resolve().is_relative_to((root / 'data/raw/un').resolve()):
             raise U.UNSchemaError('UN cache path outside archive')
+        fetched.raw_path = path
         body = read_raw(raw)
         if hashlib.sha256(body).hexdigest() != previous.get('sha256'):
             raise U.UNSchemaError('UN 304 raw hash mismatch')
-        fetched.raw_path = path
     else:
         body = fetched.body
-        if not body:
-            raise U.UNSchemaError('empty UN response')
+        if body is None:
+            raise U.UNSchemaError('UN response body missing')
         actual = hashlib.sha256(body).hexdigest()
         if actual != fetched.sha256:
             raise U.UNSchemaError('UN response hash mismatch')
@@ -162,12 +170,10 @@ def _document(root, key, url, previous, parser, fetcher):
             archived = gzip.compress(body, mtime=0)
             atomic_replace_many([FileWrite(raw, lambda p: p.write_bytes(archived))])
         fetched.raw_path = str(raw.relative_to(root))
+    if not body:
+        raise U.UNSchemaError('empty UN response')
     # Even on 304, reparse verified original bytes. No stale parse cache shortcuts.
-    try:
-        parsed = parser(body)
-    except Exception as error:
-        error.fetched = fetched
-        raise
+    parsed = parser(body)
     metadata = dict(url=url, final_url=A.safe_audit_url(fetched.final_url),
                     sha256=fetched.sha256, etag=fetched.etag, last_modified=fetched.last_modified,
                     raw_path=fetched.raw_path, filename=fetched.filename)
@@ -260,7 +266,8 @@ def run(root: Path, *, fetcher=fetch, now=None) -> dict:
                              diff_counts={k: len(event[k]) if event else 0 for k in ['added', 'removed', 'changed']}))
     except Exception as error:
         xml_ok = False
-        failures.append(dict(source='un_xml', error_type=type(error).__name__, message=A._clean_error(error)))
+        failures.append(dict(source='un_xml', error_type=type(error).__name__, message=A._clean_error(error),
+                             http_status=getattr(getattr(error, 'fetched', None), 'http_status', '')))
         audit.append(A.error_entry('un_xml', 'consolidated_xml', error, url=U.XML_URL,
                                    schema_changed=isinstance(error, U.UNSchemaError),
                                    fetch_failed=not isinstance(error, U.UNSchemaError)))
@@ -292,7 +299,8 @@ def run(root: Path, *, fetcher=fetch, now=None) -> dict:
                                  record_count=len(notices)))
         except Exception as error:
             press_ok = False
-            failures.append(dict(source=key, error_type=type(error).__name__, message=A._clean_error(error)))
+            failures.append(dict(source=key, error_type=type(error).__name__, message=A._clean_error(error),
+                                 http_status=getattr(getattr(error, 'fetched', None), 'http_status', '')))
             audit.append(A.error_entry('un_press', 'committee_' + committee, error, url=url,
                                        schema_changed=isinstance(error, U.UNSchemaError),
                                        fetch_failed=not isinstance(error, U.UNSchemaError)))
