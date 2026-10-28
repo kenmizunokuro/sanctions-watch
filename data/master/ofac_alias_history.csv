@@ -76959,6 +76959,10 @@ SDN,58406,ABHAR POLYMER COMPOUNDS CO.,abharpolymercompoundsco.,1788483946814,178
 SDN,58406,Abhar Polymer Blend Productions,abharpolymerblendproductions,1788483946814,1788483946814,1,1,advanced_xml_v3,0,0
 SDN,58406,Abhar Polymer Compounds Co.,abharpolymercompoundsco.,1788483946814,1788483946814,1,1,advanced_xml_v3,1,0
 SDN,58406,آميزه هاى پليمرى ابهر,آميزههاىپليمرىابهر,1788483946814,1788483946814,1,1,advanced_xml_v3,1,0
+SDN,58407,ZIGAMA CREDIT AND SAVINGS BANK,zigamacreditandsavingsbank,1793197883257,1793197883257,1,1,classic_csv,0,0
+SDN,58407,ZIGAMA CREDIT AND SAVINGS SOCIETY,zigamacreditandsavingssociety,1793197883257,1793197883257,1,1,advanced_xml_v3;classic_csv,1,0
+SDN,58407,Zigama CSS,zigamacss,1793197883257,1793197883257,1,1,advanced_xml_v3,0,1
+SDN,58407,Zigama Credit and Savings Bank,zigamacreditandsavingsbank,1793197883257,1793197883257,1,1,advanced_xml_v3,0,0
 SDN,58408,"TSORIS, George",georgetsoris,1788483946814,1788483946814,1,1,classic_csv,0,0
 SDN,58408,"TSORIS, Georgios",georgiostsoris,1788483946814,1788483946814,1,1,classic_csv,0,0
 SDN,58408,Tsoris George,tsorisgeorge,1788483946814,1788483946814,1,1,advanced_xml_v3,0,0
@@ -77728,6 +77732,47 @@ SDN,58873,WHALES DIAMOND,whalesdiamond,1792605067335,1792605067335,1,1,classic_c
 SDN,58873,Whales Diamond,whalesdiamond,1792605067335,1792605067335,1,1,advanced_xml_v3,1,0
 SDN,58874,WHALES PEARL,whalespearl,1792605067335,1792605067335,1,1,classic_csv,0,0
 SDN,58874,Whales Pearl,whalespearl,1792605067335,1792605067335,1,1,advanced_xml_v3,1,0
+SDN,58879,FIRST FINANCIAL AND TECHNICAL DEVELOPMENT CENTER,firstfinancialandtechnicaldevelopmentcenter,1793197883257,1793197883257,1,1,advanced_xml_v3;classic_csv,1,0
+SDN,58880,"KIM, Kyo'ng-chu",kyo'ng-chukim,1793197883257,1793197883257,1,1,classic_csv,0,0
+SDN,58880,"KIM, Kyong Ju",kyongjukim,1793197883257,1793197883257,1,1,classic_csv,0,0
+SDN,58880,Kim Kyo'ng-chu,kimkyo'ng-chu,1793197883257,1793197883257,1,1,advanced_xml_v3,0,0
+SDN,58880,Kim Kyong Ju,kimkyongju,1793197883257,1793197883257,1,1,advanced_xml_v3,1,0
+SDN,58881,"RI, T'ae-ch'o'l",t'ae-ch'o'lri,1793197883257,1793197883257,1,1,classic_csv,0,0
+SDN,58881,"RI, Thae Chol",thaecholri,1793197883257,1793197883257,1,1,classic_csv,0,0
+SDN,58881,Ri T'ae-ch'o'l,rit'ae-ch'o'l,1793197883257,1793197883257,1,1,advanced_xml_v3,0,0
+SDN,58881,Ri Thae Chol,rithaechol,1793197883257,1793197883257,1,1,advanced_xml_v3,1,0
+SDN,58882,"SO', Hyo'n-chin",hyo'n-chinso,1793197883257,1793197883257,1,1,classic_csv,0,0
+SDN,58882,"SO, Hyong Jin",hyongjinso,1793197883257,1793197883257,1,1,classic_csv,0,0
+SDN,58882,So Hyong Jin,sohyongjin,1793197883257,1793197883257,1,1,advanced_xml_v3,1,0
+SDN,58882,So' Hyo'n-chin,so'hyo'n-chin,1793197883257,1793197883257,1,1,advanced_xml_v3,0,0
+SDN,58883,"HAN, Yu Song",yusonghan,1793197883257,1793197883257,1,1,classic_csv,0,0
+SDN,58883,"HAN, Yu-so'ng",yu-so'nghan,1793197883257,1793197883257,1,1,classic_csv,0,0
+SDN,58883,Han Yu Song,hanyusong,1793197883257,1793197883257,1,1,advanced_xml_v3,1,0
+SDN,58883,Han Yu-so'ng,hanyu-so'ng,1793197883257,1793197883257,1,1,advanced_xml_v3,0,0
+SDN,58884,"KIM, Su'ng-kwan",su'ng-kwankim,1793197883257,1793197883257,1,1,classic_csv,0,0
+SDN,58884,"KIM, Sung Gwan",sunggwankim,1793197883257,1793197883257,1,1,classic_csv,0,0
+SDN,58884,Kim Su'ng-kwan,kimsu'ng-kwan,1793197883257,1793197883257,1,1,advanced_xml_v3,0,0
+SDN,58884,Kim Sung Gwan,kimsunggwan,1793197883257,1793197883257,1,1,advanced_xml_v3,1,0
+SDN,58885,"HYO'N, Se-il",se-ilhyo'n,1793197883257,1793197883257,1,1,classic_csv,0,0
+SDN,58885,"HYON, Se Il",seilhyon,1793197883257,1793197883257,1,1,classic_csv,0,0
+SDN,58885,Hyo'n Se-il,hyo'nse-il,1793197883257,1793197883257,1,1,advanced_xml_v3,0,0
+SDN,58885,Hyon Se Il,hyonseil,1793197883257,1793197883257,1,1,advanced_xml_v3,1,0
+SDN,58886,"BOYKOV, Ilya Aleksandrovich",ilyaaleksandrovichboykov,1793197883257,1793197883257,1,1,classic_csv,0,0
+SDN,58886,Boykov Ilya Aleksandrovich,boykovilyaaleksandrovich,1793197883257,1793197883257,1,1,advanced_xml_v3,1,0
+SDN,58886,Бойков Илья Александрович,бойковильяалександрович,1793197883257,1793197883257,1,1,advanced_xml_v3,1,0
+SDN,58887,"KIM, Ki Hyok",kihyokkim,1793197883257,1793197883257,1,1,classic_csv,0,0
+SDN,58887,"KIM, Ki-hyo'k",ki-hyo'kkim,1793197883257,1793197883257,1,1,classic_csv,0,0
+SDN,58887,Kim Ki Hyok,kimkihyok,1793197883257,1793197883257,1,1,advanced_xml_v3,1,0
+SDN,58887,Kim Ki-hyo'k,kimki-hyo'k,1793197883257,1793197883257,1,1,advanced_xml_v3,0,0
+SDN,58887,김 기혁,김기혁,1793197883257,1793197883257,1,1,advanced_xml_v3,1,0
+SDN,58888,"KIM, Hyo Dong",hyodongkim,1793197883257,1793197883257,1,1,classic_csv,0,0
+SDN,58888,"KIM, Hyo-tong",hyo-tongkim,1793197883257,1793197883257,1,1,classic_csv,0,0
+SDN,58888,Kim Hyo Dong,kimhyodong,1793197883257,1793197883257,1,1,advanced_xml_v3,1,0
+SDN,58888,Kim Hyo-tong,kimhyo-tong,1793197883257,1793197883257,1,1,advanced_xml_v3,0,0
+SDN,58888,김 효동,김효동,1793197883257,1793197883257,1,1,advanced_xml_v3,1,0
+SDN,58889,"OBERTAS, Vitold Viktorovich",vitoldviktorovichobertas,1793197883257,1793197883257,1,1,classic_csv,0,0
+SDN,58889,Obertas Vitold Viktorovich,obertasvitoldviktorovich,1793197883257,1793197883257,1,1,advanced_xml_v3,1,0
+SDN,58889,Обертас Витольд Викторович,обертасвитольдвикторович,1793197883257,1793197883257,1,1,advanced_xml_v3,1,0
 SDN,589,"CRYMSA - ARGENTINA, S.A.","crymsa-argentina,s.a.",1788483946814,1788483946814,1,1,advanced_xml_v3;classic_csv,1,0
 SDN,58930,"MOHAMADI, Jela",jelamohamadi,1792085450706,1792085450706,1,1,classic_csv,0,0
 SDN,58930,"MOHAMMADI ALIABAD, Zhila",zhilamohammadialiabad,1792085450706,1792085450706,1,1,classic_csv,0,0
@@ -77847,6 +77892,14 @@ SDN,58992,شرکت فرزانگان انرژی پارس,شرکتفرزانگان
 SDN,58997,BANCO INTERNACIONAL DE COMERCIO S.A.,bancointernacionaldecomercios.a.,1792085450706,1792085450706,1,1,advanced_xml_v3;classic_csv,1,0
 SDN,58997,BICSA,bicsa,1792085450706,1792085450706,1,1,advanced_xml_v3,0,1
 SDN,590,CUBACANCUN CIGARS AND GIFT SHOPS,cubacancuncigarsandgiftshops,1788483946814,1788483946814,1,1,advanced_xml_v3;classic_csv,1,0
+SDN,59069,MINADEF OF THE REPUBLIC OF RWANDA,minadefoftherepublicofrwanda,1793197883257,1793197883257,1,1,classic_csv,0,0
+SDN,59069,MINADEF of the Republic of Rwanda,minadefoftherepublicofrwanda,1793197883257,1793197883257,1,1,advanced_xml_v3,0,0
+SDN,59069,MINISTRY OF DEFENCE OF THE REPUBLIC OF RWANDA,ministryofdefenceoftherepublicofrwanda,1793197883257,1793197883257,1,1,classic_csv,0,0
+SDN,59069,MOD OF THE REPUBLIC OF RWANDA,modoftherepublicofrwanda,1793197883257,1793197883257,1,1,classic_csv,0,0
+SDN,59069,MOD of the Republic of Rwanda,modoftherepublicofrwanda,1793197883257,1793197883257,1,1,advanced_xml_v3,0,0
+SDN,59069,Ministry of Defence of the Republic of Rwanda,ministryofdefenceoftherepublicofrwanda,1793197883257,1793197883257,1,1,advanced_xml_v3,1,0
+SDN,59069,RWANDAN MINISTRY OF DEFENCE,rwandanministryofdefence,1793197883257,1793197883257,1,1,classic_csv,0,0
+SDN,59069,Rwandan Ministry of Defence,rwandanministryofdefence,1793197883257,1793197883257,1,1,advanced_xml_v3,0,0
 SDN,591,CUBAEXPORT,cubaexport,1788483946814,1788483946814,1,1,advanced_xml_v3;classic_csv,1,0
 SDN,592,CUBAFRUTAS,cubafrutas,1788483946814,1788483946814,1,1,advanced_xml_v3;classic_csv,1,0
 SDN,593,CUBAN CIGARS TRADE,cubancigarstrade,1788483946814,1788483946814,1,1,advanced_xml_v3;classic_csv,1,0
