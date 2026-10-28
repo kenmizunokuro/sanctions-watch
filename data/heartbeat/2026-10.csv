@@ -1036,3 +1036,4 @@ checked_at,source,status,content_hash,source_updated,record_count,raw_path
 2026-10-28T21:41:22Z,ofac_cons,unchanged,dc3f61dce650a4661ff69d6c1847f0d5a90f2fa63951267af68fcfacdb6d8a75,"Mon, 19 Oct 2026 14:02:15 GMT",3396,
 2026-10-28T21:55:17Z,un_xml,review_required,f97b7473cc2fbf9bd3b176a9bf238b41cbd691ada688527ed7476e7328ac06ea,2026-10-27T23:00:04.067Z,1007,
 2026-10-28T21:55:17Z,un_press,error,,,0,
+2026-10-28T22:48:40Z,mof,unchanged,f8e1038419ab0146cbce89ae9fa7b5f9d298548c8bca4953f970c01f87b3f7bc,令和8年10月21日,15284,
