@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-28T23:00:05.544Z",
+  "generated_at": "2026-10-29T19:48:47.546Z",
   "parties": {
     "CDe.001": {
       "committee": "1533",
@@ -255995,6 +255995,12 @@
                 [],
                 "2026-04-28",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-10-29",
+                []
               ]
             ]
           ],
@@ -256267,6 +256273,31 @@
             ]
           ],
           [
+            "INDIVIDUAL_DOCUMENT",
+            [],
+            "",
+            [
+              [
+                "TYPE_OF_DOCUMENT",
+                [],
+                "Passport",
+                []
+              ],
+              [
+                "NUMBER",
+                [],
+                "P05629010",
+                []
+              ],
+              [
+                "ISSUING_COUNTRY",
+                [],
+                "Afghanistan",
+                []
+              ]
+            ]
+          ],
+          [
             "SORT_KEY",
             [],
             "",
@@ -256280,7 +256311,7 @@
           ]
         ]
       ],
-      "fingerprint": "9ea8159f6016cec5899ee8e70017c051ab1337b8db5c4c846efc0046bdcfea49",
+      "fingerprint": "0111b72c084d476349ebc9428c2e4f0c84afe999e7cf01108852c83263f49e47",
       "kind": "individual",
       "list_type": "Taliban",
       "listed_on": "2001-01-31",
@@ -261177,6 +261208,12 @@
                 [],
                 "2026-04-13",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-10-29",
+                []
               ]
             ]
           ],
@@ -261412,6 +261449,31 @@
             ]
           ],
           [
+            "INDIVIDUAL_DOCUMENT",
+            [],
+            "",
+            [
+              [
+                "TYPE_OF_DOCUMENT",
+                [],
+                "Passport",
+                []
+              ],
+              [
+                "NUMBER",
+                [],
+                "P02444826",
+                []
+              ],
+              [
+                "ISSUING_COUNTRY",
+                [],
+                "Afghanistan",
+                []
+              ]
+            ]
+          ],
+          [
             "SORT_KEY",
             [],
             "",
@@ -261425,7 +261487,7 @@
           ]
         ]
       ],
-      "fingerprint": "bbd13ae34ab8e783fec0f3179278fd81bb634943a5f058bd3b6198b696cd79b6",
+      "fingerprint": "7812b451ce40784815117307edfbf18ec8c9ba02d48fa783523913bb05315d0e",
       "kind": "individual",
       "list_type": "Taliban",
       "listed_on": "2001-02-23",
@@ -261952,6 +262014,12 @@
                 [],
                 "2026-04-13",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-10-29",
+                []
               ]
             ]
           ],
@@ -262231,6 +262299,68 @@
             ]
           ],
           [
+            "INDIVIDUAL_DOCUMENT",
+            [],
+            "",
+            [
+              [
+                "TYPE_OF_DOCUMENT",
+                [],
+                "Passport",
+                []
+              ],
+              [
+                "NUMBER",
+                [],
+                "D0010741",
+                []
+              ],
+              [
+                "ISSUING_COUNTRY",
+                [],
+                "Afghanistan",
+                []
+              ],
+              [
+                "DATE_OF_ISSUE",
+                [],
+                "2026-08-05",
+                []
+              ],
+              [
+                "DATE_OF_EXPIRY",
+                [],
+                "2031-08-05",
+                []
+              ]
+            ]
+          ],
+          [
+            "INDIVIDUAL_DOCUMENT",
+            [],
+            "",
+            [
+              [
+                "TYPE_OF_DOCUMENT",
+                [],
+                "Passport",
+                []
+              ],
+              [
+                "NUMBER",
+                [],
+                "P02444824",
+                []
+              ],
+              [
+                "ISSUING_COUNTRY",
+                [],
+                "Afghanistan",
+                []
+              ]
+            ]
+          ],
+          [
             "SORT_KEY",
             [],
             "",
@@ -262244,7 +262374,7 @@
           ]
         ]
       ],
-      "fingerprint": "a94395203c810350ecf377fe00e8bb682d5043866dc6ae200bb5454af14e90c1",
+      "fingerprint": "e3990c5f8ad404799832dd0437e9531b6ef2d5ce8635f4369050922b8a76d13c",
       "kind": "individual",
       "list_type": "Taliban",
       "listed_on": "2001-01-25",
@@ -274851,6 +274981,12 @@
                 [],
                 "2026-07-30",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-10-29",
+                []
               ]
             ]
           ],
@@ -275131,6 +275267,31 @@
             ]
           ],
           [
+            "INDIVIDUAL_DOCUMENT",
+            [],
+            "",
+            [
+              [
+                "TYPE_OF_DOCUMENT",
+                [],
+                "Passport",
+                []
+              ],
+              [
+                "NUMBER",
+                [],
+                "P00429350",
+                []
+              ],
+              [
+                "ISSUING_COUNTRY",
+                [],
+                "Afghanistan",
+                []
+              ]
+            ]
+          ],
+          [
             "SORT_KEY",
             [],
             "",
@@ -275144,7 +275305,7 @@
           ]
         ]
       ],
-      "fingerprint": "737f7b3a66cfc2d506d9c80700d644c71d2aaad741072378c45dcaca693d2771",
+      "fingerprint": "cf590d9719f20be6ec61ced87797990fa6ec46b05556aa63f5f44a89cf84b78e",
       "kind": "individual",
       "list_type": "Taliban",
       "listed_on": "2001-01-31",
@@ -277979,6 +278140,12 @@
                 [],
                 "2026-04-28",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-10-29",
+                []
               ]
             ]
           ],
@@ -278202,6 +278369,31 @@
             ]
           ],
           [
+            "INDIVIDUAL_DOCUMENT",
+            [],
+            "",
+            [
+              [
+                "TYPE_OF_DOCUMENT",
+                [],
+                "Passport",
+                []
+              ],
+              [
+                "NUMBER",
+                [],
+                "P04411676",
+                []
+              ],
+              [
+                "ISSUING_COUNTRY",
+                [],
+                "Afghanistan",
+                []
+              ]
+            ]
+          ],
+          [
             "SORT_KEY",
             [],
             "",
@@ -278215,7 +278407,7 @@
           ]
         ]
       ],
-      "fingerprint": "c8ba8ffbbe35994b21eebaa4209360e55217b16128f70b664ce01d4d861a092f",
+      "fingerprint": "4b8b1d84b0f874f6ba7e2574daf41ea2e9a7a88cf1b18fcccc3a791eb3304fb6",
       "kind": "individual",
       "list_type": "Taliban",
       "listed_on": "2001-01-25",
@@ -305787,8 +305979,8 @@
       "reference": "YEi.012"
     }
   },
-  "raw_path": "data/raw/un/d8902523ca22204ac9f7f6843fc5af267888f2564434f17e02a39edd09b3e023.xml.gz",
+  "raw_path": "data/raw/un/30723c6f96541839ce8d2e1c5da8862ffb1280b2e99e2f742009906a7398bae2.xml.gz",
   "schema_version": 1,
-  "source_hash": "d8902523ca22204ac9f7f6843fc5af267888f2564434f17e02a39edd09b3e023",
+  "source_hash": "30723c6f96541839ce8d2e1c5da8862ffb1280b2e99e2f742009906a7398bae2",
   "source_url": "https://scsanctions.un.org/resources/xml/en/name/consolidated.xml"
 }
