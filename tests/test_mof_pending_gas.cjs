@@ -135,3 +135,93 @@ test('invalid source feed stops before Sheets service gets opened', () => {
   assert.equal(events.includes('open'), false);
   assert.equal(events[events.length - 1], 'unlock');
 });
+
+function fakeSheet(name, columns, existing=[]) {
+  const sheet={name, cols:columns, data:existing.map(r=>r.slice()), frozen:0,
+    getName(){return this.name;},
+    getMaxRows(){return 1000;},
+    getMaxColumns(){return this.cols;},
+    getLastRow(){return this.data.length ? this.data.length+4 : 4;},
+    setFrozenRows(n){this.frozen=n;},
+    insertColumnsAfter(){throw Error('unsafe insertColumnsAfter called');},
+    getRange(row,col,height,width){
+      if(typeof row==='string') return {
+        setValue(){return this;}, setValues(){return this;},
+      };
+      const target=this;
+      return {
+        setValues(rows){
+          if(row>=5) rows.forEach((cells,i)=>sheet.data[row-5+i]=cells.slice());
+          return this;
+        },
+        setNumberFormat(){return this;},
+        getValues(){
+          return Array.from({length:height},(_,i) => {
+            const item=sheet.data[row-5+i] || [];
+            return Array.from({length:width},(_,j)=>item[j]||'');
+          });
+        },
+      };
+    },
+  };
+  return sheet;
+}
+function fakeSpreadsheet(tabs) {
+  const byName=new Map(tabs.map(s=>[s.name,s]));
+  const created=[];
+  const ss={
+    getSheetByName(name){return byName.get(name)||null;},
+    insertSheet(name){
+      if(byName.has(name))throw Error('duplicate sheet');
+      const item=fakeSheet(name,26);byName.set(name,item);
+      created.push(name);return item;
+    },
+  };
+  return {ss,byName,created};
+}
+test('undersized old MOF tabs are never resized: create fresh recovery tabs',()=>{
+  const c=ctx();
+  c.Logger={log:()=>{}};
+  c.ensureColumns_=()=>{throw Error('never expand old columns')};
+  c.ensureRows_=()=>{};
+  const oldPending=fakeSheet('12_財務省差分候補',18);
+  const oldLegacy=fakeSheet('13_財務省出典変更',18);
+  const {ss,byName,created}=fakeSpreadsheet([oldPending,oldLegacy]);
+  c.ensureMofCandidateStructure_(ss);
+  assert.deepEqual(created,[
+    '12_財務省差分候補_復旧','13_財務省出典変更_復旧']);
+  assert.equal(oldPending.cols,18);
+  assert.equal(oldLegacy.cols,18);
+  c.syncMofCandidateSheet_(ss,'12_財務省差分候補',
+    [candidate('MOF-PENDING-1')],vm.runInContext('EXPECTED.mofPending',c),
+    'MOF-PENDING-','要レビュー・master未反映');
+  c.syncMofCandidateSheet_(ss,'13_財務省出典変更',
+    [legacy('MOF-LEGACY-1')],vm.runInContext('EXPECTED.mofLegacy',c),
+    'MOF-LEGACY-','REVIEW_REQUIRED');
+  assert.equal(byName.get('12_財務省差分候補_復旧').data[0][0],'MOF-PENDING-1');
+  assert.equal(byName.get('13_財務省出典変更_復旧').data[0][0],'MOF-LEGACY-1');
+  c.ensureMofCandidateStructure_(ss);
+  assert.equal(created.length,2,'reuse same recovery tabs on repeated runs');
+});
+test('undersized legacy sheets retain confirmation text during recovery',()=>{
+  const c=ctx();c.Logger={log:()=>{}};
+  c.ensureRows_=()=>{};
+  const initial=Array(18).fill('');
+  initial[0]='MOF-PENDING-1';initial[17]='確認中';
+  const old=fakeSheet('12_財務省差分候補',18,[initial]);
+  const {ss,byName}=fakeSpreadsheet([old]);
+  c.ensureMofCandidateStructure_(ss);
+  c.syncMofCandidateSheet_(ss,'12_財務省差分候補',
+    [candidate('MOF-PENDING-1')],vm.runInContext('EXPECTED.mofPending',c),
+    'MOF-PENDING-','要レビュー・master未反映');
+  const replacement=byName.get('12_財務省差分候補_復旧');
+  assert.equal(replacement.data[0][17],'確認中');
+  replacement.data[0][17]='確認済（メモのみ）';
+  replacement.data[0][18]='要法務照会';
+  c.syncMofCandidateSheet_(ss,'12_財務省差分候補',
+    [candidate('MOF-PENDING-1')],vm.runInContext('EXPECTED.mofPending',c),
+    'MOF-PENDING-','要レビュー・master未反映');
+  assert.equal(replacement.data[0][17],'確認済（メモのみ）');
+  assert.equal(replacement.data[0][18],'要法務照会');
+  assert.equal(old.data[0][17],'確認中','original remains intact');
+});
