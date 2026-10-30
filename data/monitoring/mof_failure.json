@@ -1,9 +1,81 @@
 {
   "outcome": "failure",
   "source": "mof",
-  "finished_at": "2026-10-30T02:55:46Z",
-  "run_id": "40993955902",
+  "finished_at": "2026-10-30T05:45:47Z",
+  "run_id": "41009939535",
   "run_attempt": "1",
-  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/40993955902",
-  "message": "watch-jp failed; retrieved candidate and integrity result were not published"
+  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/41009939535",
+  "message": "MOF fetched and diffed; integrity BLOCKED; master not applied",
+  "fetch": {
+    "schema_version": 1,
+    "run_id": "41009939535",
+    "run_attempt": "1",
+    "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/41009939535",
+    "checked_at": "2026-10-30T05:43:29Z",
+    "sha256": "1ef25737e3f44e99f830cc47ac5cfa96c18b4cef1ab6d53755ad339f29eb9bf9",
+    "url": "https://www.mof.go.jp/policy/international_policy/gaitame_kawase/gaitame/economic_sanctions/shisantouketsu20261030.csv",
+    "raw_path": "data/raw/mof/20261030T054324Z__shisantouketsu20261030.csv.gz",
+    "asof": "令和8年10月30日",
+    "record_count": 15249,
+    "etag": "\"329b08-65ef6120be880\"",
+    "last_modified": "Thu, 29 Oct 2026 08:00:18 GMT",
+    "pending_count": 39,
+    "master_applied": false,
+    "pending_sha256": "a15b1ff8c6bd7c72329bf693b4762cfdd549b323b597bb893b9d76e004f56d44"
+  },
+  "stage": "integrity_blocked",
+  "integrity": {
+    "status": "BLOCKED",
+    "publication_allowed": false,
+    "report": "data/integrity_audit/20261030T054540614205Z__96ce7b16efb24c64__e9641976.json.gz",
+    "report_sha256": "c4dad38a2199dc32a279d9c7d4befff80ffe5b3c5615d5e99f973d2b331915dd",
+    "counts": {
+      "CATEGORY_LABEL_UNRESOLVED": 8,
+      "EXTRA_REGISTRATION": 7026,
+      "LEGACY_ACCEPTANCE_INVALID": 1,
+      "WEAK_ALIAS_ACTIVE": 2878
+    },
+    "reasons": [
+      {
+        "kind": "WEAK_ALIAS_ACTIVE",
+        "detail": "Weak-only名称が通常masterで有効"
+      },
+      {
+        "kind": "WEAK_ALIAS_ACTIVE",
+        "detail": "Weak-only名称が通常masterで有効"
+      },
+      {
+        "kind": "WEAK_ALIAS_ACTIVE",
+        "detail": "Weak-only名称が通常masterで有効"
+      },
+      {
+        "kind": "EXTRA_REGISTRATION",
+        "detail": "現在原本に根拠の無い出典付き登録（保持行を含む。削除禁止）"
+      },
+      {
+        "kind": "EXTRA_REGISTRATION",
+        "detail": "現在原本に根拠の無い出典付き登録（保持行を含む。削除禁止）"
+      },
+      {
+        "kind": "EXTRA_REGISTRATION",
+        "detail": "現在原本に根拠の無い出典付き登録（保持行を含む。削除禁止）"
+      },
+      {
+        "kind": "EXTRA_REGISTRATION",
+        "detail": "現在原本に根拠の無い出典付き登録（保持行を含む。削除禁止）"
+      },
+      {
+        "kind": "EXTRA_REGISTRATION",
+        "detail": "現在原本に根拠の無い出典付き登録（保持行を含む。削除禁止）"
+      },
+      {
+        "kind": "EXTRA_REGISTRATION",
+        "detail": "現在原本に根拠の無い出典付き登録（保持行を含む。削除禁止）"
+      },
+      {
+        "kind": "EXTRA_REGISTRATION",
+        "detail": "現在原本に根拠の無い出典付き登録（保持行を含む。削除禁止）"
+      }
+    ]
+  }
 }
