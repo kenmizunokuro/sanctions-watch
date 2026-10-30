@@ -1,9 +1,9 @@
 {
-  "source": "mof",
   "outcome": "failure",
-  "finished_at": "2026-10-29T23:01:04Z",
-  "run_id": "40969531363",
+  "source": "mof",
+  "finished_at": "2026-10-30T02:37:57Z",
+  "run_id": "40992516305",
   "run_attempt": "1",
-  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/40969531363",
-  "message": "MOF fetched; mandatory source-integrity audit blocked publication (LEGACY_ACCEPTANCE_INVALID). Unverified master and diffs not published."
+  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/40992516305",
+  "message": "watch-jp failed; retrieved candidate and integrity result were not published"
 }
