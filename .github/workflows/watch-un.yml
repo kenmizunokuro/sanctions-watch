@@ -80,6 +80,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           NEW_XML: ${{ steps.watch.outputs.new_xml_events }}
           NEW_NOTICES: ${{ steps.watch.outputs.new_notices }}
+          NEW_UPDATES: ${{ steps.watch.outputs.new_updates }}
           MONITOR_OUTCOME: ${{ steps.watch.outcome }}
         run: |
           python - <<'PY'
@@ -91,6 +92,10 @@ jobs:
               post('【国連 監視エラー】取得・解析・監視範囲を確認してください。直前の有効snapshotとmasterは保持。')
           if int(os.environ.get('NEW_NOTICES') or 0):
               post('【国連 更新発表検知】新着・改訂発表 ' + os.environ['NEW_NOTICES'] + '件。XML検証・名簿反映とは別に要確認。data/dashboard/un_reviews.csv を参照。')
+          if int(os.environ.get('NEW_UPDATES') or 0):
+              post('【国連 公式更新履歴検知】追加・指定解除・情報改訂の新規候補 '
+                   + os.environ['NEW_UPDATES'] + '件。恒久参照番号を公式XMLと照合してください。'
+                   + ' 観測・レビューのみ、master未反映。data/dashboard/un_reviews.csv を参照。')
           if int(os.environ.get('NEW_XML') or 0):
               event = state['events'][-1]
               kind = '初回収録' if event['baseline'] else '差分候補'
