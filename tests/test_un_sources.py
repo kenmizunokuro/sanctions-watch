@@ -65,7 +65,7 @@ class UNSourceTests(unittest.TestCase):
             b'<html>No update table</html>',
             UPDATES.replace(b'Permanent reference number', b'Reference removed'),
             UPDATES.replace(b'<td>3</td>', b'<td>2</td>', 1),
-            UPDATES.replace(b'QDi.338', b'QDi.340'),
+            UPDATES.replace(b'QDi.338', b'QDi.399'),
             UPDATES.replace(b'https://press.un.org/en/2026/sc16488.doc.htm',
                             b'https://un.org.evil.example/sc16488'),
             UPDATES.replace(b'26/10/2026', b'32/10/2026'),
