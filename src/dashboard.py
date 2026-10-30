@@ -87,6 +87,9 @@ STATUS_LABEL = {
 
     # 取得失敗・書式変更などの異常。
     "error": "エラー",
+    "mof_integrity_blocked": "取得済・監査停止（master未反映）",
+    "mof_approval_required": "取得済・要レビュー（master未反映）",
+    "mof_publication_error": "取得済・後処理エラー（master未反映）",
 
     # 経産省: 自動接続を行わないmanual-first lifecycle。
     "manual_ok": "手動監視（正常）",
@@ -238,6 +241,7 @@ def build_status_rows(
     meti_state: dict | None = None,
     mofa_state: dict | None = None,
     un_state: dict | None = None,
+    mof_detail: bool = False,
 ) -> list[list[str]]:
     """全監視ソースの現在状態を固定順で投影する。"""
 
@@ -388,6 +392,15 @@ def build_status_rows(
                 and mof_failure["finished_at"] > checked_at):
             raw_status = "error"
             checked_at = mof_failure["finished_at"]
+            fetched = mof_failure.get("fetch")
+            stage = mof_failure.get("stage")
+            if mof_detail and fetched and stage in {"integrity_blocked", "approval_required", "publication_error"}:
+                if (fetched.get("master_applied") is not False
+                        or not fetched.get("checked_at") or not fetched.get("sha256")):
+                    raise ValueError("invalid validated MOF fetch evidence")
+                # The CSV timestamp identifies this completed attempt in both
+                # feeds. Exact fetch time remains in the hash-checked receipt.
+                raw_status = "mof_" + stage
 
         status_label = (
             STATUS_LABEL.get(raw_status, raw_status)
@@ -432,6 +445,10 @@ def write_status(root: Path, hb: list[dict], st: dict) -> Path:
     """
     path = root / DASH / "status.csv"
     rows = build_status_rows(root, hb, st)
+    # Existing GAS clients recognize only exact error labels. Keep their
+    # critical alarm until upgraded; detailed clients use the companion feed.
+    detailed = build_status_rows(root, hb, st, mof_detail=True)
+    write_status_rows(root / DASH / "status_detail.csv", detailed)
     return write_status_rows(path, rows)
 
 

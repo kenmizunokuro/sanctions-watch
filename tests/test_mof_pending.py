@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import csv
 import json
+import os
 import subprocess
 import tempfile
 import unittest
@@ -88,6 +89,14 @@ class MofPendingTests(unittest.TestCase):
             self.assertEqual(G.gate(self.root), 3)
         with patch.object(G.subprocess, "run", return_value=subprocess.CompletedProcess([], 1)):
             self.assertEqual(G.gate(self.root), 3)
+
+    def test_master_only_hold_exports_review_decision(self):
+        P.write_csv(self.root, [])
+        output = self.root / 'step-output.txt'
+        with patch.dict(os.environ, {"GITHUB_OUTPUT": str(output)}), patch.object(
+                G.subprocess, "run", return_value=subprocess.CompletedProcess([], 1)):
+            self.assertEqual(G.gate(self.root), 3)
+        self.assertEqual(output.read_text(), "decision=review_required\n")
 
     def test_review_gate_fails_on_schema_change(self):
         csv_file = self.root / P.PATH

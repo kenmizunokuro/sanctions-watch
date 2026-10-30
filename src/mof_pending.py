@@ -128,6 +128,26 @@ def run(root: Path) -> dict:
         "source_sha256": newest.content_hash, "candidate_path": str(path),
         "master_applied": False,
     }
+    # A receipt is written only after parsing, hash checks and complete diff
+    # generation succeed. It never advances the applied source baseline.
+    receipt = {
+        "schema_version": 1, "run_id": github_run,
+        "run_attempt": os.getenv("GITHUB_RUN_ATTEMPT", ""),
+        "run_url": run_url, "checked_at": stamp,
+        "sha256": newest.content_hash, "url": url,
+        "raw_path": latest.relative_to(root).as_posix(),
+        "asof": official.get("asof", ""),
+        "record_count": official.get("record_count", ""),
+        "etag": official.get("etag", ""),
+        "last_modified": official.get("last_modified", ""),
+        "pending_count": len(rows), "master_applied": False,
+        "pending_sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+    }
+    receipt_path = root / "data/monitoring/mof_candidate.json"
+    receipt_path.parent.mkdir(parents=True, exist_ok=True)
+    temp = receipt_path.with_suffix(".json.tmp")
+    temp.write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    temp.replace(receipt_path)
     print(json.dumps(result, ensure_ascii=False))
     return result
 

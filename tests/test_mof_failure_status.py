@@ -38,6 +38,7 @@ class MofFailureDashboardTests(unittest.TestCase):
         return next(r for r in D.build_status_rows(
             self.root, [], self.st,
             now=datetime(2026,10,30,1,tzinfo=timezone.utc),
+            mof_detail=True,
         ) if r[0] == "財務省")
 
     def test_failed_attempt_is_not_misreported_as_unchanged(self):
@@ -56,6 +57,35 @@ class MofFailureDashboardTests(unittest.TestCase):
              "source_updated": "令和8年10月30日", "record_count": "15281"},
         ], now=datetime(2026,10,30,1,2,tzinfo=timezone.utc))
         self.assertEqual(self._mof()[1:3], ["変更なし", "2026-10-30 10:02:00"])
+
+    def test_validated_fetch_and_blocked_audit_are_not_a_download_error(self):
+        self._failure("2026-10-30T02:55:46Z")
+        p = self.root / "data/monitoring/mof_failure.json"
+        record = json.loads(p.read_text())
+        record.update(stage="integrity_blocked", fetch={
+            "checked_at": "2026-10-30T02:51:26Z", "sha256": "a" * 64,
+            "url": "https://www.mof.go.jp/test.csv", "pending_count": 39,
+            "master_applied": False,
+        }, integrity={"status": "BLOCKED", "publication_allowed": False})
+        p.write_text(json.dumps(record))
+        row = self._mof()
+        self.assertEqual(row[1], "取得済・監査停止（master未反映）")
+        self.assertEqual(row[2], "2026-10-30 11:55:46")
+        self.assertEqual(row[3:], ["令和8年10月21日", "15284", "f8e1038419ab"])
+
+    def test_pending_approval_has_its_own_status(self):
+        self._failure("2026-10-30T02:55:46Z")
+        p = self.root / "data/monitoring/mof_failure.json"
+        record = json.loads(p.read_text())
+        record.update(stage="approval_required", fetch={
+            "checked_at": "2026-10-30T02:51:26Z", "sha256": "a" * 64,
+            "master_applied": False,
+        })
+        p.write_text(json.dumps(record))
+        self.assertEqual(self._mof()[1], "取得済・要レビュー（master未反映）")
+        old_client = next(r for r in D.build_status_rows(self.root, [], self.st)
+                          if r[0] == "財務省")
+        self.assertEqual(old_client[1], "エラー")
 
     def test_corrupted_failure_evidence_is_not_silently_ignored(self):
         p = self.root / "data/monitoring/mof_failure.json"

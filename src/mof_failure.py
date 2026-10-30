@@ -6,6 +6,8 @@ update, delisting decision or replacement for the integrity gate.
 from __future__ import annotations
 
 import csv
+import gzip
+import hashlib
 import json
 import os
 import shutil
@@ -51,10 +53,56 @@ def _utc_now() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
+def _candidate_fetch(root: Path, run_id: str, attempt: str, run_url: str) -> dict:
+    from .mof_pending_gate import pending_count
+    path = root / "data/monitoring/mof_candidate.json"
+    receipt = json.loads(path.read_text(encoding="utf-8"))
+    if (receipt.get("schema_version") != 1 or not run_id or not attempt
+            or receipt.get("run_id") != run_id or receipt.get("run_attempt") != attempt
+            or receipt.get("run_url") != run_url or receipt.get("master_applied") is not False
+            or not str(receipt.get("url", "")).startswith("https://www.mof.go.jp/")):
+        raise ValueError("MOF fetch receipt is not bound to this run/attempt")
+    datetime.strptime(receipt["checked_at"], "%Y-%m-%dT%H:%M:%SZ")
+    raw = (root / receipt["raw_path"]).resolve()
+    if not raw.is_relative_to((root / "data/raw/mof").resolve()):
+        raise ValueError("MOF fetch receipt raw path escapes source archive")
+    if hashlib.sha256(gzip.decompress(raw.read_bytes())).hexdigest() != receipt["sha256"]:
+        raise ValueError("MOF fetched raw hash differs from receipt")
+    if (hashlib.sha256((root / PENDING_PATH).read_bytes()).hexdigest() != receipt["pending_sha256"]
+            or pending_count(root) != receipt["pending_count"]):
+        raise ValueError("MOF pending evidence differs from validated fetch")
+    return receipt
+
+
+def _blocked_integrity(root: Path, fetched: dict) -> dict:
+    """A process crash is not a review decision; require an actual bound report."""
+    master_sha = hashlib.sha256((root / "data/master/master.csv").read_bytes()).hexdigest()
+    receipt_time = (root / "data/monitoring/mof_candidate.json").stat().st_mtime_ns
+    for path in sorted((root / "data/integrity_audit").glob("*.json.gz"), reverse=True):
+        if path.name.startswith("triage-") or path.stat().st_mtime_ns < receipt_time:
+            continue
+        report = json.loads(gzip.decompress(path.read_bytes()))
+        if (report.get("status") != "BLOCKED" or report.get("publication_allowed") is not False
+                or report.get("inputs", {}).get("data/master/master.csv") != master_sha
+                or not any(d.get("source") == "mof" and d.get("sha256") == fetched["sha256"]
+                           for d in report.get("documents", []))):
+            continue
+        return {
+            "status": "BLOCKED", "publication_allowed": False,
+            "report": path.relative_to(root).as_posix(),
+            "report_sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+            "counts": report.get("counts", {}),
+            "reasons": [{"kind": f.get("kind", ""), "detail": str(f.get("detail", ""))[:500]}
+                        for f in report.get("findings", [])
+                        if f.get("blocking") and f.get("detail")][:10],
+        }
+    raise ValueError("no current candidate-bound BLOCKED integrity report")
+
+
 def failure_record() -> dict:
     repo = os.environ.get("GITHUB_REPOSITORY", "")
     run = os.environ.get("GITHUB_RUN_ID", "")
-    return {
+    record = {
         "outcome": "failure",
         "source": "mof",
         "finished_at": _utc_now(),
@@ -64,8 +112,32 @@ def failure_record() -> dict:
             f"{os.environ.get('GITHUB_SERVER_URL', 'https://github.com')}/"
             f"{repo}/actions/runs/{run}" if repo and run else ""
         ),
-        "message": "watch-jp failed; retrieved candidate and integrity result were not published",
+        "message": "watch-jp failed; inspect the run for the failed stage and publication outcome",
     }
+    # The composite action exports actual step outcomes. Do not infer successful
+    # retrieval from old state, a previous run's review CSV, or a workflow failure.
+    if (os.getenv("MOF_FETCH_OUTCOME") != "success"
+            or os.getenv("MOF_PENDING_OUTCOME") != "success"):
+        return record
+    integrity = os.getenv("MOF_INTEGRITY_OUTCOME")
+    approval = os.getenv("MOF_APPROVAL_OUTCOME")
+    # Both gates precede commit/push. After they pass, release/notification
+    # failure cannot tell us whether publication already happened.
+    if integrity != "failure" and not (integrity == "success" and approval == "failure"):
+        return record
+    try:
+        fetched = _candidate_fetch(ROOT, run, record["run_attempt"], record["run_url"])
+        record.update(fetch=fetched, stage="publication_error")
+        if integrity == "failure":
+            record["integrity"] = _blocked_integrity(ROOT, fetched)
+            record.update(stage="integrity_blocked",
+                          message="MOF fetched and diffed; integrity BLOCKED; master not applied")
+        elif os.getenv("MOF_APPROVAL_DECISION") == "review_required":
+            record.update(stage="approval_required",
+                          message="MOF fetched and diffed; review required; master not applied")
+    except (OSError, ValueError, KeyError, TypeError, EOFError, csv.Error) as exc:
+        record["classification_error"] = str(exc)[:500]
+    return record
 
 
 def persist(root: Path, record: dict) -> bool:
@@ -95,14 +167,14 @@ def persist(root: Path, record: dict) -> bool:
                 # Rebuild only the presentation file on an untouched main
                 # worktree. Candidate master/raw/diffs from the failed run
                 # must never be committed by this recovery path.
-                rows = D.build_status_rows(clean, [], S.load_state(clean))
-                D.write_status_rows(clean / STATUS_PATH, rows)
+                D.write_status(clean, [], S.load_state(clean))
                 # The failed monitoring candidate is never committed. Only its
                 # separately generated, review-only source-transition table is
                 # eligible for publication alongside the failure evidence.
                 review_file = root / REVIEW_PATH
                 pending_file = root / PENDING_PATH
-                targets = [FAILURE_PATH.as_posix(), STATUS_PATH.as_posix()]
+                targets = [FAILURE_PATH.as_posix(), STATUS_PATH.as_posix(),
+                           "data/dashboard/status_detail.csv"]
                 # Read only the review CSV from the rejected candidate tree.
                 # Never copy master, releases, prior approved diffs, or raw
                 # files from the failed attempt to the production checkout.

@@ -1,4 +1,4 @@
-const VERSION = '0.5.0';
+const VERSION = '0.5.1';
 const DEFAULT_TZ = 'Asia/Tokyo';
 const LOCK_WAIT_MS = 15000;
 const MAX_RETRIES = 2;
@@ -58,6 +58,7 @@ const MOFA_DOCUMENTS_URL = 'https://raw.githubusercontent.com/kenmizunokuro/sanc
 const UN_REVIEWS_URL = 'https://raw.githubusercontent.com/kenmizunokuro/sanctions-watch/main/data/dashboard/un_reviews.csv';
 const MOF_PENDING_URL = 'https://raw.githubusercontent.com/kenmizunokuro/sanctions-watch/main/data/dashboard/mof_pending.csv';
 const MOF_LEGACY_URL = 'https://raw.githubusercontent.com/kenmizunokuro/sanctions-watch/main/data/dashboard/mof_legacy_review.csv';
+const STATUS_DETAIL_URL = 'https://raw.githubusercontent.com/kenmizunokuro/sanctions-watch/main/data/dashboard/status_detail.csv';
 
 const EXPECTED = {
   unReviews: ['イベントID','検知日時','区分','国連参照番号','対象名／発表','状態','追加対象者','掲載終了候補','変更対象者','SHA256','一次ソースURL'],
@@ -1520,6 +1521,7 @@ function fetchSyncPayload_(
     {key: 'un_reviews', url: UN_REVIEWS_URL, expected: EXPECTED.unReviews, optional: false, conditional: false},
     {key: 'mof_pending', url: MOF_PENDING_URL, expected: EXPECTED.mofPending, optional: false, conditional: false},
     {key: 'mof_legacy', url: MOF_LEGACY_URL, expected: EXPECTED.mofLegacy, optional: false, conditional: false},
+    {key: 'status_detail', url: STATUS_DETAIL_URL, expected: EXPECTED.status, optional: true, conditional: false},
     {
       key:
         'status',
@@ -1648,8 +1650,9 @@ function fetchSyncPayload_(
     mofPending: result.mof_pending,
     mofLegacy: result.mof_legacy,
 
-    status:
-      result.status,
+    status: Object.assign({}, result.status, {
+      rows: mergeStatusDetail_(result.status.rows, result.status_detail ? result.status_detail.rows : []),
+    }),
 
     changes:
       result.changes,
@@ -1659,6 +1662,21 @@ function fetchSyncPayload_(
 
     heartbeat,
   };
+}
+
+function mergeStatusDetail_(baseRows, detailRows) {
+  const detailed = detailRows.filter(r => String(r[0]) === '財務省');
+  if (detailed.length !== 1) return baseRows;
+  return baseRows.map(r => {
+    const d = detailed[0];
+    // Different CDN cache generations must never erase a newer error/success.
+    // Both files represent the same applied generation and check timestamp.
+    if (r[0] !== '財務省' || r[1] !== 'エラー' ||
+        r[3] !== d[3] || String(r[4]) !== String(d[4]) || r[5] !== d[5]) return r;
+    const stamp = parseJst_(r[2]);
+    const checked = parseJst_(d[2]);
+    return stamp && checked && stamp.getTime() === checked.getTime() ? d : r;
+  });
 }
 
 
@@ -2663,6 +2681,25 @@ function freshness_(
       d.getTime()
     ) /
     60000;
+
+  if (source === '財務省' && [
+    '取得済・監査停止（master未反映）',
+    '取得済・要レビュー（master未反映）',
+    '取得済・後処理エラー（master未反映）',
+  ].includes(state)) {
+    const auditBlocked = state.indexOf('監査停止') >= 0;
+    const postError = state.indexOf('後処理エラー') >= 0;
+    const delayed = age > warn;
+    return {
+      label: auditBlocked || postError || age > critical ? '重大' : '要確認',
+      severity: auditBlocked || postError || age > critical ? 3 : 2,
+      anomalyType: delayed ? '監視遅延・反映停止' : '反映停止',
+      note: '原本取得・差分生成は成功。' +
+        (auditBlocked ? '完全性監査で反映停止。' : postError ? '後処理が失敗。' : '承認待ち。') +
+        '12_財務省差分候補・13_財務省出典変更を確認。最終更新・件数・ハッシュは反映済みデータ。' +
+        (delayed ? ` 最終チェックから約${Math.floor(age)}分。` : ''),
+    };
+  }
 
   if (source.indexOf('国連') === 0 && state.indexOf('要レビュー') >= 0 && age <= warn) {
     return {label: '要確認', severity: 1, anomalyType: '国連レビュー待ち',
