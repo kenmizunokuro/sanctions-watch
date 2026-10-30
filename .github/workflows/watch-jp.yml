@@ -36,6 +36,19 @@ jobs:
           sources: mof
           slack-webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
 
+      # Retain the actual rejected-source bytes and their distinct review CSV.
+      - name: 財務省の原本差分候補と取得証跡を保管
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mof-pending-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            data/dashboard/mof_pending.csv
+            data/raw/mof/
+            data/source_audit/
+          retention-days: 90
+          if-no-files-found: warn
+
       # The entire failed candidate stays uncommitted. Only a review-only
       # list of source/party changes may be published.
       - name: 財務省の旧登録差分を要レビューに退避
