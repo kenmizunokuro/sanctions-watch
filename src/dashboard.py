@@ -303,6 +303,16 @@ def build_status_rows(
             raw = (un_state or {}).get(family + '_status', '')
             label = {'error': 'エラー', 'review_required': '更新候補・要レビュー',
                      'unchanged': '変更なし'}.get(raw, '未確認')
+            if key == 'un_press' and raw == 'error':
+                failures = [f for f in (un_state or {}).get('failures', [])
+                            if str(f.get('source', '')).startswith('press:')]
+                gaps = (un_state or {}).get('coverage_gaps', {})
+                if failures:
+                    label = f'取得エラー（委員会{len(failures)}件）'
+                    if gaps:
+                        label += '・未確認期間あり'
+                elif gaps:
+                    label = '未確認期間あり'
             rows.append([source_label, label, _jst((un_state or {}).get('last_checked_at', '')),
                          (un_state or {}).get('source_updated', '') if family == 'xml' else '',
                          str((un_state or {}).get('record_count', '')) if family == 'xml' else
