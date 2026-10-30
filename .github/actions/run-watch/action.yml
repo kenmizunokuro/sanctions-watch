@@ -92,6 +92,14 @@ runs:
         git commit -m "$MSG"
         for i in 1 2 3; do
           if git pull --rebase --autostash; then
+            # A concurrent monitor can publish a MOF failure while this job
+            # waits. Reproject dashboard status from the *rebased* evidence
+            # instead of overwriting the failure with stale "変更なし".
+            python -m src.rebuild_status
+            git add -- data/dashboard/status.csv
+            if ! git diff --cached --quiet; then
+              git commit -m 'chore(dashboard): 再取得後の監視状態を再投影'
+            fi
             # Rebase can change the candidate. Re-audit these exact bytes before
             # every push; never push an unexamined conflict resolution.
             bash .github/scripts/integrity-gate.sh "$AUDIT_SOURCES" success || exit 1
