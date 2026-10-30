@@ -225,3 +225,40 @@ test('undersized legacy sheets retain confirmation text during recovery',()=>{
   assert.equal(replacement.data[0][18],'要法務照会');
   assert.equal(old.data[0][17],'確認中','original remains intact');
 });
+
+test('MOF audit hold is explicit and cannot become healthy or a fetch error', () => {
+  const c=ctx();
+  const checked=new Date(Date.now()+9*60*60*1000-60*1000).toISOString().slice(0,19).replace('T',' ');
+  const health=c.freshness_('財務省','取得済・監査停止（master未反映）',checked,{});
+  assert.equal(health.severity,3);
+  assert.equal(health.anomalyType,'反映停止');
+  assert.match(health.note,/原本取得・差分生成は成功/);
+  assert.doesNotMatch(health.note,/GitHub側で取得エラー/);
+});
+test('MOF review hold preserves stale-fetch alarms', () => {
+  const c=ctx();
+  const fresh=c.freshness_('財務省','取得済・要レビュー（master未反映）',
+    '', {});
+  assert.equal(fresh.severity,3); // Missing check time is never healthy.
+});
+test('detailed MOF feed must match the exact failed generation before display', () => {
+  const c=ctx();
+  const base=[['財務省','エラー','2026-10-30 11:55:46','令和8年10月21日','15284','f8e1038419ab']];
+  const detail=[['財務省','取得済・監査停止（master未反映）',...base[0].slice(2)]];
+  assert.equal(c.mergeStatusDetail_(base,detail)[0][1],detail[0][1]);
+  for (const index of [2,3,4,5]) {
+    const stale=detail.map(r=>r.slice());stale[0][index]='different';
+    assert.equal(c.mergeStatusDetail_(base,stale)[0][1],'エラー');
+  }
+  const recovered=base.map(r=>r.slice());recovered[0][1]='変更なし';
+  assert.equal(c.mergeStatusDetail_(recovered,detail)[0][1],'変更なし');
+});
+test('fresh approval hold stays warning and stale hold includes monitoring delay', () => {
+  const c=ctx();
+  const fmt=age=>new Date(Date.now()+9*60*60*1000-age*60000).toISOString().slice(0,19).replace('T',' ');
+  const fresh=c.freshness_('財務省','取得済・要レビュー（master未反映）',fmt(1),{});
+  assert.equal(fresh.severity,2);
+  const stale=c.freshness_('財務省','取得済・監査停止（master未反映）',fmt(700),{});
+  assert.equal(stale.severity,3);
+  assert.equal(stale.anomalyType,'監視遅延・反映停止');
+});

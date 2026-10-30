@@ -9,6 +9,23 @@ inputs:
     required: false
     default: ""
 
+outputs:
+  mof-fetch-outcome:
+    value: ${{ steps.watch.outcome }}
+    description: Actual retrieval step outcome, independent of publication
+  mof-pending-outcome:
+    value: ${{ steps.mof_pending.outcome }}
+    description: Validated official-record diff outcome
+  mof-integrity-outcome:
+    value: ${{ steps.integrity.outcome }}
+    description: Candidate integrity audit outcome
+  mof-approval-outcome:
+    value: ${{ steps.mof_approval.outcome }}
+    description: Publication approval gate outcome
+  mof-approval-decision:
+    value: ${{ steps.mof_approval.outputs.decision }}
+    description: Explicit review hold, distinct from gate runtime errors
+
 runs:
   using: composite
   steps:
@@ -55,6 +72,7 @@ runs:
       run: bash .github/scripts/integrity-gate.sh "$AUDIT_SOURCES" "$UPSTREAM_OUTCOME"
 
     - name: 財務省 未承認差分の本番適用禁止
+      id: mof_approval
       if: contains(inputs.sources, 'mof') || inputs.sources == 'all'
       shell: bash
       run: python -m src.mof_pending_gate
@@ -107,7 +125,7 @@ runs:
             # waits. Reproject dashboard status from the *rebased* evidence
             # instead of overwriting the failure with stale "変更なし".
             python -m src.rebuild_status
-            git add -- data/dashboard/status.csv
+            git add -- data/dashboard/status.csv data/dashboard/status_detail.csv
             if ! git diff --cached --quiet; then
               git commit -m 'chore(dashboard): 再取得後の監視状態を再投影'
             fi

@@ -224,6 +224,7 @@ def _persist_outputs_atomically(
 
         projection_paths = [
             D.DASH / "status.csv",
+            D.DASH / "status_detail.csv",
             changes_rel,
         ]
 

@@ -7,6 +7,7 @@ failure/evidence path, rather than the ordinary run-watch commit path.
 from __future__ import annotations
 
 import csv
+import os
 import subprocess
 from pathlib import Path
 
@@ -40,6 +41,10 @@ def gate(root: Path) -> int:
     if diff.returncode not in {0, 1}:
         raise RuntimeError("cannot compare candidate master against published main")
     if count or diff.returncode == 1:
+        output = os.environ.get("GITHUB_OUTPUT")
+        if output:
+            with open(output, "a", encoding="utf-8") as handle:
+                handle.write("decision=review_required\n")
         print(f"MOF REVIEW REQUIRED: {count} source-change candidates; "
               f"master_modified={diff.returncode == 1}; "
               "candidate CSV may be published, master is BLOCKED")

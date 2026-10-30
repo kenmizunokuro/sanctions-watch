@@ -32,6 +32,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/actions/run-watch
+        id: monitor
         with:
           sources: mof
           slack-webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -46,6 +47,7 @@ jobs:
             data/dashboard/mof_pending.csv
             data/raw/mof/
             data/source_audit/
+            data/monitoring/mof_candidate.json
           retention-days: 90
           if-no-files-found: warn
 
@@ -69,4 +71,10 @@ jobs:
       # Publish the failed attempt only, never the rejected candidate master.
       - name: 財務省の失敗時刻と実行URLを記録
         if: failure()
+        env:
+          MOF_FETCH_OUTCOME: ${{ steps.monitor.outputs.mof-fetch-outcome }}
+          MOF_PENDING_OUTCOME: ${{ steps.monitor.outputs.mof-pending-outcome }}
+          MOF_INTEGRITY_OUTCOME: ${{ steps.monitor.outputs.mof-integrity-outcome }}
+          MOF_APPROVAL_OUTCOME: ${{ steps.monitor.outputs.mof-approval-outcome }}
+          MOF_APPROVAL_DECISION: ${{ steps.monitor.outputs.mof-approval-decision }}
         run: python -m src.mof_failure
