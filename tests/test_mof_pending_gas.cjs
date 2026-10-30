@@ -75,3 +75,63 @@ test('MOF candidate fetch remains mandatory with official headers', () => {
     assert.equal(spec.expected.length,count);
   }
 });
+
+function lightweightEnv(c) {
+  const events = [];
+  const properties = {};
+  c.LockService = {getScriptLock: () => ({
+    tryLock: () => {events.push('lock');return true;},
+    releaseLock: () => events.push('unlock')
+  })};
+  c.PropertiesService = {getScriptProperties: () => ({
+    setProperty: (key, value) => {properties[key] = value;},
+    deleteProperty: (key) => {delete properties[key];}
+  })};
+  c.Logger = {log: () => {}};
+  c.SpreadsheetApp = {flush: () => events.push('flush')};
+  c.fetchCsvBatch_ = () => ({
+    mof_pending: {rows: [candidate('MOF-PENDING-a')], notModified: false},
+    mof_legacy: {rows: [legacy('MOF-LEGACY-b')], notModified: false},
+  });
+  c.getSpreadsheet_ = () => {events.push('open');return {};};
+  c.ensureMofCandidateStructure_ = () => events.push('init');
+  c.syncMofCandidateSheet_ = (ss, tab) => events.push(tab);
+  for(const forbidden of ['syncAll_', 'ensureStructure_', 'appendAudit_', 'updateAnomalies_']) {
+    c[forbidden] = () => {throw Error('wrong heavy code path: ' + forbidden);};
+  }
+  return {events, properties};
+}
+test('lightweight sync touches only two review tabs, never full-screening paths', () => {
+  const c = ctx();
+  const {events, properties} = lightweightEnv(c);
+  const result = c.syncMofReviewOnly();
+  assert.equal(result.pending, 1);
+  assert.equal(result.legacy, 1);
+  assert.deepEqual(events, ['lock', 'open', 'init',
+    '12_財務省差分候補', '13_財務省出典変更', 'flush', 'unlock']);
+  assert.equal(properties.MOF_REVIEW_STATUS, 'SUCCESS');
+});
+test('lightweight sync keeps exact failing stage on Sheets service timeout', () => {
+  const c = ctx();
+  const {events, properties} = lightweightEnv(c);
+  c.syncMofCandidateSheet_ = (ss, tab) => {
+    events.push(tab);
+    if (tab === '13_財務省出典変更') throw Error('Spreadsheet service timed out');
+  };
+  assert.throws(() => c.syncMofReviewOnly(), /13_財務省出典変更へ反映.*Spreadsheet service timed out/);
+  assert.equal(properties.MOF_REVIEW_STATUS, 'ERROR');
+  assert.equal(properties.MOF_REVIEW_LAST_FAILED_STAGE, '13_財務省出典変更へ反映');
+  assert.equal(events[events.length - 1], 'unlock');
+});
+test('invalid source feed stops before Sheets service gets opened', () => {
+  const c = ctx();
+  const {events, properties} = lightweightEnv(c);
+  c.fetchCsvBatch_ = () => ({
+    mof_pending: {rows: [candidate('MOF-PENDING-a'), candidate('MOF-PENDING-a')], notModified: false},
+    mof_legacy: {rows: [legacy('MOF-LEGACY-b')], notModified: false},
+  });
+  assert.throws(() => c.syncMofReviewOnly(), /候補IDの欠落・重複/);
+  assert.equal(properties.MOF_REVIEW_STATUS, 'ERROR');
+  assert.equal(events.includes('open'), false);
+  assert.equal(events[events.length - 1], 'unlock');
+});

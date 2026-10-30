@@ -145,6 +145,7 @@ function onOpen() {
   SpreadsheetApp.getUi()
     .createMenu('制裁監視')
     .addItem('今すぐ同期', 'syncAll')
+    .addItem('財務省の差分だけ同期（軽量）', 'syncMofReviewOnly')
     .addItem('名簿検索', 'searchName')
     .addSeparator()
     .addItem('運用セルフチェック', 'runSelfCheck')
@@ -353,6 +354,7 @@ function syncAll_(executionType) {
     Utilities.getUuid();
 
   let ss = null;
+  let syncStage = '開始';
 
   let result = '成功';
   let errorText = '';
@@ -376,9 +378,11 @@ function syncAll_(executionType) {
   };
 
   try {
+    syncStage = 'スプレッドシートを開く';
     ss =
       getSpreadsheet_();
 
+    syncStage = '初期設定とシート構造の確認';
     ensureTimezone_(ss);
     ensureStructure_(ss);
 
@@ -387,6 +391,7 @@ function syncAll_(executionType) {
      * GitHub履歴の再同期より先に03_変更履歴へ退避する。
      * 08側を対応状況の正本とするための順序保証。
      */
+    syncStage = '最新差分の対応状況を履歴に保存';
     syncQueueStatusesToHistory_(
       ss
     );
@@ -396,24 +401,31 @@ function syncAll_(executionType) {
      * 公式新規追加から切り分ける。
      * changes.csvが304でも既存履歴を移行する。
      */
+    syncStage = 'OFAC既存履歴の分類確認';
     reclassifyLegacyOfacBackfillHistory_(
       ss
     );
 
+    syncStage = '設定を取得';
     const settings =
       readSettings_();
 
+    syncStage = 'GitHubの各CSVを取得・検証';
     const payload =
       fetchSyncPayload_(
         settings,
         metrics
       );
 
+    syncStage = '外務省資料を同期';
     syncMofaDocuments_(ss, payload.mofaDocuments.notModified ? null : payload.mofaDocuments.rows);
     commitMofaHttpMeta_(payload.mofaDocuments, props);
+    syncStage = '国連レビューを同期';
     syncUnReviews_(ss, payload.unReviews.rows);
+    syncStage = '財務省差分候補を同期';
     syncMofCandidateSheet_(ss, TAB.MOF_PENDING, payload.mofPending.rows,
                            EXPECTED.mofPending, 'MOF-PENDING-', '要レビュー・master未反映');
+    syncStage = '財務省出典変更を同期';
     syncMofCandidateSheet_(ss, TAB.MOF_LEGACY, payload.mofLegacy.rows,
                            EXPECTED.mofLegacy, 'MOF-LEGACY-', 'REVIEW_REQUIRED');
 
@@ -438,6 +450,7 @@ function syncAll_(executionType) {
     /*
      * 制裁監視状態更新。
      */
+    syncStage = '監視ダッシュボードを更新';
     const health =
       updateDashboard_(
         ss,
@@ -452,6 +465,7 @@ function syncAll_(executionType) {
     if (
       heartbeat.length
     ) {
+      syncStage = '監視履歴を保存';
       appendHeartbeatHistory_(
         ss,
         heartbeat
@@ -467,6 +481,7 @@ function syncAll_(executionType) {
     if (
       !payload.changes.notModified
     ) {
+      syncStage = '変更履歴を同期';
       const changeStats =
         syncChangesMirror_(
           ss,
@@ -489,6 +504,7 @@ function syncAll_(executionType) {
      * 全期間の未解消master差分だけを
      * 08_最新差分へ物理行として再構築する。
      */
+    syncStage = '未解消差分キューを再構成';
     refreshUnresolvedChangesQueue_(
       ss
     );
@@ -499,11 +515,13 @@ function syncAll_(executionType) {
     if (
       !payload.reReview.notModified
     ) {
+      syncStage = '再審査キューを同期';
       syncReReviewMirror_(
         ss,
         payload.reReview.rows
       );
     } else {
+      syncStage = '再審査キューの表示状態を更新';
       refreshReReviewVisibility_(
         requireSheet_(
           ss,
@@ -515,6 +533,7 @@ function syncAll_(executionType) {
     /*
      * ダッシュボード直近変更4件。
      */
+    syncStage = '最近の変更を表示';
     refreshRecentChanges_(ss);
 
     /*
@@ -543,6 +562,7 @@ function syncAll_(executionType) {
         settings
       );
 
+    syncStage = '自動同期状態を更新';
     updateAutoSyncDashboard_(
       ss,
       autoHealth
@@ -552,6 +572,7 @@ function syncAll_(executionType) {
      * 制裁4ソース＋Apps Script自身を
      * 異常履歴へ反映。
      */
+    syncStage = '異常履歴を更新';
     updateAnomalies_(
       ss,
       health.concat([
@@ -563,6 +584,7 @@ function syncAll_(executionType) {
      * 以前のApps Scriptエラーが
      * 正常復旧していれば解消。
      */
+    syncStage = '過去エラーの解消を反映';
     resolveScriptErrorAnomaly_(
       ss
     );
@@ -571,10 +593,10 @@ function syncAll_(executionType) {
     result =
       '失敗';
 
-    errorText =
-      err && err.stack
-        ? err.stack
-        : String(err);
+    errorText = '[工程: ' + syncStage + '] ' +
+      (err && err.stack ? err.stack : String(err));
+    props.setProperty('LAST_SYNC_FAILED_STAGE', syncStage);
+    Logger.log('syncAll失敗 ' + errorText.slice(0, 1200));
 
     /*
      * 自動同期失敗情報。
@@ -666,7 +688,15 @@ function syncAll_(executionType) {
 
     try {
       SpreadsheetApp.flush();
-
+    } catch (flushErr) {
+      const detail = '[工程: 書き込み確定] ' +
+        (flushErr && flushErr.stack ? flushErr.stack : String(flushErr));
+      if (errorText) {
+        auditErrorText = (auditErrorText ? auditErrorText + '\\n' : '') + detail;
+      } else {
+        errorText = detail;
+        props.setProperty('LAST_SYNC_FAILED_STAGE', '書き込み確定');
+      }
     } finally {
       lock.releaseLock();
     }
