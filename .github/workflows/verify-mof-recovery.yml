@@ -7,6 +7,12 @@ on:
       - src/master.py
       - src/dashboard.py
       - src/mof_failure.py
+      - src/mof_pending.py
+      - src/mof_pending_gate.py
+      - apps_script/Code.gs
+      - apps_script/MofPending.gs
+      - tests/test_mof_pending.py
+      - tests/test_mof_pending_gas.cjs
       - .github/workflows/watch-jp.yml
       - .github/workflows/verify-mof-recovery.yml
       - tests/test_mof_legacy_annotations.py
@@ -30,5 +36,6 @@ jobs:
       - name: "Regression: MOF ledger and failure dashboard"
         run: |
           python -m unittest -v tests.test_mof_legacy_annotations tests.test_mof_failure_status
-          python -m unittest -v tests.test_integrity_legacy
+          python -m unittest -v tests.test_mof_pending tests.test_integrity_legacy
           python -m tests.test_offline
+          node --test tests/test_mof_pending_gas.cjs
