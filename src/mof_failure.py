@@ -22,6 +22,7 @@ ROOT = Path(__file__).resolve().parent.parent
 FAILURE_PATH = Path("data/monitoring/mof_failure.json")
 STATUS_PATH = Path("data/dashboard/status.csv")
 REVIEW_PATH = Path("data/dashboard/mof_legacy_review.csv")
+PENDING_PATH = Path("data/dashboard/mof_pending.csv")
 
 
 def _review_case_count(path: Path) -> int:
@@ -100,7 +101,19 @@ def persist(root: Path, record: dict) -> bool:
                 # separately generated, review-only source-transition table is
                 # eligible for publication alongside the failure evidence.
                 review_file = root / REVIEW_PATH
+                pending_file = root / PENDING_PATH
                 targets = [FAILURE_PATH.as_posix(), STATUS_PATH.as_posix()]
+                # Read only the review CSV from the rejected candidate tree.
+                # Never copy master, releases, prior approved diffs, or raw
+                # files from the failed attempt to the production checkout.
+                if pending_file.exists():
+                    from .mof_pending_gate import pending_count
+                    count = pending_count(root)
+                    target = clean / PENDING_PATH
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    if count or not target.exists():
+                        shutil.copyfile(pending_file, target)
+                        targets.append(PENDING_PATH.as_posix())
                 if review_file.exists() and _review_case_count(review_file):
                     target = clean / REVIEW_PATH
                     target.parent.mkdir(parents=True, exist_ok=True)
