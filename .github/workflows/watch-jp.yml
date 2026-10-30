@@ -3,6 +3,17 @@ name: watch-jp
 # 財務省の公式リストを6時間ごとに監視する。経産省は手動監視へ移行する。
 # OFAC と分の位置をずらして、同じ concurrency グループでの待ちを減らす。
 on:
+  # Run the exact production path after changes to the MOF monitor itself,
+  # instead of waiting for the next scheduled poll after a repair.
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/watch-jp.yml'
+      - '.github/actions/run-watch/action.yml'
+      - 'src/mof*.py'
+      - 'src/master.py'
+      - 'src/integrity_legacy.py'
+      - 'src/rebuild_status.py'
   schedule:
     - cron: "37 0,6,12,18 * * *"
   workflow_dispatch:
