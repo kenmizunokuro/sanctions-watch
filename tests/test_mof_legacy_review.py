@@ -27,7 +27,7 @@ class CandidateReviewTests(unittest.TestCase):
 
     def test_source_change_is_exported_without_approval(self):
         candidate = copy.deepcopy(self.original)
-        candidate["sources"] = "OFAC"
+        candidate["sources"] = "財務省"
         candidate["categories"] = ""
         candidate["last_updated_ms"] = "2000"
         with patch.object(L, "_validate", return_value={
