@@ -48,7 +48,7 @@ class MofLegacyAnnotationTests(unittest.TestCase):
         self.assertEqual(updated["sources"], "OFAC")
         self.assertEqual(updated["categories"], "")
         self.assertEqual(updated["status"], M.STATUS_ACTIVE)
-        self.assertEqual(updated["last_updated_ms"], "2000")
+        self.assertEqual(updated["last_updated_ms"], 2000)
         self.assertEqual(updated["review_flag"], row["review_flag"])
         self.assertEqual(updated["remark"], M._recompute(dict(updated))["remark"])
         self.assertTrue(updated["remark"].endswith("\n" + WARNING))
