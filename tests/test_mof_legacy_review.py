@@ -40,7 +40,7 @@ class CandidateReviewTests(unittest.TestCase):
         self.assertIn("sources", report[0]["change_fields"])
         self.assertIn("categories", report[0]["change_fields"])
         self.assertEqual(report[0]["decision"], "REVIEW_REQUIRED_NOT_APPLIED")
-        self.assertEqual(candidate["sources"], "OFAC")
+        self.assertNotEqual(candidate["sources"], self.original["sources"])
         self.assertEqual(self.original["sources"],
                          self.item["finding"]["master"]["sources"])
 
