@@ -193,10 +193,10 @@ test('undersized old MOF tabs are never resized: create fresh recovery tabs',()=
   assert.equal(oldPending.cols,18);
   assert.equal(oldLegacy.cols,18);
   c.syncMofCandidateSheet_(ss,'12_財務省差分候補',
-    [candidate('MOF-PENDING-1')],c.EXPECTED.mofPending,
+    [candidate('MOF-PENDING-1')],vm.runInContext('EXPECTED.mofPending',c),
     'MOF-PENDING-','要レビュー・master未反映');
   c.syncMofCandidateSheet_(ss,'13_財務省出典変更',
-    [legacy('MOF-LEGACY-1')],c.EXPECTED.mofLegacy,
+    [legacy('MOF-LEGACY-1')],vm.runInContext('EXPECTED.mofLegacy',c),
     'MOF-LEGACY-','REVIEW_REQUIRED');
   assert.equal(byName.get('12_財務省差分候補_復旧').data[0][0],'MOF-PENDING-1');
   assert.equal(byName.get('13_財務省出典変更_復旧').data[0][0],'MOF-LEGACY-1');
@@ -212,14 +212,14 @@ test('undersized legacy sheets retain confirmation text during recovery',()=>{
   const {ss,byName}=fakeSpreadsheet([old]);
   c.ensureMofCandidateStructure_(ss);
   c.syncMofCandidateSheet_(ss,'12_財務省差分候補',
-    [candidate('MOF-PENDING-1')],c.EXPECTED.mofPending,
+    [candidate('MOF-PENDING-1')],vm.runInContext('EXPECTED.mofPending',c),
     'MOF-PENDING-','要レビュー・master未反映');
   const replacement=byName.get('12_財務省差分候補_復旧');
   assert.equal(replacement.data[0][17],'確認中');
   replacement.data[0][17]='確認済（メモのみ）';
   replacement.data[0][18]='要法務照会';
   c.syncMofCandidateSheet_(ss,'12_財務省差分候補',
-    [candidate('MOF-PENDING-1')],c.EXPECTED.mofPending,
+    [candidate('MOF-PENDING-1')],vm.runInContext('EXPECTED.mofPending',c),
     'MOF-PENDING-','要レビュー・master未反映');
   assert.equal(replacement.data[0][17],'確認済（メモのみ）');
   assert.equal(replacement.data[0][18],'要法務照会');
