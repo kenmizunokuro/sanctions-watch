@@ -425,10 +425,13 @@ def main() -> int:
     result['new_xml_events'] = len(after['events']) - len(before['events'])
     result['new_notices'] = sum(n['status'] == 'PENDING_REVIEW' and key not in before['notices']
                                 for key, n in after['notices'].items())
+    previous_updates = {e['event_id'] for e in before.get('updates_events', [])}
+    result['new_updates'] = sum(e['status'] == 'PENDING_REVIEW' and e['event_id'] not in previous_updates
+                                for e in after.get('updates_events', []))
     output = os.environ.get('GITHUB_OUTPUT')
     if output:
         with open(output, 'a', encoding='utf-8') as file:
-            for key in ['new_xml_events', 'new_notices', 'review_count']:
+            for key in ['new_xml_events', 'new_notices', 'new_updates', 'review_count']:
                 file.write(f'{key}={result[key]}\n')
     print(json.dumps(result, ensure_ascii=False))
     return 0 if result['ok'] else 1
