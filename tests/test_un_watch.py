@@ -12,7 +12,7 @@ from src import un_sources as U, un_watch as W
 from src.fetch import Fetched
 from src.dashboard import build_status_rows
 from src.dashboard import write_status_rows
-from tests.test_un_sources import xml, PRESS
+from tests.test_un_sources import xml, PRESS, UPDATES
 
 NOW = datetime(2026, 10, 27, 1, tzinfo=timezone.utc)
 
@@ -21,13 +21,16 @@ class Feed:
     def __init__(self):
         self.body = xml()
         self.press = PRESS
+        self.updates = UPDATES
         self.not_modified = False
         self.fail_xml = False
 
     def __call__(self, url, *, prev=None, **kwargs):
         if url == U.XML_URL and self.fail_xml:
             raise TimeoutError('network unavailable')
-        body = self.body if url == U.XML_URL else self.press
+        from src import un_updates as V
+        body = (self.body if url == U.XML_URL else
+                self.updates if url == V.UPDATES_URL else self.press)
         return Fetched(url, body=None if self.not_modified else body,
                        sha256=(prev or {}).get('sha256', '') if self.not_modified else hashlib.sha256(body).hexdigest(),
                        not_modified=self.not_modified, etag='test-etag',
@@ -47,6 +50,59 @@ class UNWatchTests(unittest.TestCase):
 
     def state(self):
         return json.loads((self.root / 'data/un/state.json').read_text())
+
+    def test_update_log_detects_listing_changes_without_modifying_master(self):
+        from src import un_updates as V
+        result = self.run_watch()
+        self.assertTrue(result['ok'])
+        state = self.state()
+        self.assertEqual(state['updates_status'], 'review_required')
+        self.assertEqual(len(state['updates_events']), 4)
+        pending = [e for e in state['updates_events'] if e['status'] == 'PENDING_REVIEW']
+        self.assertTrue(any(e['record']['references'] ==
+                            ['QDi.338', 'QDi.399', 'QDi.400'] for e in pending))
+        self.assertFalse((self.root / 'data/master/master.csv').exists())
+        self.assertIn('国連公式更新履歴', (self.root / 'data/dashboard/un_reviews.csv').read_text())
+        self.assertFalse(self.state()['updates_coverage_gap'] if 'updates_coverage_gap' in self.state() else False)
+        self.run_watch()
+        self.assertEqual(len(self.state()['updates_events']), 4)
+        # New official notice remains a review item even if XML is unchanged.
+        self.feed.updates = self.feed.updates.replace(
+            b'26/10/2026', b'27/10/2026')
+        self.run_watch()
+        self.assertEqual(len(self.state()['events']), 1)
+        self.assertEqual(len(self.state()['updates_events']), 5)
+        self.assertFalse((self.root / 'data/master/master.csv').exists())
+
+    def test_updates_empty_response_is_explicit_failure_not_zero_changes(self):
+        from src import un_updates as V
+        baseline = self.run_watch()
+        self.assertTrue(baseline['ok'])
+        previous = self.state()['documents']['updates']['sha256']
+        def fetcher(url, **kwargs):
+            item = self.feed(url, **kwargs)
+            if url == V.UPDATES_URL:
+                item.body = b''
+                item.http_status = 202
+                item.sha256 = hashlib.sha256(b'').hexdigest()
+            return item
+        result = W.run(self.root, fetcher=fetcher, now=NOW)
+        self.assertFalse(result['ok'])
+        self.assertEqual(self.state()['updates_status'], 'error')
+        self.assertEqual(previous, self.state()['documents']['updates']['sha256'])
+        self.assertIn('国連更新履歴取得エラー', (self.root / 'data/dashboard/un_reviews.csv').read_text())
+
+    def test_update_history_disjoint_page_sets_persistent_coverage_gap(self):
+        self.run_watch()
+        self.feed.updates = self.feed.updates.replace(
+            b'26/10/2026', b'27/10/2026').replace(
+            b'24/10/2026', b'25/10/2026').replace(
+            b'15/10/2026', b'16/10/2026').replace(
+            b'05/10/2026', b'06/10/2026')
+        result = self.run_watch()
+        self.assertFalse(result['ok'])
+        self.assertIn('updates_coverage_gap', self.state())
+        self.assertIn('未確認期間あり', (self.root / 'data/dashboard/un_reviews.csv').read_text())
 
     def test_baseline_then_304_keeps_review_and_no_master_mutation(self):
         result = self.run_watch()
