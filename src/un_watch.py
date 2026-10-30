@@ -92,6 +92,21 @@ def _review_rows(state: dict) -> list[list]:
         if notice['status'] == 'PENDING_REVIEW':
             rows.append([notice['event_id'], notice['detected_at'], '国連委員会発表', '', notice['title'],
                          notice['status'], '', '', '', notice['index_hash'], notice['url']])
+    # Fetch failures must be visible in the operational review queue, not
+    # just buried inside a large JSON ledger or a generic dashboard alert.
+    # Stable keys preserve reviewer notes between repeated failed polls.
+    for issue in state.get('failures', []):
+        source = issue.get('source', '')
+        if not source.startswith('press:'):
+            continue
+        committee = source.split(':', 1)[1]
+        if committee not in U.COMMITTEES.values():
+            raise U.UNSchemaError('unknown committee in fetch failure record')
+        http = str(issue.get('http_status') or 'unknown')
+        message = str(issue.get('message') or issue.get('error_type') or 'unknown')
+        rows.append(['fetch:' + committee, state['last_checked_at'], '取得エラー・要確認',
+                     '', committee + '委員会 HTTP ' + http + ': ' + message,
+                     'FETCH_FAILED', '', '', '', '', U.press_url(committee)])
     for committee, gap in sorted(state['coverage_gaps'].items()):
         rows.append(['coverage:' + committee, gap['detected_at'], '未確認期間あり', '', committee,
                      'REVIEW_REQUIRED', '', '', '', '', U.press_url(committee)])
@@ -156,7 +171,7 @@ def _read_document(root, key, url, previous, parser, fetched):
     else:
         body = fetched.body
         if body is None:
-            raise U.UNSchemaError('UN response body missing')
+            raise U.UNTransportError('UN response body missing: HTTP ' + str(fetched.http_status))
         actual = hashlib.sha256(body).hexdigest()
         if actual != fetched.sha256:
             raise U.UNSchemaError('UN response hash mismatch')
@@ -171,7 +186,9 @@ def _read_document(root, key, url, previous, parser, fetched):
             atomic_replace_many([FileWrite(raw, lambda p: p.write_bytes(archived))])
         fetched.raw_path = str(raw.relative_to(root))
     if not body:
-        raise U.UNSchemaError('empty UN response')
+        raise U.UNTransportError('empty UN response: HTTP ' + str(fetched.http_status))
+    if fetched.http_status not in {200, 304}:
+        raise U.UNTransportError('UN response not a complete 200/304: HTTP ' + str(fetched.http_status))
     # Even on 304, reparse verified original bytes. No stale parse cache shortcuts.
     parsed = parser(body)
     metadata = dict(url=url, final_url=A.safe_audit_url(fetched.final_url),

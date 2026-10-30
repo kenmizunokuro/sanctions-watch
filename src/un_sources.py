@@ -29,6 +29,14 @@ class UNSchemaError(ValueError):
     """Unknown, incomplete or unsafe official source structure."""
 
 
+class UNTransportError(RuntimeError):
+    """The official host did not deliver a complete document.
+
+    Unlike a parse/schema change, HTTP 202 with an empty body is a
+    retrieval failure and must remain visible as such in the source ledger.
+    """
+
+
 def digest(value) -> str:
     return hashlib.sha256(json.dumps(value, ensure_ascii=False, sort_keys=True,
                                      separators=(',', ':')).encode()).hexdigest()
