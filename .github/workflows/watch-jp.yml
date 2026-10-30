@@ -24,3 +24,9 @@ jobs:
         with:
           sources: mof
           slack-webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      # The composite action fails closed on an invalid integrity audit.
+      # Publish the failed attempt only, never the rejected candidate master.
+      - name: 財務省の失敗時刻と実行URLを記録
+        if: failure()
+        run: python -m src.mof_failure

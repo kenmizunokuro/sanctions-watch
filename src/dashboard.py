@@ -249,6 +249,18 @@ def build_status_rows(
     )
     latest = _latest_heartbeat_by_source(root)
 
+    # An attempted MOF run that failed integrity verification is not an
+    # official-data success. Publish its failure timestamp independently of
+    # the last successful source heartbeat; never present stale "変更なし".
+    mof_failure_path = root / "data/monitoring/mof_failure.json"
+    mof_failure = {}
+    if mof_failure_path.exists():
+        mof_failure = json.loads(mof_failure_path.read_text(encoding="utf-8"))
+        if (not isinstance(mof_failure, dict)
+                or mof_failure.get("outcome") != "failure"
+                or not isinstance(mof_failure.get("finished_at"), str)):
+            raise ValueError("invalid MOF failure evidence")
+
     # atomic transactionでは正式heartbeatより先にin-memory行を投影する。
     # 同時刻なら今回渡された行を優先する。
     for supplied in hb:
@@ -359,6 +371,13 @@ def build_status_rows(
                 or previous_state.get("sha256")
                 or ""
             )
+
+        # Keep previously verified count/hash/as-of as historical evidence,
+        # while marking a newer failed attempt clearly as an error.
+        if (key == "mof" and mof_failure
+                and mof_failure["finished_at"] > checked_at):
+            raw_status = "error"
+            checked_at = mof_failure["finished_at"]
 
         status_label = (
             STATUS_LABEL.get(raw_status, raw_status)
