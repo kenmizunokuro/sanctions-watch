@@ -57,13 +57,12 @@ def candidate_rows(diffs: list[R.SourceDiff], *, detected_at: str,
             records.append(("原本レコード削除", item, "", "", "", "掲載終了候補・要レビュー"))
         for c in d.amended:
             record = {"番号": c.after_id or c.before_id,
-                      "国連参照番号": c.un_reference,
-                      "氏名（日本語）": c.name, "氏名（英語）": ""}
+                      "国連参照番号": c.un_reference, "_name": c.name}
             records.append(("情報改訂", record, c.field_name,
                             c.before, c.after, c.impact))
         for kind, record, field, before, after, impact in records:
             rid = record["番号"]
-            name = c.name if False else R._display_name(record)
+            name = record.get("_name") or R._display_name(record)
             # Include all original fields only in the archived official raw
             # file. Candidate CSV is review-only and bounded in size.
             ident = _case_id(old_sha, new_sha, kind, rid, field, before, after)
