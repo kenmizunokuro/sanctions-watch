@@ -18,6 +18,8 @@ const TAB = {
   SETTINGS: '99_設定',
   MOFA: '10_外務省資料',
   UN: '11_国連レビュー',
+  MOF_PENDING: '12_財務省差分候補',
+  MOF_LEGACY: '13_財務省出典変更',
 };
 
 const QUEUE_CHANGE_TYPES = new Set([
@@ -54,9 +56,13 @@ const ROW = {
 
 const MOFA_DOCUMENTS_URL = 'https://raw.githubusercontent.com/kenmizunokuro/sanctions-watch/main/data/dashboard/mofa_documents.csv';
 const UN_REVIEWS_URL = 'https://raw.githubusercontent.com/kenmizunokuro/sanctions-watch/main/data/dashboard/un_reviews.csv';
+const MOF_PENDING_URL = 'https://raw.githubusercontent.com/kenmizunokuro/sanctions-watch/main/data/dashboard/mof_pending.csv';
+const MOF_LEGACY_URL = 'https://raw.githubusercontent.com/kenmizunokuro/sanctions-watch/main/data/dashboard/mof_legacy_review.csv';
 
 const EXPECTED = {
   unReviews: ['イベントID','検知日時','区分','国連参照番号','対象名／発表','状態','追加対象者','掲載終了候補','変更対象者','SHA256','一次ソースURL'],
+  mofPending: ['候補ID','検知日時UTC','出所','種別','対象者','番号','国連参照番号','変更項目','変更前','変更後','影響区分','前回原本SHA256','今回原本SHA256','今回原本ファイル','取得URL','検証状態','GitHub実行URL'],
+  mofLegacy: ['候補ID','検知日時UTC','状態','対象者','match_key','変更フィールド','変更前出典','変更後出典','変更前カテゴリ','変更後カテゴリ','変更前状態','変更後状態','旧master SHA256','候補master SHA256','財務省原本SHA256','財務省原本URL','実行URL'],
   mofaDocuments: ['資料イベントID','検知日時','資料区分','タイトル','公表日','公表日時精度','検知理由','取得状態','レビュー状態','発表URL','資料URL','SHA256','原本'],
   status: [
     '出所',
@@ -406,6 +412,10 @@ function syncAll_(executionType) {
     syncMofaDocuments_(ss, payload.mofaDocuments.notModified ? null : payload.mofaDocuments.rows);
     commitMofaHttpMeta_(payload.mofaDocuments, props);
     syncUnReviews_(ss, payload.unReviews.rows);
+    syncMofCandidateSheet_(ss, TAB.MOF_PENDING, payload.mofPending.rows,
+                           EXPECTED.mofPending, 'MOF-PENDING-', '要レビュー・master未反映');
+    syncMofCandidateSheet_(ss, TAB.MOF_LEGACY, payload.mofLegacy.rows,
+                           EXPECTED.mofLegacy, 'MOF-LEGACY-', 'REVIEW_REQUIRED');
 
     const status =
       payload.status.rows;
@@ -981,6 +991,7 @@ function requireSheet_(
 function ensureStructure_(ss) {
   ensureMofaStructure_(ss);
   ensureUnStructure_(ss);
+  ensureMofCandidateStructure_(ss);
   ensureTimezone_(ss);
   const unDash = requireSheet_(ss, TAB.DASH);
   unDash.getRange('A17:H19').clearContent();
@@ -1477,6 +1488,8 @@ function fetchSyncPayload_(
   const specs = [
     {key: 'mofa_documents', url: MOFA_DOCUMENTS_URL, expected: EXPECTED.mofaDocuments, optional: false, conditional: true},
     {key: 'un_reviews', url: UN_REVIEWS_URL, expected: EXPECTED.unReviews, optional: false, conditional: false},
+    {key: 'mof_pending', url: MOF_PENDING_URL, expected: EXPECTED.mofPending, optional: false, conditional: false},
+    {key: 'mof_legacy', url: MOF_LEGACY_URL, expected: EXPECTED.mofLegacy, optional: false, conditional: false},
     {
       key:
         'status',
@@ -1602,6 +1615,8 @@ function fetchSyncPayload_(
   return {
     mofaDocuments: result.mofa_documents,
     unReviews: result.un_reviews,
+    mofPending: result.mof_pending,
+    mofLegacy: result.mof_legacy,
 
     status:
       result.status,
