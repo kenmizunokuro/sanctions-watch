@@ -130,8 +130,26 @@ def _pairs(row: dict) -> list[tuple[str, str]]:
 
 
 def _recompute(row: dict) -> dict:
-    """sources/categories から remark を作り直す。"""
-    row["remark"] = render_remark(_pairs(row))
+    """Rebuild source labels without deleting separately approved review evidence.
+
+    The source summary is derived from the current source/category projection,
+    whereas a legacy acceptance warning is an independent, time-limited
+    review annotation. A source refresh may change the former but must not
+    silently erase the latter while its review_flag is still present.
+    """
+    summary = render_remark(_pairs(row))
+    if "LEGACY_UNVERIFIED_V1:" in str(row.get("review_flag", "")):
+        previous = str(row.get("remark", ""))
+        _, separator, annotation = previous.partition("\n")
+        if (not separator or "旧登録・" not in annotation
+                or "保持期限UTC:" not in annotation):
+            raise ValueError(
+                "legacy retention annotation is missing or malformed; "
+                "refuse to overwrite review evidence"
+            )
+        row["remark"] = summary + "\n" + annotation
+    else:
+        row["remark"] = summary
     return row
 
 
