@@ -5,8 +5,10 @@ update, delisting decision or replacement for the integrity gate.
 """
 from __future__ import annotations
 
+import csv
 import json
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -19,6 +21,22 @@ from . import state as S
 ROOT = Path(__file__).resolve().parent.parent
 FAILURE_PATH = Path("data/monitoring/mof_failure.json")
 STATUS_PATH = Path("data/dashboard/status.csv")
+REVIEW_PATH = Path("data/dashboard/mof_legacy_review.csv")
+
+
+def _review_case_count(path: Path) -> int:
+    from .mof_legacy_review import COLS
+    with path.open(encoding="utf-8", newline="") as f:
+        reader = csv.reader(f, strict=True)
+        if next(reader, []) != COLS:
+            raise ValueError("MOF legacy review schema mismatch")
+        rows = list(reader)
+    if any(len(row) != len(COLS) or row[2] != "REVIEW_REQUIRED"
+           or not row[0].startswith("MOF-LEGACY-") for row in rows):
+        raise ValueError("invalid MOF review-only candidate")
+    if len({row[0] for row in rows}) != len(rows):
+        raise ValueError("duplicate MOF review candidate ID")
+    return len(rows)
 
 
 def _git(root: Path, *args: str, check: bool = True) -> subprocess.CompletedProcess:
@@ -78,7 +96,17 @@ def persist(root: Path, record: dict) -> bool:
                 # must never be committed by this recovery path.
                 rows = D.build_status_rows(clean, [], S.load_state(clean))
                 D.write_status_rows(clean / STATUS_PATH, rows)
-                _git(clean, "add", "--", FAILURE_PATH.as_posix(), STATUS_PATH.as_posix())
+                # The failed monitoring candidate is never committed. Only its
+                # separately generated, review-only source-transition table is
+                # eligible for publication alongside the failure evidence.
+                review_file = root / REVIEW_PATH
+                targets = [FAILURE_PATH.as_posix(), STATUS_PATH.as_posix()]
+                if review_file.exists() and _review_case_count(review_file):
+                    target = clean / REVIEW_PATH
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copyfile(review_file, target)
+                    targets.append(REVIEW_PATH.as_posix())
+                _git(clean, "add", "--", *targets)
                 _git(clean, "-c", "user.name=sanctions-watch[bot]",
                      "-c", "user.email=sanctions-watch@users.noreply.github.com",
                      "commit", "-m", f"chore(monitor): record MOF failure run {record['run_id']}")
