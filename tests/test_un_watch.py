@@ -116,11 +116,25 @@ class UNWatchTests(unittest.TestCase):
         self.assertFalse(result['ok'])
         self.assertEqual(self.state()['press_status'], 'error')
         self.assertFalse(any(key.startswith('press:') for key in self.state()['documents']))
+        self.assertEqual(self.state()['coverage_gaps'], {})
+        self.assertEqual(len(self.state()['failures']), 14)
+        self.assertTrue(all(f['error_type'] == 'UNTransportError' for f in self.state()['failures']))
+        summary = next(r for r in build_status_rows(self.root, [], {})
+                       if r[0] == '国連（委員会発表）')
+        self.assertEqual(summary[1], '取得エラー（委員会14件）')
+        with (self.root / 'data/dashboard/un_reviews.csv').open() as file:
+            review = list(csv.DictReader(file))
+        failures = [row for row in review if row['状態'] == 'FETCH_FAILED']
+        self.assertEqual(len(failures), 14)
+        self.assertTrue(all('HTTP 202' in row['対象名／発表'] for row in failures))
         with (self.root / 'data/source_audit/2026-10.csv').open() as file:
             rows = [r for r in csv.DictReader(file) if r['source'] == 'un_press']
         self.assertEqual(len(rows), 14)
         for row in rows:
             self.assertEqual(row['http_status'], '202')
+            self.assertEqual(row['fetch_failed'], '1')
+            self.assertEqual(row['schema_changed'], '0')
+            self.assertEqual(row['error_type'], 'UNTransportError')
             self.assertEqual(row['content_hash'], 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855')
             self.assertTrue((self.root / row['raw_path']).is_file())
 
