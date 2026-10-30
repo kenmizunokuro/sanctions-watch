@@ -7,10 +7,10 @@ import gzip
 import hashlib
 import json
 import os
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-from . import dashboard, source_audit as A, state as S, un_sources as U
+from . import dashboard, source_audit as A, state as S, un_sources as U, un_updates as V
 from .fetch import fetch, read_raw
 from .persistence import FileWrite, atomic_replace_many
 from .un_lock import locked
@@ -95,6 +95,27 @@ def _review_rows(state: dict) -> list[list]:
     # Fetch failures must be visible in the operational review queue, not
     # just buried inside a large JSON ledger or a generic dashboard alert.
     # Stable keys preserve reviewer notes between repeated failed polls.
+    for item in state.get('updates_events', []):
+        if item['status'] != 'PENDING_REVIEW':
+            continue
+        record = item['record']
+        rows.append(['updates:' + item['event_id'], item['detected_at'],
+                     '国連公式更新履歴・XML要照合',
+                     ', '.join(record['references']),
+                     record['change'] + ' / ' + record['publication_date'],
+                     'PENDING_REVIEW', '', '', '', item['source_hash'],
+                     record['notice_url'] or record['source_url']])
+    if state.get('updates_status') == 'error':
+        issue = next((f for f in state.get('failures', [])
+                      if f.get('source') == 'un_updates'), None)
+        if issue:
+            rows.append(['updates:fetch', state['last_checked_at'],
+                         '国連更新履歴取得エラー', '', issue['message'],
+                         'FETCH_FAILED', '', '', '', '', V.UPDATES_URL])
+    if state.get('updates_coverage_gap'):
+        gap = state['updates_coverage_gap']
+        rows.append(['updates:coverage', gap['detected_at'], '国連更新履歴・未確認期間あり',
+                     '', gap['reason'], 'REVIEW_REQUIRED', '', '', '', '', V.UPDATES_URL])
     for issue in state.get('failures', []):
         source = issue.get('source', '')
         if not source.startswith('press:'):
@@ -289,6 +310,55 @@ def run(root: Path, *, fetcher=fetch, now=None) -> dict:
                                    schema_changed=isinstance(error, U.UNSchemaError),
                                    fetch_failed=not isinstance(error, U.UNSchemaError)))
 
+    # Second independent sensor: the UN's consolidated-list update chronology.
+    # Detect and record announcements without modifying the XML snapshot or master.
+    updates_ok = True
+    try:
+        previous_updates = state['documents'].get('updates', {})
+        fetched, metadata, updates = _document(
+            root, 'updates', V.UPDATES_URL, previous_updates,
+            lambda body: V.parse_updates(body, now=now), fetcher)
+        old_items = previous_updates.get('items', [])
+        old_ids = {item['event_id'] for item in old_items}
+        current_ids = {item['event_id'] for item in updates}
+        recent_old = [item for item in old_items
+                      if item['publication_date'] >=
+                      (now.date() - timedelta(days=V.LOOKBACK_DAYS)).isoformat()]
+        if recent_old and not old_ids.intersection(current_ids):
+            state.setdefault('updates_coverage_gap', dict(
+                detected_at=when, reason='no overlapping recent UN updates chronology entries'))
+        accepted = {item['event_id'] for item in state.get('updates_events', [])}
+        for item in updates:
+            if item['event_id'] in accepted:
+                continue
+            # On first activation, historical events outside the current
+            # 30-day investigation window are evidence, not new alerts.
+            pending = bool(old_items) or item['publication_date'] >= (
+                now.date() - timedelta(days=30)).isoformat()
+            state.setdefault('updates_events', []).append(dict(
+                event_id=item['event_id'], detected_at=when,
+                source_hash=metadata['sha256'], record=item,
+                status='PENDING_REVIEW' if pending else 'BASELINE_RECORDED'))
+        metadata['items'] = updates
+        state['documents']['updates'] = metadata
+        state['updates_last_success_at'] = when
+        audit.append(A.entry('un_updates', 'consolidated_change_log', 'validated',
+                             fetched=fetched, record_count=len(updates)))
+    except Exception as error:
+        updates_ok = False
+        failures.append(dict(source='un_updates', error_type=type(error).__name__,
+                             message=A._clean_error(error),
+                             http_status=getattr(getattr(error, 'fetched', None), 'http_status', '')))
+        audit.append(A.error_entry('un_updates', 'consolidated_change_log', error,
+                                   url=V.UPDATES_URL,
+                                   schema_changed=isinstance(error, U.UNSchemaError),
+                                   fetch_failed=not isinstance(error, U.UNSchemaError)))
+    state['updates_status'] = ('error' if not updates_ok or state.get('updates_coverage_gap')
+                               else 'review_required' if any(
+                                   item['status'] == 'PENDING_REVIEW'
+                                   for item in state.get('updates_events', []))
+                               else 'unchanged')
+
     press_ok = True
     for committee in sorted(set(U.COMMITTEES.values())):
         key, url = 'press:' + committee, U.press_url(committee)
@@ -338,9 +408,11 @@ def run(root: Path, *, fetcher=fetch, now=None) -> dict:
                FileWrite(root / f'data/heartbeat/{now:%Y-%m}.csv',
                          lambda p: S.append_heartbeat(p, hb, now=now), seed_existing=True)]
     atomic_replace_many(writes)
-    return dict(ok=xml_ok and press_ok and not state['coverage_gaps'],
+    return dict(ok=xml_ok and press_ok and updates_ok and not state['coverage_gaps']
+                and not state.get('updates_coverage_gap'),
                 snapshot_hash=state.get('snapshot_hash', ''), failures=failures,
-                review_count=len(_review_rows(state)), xml_status=state['xml_status'], press_status=state['press_status'])
+                review_count=len(_review_rows(state)), xml_status=state['xml_status'],
+                press_status=state['press_status'], updates_status=state['updates_status'])
 
 
 def main() -> int:
@@ -353,10 +425,13 @@ def main() -> int:
     result['new_xml_events'] = len(after['events']) - len(before['events'])
     result['new_notices'] = sum(n['status'] == 'PENDING_REVIEW' and key not in before['notices']
                                 for key, n in after['notices'].items())
+    previous_updates = {e['event_id'] for e in before.get('updates_events', [])}
+    result['new_updates'] = sum(e['status'] == 'PENDING_REVIEW' and e['event_id'] not in previous_updates
+                                for e in after.get('updates_events', []))
     output = os.environ.get('GITHUB_OUTPUT')
     if output:
         with open(output, 'a', encoding='utf-8') as file:
-            for key in ['new_xml_events', 'new_notices', 'review_count']:
+            for key in ['new_xml_events', 'new_notices', 'new_updates', 'review_count']:
                 file.write(f'{key}={result[key]}\n')
     print(json.dumps(result, ensure_ascii=False))
     return 0 if result['ok'] else 1

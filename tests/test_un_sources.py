@@ -24,7 +24,56 @@ PRESS = b'''<html><h1>Press Releases</h1><main>
 </td></tr></tbody></table></div></main></html>'''
 
 
+
+UPDATES = b'''<html><h1>List of updates to the UNSC Consolidated List</h1>
+<table><thead><tr><th>Date</th><th>Sanctions list</th>
+<th>Permanent reference number</th><th>Type of update</th>
+<th>Number of entries affected</th><th>Links to notification in English</th></tr></thead>
+<tbody>
+<tr><td>26/10/2026</td><td>1267</td><td>QDi.340, QDi.342, QDi.376</td>
+<td>Amendment</td><td>3</td><td><a href="https://press.un.org/en/2026/sc16490.doc.htm">SC/16490</a></td></tr>
+<tr><td>24/10/2026</td><td>1267</td><td>QDi.338, QDi.399, QDi.400</td>
+<td>Delisting</td><td>3</td><td><a href="https://press.un.org/en/2026/sc16488.doc.htm">SC/16488</a></td></tr>
+<tr><td>15/10/2026</td><td>1267</td><td>QDi.082, QDi.427, QDe.132</td>
+<td>Amendment</td><td>3</td><td>SC/16480</td></tr>
+<tr><td>05/10/2026</td><td>1518</td><td>IQe.200</td>
+<td>De-Listing</td><td>1</td><td>SC/16468</td></tr>
+<tr><td>09/12/2025</td><td>1518</td><td>IQi.074</td>
+<td>Delisting</td><td>1</td><td>SC/16240</td></tr>
+</tbody></table></html>'''
+
+
 class UNSourceTests(unittest.TestCase):
+    def test_official_update_history_is_record_aware(self):
+        from datetime import datetime, timezone
+        from src import un_updates as V
+        items = V.parse_updates(UPDATES, now=datetime(2026,10,30,tzinfo=timezone.utc))
+        self.assertEqual(len(items), 4)
+        self.assertEqual(items[0]['references'], ['QDi.340', 'QDi.342', 'QDi.376'])
+        self.assertEqual(items[0]['change'], 'AMENDMENT')
+        self.assertEqual(items[1]['references'], ['QDi.338', 'QDi.399', 'QDi.400'])
+        self.assertEqual(items[1]['change'], 'DELISTING')
+        self.assertEqual(items[1]['notice_url'], 'https://press.un.org/en/2026/sc16488.doc.htm')
+        self.assertNotEqual(items[0]['event_id'], items[1]['event_id'])
+        self.assertEqual(items, V.parse_updates(UPDATES, now=datetime(2026,10,30,tzinfo=timezone.utc)))
+
+    def test_updates_history_rejects_schema_loss_false_counts_and_untrusted_links(self):
+        from datetime import datetime, timezone
+        from src import un_updates as V
+        now = datetime(2026,10,30,tzinfo=timezone.utc)
+        variants = [
+            b'<html>No update table</html>',
+            UPDATES.replace(b'Permanent reference number', b'Reference removed'),
+            UPDATES.replace(b'<td>3</td>', b'<td>2</td>', 1),
+            UPDATES.replace(b'QDi.338', b'QDi.399'),
+            UPDATES.replace(b'https://press.un.org/en/2026/sc16488.doc.htm',
+                            b'https://un.org.evil.example/sc16488'),
+            UPDATES.replace(b'26/10/2026', b'32/10/2026'),
+        ]
+        for body in variants:
+            with self.subTest(change=body[:50]), self.assertRaises(U.UNSchemaError):
+                V.parse_updates(body, now=now)
+
     def test_primary_original_alias_quality_and_entity_former_name(self):
         data = U.parse_xml(xml())
         party = data['parties']['QDi.001']
