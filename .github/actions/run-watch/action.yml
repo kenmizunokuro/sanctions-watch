@@ -39,6 +39,12 @@ runs:
           python -m src.watch --sources ${{ inputs.sources }}
         fi
 
+    - name: 財務省 原本差分を未承認候補として生成
+      id: mof_pending
+      if: steps.watch.outcome == 'success' && (contains(inputs.sources, 'mof') || inputs.sources == 'all')
+      shell: bash
+      run: python -m src.mof_pending
+
     - name: 一次ソース完全性監査（公開前必須）
       id: integrity
       if: always() && steps.watch.outcome != 'skipped'
@@ -47,6 +53,11 @@ runs:
         UPSTREAM_OUTCOME: ${{ steps.watch.outcome }}
         AUDIT_SOURCES: ${{ inputs.sources }}
       run: bash .github/scripts/integrity-gate.sh "$AUDIT_SOURCES" "$UPSTREAM_OUTCOME"
+
+    - name: 財務省 未承認差分の本番適用禁止
+      if: contains(inputs.sources, 'mof') || inputs.sources == 'all'
+      shell: bash
+      run: python -m src.mof_pending_gate
 
     - name: 財務省 原本レコード差分
       id: mof_record_diff
