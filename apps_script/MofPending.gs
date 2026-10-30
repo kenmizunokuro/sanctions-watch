@@ -1,7 +1,7 @@
 /* MOF source-diff previews are not approvals and cannot update master. */
 function mofReviewTextCell_(value) {
   const text = String(value == null ? '' : value);
-  return /^[\\s]*[=+@-]/.test(text) ? "'" + text : text;
+  return /^\s*[=+@-]/.test(text) ? "'" + text : text;
 }
 function mofCandidateCells_(incoming, old, width, prefix, allowedState) {
   const remembered = new Map(old.map(row =>
