@@ -1,4 +1,8 @@
 /* MOF source-diff previews are not approvals and cannot update master. */
+function mofReviewTextCell_(value) {
+  const text = String(value == null ? '' : value);
+  return /^[\\s]*[=+@-]/.test(text) ? "'" + text : text;
+}
 function mofCandidateCells_(incoming, old, width, prefix, allowedState) {
   const remembered = new Map(old.map(row =>
     [String(row[0] || ''), [row[width] || '未確認', row[width + 1] || '']]));
@@ -16,8 +20,8 @@ function mofCandidateCells_(incoming, old, width, prefix, allowedState) {
     }
     seen.add(id);
     const user = remembered.get(id) || ['未確認', ''];
-    return row.map(mofaTextCell_).concat(
-      mofaTextCell_(user[0]), mofaTextCell_(user[1]));
+    return row.map(mofReviewTextCell_).concat(
+      mofReviewTextCell_(user[0]), mofReviewTextCell_(user[1]));
   });
 }
 
