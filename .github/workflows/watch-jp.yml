@@ -25,6 +25,22 @@ jobs:
           sources: mof
           slack-webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
 
+      # The entire failed candidate stays uncommitted. Only a review-only
+      # list of source/party changes may be published.
+      - name: 財務省の旧登録差分を要レビューに退避
+        if: failure()
+        continue-on-error: true
+        run: python -m src.mof_legacy_review
+
+      - name: 財務省の未承認変更候補を監査Artifactに保存
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mof-legacy-review-${{ github.run_id }}-${{ github.run_attempt }}
+          path: data/dashboard/mof_legacy_review.csv
+          retention-days: 90
+          if-no-files-found: ignore
+
       # The composite action fails closed on an invalid integrity audit.
       # Publish the failed attempt only, never the rejected candidate master.
       - name: 財務省の失敗時刻と実行URLを記録
