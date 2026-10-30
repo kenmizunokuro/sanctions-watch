@@ -183,7 +183,8 @@ class UNWatchTests(unittest.TestCase):
         self.assertEqual(summary[1], '取得エラー（委員会14件）')
         with (self.root / 'data/dashboard/un_reviews.csv').open() as file:
             review = list(csv.DictReader(file))
-        failures = [row for row in review if row['状態'] == 'FETCH_FAILED']
+        failures = [row for row in review if row['状態'] == 'FETCH_FAILED'
+                    and row['区分'] == '取得エラー・要確認']
         self.assertEqual(len(failures), 14)
         self.assertTrue(all('HTTP 202' in row['対象名／発表'] for row in failures))
         with (self.root / 'data/source_audit/2026-10.csv').open() as file:
