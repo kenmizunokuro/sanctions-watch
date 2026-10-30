@@ -25,6 +25,57 @@ function mofCandidateCells_(incoming, old, width, prefix, allowedState) {
   });
 }
 
+/*
+ * Never call insertColumnsAfter on a populated legacy sheet: resizing the
+ * entire grid (possibly many thousands of rows) can time out. Preserve it
+ * and build a fresh, normally pre-sized Sheet instead.
+ *
+ * The recovery name is stable across retries. We deliberately do NOT rename
+ * or delete the old sheet; that would destroy the audit/review notes.
+ */
+function mofReviewTargetSheet_(ss, tab, width) {
+  const original = ss.getSheetByName(tab);
+  const required = width + 2;
+  if (!original) {
+    const created = ss.insertSheet(tab);
+    if (created.getMaxColumns() < required || created.getMaxRows() < 4) {
+      throw new Error(tab + ' を作成しましたが列/行数が足りません。'
+        + 'Google Sheets側のグリッドを確認してください。');
+    }
+    return created;
+  }
+  if (original.getMaxColumns() >= required && original.getMaxRows() >= 4) {
+    return original;
+  }
+  // Leave the original exactly as it was. A fresh Sheet normally has 26
+  // columns, so a slow insertColumnsAfter on the old grid is unnecessary.
+  const backupTab = tab + '_復旧';
+  const replacement = ss.getSheetByName(backupTab) || ss.insertSheet(backupTab);
+  if (replacement.getMaxColumns() < required || replacement.getMaxRows() < 4) {
+    throw new Error('復旧シート ' + backupTab + ' の列/行が不足。'
+      + '自動列追加は行いません。会社のシート管理者に確認してください。');
+  }
+  Logger.log('財務省レビュー: ' + tab + ' の列数が ' +
+             original.getMaxColumns() + ' のため、旧タブを保存して ' +
+             backupTab + ' に表示します。');
+  return replacement;
+}
+
+/* Read only populated rows. Never discard pre-existing reviewer notes. */
+function mofExistingRows_(sheet, width) {
+  if (!sheet) return [];
+  const count = Math.max(0, sheet.getLastRow() - 4);
+  if (!count) return [];
+  if (count > 5000) {
+    throw new Error('財務省レビュータブ ' + sheet.getName() +
+      ' に5000行を超える既存データがあります。上書きを停止します。');
+  }
+  const cols = Math.min(width + 2, sheet.getMaxColumns());
+  if (cols < 1) throw new Error('財務省レビュータブの列数が0です');
+  return sheet.getRange(5, 1, count, cols).getValues()
+    .map(row => row.concat(Array(width + 2 - cols).fill('')));
+}
+
 function ensureMofCandidateStructure_(ss) {
   [
     [TAB.MOF_PENDING, EXPECTED.mofPending, '財務省：原本差分候補',
@@ -33,26 +84,34 @@ function ensureMofCandidateStructure_(ss) {
      '既存の旧登録と更新候補の出典差分です。財務省側の掲載終了と、OFAC等での指定継続を区別してください。'],
   ].forEach(item => {
     const [tab, headers, title, warning] = item;
-    const sheet = ss.getSheetByName(tab) || ss.insertSheet(tab);
-    ensureColumns_(sheet, headers.length + 2);
-    sheet.getRange('A1').setValue(title);
-    sheet.getRange('A2').setValue(warning);
-    sheet.getRange(4, 1, 1, headers.length + 2)
-      .setValues([headers.concat('確認状況', 'メモ')]);
-    sheet.setFrozenRows(4);
+    try {
+      const sheet = mofReviewTargetSheet_(ss, tab, headers.length);
+      // Do not call ensureColumns_/insertColumnsAfter. The target is already
+      // wide enough and only a few header cells need to be written.
+      sheet.getRange('A1').setValue(title);
+      sheet.getRange('A2').setValue(warning);
+      sheet.getRange(4, 1, 1, headers.length + 2)
+        .setValues([headers.concat('確認状況', 'メモ')]);
+      sheet.setFrozenRows(4);
+    } catch (err) {
+      throw new Error('財務省レビュー構造確認 [' + tab + ']: ' +
+        String(err && err.stack || err));
+    }
   });
 }
 
 function syncMofCandidateSheet_(ss, tab, incoming, fields, prefix, state) {
   if (incoming === null) return;
-  const sheet = requireSheet_(ss, tab);
   const width = fields.length;
-  const last = sheet.getLastRow();
-  const oldCount = Math.max(0, last - 4);
-  const existing = oldCount
-    ? sheet.getRange(5, 1, oldCount, width + 2).getValues() : [];
-  // Validate every new row and stable event identifier BEFORE modifying cells.
+  const sheet = mofReviewTargetSheet_(ss, tab, width);
+  const original = ss.getSheetByName(tab);
+  // Existing notes in the old undersized sheet are considered first;
+  // notes already written to the recovery tab take precedence.
+  const old = original && original !== sheet
+    ? mofExistingRows_(original, width) : [];
+  const existing = old.concat(mofExistingRows_(sheet, width));
   const result = mofCandidateCells_(incoming, existing, width, prefix, state);
+  const oldCount = Math.max(0, sheet.getLastRow() - 4);
   const count = Math.max(oldCount, result.length);
   if (!count) return;
   ensureRows_(sheet, 4 + count);
@@ -62,7 +121,6 @@ function syncMofCandidateSheet_(ss, tab, incoming, fields, prefix, state) {
   sheet.getRange(5, 1, count, width + 2)
     .setNumberFormat('@').setValues(padded);
 }
-
 
 /*
  * Safe, small, manual review-only sync. This entrypoint intentionally does
