@@ -1,9 +1,9 @@
 {
   "outcome": "failure",
   "source": "mof",
-  "finished_at": "2026-10-30T02:37:57Z",
-  "run_id": "40992516305",
+  "finished_at": "2026-10-30T02:55:46Z",
+  "run_id": "40993955902",
   "run_attempt": "1",
-  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/40992516305",
+  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/40993955902",
   "message": "watch-jp failed; retrieved candidate and integrity result were not published"
 }
