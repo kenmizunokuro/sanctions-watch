@@ -173,7 +173,10 @@ class UNWatchTests(unittest.TestCase):
         self.assertEqual(self.state()['press_status'], 'error')
         self.assertFalse(any(key.startswith('press:') for key in self.state()['documents']))
         self.assertEqual(self.state()['coverage_gaps'], {})
-        self.assertEqual(len(self.state()['failures']), 14)
+        self.assertEqual(len([f for f in self.state()['failures']
+                              if f['source'].startswith('press:')]), 14)
+        self.assertEqual(len([f for f in self.state()['failures']
+                              if f['source'] == 'un_updates']), 1)
         self.assertTrue(all(f['error_type'] == 'UNTransportError' for f in self.state()['failures']))
         summary = next(r for r in build_status_rows(self.root, [], {})
                        if r[0] == '国連（委員会発表）')
