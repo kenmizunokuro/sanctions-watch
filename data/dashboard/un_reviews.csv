@@ -1007,3 +1007,17 @@
 9d5781b8d08e12c009ad5ffa97aede7f4878769ccea2c6d718c4827d8c62e5a6:YEi.010,2026-10-29T23:56:45Z,初回収録（国連）,YEi.010,MANSUR AL-SA’ADI,PENDING_REVIEW,,,,92d2dbd3a65102dab13b0b523797a4d753afe77214f8cf90ac8eed4ef3ab9b08,https://main.un.org/securitycouncil/en/content/un-sc-consolidated-list
 9d5781b8d08e12c009ad5ffa97aede7f4878769ccea2c6d718c4827d8c62e5a6:YEi.011,2026-10-29T23:56:45Z,初回収録（国連）,YEi.011,MOTLAQ AMER AL-MARRANI,PENDING_REVIEW,,,,92d2dbd3a65102dab13b0b523797a4d753afe77214f8cf90ac8eed4ef3ab9b08,https://main.un.org/securitycouncil/en/content/un-sc-consolidated-list
 9d5781b8d08e12c009ad5ffa97aede7f4878769ccea2c6d718c4827d8c62e5a6:YEi.012,2026-10-29T23:56:45Z,初回収録（国連）,YEi.012,AHMAD AL-HAMZI,PENDING_REVIEW,,,,92d2dbd3a65102dab13b0b523797a4d753afe77214f8cf90ac8eed4ef3ab9b08,https://main.un.org/securitycouncil/en/content/un-sc-consolidated-list
+fetch:1267,2026-10-30T01:42:46Z,取得エラー・要確認,,1267委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/1267/press-releases
+fetch:1518,2026-10-30T01:42:46Z,取得エラー・要確認,,1518委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/1518/press-releases
+fetch:1533,2026-10-30T01:42:46Z,取得エラー・要確認,,1533委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/1533/press-releases
+fetch:1591,2026-10-30T01:42:46Z,取得エラー・要確認,,1591委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/1591/press-releases
+fetch:1718,2026-10-30T01:42:46Z,取得エラー・要確認,,1718委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/1718/press-releases
+fetch:1737,2026-10-30T01:42:46Z,取得エラー・要確認,,1737委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/1737/press-releases
+fetch:1970,2026-10-30T01:42:46Z,取得エラー・要確認,,1970委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/1970/press-releases
+fetch:1988,2026-10-30T01:42:46Z,取得エラー・要確認,,1988委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/1988/press-releases
+fetch:2048,2026-10-30T01:42:46Z,取得エラー・要確認,,2048委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/2048/press-releases
+fetch:2140,2026-10-30T01:42:46Z,取得エラー・要確認,,2140委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/2140/press-releases
+fetch:2206,2026-10-30T01:42:46Z,取得エラー・要確認,,2206委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/2206/press-releases
+fetch:2653,2026-10-30T01:42:46Z,取得エラー・要確認,,2653委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/2653/press-releases
+fetch:2713,2026-10-30T01:42:46Z,取得エラー・要確認,,2713委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/2713/press-releases
+fetch:2745,2026-10-30T01:42:46Z,取得エラー・要確認,,2745委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/2745/press-releases

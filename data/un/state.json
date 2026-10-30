@@ -159885,91 +159885,91 @@
   ],
   "failures": [
     {
-      "error_type": "UNSchemaError",
+      "error_type": "UNTransportError",
       "http_status": 202,
-      "message": "empty UN response",
+      "message": "empty UN response: HTTP 202",
       "source": "press:1267"
     },
     {
-      "error_type": "UNSchemaError",
+      "error_type": "UNTransportError",
       "http_status": 202,
-      "message": "empty UN response",
+      "message": "empty UN response: HTTP 202",
       "source": "press:1518"
     },
     {
-      "error_type": "UNSchemaError",
+      "error_type": "UNTransportError",
       "http_status": 202,
-      "message": "empty UN response",
+      "message": "empty UN response: HTTP 202",
       "source": "press:1533"
     },
     {
-      "error_type": "UNSchemaError",
+      "error_type": "UNTransportError",
       "http_status": 202,
-      "message": "empty UN response",
+      "message": "empty UN response: HTTP 202",
       "source": "press:1591"
     },
     {
-      "error_type": "UNSchemaError",
+      "error_type": "UNTransportError",
       "http_status": 202,
-      "message": "empty UN response",
+      "message": "empty UN response: HTTP 202",
       "source": "press:1718"
     },
     {
-      "error_type": "UNSchemaError",
+      "error_type": "UNTransportError",
       "http_status": 202,
-      "message": "empty UN response",
+      "message": "empty UN response: HTTP 202",
       "source": "press:1737"
     },
     {
-      "error_type": "UNSchemaError",
+      "error_type": "UNTransportError",
       "http_status": 202,
-      "message": "empty UN response",
+      "message": "empty UN response: HTTP 202",
       "source": "press:1970"
     },
     {
-      "error_type": "UNSchemaError",
+      "error_type": "UNTransportError",
       "http_status": 202,
-      "message": "empty UN response",
+      "message": "empty UN response: HTTP 202",
       "source": "press:1988"
     },
     {
-      "error_type": "UNSchemaError",
+      "error_type": "UNTransportError",
       "http_status": 202,
-      "message": "empty UN response",
+      "message": "empty UN response: HTTP 202",
       "source": "press:2048"
     },
     {
-      "error_type": "UNSchemaError",
+      "error_type": "UNTransportError",
       "http_status": 202,
-      "message": "empty UN response",
+      "message": "empty UN response: HTTP 202",
       "source": "press:2140"
     },
     {
-      "error_type": "UNSchemaError",
+      "error_type": "UNTransportError",
       "http_status": 202,
-      "message": "empty UN response",
+      "message": "empty UN response: HTTP 202",
       "source": "press:2206"
     },
     {
-      "error_type": "UNSchemaError",
+      "error_type": "UNTransportError",
       "http_status": 202,
-      "message": "empty UN response",
+      "message": "empty UN response: HTTP 202",
       "source": "press:2653"
     },
     {
-      "error_type": "UNSchemaError",
+      "error_type": "UNTransportError",
       "http_status": 202,
-      "message": "empty UN response",
+      "message": "empty UN response: HTTP 202",
       "source": "press:2713"
     },
     {
-      "error_type": "UNSchemaError",
+      "error_type": "UNTransportError",
       "http_status": 202,
-      "message": "empty UN response",
+      "message": "empty UN response: HTTP 202",
       "source": "press:2745"
     }
   ],
-  "last_checked_at": "2026-10-29T23:56:45Z",
+  "last_checked_at": "2026-10-30T01:42:46Z",
   "notices": {},
   "press_status": "error",
   "record_count": 1007,
@@ -159977,6 +159977,6 @@
   "snapshot_digest": "a3e053cd578603eaa83e7e9c4635a1c23ddacdbcb61188929e38ddcf3fdaf609",
   "snapshot_hash": "92d2dbd3a65102dab13b0b523797a4d753afe77214f8cf90ac8eed4ef3ab9b08",
   "source_updated": "2026-10-29T23:00:03.345Z",
-  "xml_last_success_at": "2026-10-29T23:56:45Z",
+  "xml_last_success_at": "2026-10-30T01:42:46Z",
   "xml_status": "review_required"
 }
