@@ -223517,7 +223517,7 @@
       "source": "press:2745"
     }
   ],
-  "last_checked_at": "2026-11-01T13:57:00Z",
+  "last_checked_at": "2026-11-01T18:55:14Z",
   "notices": {},
   "press_status": "error",
   "record_count": 1007,
@@ -223526,6 +223526,6 @@
   "snapshot_hash": "a13f9859df749a6462be6c01f71402e41922a59ed7b1671ce7abd4f3eada1186",
   "source_updated": "2026-10-31T23:00:07.052Z",
   "updates_status": "error",
-  "xml_last_success_at": "2026-11-01T13:57:00Z",
+  "xml_last_success_at": "2026-11-01T18:55:14Z",
   "xml_status": "review_required"
 }
