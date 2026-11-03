@@ -255288,7 +255288,7 @@
       "source": "press:2745"
     }
   ],
-  "last_checked_at": "2026-11-03T01:54:48Z",
+  "last_checked_at": "2026-11-03T09:29:01Z",
   "notices": {},
   "press_status": "error",
   "record_count": 1007,
@@ -255297,6 +255297,6 @@
   "snapshot_hash": "86a64a31b8fcfc97cc314761bfd77a7e51774841ec43640f988b7ba4ce916409",
   "source_updated": "2026-11-02T23:00:04.371Z",
   "updates_status": "error",
-  "xml_last_success_at": "2026-11-03T01:54:48Z",
+  "xml_last_success_at": "2026-11-03T09:29:01Z",
   "xml_status": "review_required"
 }
