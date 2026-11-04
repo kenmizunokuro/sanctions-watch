@@ -165,3 +165,5 @@ checked_at,source,status,content_hash,source_updated,record_count,raw_path
 2026-11-04T16:51:13Z,ofac_cons,unchanged,dc3f61dce650a4661ff69d6c1847f0d5a90f2fa63951267af68fcfacdb6d8a75,"Mon, 19 Oct 2026 14:02:15 GMT",3396,
 2026-11-04T17:59:47Z,un_xml,review_required,03db98b8882d48f5730a3736c4ecdc2102a9672783b0f28b9b5967565b26d156,2026-11-03T23:00:03.370Z,1007,
 2026-11-04T17:59:47Z,un_press,error,,,0,
+2026-11-04T18:11:29Z,ofac_sdn,review_required,9a05deafa6ea8bd24c892fbbf584005a6f81dfeedccf64456fc25350c52d4ab7,"Wed, 04 Nov 2026 17:33:10 GMT",89829,data/raw/ofac_sdn_advanced/20261104T181116Z__sdn_advanced.xml.gz
+2026-11-04T18:11:29Z,ofac_cons,fetched,599771b4fb7363f5f0be0009372bbe23f2e3d39a361ad7d624564656c9c407a0,"Wed, 04 Nov 2026 17:33:12 GMT",3396,data/raw/ofac_cons_advanced/20261104T181124Z__cons_advanced.xml.gz
