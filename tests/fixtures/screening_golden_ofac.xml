@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Sanctions xmlns="https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/ADVANCED_XML" Version="3">
+  <ReferenceValueSets>
+    <NamePartTypes>
+      <NamePartType ID="1525"><Name>Entity Name</Name></NamePartType>
+    </NamePartTypes>
+  </ReferenceValueSets>
+  <DistinctParties>
+    <DistinctParty FixedRef="800001">
+      <Identity ID="1" Primary="true" False="false">
+        <Alias Primary="true" LowQuality="false">
+          <DocumentedName ID="1"><DocumentedNamePart>
+            <NamePartValue NamePartGroupID="1" ScriptID="215">GOLDEN CEDAR WORKS</NamePartValue>
+          </DocumentedNamePart></DocumentedName>
+        </Alias>
+        <Alias Primary="false" LowQuality="false">
+          <DocumentedName ID="2"><DocumentedNamePart>
+            <NamePartValue NamePartGroupID="1" ScriptID="215">CEDAR ORBIT</NamePartValue>
+            <NamePartValue NamePartGroupID="1" ScriptID="160">أرز المدار</NamePartValue>
+          </DocumentedNamePart></DocumentedName>
+        </Alias>
+        <Alias Primary="false" LowQuality="true">
+          <DocumentedName ID="3"><DocumentedNamePart>
+            <NamePartValue NamePartGroupID="1" ScriptID="215">CEDAR SHORT</NamePartValue>
+          </DocumentedNamePart></DocumentedName>
+          <DocumentedName ID="4"><DocumentedNamePart>
+            <NamePartValue NamePartGroupID="1" ScriptID="215">CEDAR SHARED</NamePartValue>
+          </DocumentedNamePart></DocumentedName>
+        </Alias>
+        <NamePartGroups><MasterNamePartGroup>
+          <NamePartGroup ID="1" NamePartTypeID="1525"/>
+        </MasterNamePartGroup></NamePartGroups>
+      </Identity>
+    </DistinctParty>
+    <DistinctParty FixedRef="800002">
+      <Identity ID="2" Primary="true" False="false">
+        <Alias Primary="true" LowQuality="false">
+          <DocumentedName ID="5"><DocumentedNamePart>
+            <NamePartValue NamePartGroupID="2" ScriptID="215">CEDAR SHARED</NamePartValue>
+          </DocumentedNamePart></DocumentedName>
+        </Alias>
+        <NamePartGroups><MasterNamePartGroup>
+          <NamePartGroup ID="2" NamePartTypeID="1525"/>
+        </MasterNamePartGroup></NamePartGroups>
+      </Identity>
+    </DistinctParty>
+    <DistinctParty FixedRef="800003">
+      <Identity ID="3" Primary="true" False="false">
+        <Alias Primary="true" LowQuality="false">
+          <DocumentedName ID="6"><DocumentedNamePart>
+            <NamePartValue NamePartGroupID="3" ScriptID="215">CEDAR SHARED</NamePartValue>
+          </DocumentedNamePart></DocumentedName>
+        </Alias>
+        <NamePartGroups><MasterNamePartGroup>
+          <NamePartGroup ID="3" NamePartTypeID="1525"/>
+        </MasterNamePartGroup></NamePartGroups>
+      </Identity>
+    </DistinctParty>
+  </DistinctParties>
+</Sanctions>

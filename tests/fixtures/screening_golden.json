@@ -1,0 +1,92 @@
+{
+  "name_pairs": {
+    "arabic": [
+      ["ليان منصور", "ليان منظور"],
+      ["هدى ناصر", "هدى نصار"],
+      ["نورا حليم", "نورة حليم"],
+      ["ريم فؤاد", "ريم فواد"],
+      ["ندى رشيد", "ندا رشيد"]
+    ],
+    "cyrillic": [
+      ["Алёна Мирова", "Алена Мирова"],
+      ["Илья Серов", "Илья Серёв"],
+      ["Мира Речная", "Мира Речнаа"],
+      ["Дарья Белая", "Даря Белая"],
+      ["Вера Лунова", "Вeра Лунова"]
+    ],
+    "simplified_chinese": [
+      ["陈安宁", "陳安寧"],
+      ["刘明远", "劉明遠"],
+      ["张瑞林", "張瑞林"],
+      ["赵欣云", "趙欣雲"],
+      ["许清岚", "許清嵐"]
+    ],
+    "traditional_chinese": [
+      ["葉秋聲", "叶秋声"],
+      ["鍾文華", "钟文华"],
+      ["謝詩語", "谢诗语"],
+      ["羅曉嵐", "罗晓岚"],
+      ["蕭穎琪", "萧颖琪"]
+    ],
+    "japanese_kanji": [
+      ["森川理沙", "森河理沙"],
+      ["大﨑晴海", "大崎晴海"],
+      ["斎藤美空", "齋藤美空"],
+      ["髙橋泉", "高橋泉"],
+      ["北原真琴", "北原真言"]
+    ],
+    "hangul": [
+      ["강서윤", "강서연"],
+      ["정하린", "정하림"],
+      ["임가온", "임가운"],
+      ["한예솔", "한예설"],
+      ["박도현", "박도헌"]
+    ],
+    "organization": [
+      ["CEDAR LANTERN CO., LTD.", "LTD. CEDAR LANTERN CO."],
+      ["ORCHID LIGHT LABS, INC.", "INC. ORCHID LIGHT LABS"],
+      ["VIOLET HARBOR TRADING LLC", "VIOLET HARBOR TRADING PLC"],
+      ["AMBER WAVE SHIPPING S.A.", "AMBER WAVE SHIPPING SA"],
+      ["JUNIPER FOAM GMBH", "JUNIPER FOAMS GMBH"]
+    ],
+    "punctuation": [
+      ["Ava O'Connor", "Ava OConnor"],
+      ["Lucia Martín", "Lucia Martin"],
+      ["Nadia Al-Rami", "Nadia AlRami"],
+      ["立花・青葉", "立花青葉"],
+      ["ミナト・サーリム", "ミナト・サーリナ"]
+    ]
+  },
+  "additional_mof_names": [
+    "Nico Valez",
+    "QUARTZ (UK) LOGISTICS",
+    "QUARTZ UK LOGISTICS",
+    "TOPAZ (HK) LABS",
+    "神谷結衣"
+  ],
+  "cases": [
+    ["ofac-primary", "GOLDEN CEDAR WORKS", "HIT", "EXACT", ["GOLDEN CEDAR WORKS"]],
+    ["ofac-strong-alias", "CEDAR ORBIT", "HIT", "EXACT", ["CEDAR ORBIT"]],
+    ["ofac-arabic-alias", "أرز المدار", "HIT", "EXACT", ["أرز المدار"]],
+    ["ofac-no-mixed-script-alias", "CEDAR ORBIT أرز المدار", "NO_HIT", "NONE", []],
+    ["ofac-weak-only", "CEDAR SHORT", "NO_HIT", "NONE", []],
+    ["ofac-weak-and-strong-different-party", "CEDAR SHARED", "HIT", "EXACT", ["CEDAR SHARED"]],
+    ["delisted-last-source", "OLD NORTH LIGHT", "NO_HIT", "NONE", []],
+    ["delisted-retained-by-other-source", "SHARED NORTH LIGHT", "HIT", "EXACT", ["SHARED NORTH LIGHT"]],
+    ["surname-first", "Valez, Nico", "HIT", "EXACT", ["Nico Valez"]],
+    ["given-name-first", "Nico Valez", "HIT", "EXACT", ["Nico Valez"]],
+    ["surname-first-without-comma", "Valez Nico", "NO_HIT", "NONE", []],
+    ["exact-over-relaxed", "QUARTZ (UK) LOGISTICS", "HIT", "EXACT", ["QUARTZ (UK) LOGISTICS"]],
+    ["exact-without-parentheses", "QUARTZ UK LOGISTICS", "HIT", "EXACT", ["QUARTZ UK LOGISTICS"]],
+    ["collision-needs-review", "QUARTZ UK) LOGISTICS", "REVIEW", "PARENTHESIS_RELAXED", ["QUARTZ (UK) LOGISTICS", "QUARTZ UK LOGISTICS"]],
+    ["unique-relaxed", "TOPAZ HK LABS", "HIT", "PARENTHESIS_RELAXED", ["TOPAZ (HK) LABS"]],
+    ["fullwidth-parentheses", "TOPAZ （HK） LABS", "HIT", "EXACT", ["TOPAZ (HK) LABS"]],
+    ["fullwidth-latin", "ＴＯＰＡＺ　（ＨＫ）　ＬＡＢＳ", "HIT", "EXACT", ["TOPAZ (HK) LABS"]],
+    ["casefold", "golden cedar works", "HIT", "EXACT", ["GOLDEN CEDAR WORKS"]],
+    ["apostrophe-variant", "Ava O’Connor", "HIT", "EXACT", ["Ava O'Connor"]],
+    ["dash-variant", "Nadia Al–Rami", "HIT", "EXACT", ["Nadia Al-Rami"]],
+    ["cjk-compatibility", "神谷結衣", "HIT", "EXACT", ["神谷結衣"]],
+    ["halfwidth-katakana", "ﾐﾅﾄ･ｻｰﾘﾑ", "HIT", "EXACT", ["ミナト・サーリム"]],
+    ["hangul-jamo", "강서윤", "HIT", "EXACT", ["강서윤"]]
+  ]
+}
