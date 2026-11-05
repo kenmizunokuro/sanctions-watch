@@ -6,8 +6,13 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from contextlib import redirect_stderr, redirect_stdout
 from datetime import datetime, timedelta, timezone
+from io import StringIO
 from pathlib import Path
+from unittest.mock import patch
+
+from src import meti_feed_candidates, meti_manual_event
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -125,3 +130,72 @@ class TestMetiFeedCandidates(unittest.TestCase):
                 self.assertEqual(result.returncode, 2, result.stderr)
                 self.assertIn("入力エラー", result.stderr)
                 self.assertEqual(result.stdout, "")
+
+
+class TestMetiFeedRegistration(unittest.TestCase):
+    def register(self, directory, payload, url=NOTICE):
+        source = directory / "release.xml"
+        source.write_bytes(payload)
+        stdout, stderr = StringIO(), StringIO()
+        with patch.object(meti_manual_event, "ROOT", directory), redirect_stdout(stdout), redirect_stderr(stderr):
+            code = meti_feed_candidates.main([
+                str(source), "--register-notice-url", url, "--operator", "operator-a",
+            ])
+        return code, stdout.getvalue(), stderr.getvalue()
+
+    def test_selected_candidate_opens_one_detection_with_rss_evidence(self):
+        now = datetime.now(timezone.utc).isoformat()
+        publication = f"<published>{now}</published>"
+        payload = feed(entry("-- 外国ユーザーリストの改正", NOTICE, published=publication))
+        payload = payload.replace(b"2025-09-30T01:00:00Z", now.encode())
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            first = self.register(directory, payload)
+            self.assertEqual(first[0], 0, first[2])
+            self.assertEqual(self.register(directory, payload), first)
+            state = json.loads((directory / "data/manual/meti/state.json").read_text())
+            self.assertEqual(state["lifecycle_state"], "MANUAL_FETCH_REQUIRED")
+            pending = state["pending_detection"]
+            self.assertEqual(pending["notice_url"], NOTICE)
+            self.assertEqual(pending["title"], "-- 外国ユーザーリストの改正")
+            self.assertTrue(pending["publication_at"])
+            evidence = json.loads(pending["note"])["rss_evidence"]
+            self.assertEqual(evidence["sha256"], hashlib.sha256(payload).hexdigest())
+            self.assertEqual(evidence["matched_on"], ["title"])
+            detected, _ = meti_manual_event.load_events(directory / "data/manual/meti/events.csv")
+            ledger_note = json.loads(detected["detail"])["note"]
+            self.assertEqual(json.loads(ledger_note)["rss_evidence"], evidence)
+            self.assertFalse((directory / "data/master/master.csv").exists())
+
+    def test_stale_or_unselected_candidate_does_not_open_detection(self):
+        old = entry("外国ユーザーリストの改正", NOTICE)
+        other_url = "https://www.meti.go.jp/press/other.html"
+        now = datetime.now(timezone.utc).isoformat()
+        recent = entry("別の発表", other_url).replace("2025-09-30T01:00:00Z", now)
+        selected = old.replace("2025-09-30T01:00:00Z", now)
+        cases = ((feed(old), NOTICE), (feed(old, recent), NOTICE), (feed(selected), other_url))
+        for payload, url in cases:
+            with self.subTest(url=url), tempfile.TemporaryDirectory() as temporary:
+                directory = Path(temporary)
+                code, stdout, stderr = self.register(directory, payload, url)
+                self.assertEqual(code, 2, stderr)
+                self.assertIn("入力エラー", stderr)
+                self.assertEqual(stdout, "")
+                self.assertFalse((directory / "data").exists())
+
+
+    def test_invalid_registration_metadata_leaves_no_ledger(self):
+        now = datetime.now(timezone.utc).isoformat()
+        future = (datetime.now(timezone.utc) + timedelta(days=1)).isoformat()
+        malformed = (
+            entry("外国ユーザーリスト" + "a" * 140_000, NOTICE),
+            entry("外国ユーザーリストの改正", NOTICE, published=f"<published>{future}</published>"),
+        )
+        for index, value in enumerate(malformed):
+            with self.subTest(case=index), tempfile.TemporaryDirectory() as temporary:
+                directory = Path(temporary)
+                payload = feed(value.replace("2025-09-30T01:00:00Z", now))
+                code, _, stderr = self.register(directory, payload)
+                self.assertEqual(code, 2, stderr)
+                self.assertIn("入力エラー", stderr)
+                self.assertFalse((directory / "data").exists())
