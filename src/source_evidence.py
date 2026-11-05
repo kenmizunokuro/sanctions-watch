@@ -179,7 +179,12 @@ def lookup_party(report: dict, source: str, source_id: str) -> dict:
     )
 
 
-def _lookup(report, match_row, summarize_finding, *, party_source=None):
+def verified_source_inventory(report: dict) -> dict:
+    """照合対象原本の確認状態と、原本と対応を確認できた全証跡を返す。"""
+    return _lookup(report, lambda row: True, lambda finding: None, include_document_role=True)
+
+
+def _lookup(report, match_row, summarize_finding, *, party_source=None, include_document_role=False):
     documents, lineage, findings = _report_rows(report)
     selections = {source: (source, roles) for source, roles in DOCUMENTS.items()}
     document_source = PARTY_SOURCES.get(party_source)
@@ -231,14 +236,23 @@ def _lookup(report, match_row, summarize_finding, *, party_source=None):
         )
         matched = []
         observed_count = 0
+        if include_document_role:
+            document_counts = Counter(_document_key(doc, doc["source"], "sha256") for doc in relevant)
         for doc in relevant:
             document_key = _document_key(doc, doc["source"], "sha256")
             count = counted[doc["source"], document_key]
             if document_key is None or not count or count != doc.get("name_count"):
                 incomplete = True
                 continue
+            if include_document_role and ((doc["source"], doc.get("role")) not in expected
+                                          or document_counts[document_key] != 1):
+                incomplete = True
+                continue
             observed_count += count
-            matched.extend(matches.get(document_key, ()))
+            witnesses = matches.get(document_key, ())
+            if include_document_role:
+                witnesses = (row | {"document_role": doc["role"]} for row in witnesses)
+            matched.extend(witnesses)
         if observed_count != sum(count for (src, _), count in counted.items() if src in source_ids):
             incomplete = True
         status = "INCOMPLETE" if incomplete else ("FOUND" if matched else "NO_WITNESS")
