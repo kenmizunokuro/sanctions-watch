@@ -41,7 +41,7 @@
 
 初回実装ではいずれも公開を止めた。追補では、確認済み原本の表示カテゴリ名の未確定だけを非ブロックのREVIEWとし、具体的に承認された保持のみを別管理する。意図的な保持行に対する自動免除は設けない。レポートには検査対象原本のURL/SHA256/path、master/state/indexのSHA256、全公式名称の番号・Party ID・該当箇所とmasterキーへの対応、検出された原本/登録行を含む。余分な登録には対応原本が存在しないため、レポートのdocuments一覧が「どの原本集合を調べて不存在と判断したか」の根拠になる。
 
-## 名称から原本証跡を検索
+## 名称・出典別IDから原本証跡を検索
 
 Actions Artifactの一次ソース監査JSONを展開して取得する。監査JSON自体はgzipのままでも読める。
 リポジトリに保存された実例での実行方法は以下。
@@ -59,11 +59,29 @@ python -m src.source_evidence \
 保存時と現在で照合キーが異なる場合も、原本名称が現在の規則で一致すれば表示する。
 このとき`match_basis`は`CURRENT_NAME_KEY`となり、`master_key`には保存時の値を残す。
 
+財務省番号やOFAC Party IDが分かっている場合は、出典とIDの完全一致で検索できる。
+同じレコードに属する主名称・別名を原本ごとに返す。
+
+```bash
+python -m src.source_evidence \
+  docs/evidence/source-integrity-production-audit-20261026.json.gz \
+  --source mof --source-id '009-000047'
+
+python -m src.source_evidence \
+  docs/evidence/source-integrity-production-audit-20261026.json.gz \
+  --source ofac-sdn --source-id '10923'
+```
+
+OFAC Consolidatedを調べる場合は `--source ofac-consolidated` を指定する。財務省番号の先頭ゼロは保持する。
+ID検索の `sources` は指定した出典の確認状態を返す。`findings` には、原本またはOFACのParty/Alias履歴に
+同じ出典とIDが明記された指摘を表示する。名称だけで紐付く指摘は名称検索で確認できる。
+監査処理がOFAC片方の取得・解析失敗で両リストの証跡出力を停止した場合は、どちらを指定しても `INCOMPLETE` になる。
+
 | `sources` の状態 | 意味 |
 | --- | --- |
-| `FOUND` | 保存済みの監査対象原本に名称の証跡あり |
-| `NO_WITNESS` | 必要な原本と証跡件数を確認できた範囲で名称の証跡なし |
-| `INCOMPLETE` | 取得失敗、原本や証跡の欠落などにより確認範囲が不完全。確認できた部分証跡は表示 |
+| `FOUND` | 保存済みの監査対象原本に指定した名称またはIDの証跡あり |
+| `NO_WITNESS` | 必要な原本と証跡件数を確認できた範囲で証跡なし |
+| `INCOMPLETE` | 取得失敗、原本や証跡の欠落などにより確認範囲が不完全。件数と原本の対応を確認できた資料の証跡は表示 |
 | `OUT_OF_SCOPE` | 入力したレポートの監査対象外 |
 
 出力は入力した監査レポート時点の情報であり、現在の掲載状況や制裁解除を判定する用途には使わない。
