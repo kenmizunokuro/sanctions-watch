@@ -335,9 +335,20 @@ python -m src.meti_feed_candidates /path/to/ml_index_release_atom.xml > meti_can
 候補0件は、入力したXML内に候補がなかったことを示す。
 XMLの構造不正、別の配信、空の配信、5分を超える未来の更新日時では終了コード2を返す。
 
-候補を公式通知ページで確認し、下記の `detect` に通知URLとタイトルを入力する。
-証跡として元XMLとJSONを保存し、必要に応じて `--note` にXMLのSHA256を記録する。
-候補抽出はファイルを読むだけで、公式PDFの確認と差分レビューは下記手順で行う。
+候補を公式通知ページで確認した後は、XMLと候補URLを指定して検知を登録できる。
+
+```bash
+python -m src.meti_feed_candidates /path/to/ml_index_release_atom.xml \
+  --register-notice-url "https://www.meti.go.jp/..." --operator "kenmizuno-cpu"
+```
+
+登録するURLはXMLから抽出した候補に限る。配信または選択した記事の最新更新が7日より
+前の場合は登録を止める。履歴資料を扱う場合は、公式ページを確認した上で下記の
+`detect` 手順を使う。元XMLとJSONは証跡として保存する。
+
+新規登録時は検知記録にXMLのSHA256、判定根拠、記事更新日時を残す。
+同じ候補が取込待ちの場合は既存の検知IDを返し、最初の記録を保持する。
+出力された `DETECTION_ID` を控え、下記の手順3から公式PDFの取得・検証に進む。
 公式通知の継続購読と手動確認も続ける。
 
 ### 更新時の手順

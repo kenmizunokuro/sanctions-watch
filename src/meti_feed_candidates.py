@@ -12,6 +12,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
+from .meti_manual_event import main as record_manual_event
 from .meti_manual_event import validate_notice_url
 
 
@@ -151,14 +152,59 @@ def scan_feed(path: Path) -> dict:
     }
 
 
-def main() -> int:
+def _register_candidate(report, notice_url, operator):
+    notice_url = validate_notice_url(notice_url)
+    if report["stale"]:
+        raise ValueError("古い配信からは検知を登録できません")
+    candidate = next(
+        (row for row in report["candidates"] if row["notice_url"] == notice_url),
+        None,
+    )
+    if candidate is None:
+        raise ValueError("指定URLはこの配信の更新候補にありません")
+
+    checked_at = datetime.fromisoformat(report["checked_at"].replace("Z", "+00:00"))
+    updated_at = datetime.fromisoformat(candidate["updated_at"].replace("Z", "+00:00"))
+    if checked_at - updated_at > MAX_FEED_AGE:
+        raise ValueError("指定した候補記事の更新日時が7日より前です")
+
+    evidence = {
+        "feed_url": report["expected_feed_url"],
+        "input_file": report["input_file"],
+        "sha256": report["sha256"],
+        "matched_on": candidate["matched_on"],
+        "entry_updated_at": candidate["updated_at"],
+    }
+    command = [
+        "detect",
+        f"--operator={operator}",
+        f"--notice-url={notice_url}",
+        "--title=" + candidate["title"],
+        "--note=" + json.dumps({"rss_evidence": evidence}, ensure_ascii=False),
+    ]
+    if candidate["published_at"]:
+        # The existing detection command accepts UTC timestamps to whole seconds.
+        published_at = datetime.fromisoformat(
+            candidate["published_at"].replace("Z", "+00:00")
+        )
+        command.extend(["--publication-at", _iso_utc(published_at.replace(microsecond=0))])
+    return record_manual_event(command)
+
+
+def main(argv=None) -> int:
     parser = argparse.ArgumentParser(
         description="保存済みの経産省ニュースリリースAtom XMLから更新候補を抽出します"
     )
     parser.add_argument("feed", type=Path, help="保存したAtom XMLのパス")
-    args = parser.parse_args()
+    parser.add_argument("--register-notice-url", help="公式ページで確認済みの候補URL")
+    parser.add_argument("--operator", help="検知を登録する担当者")
+    args = parser.parse_args(argv)
+    if (args.register_notice_url is None) != (args.operator is None):
+        parser.error("--register-notice-url と --operator は併せて指定してください")
     try:
         report = scan_feed(args.feed)
+        if args.register_notice_url is not None:
+            return _register_candidate(report, args.register_notice_url, args.operator)
     except (OSError, ET.ParseError, ValueError) as exc:
         print(f"入力エラー: {exc}", file=sys.stderr)
         return 2
