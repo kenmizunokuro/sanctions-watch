@@ -7,6 +7,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from src import source_evidence
 from src.source_evidence import lookup
 
 
@@ -46,6 +47,24 @@ def report():
         "lineage": [dict(MOF_NAME)],
         "findings": [],
     }
+
+
+def ofac_report():
+    data = report() | {"scope": ["ofac"], "documents": [], "lineage": []}
+    for source, category in (("ofac_sdn", "SDN"), ("ofac_cons", "Consolidated")):
+        for role in ("primary", "alias", "advanced"):
+            url = f"https://sanctionslistservice.ofac.treas.gov/{source}/{role}"
+            document = MOF_DOC | {
+                "source": source, "role": role, "source_url": url,
+                "raw_path": f"data/raw/{source}/{role}.gz",
+            }
+            data["documents"].append(document)
+            data["lineage"].append(MOF_NAME | {
+                "source": "OFAC", "category": category, "source_id": "123", "un_id": "",
+                "raw_path": document["raw_path"], "source_url": url,
+                "id_link": "explicit_party_alias_index",
+            })
+    return data
 
 
 class SourceEvidenceTest(unittest.TestCase):
@@ -118,23 +137,7 @@ class SourceEvidenceTest(unittest.TestCase):
         self.assertNotIn("raw_record", finding["official"])
 
     def test_ofac_same_fixed_ref_is_kept_separate_by_list_and_document(self):
-        data = report()
-        data["scope"] = ["ofac"]
-        data["documents"] = []
-        data["lineage"] = []
-        for source, category in (("ofac_sdn", "SDN"), ("ofac_cons", "Consolidated")):
-            for role in ("primary", "alias", "advanced"):
-                url = f"https://sanctionslistservice.ofac.treas.gov/{source}/{role}"
-                document = MOF_DOC | {
-                    "source": source, "role": role, "source_url": url,
-                    "raw_path": f"data/raw/{source}/{role}.gz",
-                }
-                data["documents"].append(document)
-                data["lineage"].append(MOF_NAME | {
-                    "source": "OFAC", "category": category, "source_id": "123", "un_id": "",
-                    "raw_path": document["raw_path"], "source_url": url,
-                    "id_link": "explicit_party_alias_index",
-                })
+        data = ofac_report()
         result = lookup(data, "Muhamad Lumisa")["sources"]["ofac"]
         self.assertEqual(result["status"], "FOUND")
         self.assertEqual(len(result["evidence"]), 6)
@@ -143,6 +146,72 @@ class SourceEvidenceTest(unittest.TestCase):
         result = lookup(data, "Muhamad Lumisa")["sources"]["ofac"]
         self.assertEqual(result["status"], "INCOMPLETE")
         self.assertEqual(len(result["evidence"]), 5)
+
+    def test_mof_record_lookup_preserves_leading_zeroes_and_excludes_namesakes(self):
+        data = report()
+        alias = MOF_NAME | {"name": "Different Alias", "master_key": "differentaliaskey"}
+        namesake = MOF_NAME | {"source_id": "009-000048"}
+        data["documents"][0]["name_count"] = 3
+        data["lineage"].extend([alias, namesake])
+        result = source_evidence.lookup_party(data, "mof", "009-000047")["sources"]
+        self.assertEqual(result, {"mof": {"status": "FOUND", "evidence": [MOF_NAME, alias]}})
+        missing = source_evidence.lookup_party(data, "mof", "9-47")["sources"]["mof"]
+        self.assertEqual(missing, {"status": "NO_WITNESS", "evidence": []})
+
+    def test_ofac_party_lookup_checks_only_requested_list_coverage(self):
+        data = ofac_report()
+        data["documents"].pop()
+        data["findings"] = [{"kind": "UPSTREAM_FAILED", "source": "ofac_cons"}]
+        sdn = source_evidence.lookup_party(data, "ofac-sdn", "123")
+        self.assertEqual(sdn["source_issues"], [])
+        self.assertEqual(sdn["sources"], {
+            "ofac-sdn": {"status": "FOUND", "evidence": data["lineage"][:3]},
+        })
+        cons = source_evidence.lookup_party(data, "ofac-consolidated", "123")["sources"]
+        self.assertEqual(cons, {
+            "ofac-consolidated": {"status": "INCOMPLETE", "evidence": data["lineage"][3:5]},
+        })
+        outside = source_evidence.lookup_party(report(), "ofac-sdn", "123")["sources"]
+        self.assertEqual(outside, {"ofac-sdn": {"status": "OUT_OF_SCOPE", "evidence": []}})
+
+    def test_invalid_ofac_witness_id_cannot_count_as_checked(self):
+        data = ofac_report()
+        for witness in data["lineage"][:3]:
+            witness["source_id"] = "invalid"
+        result = source_evidence.lookup_party(data, "ofac-sdn", "123")["sources"]
+        self.assertEqual(result, {"ofac-sdn": {"status": "INCOMPLETE", "evidence": []}})
+
+    def test_party_findings_require_an_explicit_match_in_same_list(self):
+        data = ofac_report()
+        sdn = {"list": "SDN", "party_id": "123", "name": "SDN name"}
+        cons = {"list": "Consolidated", "party_id": "123", "name": "Other name"}
+        data["findings"] = [
+            {"kind": "DUPLICATE_RECORD", "index": [cons, sdn, sdn | {"party_id": "234"}]},
+            {"kind": "ALIAS_QUALITY_MISMATCH", "official": data["lineage"][0]},
+            {"kind": "EXTRA_REGISTRATION", "master": {"display_name": MOF_NAME["name"]}},
+            {"kind": "STATUS_MISMATCH", "official": data["lineage"][3]},
+        ]
+        index_finding, official_finding = source_evidence.lookup_party(data, "ofac-sdn", "123")["findings"]
+        self.assertEqual(index_finding["index"], [sdn])
+        self.assertEqual(official_finding["official"]["source_id"], "123")
+        self.assertEqual(official_finding["official"]["category"], "SDN")
+
+    def test_cli_requires_source_and_id_together_and_excludes_name(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "audit.json"
+            path.write_text(json.dumps(report()), encoding="utf-8")
+            args = [sys.executable, "-m", "src.source_evidence", str(path)]
+            selector = ["--source", "mof", "--source-id", "009-000047"]
+            completed = subprocess.run(args + selector, capture_output=True, text=True, check=True)
+            result = json.loads(completed.stdout)
+            self.assertEqual(result["query"], {"source": "mof", "source_id": "009-000047"})
+            self.assertEqual(result["sources"]["mof"]["status"], "FOUND")
+            for invalid in (selector[:2], selector[2:], selector + ["--name", "Any"],
+                            ["--source", "ofac-sdn", "--source-id", "12 3"]):
+                with self.subTest(invalid=invalid):
+                    completed = subprocess.run(args + invalid, capture_output=True, text=True)
+                    self.assertEqual(completed.returncode, 2)
+                    self.assertEqual(completed.stdout, "")
 
     def test_matching_nonofficial_url_is_not_exposed_as_evidence(self):
         url = "https://mof.go.jp.example.invalid/not-official"
