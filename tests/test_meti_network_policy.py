@@ -205,6 +205,7 @@ class TestMetiNetworkPolicy(unittest.TestCase):
         for rel in (
             "src/meti_manual_event.py",
             "src/meti_manual_sla.py",
+            "src/meti_feed_candidates.py",
         ):
             modules = imported_modules(ROOT / rel)
             found = {
