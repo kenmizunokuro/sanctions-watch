@@ -22,6 +22,7 @@ ATOM = "{http://www.w3.org/2005/Atom}"
 MAX_FEED_BYTES = 2 * 1024 * 1024
 MAX_FEED_AGE = timedelta(days=7)
 MAX_CLOCK_SKEW = timedelta(minutes=5)
+MAX_REGISTRATION_FIELD_BYTES = 4096
 LIST_NAME = "外国ユーザーリスト"
 UPDATE_WORDS = ("改正", "更新", "改訂", "見直し")
 
@@ -163,6 +164,12 @@ def _register_candidate(report, notice_url, operator):
     if candidate is None:
         raise ValueError("指定URLはこの配信の更新候補にありません")
 
+    if any(
+        len(value.encode("utf-8")) > MAX_REGISTRATION_FIELD_BYTES
+        for value in (candidate["title"], notice_url, operator)
+    ):
+        raise ValueError("登録用のタイトル、URLまたは担当者が長すぎます")
+
     checked_at = datetime.fromisoformat(report["checked_at"].replace("Z", "+00:00"))
     updated_at = datetime.fromisoformat(candidate["updated_at"].replace("Z", "+00:00"))
     if checked_at - updated_at > MAX_FEED_AGE:
@@ -187,6 +194,8 @@ def _register_candidate(report, notice_url, operator):
         published_at = datetime.fromisoformat(
             candidate["published_at"].replace("Z", "+00:00")
         )
+        if published_at - min(checked_at, updated_at) > MAX_CLOCK_SKEW:
+            raise ValueError("記事の公表日時が現在または更新日時より5分を超えて先です")
         command.extend(["--publication-at", _iso_utc(published_at.replace(microsecond=0))])
     return record_manual_event(command)
 

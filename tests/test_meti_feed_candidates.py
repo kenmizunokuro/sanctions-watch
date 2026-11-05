@@ -162,6 +162,9 @@ class TestMetiFeedRegistration(unittest.TestCase):
             evidence = json.loads(pending["note"])["rss_evidence"]
             self.assertEqual(evidence["sha256"], hashlib.sha256(payload).hexdigest())
             self.assertEqual(evidence["matched_on"], ["title"])
+            detected, _ = meti_manual_event.load_events(directory / "data/manual/meti/events.csv")
+            ledger_note = json.loads(detected["detail"])["note"]
+            self.assertEqual(json.loads(ledger_note)["rss_evidence"], evidence)
             self.assertFalse((directory / "data/master/master.csv").exists())
 
     def test_stale_or_unselected_candidate_does_not_open_detection(self):
@@ -178,4 +181,21 @@ class TestMetiFeedRegistration(unittest.TestCase):
                 self.assertEqual(code, 2, stderr)
                 self.assertIn("入力エラー", stderr)
                 self.assertEqual(stdout, "")
+                self.assertFalse((directory / "data").exists())
+
+
+    def test_invalid_registration_metadata_leaves_no_ledger(self):
+        now = datetime.now(timezone.utc).isoformat()
+        future = (datetime.now(timezone.utc) + timedelta(days=1)).isoformat()
+        malformed = (
+            entry("外国ユーザーリスト" + "a" * 140_000, NOTICE),
+            entry("外国ユーザーリストの改正", NOTICE, published=f"<published>{future}</published>"),
+        )
+        for index, value in enumerate(malformed):
+            with self.subTest(case=index), tempfile.TemporaryDirectory() as temporary:
+                directory = Path(temporary)
+                payload = feed(value.replace("2025-09-30T01:00:00Z", now))
+                code, _, stderr = self.register(directory, payload)
+                self.assertEqual(code, 2, stderr)
+                self.assertIn("入力エラー", stderr)
                 self.assertFalse((directory / "data").exists())
