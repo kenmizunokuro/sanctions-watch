@@ -154,6 +154,22 @@ MS ANGIA (a.k.a. GATHER VIEW) (T7AX8) ...  -> MS ANGIA / GATHER VIEW
 `review_flag` が立つので、必要なら `data/master/master.csv` 側で拾える
 （配布用 Excel には専用シートを出さない。件数だけ「ビルド情報」に出る）。
 
+### 照合回帰テスト（Golden Corpus）
+
+`python -m unittest tests.test_screening_golden` で実行する。既存のPR検証でも
+`unittest discover` から自動実行される。合成名簿の103ケースを、空白や外側の引用符など
+10通りの入力形式で検証し、判定（`HIT` / `NO_HIT` / `REVIEW`）、照合方式、候補名を比較する。
+ケースと期待値は `tests/fixtures/screening_golden.json` で管理する。
+
+OFAC Advanced XMLの合成原本から主名称・強い別名・弱い別名を読み、弱い別名だけの入力は
+通常照合で `NO_HIT`、別Partyの強い名称もある入力は `HIT` になることを確認する。
+ほかに掲載終了後の除外、別ソースに残る名称、括弧を緩和したときの候補競合、姓名順、
+各言語で似た別名称を誤って照合しないことを検証する。同名の複数PartyはXML上のIDを
+検証し、マスター上の照合結果は名称単位で確認する。
+
+このコーパスは現行の照合規則を固定する。一次ソースに対する網羅性と出典は、
+[一次ソース完全性監査](docs/source-integrity-audit.md)で別途検証する。
+
 ## 財務省CSVの実データで踏んだ罠
 
 実物 (shisantouketsu20260828.csv, 32列2866行) に合わせて実装してある。
