@@ -57,6 +57,23 @@ def _text(v: str) -> str:
     return "'" + v if v.lstrip().startswith(("=", "+", "-", "@")) else v
 
 
+def review_case(prior, current, source, *, detected_at, run_url):
+    key = current["match_key"]
+    changed = [col for col in REVIEW_FIELDS if prior[col] != current[col]]
+    if not changed:
+        return None
+    before_hash, after_hash = _hash(prior), _hash(current)
+    token = hashlib.sha256("\n".join((key, before_hash, after_hash, source["sha256"])).encode()).hexdigest()[:20]
+    return [
+        "MOF-LEGACY-" + token, detected_at, "REVIEW_REQUIRED",
+        _text(current["display_name"]), _text(key),
+        ";".join(changed), _text(prior["sources"]), _text(current["sources"]),
+        _text(prior["categories"]), _text(current["categories"]),
+        _text(prior["status"]), _text(current["status"]), before_hash, after_hash,
+        source["sha256"], _text(source["url"]), _text(run_url),
+    ]
+
+
 def build_review(base: dict[str, dict], candidate: dict[str, dict],
                  ledger: dict, source: dict, *, detected_at: str,
                  run_url: str = "") -> tuple[list[list[str]], dict]:
@@ -79,23 +96,12 @@ def build_review(base: dict[str, dict], candidate: dict[str, dict],
         if not all("LEGACY_UNVERIFIED_V1:" in str(r.get("review_flag", ""))
                    for r in (prior, current)):
             raise ValueError(f"accepted legacy review annotation missing: {key}")
-        changed = [col for col in REVIEW_FIELDS if prior[col] != current[col]]
-        if not changed:
+        case = review_case(prior, current, source, detected_at=detected_at, run_url=run_url)
+        if case is None:
             if prior != current:
                 cosmetic += 1  # remark and last_updated_ms only
             continue
-        token = hashlib.sha256((key + "\n" + _hash(prior) + "\n" +
-                                _hash(current) + "\n" + source["sha256"])
-                               .encode()).hexdigest()[:20]
-        cases.append([
-            "MOF-LEGACY-" + token, detected_at, "REVIEW_REQUIRED",
-            _text(current["display_name"]), _text(key),
-            ";".join(changed), _text(prior["sources"]),
-            _text(current["sources"]), _text(prior["categories"]),
-            _text(current["categories"]), _text(prior["status"]),
-            _text(current["status"]), _hash(prior), _hash(current),
-            source["sha256"], _text(source["url"]), _text(run_url),
-        ])
+        cases.append(case)
     return cases, {"pending_review": len(cases),
                    "annotation_only_changes": cosmetic,
                    "approved_legacy_count": len(keys)}
