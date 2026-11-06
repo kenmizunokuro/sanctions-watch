@@ -12,6 +12,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 ATTEMPT_PATH = Path("data/monitoring/ofac_attempt.json")
+INTEGRITY_FAILED = "integrity_failed"
 
 
 def timestamp() -> str:
@@ -38,7 +39,11 @@ def run_attempt(root: Path, command: list[str], sources: list[str]) -> int:
         "run_attempt": os.environ.get("GITHUB_RUN_ATTEMPT", ""),
         "run_url": f"{server}/{repo}/actions/runs/{run_id}" if repo and run_id else "",
     }
-    path = root / ATTEMPT_PATH
+    _write(root / ATTEMPT_PATH, record)
+    return code
+
+
+def _write(path: Path, record: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     staged = None
     try:
@@ -49,13 +54,39 @@ def run_attempt(root: Path, command: list[str], sources: list[str]) -> int:
     finally:
         if staged is not None:
             staged.unlink(missing_ok=True)
-    return code
+
+
+def mark_integrity_failure(root: Path, *, run_id: str, run_attempt: str) -> bool:
+    path = root / ATTEMPT_PATH
+    if not run_id or not run_attempt or not path.exists():
+        return False
+    record = json.loads(path.read_text(encoding="utf-8"))
+    if (record.get("run_id") != run_id or record.get("run_attempt") != run_attempt
+            or record.get("outcome") != "success" or record.get("exit_code") != 0
+            or not {"ofac", "all"}.intersection(record.get("sources", []))):
+        return False
+    _write(path, record | {
+        "outcome": "failure",
+        "exit_code": 1,
+        "stage": INTEGRITY_FAILED,
+        "fetch_finished_at": record["finished_at"],
+        "finished_at": timestamp(),
+    })
+    return True
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--sources", nargs="+", required=True, choices=["ofac", "mof", "all"])
+    mode = parser.add_mutually_exclusive_group(required=True)
+    mode.add_argument("--sources", nargs="+", choices=["ofac", "mof", "all"])
+    mode.add_argument("--mark-integrity-failure", action="store_true")
     args = parser.parse_args()
+    if args.mark_integrity_failure:
+        if mark_integrity_failure(ROOT, run_id=os.environ.get("GITHUB_RUN_ID", ""),
+                                  run_attempt=os.environ.get("GITHUB_RUN_ATTEMPT", "")):
+            return 0
+        print("OFAC監査停止に対応する同一実行の取得成功記録がありません", file=sys.stderr)
+        return 1
     if "ofac" not in args.sources and "all" not in args.sources:
         parser.error("OFACを含む取得だけに使用してください")
     return run_attempt(ROOT, [sys.executable, "-m", "src.watch", "--sources", *args.sources], args.sources)

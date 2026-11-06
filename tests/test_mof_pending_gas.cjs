@@ -262,3 +262,17 @@ test('fresh approval hold stays warning and stale hold includes monitoring delay
   assert.equal(stale.severity,3);
   assert.equal(stale.anomalyType,'監視遅延・反映停止');
 });
+
+test('OFAC audit stop is distinguished from a fetch failure only for a matching generation', () => {
+  const c=ctx();
+  const base=[['OFAC SDN','エラー','2026-11-07 02:05:42','2026-11-05 02:33:10','89829','9a05deafa6ea']];
+  const detail=[['OFAC SDN','取得済・監査停止（master未反映）',...base[0].slice(2)]];
+  const row=c.mergeStatusDetail_(base,detail)[0];
+  assert.equal(row[1],detail[0][1]);
+  assert.equal(c.mergeStatusDetail_(base,[...detail,...detail])[0][1],'エラー');
+  assert.equal(c.mergeStatusDetail_(base,[detail[0].map((value,index)=>index===5?'old':value)])[0][1],'エラー');
+  const health=c.freshness_(row[0],row[1],row[2],{});
+  assert.equal(health.severity,3);
+  assert.equal(health.anomalyType,'反映停止');
+  assert.match(health.note,/完全性監査/);
+});

@@ -1,4 +1,4 @@
-"""失敗時にOFAC attemptファイルだけをクリーンなmainから保存する。"""
+"""OFAC失敗状態をクリーンなmainから保存する。"""
 from __future__ import annotations
 
 import json
@@ -9,6 +9,7 @@ import tempfile
 from datetime import datetime
 from pathlib import Path
 
+from . import dashboard, state
 from .monitor_attempt import ATTEMPT_PATH, ROOT
 
 
@@ -20,13 +21,15 @@ def _finished(record: dict) -> datetime:
     return datetime.strptime(record["finished_at"], "%Y-%m-%dT%H:%M:%SZ")
 
 
-def persist_failure(root: Path, *, run_id: str) -> bool:
+def persist_failure(root: Path, *, run_id: str, run_attempt: str | None = None) -> bool:
     path = root / ATTEMPT_PATH
     if not path.exists():
         return False
     text = path.read_text(encoding="utf-8")
     record = json.loads(text)
     if not run_id or record.get("run_id") != run_id or record.get("outcome") != "failure":
+        return False
+    if run_attempt is not None and (not run_attempt or record.get("run_attempt") != run_attempt):
         return False
     if not ({"ofac", "all"} & set(record.get("sources", []))):
         return False
@@ -50,8 +53,10 @@ def persist_failure(root: Path, *, run_id: str) -> bool:
                         return False
                 destination.parent.mkdir(parents=True, exist_ok=True)
                 destination.write_text(text, encoding="utf-8")
-                _git(clean, "add", "--", ATTEMPT_PATH.as_posix())
-                _git(clean, "-c", "user.name=sanctions-watch[bot]", "-c", "user.email=sanctions-watch@users.noreply.github.com", "commit", "-m", f"chore(monitor): OFAC取得失敗 run {run_id}")
+                dashboard.write_status(clean, [], state.load_state(clean))
+                _git(clean, "add", "--", ATTEMPT_PATH.as_posix(),
+                     "data/dashboard/status.csv", "data/dashboard/status_detail.csv")
+                _git(clean, "-c", "user.name=sanctions-watch[bot]", "-c", "user.email=sanctions-watch@users.noreply.github.com", "commit", "-m", f"chore(monitor): OFAC監視失敗 run {run_id}")
                 pushed = _git(clean, "push", "origin", "HEAD:refs/heads/main", check=False)
                 if pushed.returncode == 0:
                     print("OFAC失敗状態のみをmainへ保存しました")
@@ -67,7 +72,8 @@ def main() -> int:
     if os.environ.get("GITHUB_REF") != "refs/heads/main":
         print("main以外では失敗状態の保存をスキップします")
         return 0
-    persisted = persist_failure(ROOT, run_id=os.environ.get("GITHUB_RUN_ID", ""))
+    persisted = persist_failure(ROOT, run_id=os.environ.get("GITHUB_RUN_ID", ""),
+                                run_attempt=os.environ.get("GITHUB_RUN_ATTEMPT", ""))
     if not persisted:
         print("今回のOFAC失敗状態は未作成、またはより新しい状態が保存済みです")
     return 0
