@@ -313,3 +313,38 @@ test('OFAC candidate feed ignores stale cache and isolates its own error', () =>
   assert.doesNotThrow(()=>c.syncOfacCandidateFeed_(ss,status,{}));
   assert.match(notes[0],/前回取得時点/);
 });
+
+test('OFAC-only sync writes candidate rows without running the full sheet sync', () => {
+  const c=ctx();
+  const written=[];
+  let released=0, flushed=0;
+  c.LockService={getScriptLock:()=>({tryLock:()=>true,releaseLock:()=>released++})};
+  c.SpreadsheetApp={flush:()=>flushed++,getActiveSpreadsheet:()=>null};
+  c.Logger={log:()=>{}};
+  c.getSpreadsheet_=()=>({});
+  c.syncAll_=()=>{throw Error('full sync should not run');};
+  c.syncOfacCandidateSheet_=(_ss,rows)=>written.push(...rows);
+  const row=['2026-11-07 02:31:25','OFAC','追加','LOURDES','','after','監査停止・master未反映',
+    'https://github.com/test/repo/actions/runs/123'];
+  c.fetchCsvBatch_=(specs)=>{
+    assert.deepEqual(Array.from(specs,s=>s.key),['ofac_pending','status_detail']);
+    return {ofac_pending:{code:200,rows:[row]},status_detail:{code:200,rows:[
+      ['OFAC SDN','掲載終了候補・要レビュー','2026-11-06 01:31:22'],
+      ['OFAC Consolidated','変更なし','2026-11-06 01:31:22'],
+    ]}};
+  };
+  assert.equal(c.syncOfacReviewOnly(),1);
+  assert.deepEqual(written,[row]);
+  assert.equal(flushed,1);
+  assert.equal(released,1);
+});
+
+test('OFAC-only sync reports the failed stage and always releases the lock', () => {
+  const c=ctx();
+  let released=0;
+  c.LockService={getScriptLock:()=>({tryLock:()=>true,releaseLock:()=>released++})};
+  c.fetchCsvBatch_=()=>{throw Error('HTTP 403');};
+  c.getSpreadsheet_=()=>{throw Error('must not open the sheet before fetching');};
+  assert.throws(()=>c.syncOfacReviewOnly(), /CSV取得.*HTTP 403/);
+  assert.equal(released,1);
+});

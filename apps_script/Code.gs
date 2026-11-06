@@ -1,4 +1,4 @@
-const VERSION = '0.5.3';
+const VERSION = '0.5.4';
 const DEFAULT_TZ = 'Asia/Tokyo';
 const LOCK_WAIT_MS = 15000;
 const MAX_RETRIES = 2;
@@ -150,6 +150,7 @@ function onOpen() {
     .createMenu('制裁監視')
     .addItem('今すぐ同期', 'syncAll')
     .addItem('財務省の差分だけ同期（軽量）', 'syncMofReviewOnly')
+    .addItem('OFACの差分候補だけ同期（軽量）', 'syncOfacReviewOnly')
     .addItem('名簿検索', 'searchName')
     .addSeparator()
     .addItem('運用セルフチェック', 'runSelfCheck')
@@ -420,6 +421,7 @@ function syncAll_(executionType) {
         settings,
         metrics
       );
+    syncOfacCandidateFeed_(ss, payload.status.rows, metrics);
 
     syncStage = '外務省資料を同期';
     syncMofaDocuments_(ss, payload.mofaDocuments.notModified ? null : payload.mofaDocuments.rows);
@@ -592,7 +594,6 @@ function syncAll_(executionType) {
     resolveScriptErrorAnomaly_(
       ss
     );
-    syncOfacCandidateFeed_(ss, status, metrics);
 
   } catch (err) {
     result =
@@ -1694,7 +1695,7 @@ function syncOfacCandidateSheet_(ss, rows) {
         !/^https:\/\/github\.com\/[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+\/actions\/runs\/[0-9]+$/.test(row[7])) {
       throw new Error('OFAC差分候補CSVの行が不正です');
     }
-    return row.map(mofReviewTextCell_);
+    return row.map(value => /^\s*[=+@-]/.test(value) ? "'" + value : value);
   });
   const sheet = ss.getSheetByName(TAB.OFAC_PENDING) || ss.insertSheet(TAB.OFAC_PENDING);
   if (sheet.getMaxColumns() < width) throw new Error('OFAC差分候補シートの列が不足しています');
@@ -1711,25 +1712,33 @@ function syncOfacCandidateSheet_(ss, rows) {
   }
 }
 
+function ofacCandidateSpec_() {
+  return {key: 'ofac_pending', url: OFAC_PENDING_URL, expected: EXPECTED.ofacPending,
+    optional: false, conditional: false};
+}
+
+function applyOfacCandidateFeed_(ss, status, rows) {
+  const successful = ['取得あり', '更新あり', '変更なし', '元データ更新・実質変更なし', '掲載終了候補・要レビュー'];
+  const ofac = ['OFAC SDN', 'OFAC Consolidated'].map(source => status.find(row => row[0] === source));
+  const checks = ofac.map(row => row && successful.includes(row[1]) ? parseJst_(row[2]) : null);
+  const latestCandidate = rows.reduce((latest, row) => {
+    const time = parseJst_(row[0]);
+    if (!time || !Number.isFinite(time.getTime())) throw new Error('OFAC差分候補の日時が不正です');
+    return Math.max(latest, time.getTime());
+  }, -Infinity);
+  if (checks.every(check => check && check.getTime() >= latestCandidate)) {
+    syncOfacCandidateSheet_(ss, []);
+    return 0;
+  }
+  if (!rows.length) return null;
+  syncOfacCandidateSheet_(ss, rows);
+  return rows.length;
+}
+
 function syncOfacCandidateFeed_(ss, status, metrics) {
   try {
-    const feed = fetchCsvBatch_([
-      {key: 'ofac_pending', url: OFAC_PENDING_URL, expected: EXPECTED.ofacPending, optional: false, conditional: false},
-    ], metrics).ofac_pending;
-    if (feed.code !== 200) return;
-    const successful = ['取得あり', '更新あり', '変更なし', '元データ更新・実質変更なし', '掲載終了候補・要レビュー'];
-    const ofac = ['OFAC SDN', 'OFAC Consolidated'].map(source => status.find(row => row[0] === source));
-    const checks = ofac.map(row => row && successful.includes(row[1]) ? parseJst_(row[2]) : null);
-    const latestCandidate = feed.rows.reduce((latest, row) => {
-      const time = parseJst_(row[0]);
-      if (!time) throw new Error('OFAC差分候補の日時が不正です');
-      return Math.max(latest, time.getTime());
-    }, -Infinity);
-    if (checks.every(check => check && check.getTime() >= latestCandidate)) {
-      syncOfacCandidateSheet_(ss, []);
-    } else if (feed.rows.length) {
-      syncOfacCandidateSheet_(ss, feed.rows);
-    }
+    const feed = fetchCsvBatch_([ofacCandidateSpec_()], metrics).ofac_pending;
+    if (feed.code === 200) applyOfacCandidateFeed_(ss, status, feed.rows);
   } catch (err) {
     Logger.log('OFAC差分候補の取得・表示エラー: ' + String(err).slice(0, 500));
     try {
@@ -1738,6 +1747,34 @@ function syncOfacCandidateFeed_(ss, status, metrics) {
     } catch (sheetError) {
       Logger.log('OFAC差分候補の状態表示エラー: ' + String(sheetError).slice(0, 500));
     }
+  }
+}
+
+function syncOfacReviewOnly() {
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(LOCK_WAIT_MS)) throw new Error('OFAC差分候補を同期できません。他の同期が実行中です。');
+  let stage = 'CSV取得';
+  try {
+    const metrics = {http200: 0, http304: 0, bytes: 0, retries: 0};
+    const feeds = fetchCsvBatch_([ofacCandidateSpec_(),
+      {key: 'status_detail', url: STATUS_DETAIL_URL, expected: EXPECTED.status, optional: false, conditional: false},
+    ], metrics);
+    if (feeds.ofac_pending.code !== 200 || feeds.status_detail.code !== 200) {
+      throw new Error('候補CSVと状態CSVをHTTP 200で取得できませんでした');
+    }
+    stage = '対象スプレッドシートを開く';
+    const ss = SpreadsheetApp.getActiveSpreadsheet() || getSpreadsheet_();
+    stage = '14_OFAC差分候補へ反映';
+    const count = applyOfacCandidateFeed_(ss, feeds.status_detail.rows, feeds.ofac_pending.rows);
+    stage = '書き込み確定';
+    SpreadsheetApp.flush();
+    Logger.log(count === null ? '候補CSVが空で正常反映を確認できないため、前回表示を保持しました。' :
+      `14_OFAC差分候補に${count}件を同期しました。`);
+    return count;
+  } catch (err) {
+    throw new Error(`OFAC差分候補の同期 [${stage}] ${err.message || err}`);
+  } finally {
+    lock.releaseLock();
   }
 }
 
