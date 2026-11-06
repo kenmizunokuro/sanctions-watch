@@ -382372,7 +382372,7 @@
       "source": "press:2745"
     }
   ],
-  "last_checked_at": "2026-11-06T07:05:30Z",
+  "last_checked_at": "2026-11-06T14:59:42Z",
   "notices": {},
   "press_status": "error",
   "record_count": 1007,
@@ -382381,6 +382381,6 @@
   "snapshot_hash": "d0eb149d50dde0117a7a5b8e22fb52dad0efe57f45b88d4fcdefeefd4e0f3aea",
   "source_updated": "2026-11-06T00:00:06.849Z",
   "updates_status": "error",
-  "xml_last_success_at": "2026-11-06T07:05:30Z",
+  "xml_last_success_at": "2026-11-06T14:59:42Z",
   "xml_status": "review_required"
 }
