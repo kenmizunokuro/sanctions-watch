@@ -1,39 +1,44 @@
 {
   "outcome": "failure",
   "source": "mof",
-  "finished_at": "2026-11-06T17:51:25Z",
-  "run_id": "42264830769",
+  "finished_at": "2026-11-06T18:17:42Z",
+  "run_id": "42268308305",
   "run_attempt": "1",
-  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42264830769",
+  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42268308305",
   "message": "MOF fetched and diffed; integrity BLOCKED; master not applied",
   "fetch": {
     "schema_version": 1,
-    "run_id": "42264830769",
+    "run_id": "42268308305",
     "run_attempt": "1",
-    "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42264830769",
-    "checked_at": "2026-11-06T17:48:23Z",
+    "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42268308305",
+    "checked_at": "2026-11-06T18:14:37Z",
     "sha256": "71eaf728c702c881fb13856043f63d42276094c79cf91bae4ad90eadfa3caadd",
     "url": "https://www.mof.go.jp/policy/international_policy/gaitame_kawase/gaitame/economic_sanctions/shisantouketsu20261105.csv",
-    "raw_path": "data/raw/mof/20261106T174817Z__shisantouketsu20261105.csv.gz",
+    "raw_path": "data/raw/mof/20261106T181431Z__shisantouketsu20261105.csv.gz",
     "asof": "令和8年11月5日",
     "record_count": 15249,
     "etag": "\"3296ec-65f6fe795e4cc\"",
     "last_modified": "Wed, 04 Nov 2026 09:21:31 GMT",
     "pending_count": 79,
     "master_applied": false,
-    "pending_sha256": "088127e512814c305a8a8d127920c0c482af6c70798e2c0ccc082349ad2fe6fa"
+    "pending_sha256": "23b76edf0d7275492e840e08f895156bf3be9918bb269d6b03c7cd8a728226af"
   },
   "stage": "integrity_blocked",
   "integrity": {
     "status": "BLOCKED",
     "publication_allowed": false,
-    "report": "data/integrity_audit/20261106T175119985456Z__c631392f63340334__78a224d3.json.gz",
-    "report_sha256": "73bd40fccdd300badcdb8b373256f5ed0b745fd65b92d120852e2b0e314948f2",
+    "report": "data/integrity_audit/20261106T181733777990Z__4f73c0809a02580f__3b72cefb.json.gz",
+    "report_sha256": "46c9bcd136461299ed4f9e52a9ea759e002a01fb7d91148d9c1cda019b8cb9b0",
     "counts": {
       "CATEGORY_LABEL_UNRESOLVED": 8,
       "EXTRA_REGISTRATION": 7026,
       "LEGACY_ACCEPTANCE_INVALID": 1,
       "WEAK_ALIAS_ACTIVE": 2878
+    },
+    "blocking_counts": {
+      "EXTRA_REGISTRATION": 2426,
+      "LEGACY_ACCEPTANCE_INVALID": 1,
+      "WEAK_ALIAS_ACTIVE": 3
     },
     "reasons": [
       {
@@ -41,40 +46,12 @@
         "detail": "Weak-only名称が通常masterで有効"
       },
       {
-        "kind": "WEAK_ALIAS_ACTIVE",
-        "detail": "Weak-only名称が通常masterで有効"
-      },
-      {
-        "kind": "WEAK_ALIAS_ACTIVE",
-        "detail": "Weak-only名称が通常masterで有効"
-      },
-      {
         "kind": "EXTRA_REGISTRATION",
         "detail": "現在原本に根拠の無い出典付き登録（保持行を含む。削除禁止）"
       },
       {
-        "kind": "EXTRA_REGISTRATION",
-        "detail": "現在原本に根拠の無い出典付き登録（保持行を含む。削除禁止）"
-      },
-      {
-        "kind": "EXTRA_REGISTRATION",
-        "detail": "現在原本に根拠の無い出典付き登録（保持行を含む。削除禁止）"
-      },
-      {
-        "kind": "EXTRA_REGISTRATION",
-        "detail": "現在原本に根拠の無い出典付き登録（保持行を含む。削除禁止）"
-      },
-      {
-        "kind": "EXTRA_REGISTRATION",
-        "detail": "現在原本に根拠の無い出典付き登録（保持行を含む。削除禁止）"
-      },
-      {
-        "kind": "EXTRA_REGISTRATION",
-        "detail": "現在原本に根拠の無い出典付き登録（保持行を含む。削除禁止）"
-      },
-      {
-        "kind": "EXTRA_REGISTRATION",
-        "detail": "現在原本に根拠の無い出典付き登録（保持行を含む。削除禁止）"
+        "kind": "LEGACY_ACCEPTANCE_INVALID",
+        "detail": "legacy candidate annotation missing, changed, or duplicated"
       }
     ]
   }
