@@ -208,6 +208,11 @@ runs:
           --changed "${{ steps.watch.outputs.changed }}" \
           --backfilled "${{ steps.watch.outputs.backfilled }}"
 
+    - name: OFAC 取得後の監査停止を記録
+      if: failure() && steps.watch.outcome == 'success' && steps.integrity.outcome == 'failure' && (contains(inputs.sources, 'ofac') || inputs.sources == 'all')
+      shell: bash
+      run: python -m src.monitor_attempt --mark-integrity-failure
+
     - name: OFAC 失敗証跡を準備
       if: failure() && (contains(inputs.sources, 'ofac') || inputs.sources == 'all')
       shell: bash

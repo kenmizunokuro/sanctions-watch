@@ -43,6 +43,14 @@ class OfacFailureEvidenceWorkflowTest(unittest.TestCase):
             step,
         )
 
+    def test_integrity_failure_receipt_is_recorded_before_evidence_copy(self):
+        name = "OFAC 取得後の監査停止を記録"
+        step = self.step(name)
+        self.assertIn("steps.watch.outcome == 'success'", step)
+        self.assertIn("steps.integrity.outcome == 'failure'", step)
+        self.assertIn("python -m src.monitor_attempt --mark-integrity-failure", step)
+        self.assertLess(self.text.index(name), self.text.index("OFAC 失敗証跡を準備"))
+
     def test_failure_evidence_upload_step_exists(self):
         step = self.step("OFAC 失敗証跡を保存")
 

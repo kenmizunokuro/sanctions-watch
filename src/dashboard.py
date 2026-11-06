@@ -22,6 +22,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from . import ofac_removal_queue as ORQ
+from .monitor_attempt import ATTEMPT_PATH, INTEGRITY_FAILED
 from .normalize import canonical_display_name, is_trailing_unknown_artifact
 from .screening import secondary_screening_key
 
@@ -87,6 +88,7 @@ STATUS_LABEL = {
 
     # 取得失敗・書式変更などの異常。
     "error": "エラー",
+    "ofac_integrity_failed": "取得済・監査停止（master未反映）",
     "mof_integrity_blocked": "取得済・監査停止（master未反映）",
     "mof_approval_required": "取得済・要レビュー（master未反映）",
     "mof_publication_error": "取得済・後処理エラー（master未反映）",
@@ -253,6 +255,19 @@ def build_status_rows(
     )
     latest = _latest_heartbeat_by_source(root)
 
+    ofac_attempt_path = root / ATTEMPT_PATH
+    ofac_attempt = json.loads(ofac_attempt_path.read_text(encoding="utf-8")) if ofac_attempt_path.exists() else {}
+    ofac_failed_at = ""
+    ofac_integrity_failed = ofac_attempt.get("stage") == INTEGRITY_FAILED
+    if ofac_attempt.get("outcome") == "failure":
+        stamp_format = "%Y-%m-%dT%H:%M:%SZ"
+        ofac_failed_at = ofac_attempt["finished_at"]
+        finished = datetime.strptime(ofac_failed_at, stamp_format)
+        if finished > now.astimezone(timezone.utc).replace(tzinfo=None):
+            raise ValueError("invalid OFAC failure timestamp")
+        if ofac_integrity_failed and datetime.strptime(ofac_attempt["fetch_finished_at"], stamp_format) > finished:
+            raise ValueError("invalid OFAC integrity failure timestamp")
+
     # An attempted MOF run that failed integrity verification is not an
     # official-data success. Publish its failure timestamp independently of
     # the last successful source heartbeat; never present stale "変更なし".
@@ -401,6 +416,10 @@ def build_status_rows(
                 # The CSV timestamp identifies this completed attempt in both
                 # feeds. Exact fetch time remains in the hash-checked receipt.
                 raw_status = "mof_" + stage
+
+        if key in {"ofac_sdn", "ofac_cons"} and ofac_failed_at > checked_at:
+            checked_at = ofac_failed_at
+            raw_status = "ofac_integrity_failed" if mof_detail and ofac_integrity_failed else "error"
 
         status_label = (
             STATUS_LABEL.get(raw_status, raw_status)

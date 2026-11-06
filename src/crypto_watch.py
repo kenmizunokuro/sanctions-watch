@@ -13,6 +13,7 @@ from pathlib import Path
 from .crypto_addresses import extract, PARSER_VERSION
 from .crypto_ledger import reconcile
 from .crypto_validation.common import review_category
+from .monitor_attempt import ATTEMPT_PATH, INTEGRITY_FAILED
 from .persistence import FileWrite, atomic_replace_many
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -24,8 +25,10 @@ def _read(path, default):
 def _upstream(root):
     out=dict(last_checked='', status='UNKNOWN', http_status='', etag='', last_modified='',
              run_url='', outcome='UNKNOWN')
-    attempt=_read(root/'data/monitoring/ofac_attempt.json',{})
+    attempt=_read(root/ATTEMPT_PATH,{})
     out.update(outcome=attempt.get('outcome','UNKNOWN'), run_url=attempt.get('run_url',''))
+    if out['outcome']=='failure' and attempt.get('stage')==INTEGRITY_FAILED:
+        out['stage']=INTEGRITY_FAILED
     for path in sorted((root/'data/heartbeat').glob('*.csv'), reverse=True):
         with path.open(encoding='utf-8-sig',newline='') as f:
             matches=[r for r in csv.DictReader(f) if r.get('source')=='ofac_sdn']

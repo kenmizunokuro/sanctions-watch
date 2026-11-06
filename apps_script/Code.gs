@@ -1,4 +1,4 @@
-const VERSION = '0.5.1';
+const VERSION = '0.5.2';
 const DEFAULT_TZ = 'Asia/Tokyo';
 const LOCK_WAIT_MS = 15000;
 const MAX_RETRIES = 2;
@@ -1665,13 +1665,15 @@ function fetchSyncPayload_(
 }
 
 function mergeStatusDetail_(baseRows, detailRows) {
-  const detailed = detailRows.filter(r => String(r[0]) === '財務省');
-  if (detailed.length !== 1) return baseRows;
   return baseRows.map(r => {
+    const ofac = ['OFAC SDN', 'OFAC Consolidated'].includes(r[0]);
+    if ((r[0] !== '財務省' && !ofac) || r[1] !== 'エラー') return r;
+    const detailed = detailRows.filter(d => d[0] === r[0]);
+    if (detailed.length !== 1) return r;
     const d = detailed[0];
     // Different CDN cache generations must never erase a newer error/success.
     // Both files represent the same applied generation and check timestamp.
-    if (r[0] !== '財務省' || r[1] !== 'エラー' ||
+    if ((ofac && d[1] !== '取得済・監査停止（master未反映）') ||
         r[3] !== d[3] || String(r[4]) !== String(d[4]) || r[5] !== d[5]) return r;
     const stamp = parseJst_(r[2]);
     const checked = parseJst_(d[2]);
@@ -2532,6 +2534,12 @@ function freshness_(
   lastCheckText,
   settings
 ) {
+  if (['OFAC SDN', 'OFAC Consolidated'].includes(source) && state === '取得済・監査停止（master未反映）') {
+    return {
+      label: '重大', severity: 3, anomalyType: '反映停止',
+      note: 'OFAC原本の取得・差分処理は成功。完全性監査で反映停止。最終更新・件数・ハッシュは反映済みデータ。',
+    };
+  }
   if (['エラー', '構造異常', '未確認期間あり', '手動取込エラー'].includes(state)) {
     return {
       label:
