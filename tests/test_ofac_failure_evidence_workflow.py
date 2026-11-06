@@ -48,8 +48,15 @@ class OfacFailureEvidenceWorkflowTest(unittest.TestCase):
         step = self.step(name)
         self.assertIn("steps.watch.outcome == 'success'", step)
         self.assertIn("steps.integrity.outcome == 'failure'", step)
+        self.assertIn("steps.commit_candidate.outputs.integrity_failed == 'true'", step)
         self.assertIn("python -m src.monitor_attempt --mark-integrity-failure", step)
         self.assertLess(self.text.index(name), self.text.index("OFAC 失敗証跡を準備"))
+
+    def test_pending_feed_clears_inside_the_official_commit_path(self):
+        step = self.step("コミット")
+        self.assertIn("python -m src.ofac_pending --clear", step)
+        self.assertIn("integrity-gate.sh", step)
+        self.assertLess(step.index("integrity-gate.sh"), step.index("git push"))
 
     def test_failure_evidence_upload_step_exists(self):
         step = self.step("OFAC 失敗証跡を保存")

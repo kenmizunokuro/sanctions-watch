@@ -31,7 +31,7 @@ from . import ofac_removal_queue as ORQ
 from . import persistence as P
 from . import state as S
 from . import source_audit as A
-from .fetch import archive, fetch, prune_raw, read_raw
+from .fetch import archive, fetch, prune_raw, read_raw, sha256
 from .sources import mof, ofac
 
 LOGGER = logging.getLogger(__name__)
@@ -1812,6 +1812,8 @@ def main() -> int:
               file=sys.stderr)
         return 1
 
+    gh = os.environ.get("GITHUB_OUTPUT")
+    ofac_base_sha256 = sha256(MASTER.read_bytes()) if gh and "ofac" in targets and not args.dry_run else ""
     rows = M.load(MASTER)
     st = S.load_state(ROOT)
     session = requests.Session()
@@ -1924,9 +1926,12 @@ def main() -> int:
     )
 
     # 後続ステップ用の出力
-    gh = os.environ.get("GITHUB_OUTPUT")
     if gh:
         with open(gh, "a", encoding="utf-8") as f:
+            if ofac_base_sha256:
+                digest = sha256((ROOT / DIFF_CSV_REL).read_bytes()) if diffs else "none"
+                f.write(f"ofac_candidate_sha256={digest}\n")
+                f.write(f"ofac_base_sha256={ofac_base_sha256}\n")
             f.write(f"has_diff={'true' if diffs else 'false'}\n")
             f.write(f"added={sum(d.counts['追加'] for d in diffs)}\n")
             f.write(f"backfilled={sum(d.counts.get('初回同期', 0) for d in diffs)}\n")

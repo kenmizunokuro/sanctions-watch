@@ -276,3 +276,40 @@ test('OFAC audit stop is distinguished from a fetch failure only for a matching 
   assert.equal(health.anomalyType,'反映停止');
   assert.match(health.note,/完全性監査/);
 });
+
+test('OFAC candidate sheet writes only validated, formula-safe, unapplied rows', () => {
+  const c=ctx();
+  const writes=[];
+  const sheet={getMaxColumns:()=>26,getMaxRows:()=>100,getLastRow:()=>6,setFrozenRows:()=>{},
+    getRange:(...range)=>({setValue:value=>writes.push([range,value]),
+      setValues:values=>writes.push([range,values]),clearContent:()=>writes.push([range,'cleared'])})};
+  const ss={getSheetByName:name=>{assert.equal(name,'14_OFAC差分候補');return sheet;}};
+  const row=['2026-11-07 02:01:41','OFAC','追加','=FORMULA','','after','監査停止・master未反映',
+    'https://github.com/test/repo/actions/runs/123'];
+  assert.throws(()=>c.syncOfacCandidateSheet_(ss,[row.map((v,i)=>i===6?'適用済み':v)]));
+  assert.equal(writes.length,0);
+  c.syncOfacCandidateSheet_(ss,[row]);
+  assert.equal(writes.find(([r])=>r.join(',')==='5,1,1,8')[1][0][3],"'=FORMULA");
+  assert.equal(writes.find(([r])=>r.join(',')==='6,1,1,8')[1],'cleared');
+});
+
+test('OFAC candidate feed ignores stale cache and isolates its own error', () => {
+  const c=ctx();
+  const displayed=[];
+  const notes=[];
+  c.Logger={log:()=>{}};
+  c.syncOfacCandidateSheet_=(_ss, rows)=>displayed.push(rows.length);
+  const row=['2026-11-07 02:01:41','OFAC','追加','NAME','','after','監査停止・master未反映','https://github.com/test/repo/actions/runs/123'];
+  const status=['OFAC SDN','OFAC Consolidated'].map(name=>[name,'変更なし','2026-11-07 03:00:00']);
+  const sheet={getRange:()=>({setValue:text=>notes.push(text)})};
+  const ss={getSheetByName:()=>sheet};
+  c.fetchCsvBatch_=()=>({ofac_pending:{code:200,rows:[row]}});
+  c.syncOfacCandidateFeed_(ss,status,{});
+  assert.deepEqual(displayed,[0]);
+  c.fetchCsvBatch_=()=>({ofac_pending:{code:200,rows:[]}});
+  c.syncOfacCandidateFeed_(ss,status.map(row=>[row[0],'エラー',row[2]]),{});
+  assert.deepEqual(displayed,[0]);
+  c.fetchCsvBatch_=()=>{throw Error('temporary error');};
+  assert.doesNotThrow(()=>c.syncOfacCandidateFeed_(ss,status,{}));
+  assert.match(notes[0],/前回取得時点/);
+});
