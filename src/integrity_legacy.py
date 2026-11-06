@@ -178,17 +178,44 @@ def _display(root,rows):
     if actual!=expected:raise ValueError('legacy screening is not the complete current projection')
 
 
-def _row_bindings(rows,accepted,scope,ledger):
-    bykey={}
-    for row in rows:bykey.setdefault(row['match_key'],[]).append(row)
-    expected=[]
+class LegacyBindingMismatch(ValueError):
+    def __init__(self, mismatches):
+        self.mismatches = mismatches
+        super().__init__(f'legacy candidate bindings invalid: {len(mismatches)} row(s); see binding_mismatches')
+
+
+def _row_bindings(rows, accepted, scope, ledger):
+    bykey = {}
+    for row in rows:
+        bykey.setdefault(row['match_key'], []).append(row)
+    expected_keys = set()
+    mismatches = []
     for entry in accepted.values():
-        row=annotate(scope[entry['original_review_id']]['finding']['master'],entry['classification'],ledger['expires_at'])
-        if bykey.get(entry['master_key'])!=[row]:raise ValueError('legacy candidate annotation missing, changed, or duplicated')
-        expected.append(row)
-    if {r['match_key'] for r in rows if MARKER in r.get('review_flag','')}!={r['match_key'] for r in expected}:
-        raise ValueError('legacy annotations exist outside active acceptance')
-    return expected
+        key = entry['master_key']
+        expected_keys.add(key)
+        expected = annotate(scope[entry['original_review_id']]['finding']['master'],
+                            entry['classification'], ledger['expires_at'])
+        candidates = bykey.get(key, [])
+        if candidates == [expected]:
+            continue
+        mismatch = dict(match_key=key, accepted_review_id=entry['accepted_review_id'])
+        if not candidates:
+            mismatch['reason'] = 'row_missing'
+        elif len(candidates) > 1:
+            mismatch.update(reason='row_duplicated', candidate_count=len(candidates))
+        else:
+            candidate = candidates[0]
+            changed_fields = sorted(field for field in expected.keys() | candidate.keys()
+                                    if field not in expected or field not in candidate
+                                    or expected[field] != candidate[field])
+            mismatch.update(reason='row_changed', changed_fields=changed_fields)
+        mismatches.append(mismatch)
+
+    marked_keys = {row['match_key'] for row in rows if MARKER in row.get('review_flag', '')}
+    for key in marked_keys - expected_keys:
+        mismatches.append(dict(match_key=key, reason='annotation_outside_scope'))
+    if mismatches:
+        raise LegacyBindingMismatch(sorted(mismatches, key=lambda item: item['match_key']))
 
 
 def apply(root,report,triage,ledger,scope,*,now=None):
@@ -198,7 +225,7 @@ def apply(root,report,triage,ledger,scope,*,now=None):
     try:
         accepted=_validate(ledger,scope,now)
         _,rows=_read_csv(Path(root)/'data/master/master.csv')
-        marked=_row_bindings(rows,accepted,scope,ledger)
+        _row_bindings(rows,accepted,scope,ledger)
         if len(triage['items'])!=len(report['findings']):raise ValueError('legacy triage length mismatch')
         matches={}
         for n,(finding,item) in enumerate(zip(report['findings'],triage['items'])):
@@ -212,7 +239,10 @@ def apply(root,report,triage,ledger,scope,*,now=None):
             matches[ident]=n
         if set(matches)!=set(accepted):raise ValueError('legacy accepted relation missing or changed; fresh review required')
     except (ValueError,OSError,KeyError,TypeError,csv.Error,EOFError,zlib.error) as exc:
-        result['findings'].append(dict(kind='LEGACY_ACCEPTANCE_INVALID',detail=str(exc),blocking=True))
+        finding = dict(kind='LEGACY_ACCEPTANCE_INVALID', detail=str(exc), blocking=True)
+        if isinstance(exc, LegacyBindingMismatch):
+            finding['binding_mismatches'] = exc.mismatches
+        result['findings'].append(finding)
         return _finish(result)
     try:
         _display(root,rows)

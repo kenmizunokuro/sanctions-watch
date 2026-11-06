@@ -173,6 +173,37 @@ class GateTests(unittest.TestCase):
                 self.assertNotEqual(p.returncode,0);self.assertFalse((self.root/'published').exists())
                 self.assertTrue(any(f['kind'].startswith('LEGACY_') for f in self.report()['findings']))
 
+    def test_changed_legacy_binding_identifies_review_id_and_fields_in_audit(self):
+        key = self.item['master_key']
+        rows = [dict(row, sources='OFAC;財務省', categories='財務省:変更')
+                if row['match_key'] == key else row for row in self.rows]
+        self.install(rows=rows)
+        result = self.gate.run_gate('success', 'mof')
+        self.assertNotEqual(result.returncode, 0)
+        self.assertFalse((self.root/'published').exists())
+        report = self.report()
+        finding = next(f for f in report['findings'] if f['kind'] == 'LEGACY_ACCEPTANCE_INVALID')
+        self.assertTrue(finding['blocking'])
+        self.assertEqual(finding['binding_mismatches'], [{
+            'match_key': key,
+            'accepted_review_id': self.ledger['entries'][0]['accepted_review_id'],
+            'reason': 'row_changed',
+            'changed_fields': ['categories', 'sources'],
+        }])
+
+    def test_missing_duplicate_and_out_of_scope_annotation_are_distinguished(self):
+        key = self.item['master_key']
+        row = next(row for row in self.rows if row['match_key'] == key)
+        accepted = self.L._validate(self.ledger, self.scope, NOW)
+        unexpected = dict(row, match_key='unexpected')
+        for candidate, reason in (([unexpected], 'row_missing'),
+                                  ([row, row, unexpected], 'row_duplicated')):
+            with self.subTest(reason=reason):
+                with self.assertRaises(self.L.LegacyBindingMismatch) as caught:
+                    self.L._row_bindings(candidate, accepted, self.scope, self.ledger)
+                self.assertEqual({item['match_key']: item['reason'] for item in caught.exception.mismatches},
+                                 {key: reason, 'unexpected': 'annotation_outside_scope'})
+
     def test_expiration_boundary_and_future_review_do_not_release(self):
         r=A.audit(self.root,['ofac','mof']);t=T.triage(self.root,r)
         # Rebuild an unaccepted report for the pure finalizer using actual finding content.
