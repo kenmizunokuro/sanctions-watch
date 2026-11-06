@@ -1,4 +1,4 @@
-const VERSION = '0.5.2';
+const VERSION = '0.5.3';
 const DEFAULT_TZ = 'Asia/Tokyo';
 const LOCK_WAIT_MS = 15000;
 const MAX_RETRIES = 2;
@@ -20,6 +20,7 @@ const TAB = {
   UN: '11_国連レビュー',
   MOF_PENDING: '12_財務省差分候補',
   MOF_LEGACY: '13_財務省出典変更',
+  OFAC_PENDING: '14_OFAC差分候補',
 };
 
 const QUEUE_CHANGE_TYPES = new Set([
@@ -59,8 +60,10 @@ const UN_REVIEWS_URL = 'https://raw.githubusercontent.com/kenmizunokuro/sanction
 const MOF_PENDING_URL = 'https://raw.githubusercontent.com/kenmizunokuro/sanctions-watch/main/data/dashboard/mof_pending.csv';
 const MOF_LEGACY_URL = 'https://raw.githubusercontent.com/kenmizunokuro/sanctions-watch/main/data/dashboard/mof_legacy_review.csv';
 const STATUS_DETAIL_URL = 'https://raw.githubusercontent.com/kenmizunokuro/sanctions-watch/main/data/dashboard/status_detail.csv';
+const OFAC_PENDING_URL = 'https://raw.githubusercontent.com/kenmizunokuro/sanctions-watch/main/data/dashboard/ofac_pending.csv';
 
 const EXPECTED = {
+  ofacPending: ['検知日時（JST）','出所','種別','受取人名','変更前','変更後','状態','GitHub実行URL'],
   unReviews: ['イベントID','検知日時','区分','国連参照番号','対象名／発表','状態','追加対象者','掲載終了候補','変更対象者','SHA256','一次ソースURL'],
   mofPending: ['候補ID','検知日時UTC','出所','種別','対象者','番号','国連参照番号','変更項目','変更前','変更後','影響区分','前回原本SHA256','今回原本SHA256','今回原本ファイル','取得URL','検証状態','GitHub実行URL'],
   mofLegacy: ['候補ID','検知日時UTC','状態','対象者','match_key','変更フィールド','変更前出典','変更後出典','変更前カテゴリ','変更後カテゴリ','変更前状態','変更後状態','旧master SHA256','候補master SHA256','財務省原本SHA256','財務省原本URL','実行URL'],
@@ -589,6 +592,7 @@ function syncAll_(executionType) {
     resolveScriptErrorAnomaly_(
       ss
     );
+    syncOfacCandidateFeed_(ss, status, metrics);
 
   } catch (err) {
     result =
@@ -1679,6 +1683,62 @@ function mergeStatusDetail_(baseRows, detailRows) {
     const checked = parseJst_(d[2]);
     return stamp && checked && stamp.getTime() === checked.getTime() ? d : r;
   });
+}
+
+function syncOfacCandidateSheet_(ss, rows) {
+  const width = EXPECTED.ofacPending.length;
+  const kinds = ['追加', '初回同期（Advanced XML）', '掲載終了候補', '変更'];
+  const values = rows.map(row => {
+    if (row.length !== width || row[1] !== 'OFAC' || !kinds.includes(row[2]) ||
+        !parseJst_(row[0]) || !row[3].trim() || row[6] !== '監査停止・master未反映' ||
+        !/^https:\/\/github\.com\/[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+\/actions\/runs\/[0-9]+$/.test(row[7])) {
+      throw new Error('OFAC差分候補CSVの行が不正です');
+    }
+    return row.map(mofReviewTextCell_);
+  });
+  const sheet = ss.getSheetByName(TAB.OFAC_PENDING) || ss.insertSheet(TAB.OFAC_PENDING);
+  if (sheet.getMaxColumns() < width) throw new Error('OFAC差分候補シートの列が不足しています');
+  const previousLastRow = sheet.getLastRow();
+  const lastRow = 4 + values.length;
+  ensureRows_(sheet, lastRow);
+  sheet.getRange('A1').setValue('OFAC：監査停止時の差分候補');
+  sheet.getRange('A2').setValue('確認専用。表示日時の監査で止まった差分です。GitHub実行URLで取得時点を確認できます。');
+  sheet.getRange(4, 1, 1, width).setValues([EXPECTED.ofacPending]);
+  sheet.setFrozenRows(4);
+  if (values.length) sheet.getRange(5, 1, values.length, width).setValues(values);
+  if (previousLastRow > lastRow) {
+    sheet.getRange(lastRow + 1, 1, previousLastRow - lastRow, width).clearContent();
+  }
+}
+
+function syncOfacCandidateFeed_(ss, status, metrics) {
+  try {
+    const feed = fetchCsvBatch_([
+      {key: 'ofac_pending', url: OFAC_PENDING_URL, expected: EXPECTED.ofacPending, optional: false, conditional: false},
+    ], metrics).ofac_pending;
+    if (feed.code !== 200) return;
+    const successful = ['取得あり', '更新あり', '変更なし', '元データ更新・実質変更なし', '掲載終了候補・要レビュー'];
+    const ofac = ['OFAC SDN', 'OFAC Consolidated'].map(source => status.find(row => row[0] === source));
+    const checks = ofac.map(row => row && successful.includes(row[1]) ? parseJst_(row[2]) : null);
+    const latestCandidate = feed.rows.reduce((latest, row) => {
+      const time = parseJst_(row[0]);
+      if (!time) throw new Error('OFAC差分候補の日時が不正です');
+      return Math.max(latest, time.getTime());
+    }, -Infinity);
+    if (checks.every(check => check && check.getTime() >= latestCandidate)) {
+      syncOfacCandidateSheet_(ss, []);
+    } else if (feed.rows.length) {
+      syncOfacCandidateSheet_(ss, feed.rows);
+    }
+  } catch (err) {
+    Logger.log('OFAC差分候補の取得・表示エラー: ' + String(err).slice(0, 500));
+    try {
+      const sheet = ss.getSheetByName(TAB.OFAC_PENDING);
+      if (sheet) sheet.getRange('A2').setValue('候補の更新に失敗。表示中の行は前回取得時点です。');
+    } catch (sheetError) {
+      Logger.log('OFAC差分候補の状態表示エラー: ' + String(sheetError).slice(0, 500));
+    }
+  }
 }
 
 

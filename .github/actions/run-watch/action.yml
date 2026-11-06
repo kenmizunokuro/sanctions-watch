@@ -89,6 +89,7 @@ runs:
       run: python -m src.mof_re_review
 
     - name: コミット
+      id: commit_candidate
       shell: bash
       env:
         AUDIT_SOURCES: ${{ inputs.sources }}
@@ -98,6 +99,9 @@ runs:
       run: |
         git config user.name  "sanctions-watch[bot]"
         git config user.email "sanctions-watch@users.noreply.github.com"
+        if [[ "$AUDIT_SOURCES" == ofac || "$AUDIT_SOURCES" == all ]]; then
+          python -m src.ofac_pending --clear
+        fi
         git add -A data/
         if git diff --cached --quiet; then
           echo "コミットするものが無い"
@@ -131,7 +135,10 @@ runs:
             fi
             # Rebase can change the candidate. Re-audit these exact bytes before
             # every push; never push an unexamined conflict resolution.
-            bash .github/scripts/integrity-gate.sh "$AUDIT_SOURCES" success || exit 1
+            if ! bash .github/scripts/integrity-gate.sh "$AUDIT_SOURCES" success; then
+              echo 'integrity_failed=true' >> "$GITHUB_OUTPUT"
+              exit 1
+            fi
             git push && exit 0
           fi
           sleep $((i * 5))
@@ -209,7 +216,7 @@ runs:
           --backfilled "${{ steps.watch.outputs.backfilled }}"
 
     - name: OFAC 取得後の監査停止を記録
-      if: failure() && steps.watch.outcome == 'success' && steps.integrity.outcome == 'failure' && (contains(inputs.sources, 'ofac') || inputs.sources == 'all')
+      if: failure() && steps.watch.outcome == 'success' && (steps.integrity.outcome == 'failure' || steps.commit_candidate.outputs.integrity_failed == 'true') && (contains(inputs.sources, 'ofac') || inputs.sources == 'all')
       shell: bash
       run: python -m src.monitor_attempt --mark-integrity-failure
 
@@ -304,6 +311,9 @@ runs:
     - name: OFAC 失敗状態だけをコミット
       if: failure() && (contains(inputs.sources, 'ofac') || inputs.sources == 'all')
       shell: bash
+      env:
+        OFAC_CANDIDATE_SHA256: ${{ steps.watch.outputs.ofac_candidate_sha256 }}
+        OFAC_BASE_SHA256: ${{ steps.watch.outputs.ofac_base_sha256 }}
       run: python -m src.persist_monitor_failure
 
     - name: 完全性監査証跡を保存（成功・失敗共通）
