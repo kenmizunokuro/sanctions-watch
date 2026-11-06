@@ -34,6 +34,19 @@ def kinds(result): return {f['kind'] for f in result['findings']}
 
 
 class CompareTests(unittest.TestCase):
+    def test_blocking_counts_exclude_review_only_findings_of_the_same_kind(self):
+        result = A._finish({"findings": [
+            {"kind": "EXTRA_REGISTRATION", "blocking": False},
+            {"kind": "EXTRA_REGISTRATION", "blocking": True},
+            {"kind": "WEAK_ALIAS_ACTIVE", "blocking": False},
+            {"kind": "UNDETERMINED"},
+        ]})
+        self.assertEqual(result["counts"], {
+            "EXTRA_REGISTRATION": 2, "UNDETERMINED": 1, "WEAK_ALIAS_ACTIVE": 1,
+        })
+        self.assertEqual(result["blocking_counts"], {"EXTRA_REGISTRATION": 1, "UNDETERMINED": 1})
+        self.assertFalse(result["publication_allowed"])
+
     def compare(self, es=None, ms=None, ix=None):
         return A.compare(es if es is not None else [expected()],
                          ms if ms is not None else [master()],

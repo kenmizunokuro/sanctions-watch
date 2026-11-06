@@ -14,11 +14,13 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 
 from . import dashboard as D
 from . import state as S
+from .integrity_audit import blocking_findings
 
 ROOT = Path(__file__).resolve().parent.parent
 FAILURE_PATH = Path("data/monitoring/mof_failure.json")
@@ -87,14 +89,20 @@ def _blocked_integrity(root: Path, fetched: dict) -> dict:
                 or not any(d.get("source") == "mof" and d.get("sha256") == fetched["sha256"]
                            for d in report.get("documents", []))):
             continue
+        blockers = blocking_findings(report.get("findings", []))
+        counts = Counter(f["kind"] for f in blockers)
+        reason_by_kind = {}
+        for finding in blockers:
+            if finding.get("detail"):
+                reason_by_kind.setdefault(finding["kind"], str(finding["detail"])[:500])
         return {
             "status": "BLOCKED", "publication_allowed": False,
             "report": path.relative_to(root).as_posix(),
             "report_sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
             "counts": report.get("counts", {}),
-            "reasons": [{"kind": f.get("kind", ""), "detail": str(f.get("detail", ""))[:500]}
-                        for f in report.get("findings", [])
-                        if f.get("blocking") and f.get("detail")][:10],
+            "blocking_counts": dict(sorted(counts.items())),
+            "reasons": [{"kind": kind, "detail": detail}
+                        for kind, detail in list(reason_by_kind.items())[:10]],
         }
     raise ValueError("no current candidate-bound BLOCKED integrity report")
 

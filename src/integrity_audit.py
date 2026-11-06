@@ -33,9 +33,14 @@ def _surface(name):
     return canonical_display_name(name)
 
 
+def blocking_findings(findings):
+    return [finding for finding in findings if finding.get('blocking', True)]
+
+
 def _finish(result):
     result['counts'] = dict(sorted(Counter(f['kind'] for f in result['findings']).items()))
-    blocked=any(f.get('blocking',True) for f in result['findings'])
+    result['blocking_counts'] = dict(sorted(Counter(f['kind'] for f in blocking_findings(result['findings'])).items()))
+    blocked = bool(result['blocking_counts'])
     result['publication_allowed']=not blocked
     result['status'] = 'BLOCKED' if blocked else ('REVIEW' if result['findings'] else 'PASS')
     return result
@@ -355,7 +360,9 @@ def main(argv=None):
     except OSError as exc:
         print(f'AUDIT BLOCKED: 証跡保存失敗: {exc}',file=sys.stderr)
         return 1
-    print(json.dumps(dict(status=result['status'],counts=result['counts'],report=str(path),triage_paths=triage_paths),ensure_ascii=False))
+    print(json.dumps(dict(status=result['status'], counts=result['counts'],
+                          blocking_counts=result['blocking_counts'], report=str(path),
+                          triage_paths=triage_paths), ensure_ascii=False))
     return 0 if result['publication_allowed'] else 1
 
 

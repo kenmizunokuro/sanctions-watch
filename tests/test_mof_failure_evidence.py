@@ -39,9 +39,12 @@ class MofFailureEvidenceTests(unittest.TestCase):
             "inputs": {"data/master/master.csv": hashlib.sha256(
                 (self.root / "data/master/master.csv").read_bytes()).hexdigest()},
             "documents": [{"source": "mof", "sha256": self.result["source_sha256"]}],
-            "counts": {"LEGACY_ACCEPTANCE_INVALID": 1},
-            "findings": [{"kind": "LEGACY_ACCEPTANCE_INVALID",
-                          "detail": "legacy candidate changed", "blocking": True}],
+            "counts": {"EXTRA_REGISTRATION": 12, "LEGACY_ACCEPTANCE_INVALID": 1},
+            "findings": [
+                *[{"kind": "EXTRA_REGISTRATION", "detail": "same reason", "blocking": True}] * 11,
+                {"kind": "EXTRA_REGISTRATION", "detail": "review only", "blocking": False},
+                {"kind": "LEGACY_ACCEPTANCE_INVALID", "detail": "legacy candidate changed"},
+            ],
         }
         self.audit.write_bytes(gzip.compress(json.dumps(report).encode()))
 
@@ -52,6 +55,14 @@ class MofFailureEvidenceTests(unittest.TestCase):
         self.assertEqual(record["fetch"]["pending_count"], 3)
         self.assertFalse(record["fetch"]["master_applied"])
         self.assertEqual(record["integrity"]["status"], "BLOCKED")
+        self.assertEqual(record["integrity"]["counts"]["EXTRA_REGISTRATION"], 12)
+        self.assertEqual(record["integrity"]["blocking_counts"], {
+            "EXTRA_REGISTRATION": 11, "LEGACY_ACCEPTANCE_INVALID": 1,
+        })
+        self.assertEqual(record["integrity"]["reasons"], [
+            {"kind": "EXTRA_REGISTRATION", "detail": "same reason"},
+            {"kind": "LEGACY_ACCEPTANCE_INVALID", "detail": "legacy candidate changed"},
+        ])
 
     def test_previous_attempt_receipt_cannot_hide_current_fetch_failure(self):
         with patch.dict(os.environ, {"GITHUB_RUN_ATTEMPT": "3", "MOF_FETCH_OUTCOME": "failure"}):
