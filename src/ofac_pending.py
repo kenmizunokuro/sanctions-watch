@@ -48,6 +48,53 @@ def write(path: Path, rows: list[list[str]]) -> None:
         csv.writer(stream, lineterminator="\n").writerows(rows)
 
 
+def read(path: Path) -> list[list[str]]:
+    if not path.exists():
+        return [HEADER]
+    with path.open(encoding='utf-8', newline='') as stream:
+        return list(csv.reader(stream, strict=True))
+
+
+def _indexed(rows: list[list[str]]) -> dict[tuple[str, ...], list[str]]:
+    if not rows or rows[0] != HEADER:
+        raise ValueError('OFAC候補差分のCSV列定義が不正です')
+    result = {}
+    for row in rows[1:]:
+        if (len(row) != len(HEADER) or row[1] != 'OFAC' or not row[3].strip()
+                or row[2] not in {'追加', '初回同期（Advanced XML）', '掲載終了候補', '変更'}
+                or row[6] != STATE
+                or not re.fullmatch(r'https://github\.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+/actions/runs/[0-9]+', row[7])):
+            raise ValueError('OFAC候補の初回検知証跡が不正です')
+        if datetime.strptime(row[0], '%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d %H:%M:%S') != row[0]:
+            raise ValueError('OFAC候補の初回検知日時が不正です')
+        key = tuple(row[1:6])
+        if key in result:
+            raise ValueError('OFAC候補差分の同一候補が重複しています')
+        result[key] = row
+    return result
+
+
+def retain_first_detection(current: list[list[str]], previous: list[list[str]]) -> list[list[str]]:
+    """Keep first observation of an unchanged, still-open diff and its evidence URL.
+
+    Identity includes source, kind, name and exact before/after values. A cleared
+    event cannot confer its timestamp on a later recurrence. Latest check times
+    remain in the separate monitor receipt and integrity diagnostics.
+    """
+    _indexed(current)
+    prior = _indexed(previous)
+    output = [list(HEADER)]
+    for row in current[1:]:
+        saved = prior.get(tuple(row[1:6]))
+        item = list(row)
+        if saved:
+            if saved[0] > row[0]:
+                raise ValueError('OFAC候補の初回検知日時が今回の取得より未来です')
+            item[0], item[7] = saved[0], saved[7]
+        output.append(item)
+    return output
+
+
 if __name__ == "__main__":
     # The workflow runs this only after the OFAC publication gate passes.
     parser = argparse.ArgumentParser(description=__doc__)
