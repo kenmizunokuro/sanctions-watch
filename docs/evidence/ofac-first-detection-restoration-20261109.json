@@ -1,0 +1,1621 @@
+{
+  "schema_version": 1,
+  "base_commit": "725442bb14ac401b75e43d3bf5d91412564e6501",
+  "path": "data/dashboard/ofac_pending.csv",
+  "input_sha256": "739866bf8e49fab004aece83a314d23ced7ed1d57e4797f17de5a70262cb2ae0",
+  "output_sha256": "5ea6582f5563b58cf92df310d1e81fb8bcd3e62c759659595a6351d1362ce273",
+  "method": "Replay first-parent published candidate snapshots chronologically; preserve exact unchanged source/kind/name/before/after identity only while continuously present. Preserve first observation and its run URL. Do not infer earlier times from official publication dates.",
+  "limitation": "These are the earliest verifiable stored observations for each continuously open candidate. No claim is made about any earlier unrecorded observation.",
+  "candidates": 107,
+  "snapshots": [
+    {
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab",
+      "rows": 82
+    },
+    {
+      "commit": "ca111155b3e8804229fe9b37b5dde798ea022556",
+      "sha256": "d0fa67429c19ff7d143b0227ea2802c84108f03b9dcbeadc26f01636f45873c6",
+      "rows": 82
+    },
+    {
+      "commit": "aae155be37645124abf67036f5ba3684e4102956",
+      "sha256": "26f7a248d5aa2e30b894fe3c076492f8f7ae92a408a7f9433ca3f6f4e72344e8",
+      "rows": 82
+    },
+    {
+      "commit": "4d4b499cb3e5cfcae6a344c72526980f0dc070d2",
+      "sha256": "8087b0d217250e9f373eed9d0b01b1570bb45973890f159297496c47ca479145",
+      "rows": 82
+    },
+    {
+      "commit": "43eab0d77fe8c7185999996d6df87074a5571433",
+      "sha256": "b6209df4230bb9ab181bfe86d9303e6f45bab8d8e622c5d5dac7e6df57c60030",
+      "rows": 107
+    },
+    {
+      "commit": "7ee9ceb4056697aef73a3bcefd012b86cb31d937",
+      "sha256": "df2d1f6ee985ad097d28be2a1468428c5e2f6036e5b08946553a08335671e6f1",
+      "rows": 107
+    },
+    {
+      "commit": "83d2923b5006074dbc459771eef543358e0ce799",
+      "sha256": "e6448a8fdde36ce420cefde8c149fa77722ee37c8b3f18196c26b60b5383c89c",
+      "rows": 107
+    },
+    {
+      "commit": "76630c410d83b1731581f52d7bbd0e8f4f23ee0c",
+      "sha256": "53458049ef34bbcd8014b8fd3d75491cc684c6de07602463174f2458acc75414",
+      "rows": 107
+    },
+    {
+      "commit": "2bbc057ea50759a2259c2cb0104b64a52b5b2609",
+      "sha256": "8c6134b99521f2db539a858719b59335568428eb7c88854279359f6e16570cee",
+      "rows": 107
+    },
+    {
+      "commit": "67da9153dbfcb1e66ce9d8c89019664d5e6bd8f8",
+      "sha256": "675025dff1353bc38f38d1b3570b3f6f6dec90faa71f33f815450dbf83ad8aa7",
+      "rows": 107
+    },
+    {
+      "commit": "c7a4bc6f69f547b5bc593eab4cb834db47fb37af",
+      "sha256": "ba67c89dcaa7091d282c11b272fd55e5594a99a8820eeecaf5dad0d7d9270958",
+      "rows": 107
+    },
+    {
+      "commit": "482477a078dd8022da67acd3314d788adb99df36",
+      "sha256": "cf2a261d5299519c0fe5952437cf9c3970c9fec552956ab0a6314d223e924bd5",
+      "rows": 107
+    },
+    {
+      "commit": "5d115efc680f549674202356c57a45c0ec59202e",
+      "sha256": "683c79146d3eb8fec70e6c10cd7be4afdbd4fad878abe51b6ed5d701a9866e04",
+      "rows": 107
+    },
+    {
+      "commit": "9a442b0f0725b886cfe34d3e59a2831f94ac0a69",
+      "sha256": "518f7c3f25f96b810aaf84ac7c3c6e225b966d32e891fbb293fa7b1b9a070e13",
+      "rows": 107
+    },
+    {
+      "commit": "c49e3102b3aa6f33b3be604f1c6f44dbc9ca5403",
+      "sha256": "3c5cdc87cda5cf5a06b330596d021970529bf4ae3072fa92c11ed44a97cdfa8f",
+      "rows": 107
+    },
+    {
+      "commit": "056472bd70d074e435e81b6c8878b9506c103534",
+      "sha256": "ec51839e713d26419358c48dbad1d75b4e63ff5dab7b4a0231eb9715e191b14c",
+      "rows": 107
+    },
+    {
+      "commit": "fda61081afe911be4dc3dfc44c19c811d740b6f6",
+      "sha256": "75430b18e42e3b78c15837032165f7bf949db3d15a8e350f509e4da51d807300",
+      "rows": 107
+    },
+    {
+      "commit": "a167d80bf280c77a6e0a179cb2af210c42588bde",
+      "sha256": "7ca04f4b9cd989d8edaef187feed66cf06bc1b8ce57139c9407fba9491512672",
+      "rows": 107
+    },
+    {
+      "commit": "e3859c0634c70c7e4ee0a5a7e150ffc6af2b6586",
+      "sha256": "e860a5ef152e23983356814ff30b4f542e243a79dd23e73cb5055cf33b52a2ce",
+      "rows": 107
+    },
+    {
+      "commit": "377803e72fe41c96b4ad7d8057b0377681a4dbf3",
+      "sha256": "8c58a11b86148236d6b9a7944090f61e7616090220e81cc3c8389a4b7963bf23",
+      "rows": 107
+    },
+    {
+      "commit": "1e193e66457810998e67f8d423502816209b2c1f",
+      "sha256": "4985bcee9b737ca5d22e4a56b16ef385289ee2679b6a56d3147cd6dec2e84b0a",
+      "rows": 107
+    },
+    {
+      "commit": "ea4f27854fe8789f302a24e612495c17e950fe5a",
+      "sha256": "6872bf20ea01a4e5cb0871b4ab0772aa2c346d39190905cdaae16962512da571",
+      "rows": 107
+    },
+    {
+      "commit": "854d2011777e36b21cba2060f71da548d9364511",
+      "sha256": "2a43a5c33980e369bac65beb3fb6cd2be09a25b92f4c50f164691ed69e8da39f",
+      "rows": 107
+    },
+    {
+      "commit": "375980aac80e1a0766003f3098edcf698c0eedae",
+      "sha256": "3ec9bb972ee887ca40c84dcc302f3ec28720d300ea5acd7dfbc9b281716365c8",
+      "rows": 107
+    },
+    {
+      "commit": "b5aecc7134b94ccd8539fd93a48d5ec0fc834a7b",
+      "sha256": "44d532c4948535e540bc9771085ce73004c31588c1a85265d00a81561924ddb7",
+      "rows": 107
+    },
+    {
+      "commit": "17f1101950269c3f7ea225f1d62ef7cab198a05c",
+      "sha256": "30c48709981166152c0ce25a67689a1c79f3ab4e7b06e7f1853187a04a9547a9",
+      "rows": 107
+    },
+    {
+      "commit": "c21f5d82f5cfbf8158e0d2b124dc064a303896b1",
+      "sha256": "368c5934d50506686e7e724c1df6f3a39e3de45315d6aa2d5acd210633c50262",
+      "rows": 107
+    },
+    {
+      "commit": "c621289428c36892bc358c2dc95c996731792dc5",
+      "sha256": "787d96a747ad509e5ad8f8f2a82c946a6b650cbd0b26377caf3c9905bde6fd5a",
+      "rows": 107
+    },
+    {
+      "commit": "71075474aa73d613a4f9d6461ce3becda57bd336",
+      "sha256": "8664932209049e32c2a8fe3e9b9b33705cad79a31a0f0adf0e3fc0656c79585e",
+      "rows": 107
+    },
+    {
+      "commit": "bf191fc196ee7357babc579e60e32b04f4873601",
+      "sha256": "8f8cfd198761cac947e44b96e9c7152a0d232890eb8811e39cf4be8ee06dfa2b",
+      "rows": 107
+    },
+    {
+      "commit": "08d6c58b4af64b6bc8a38669666303f0b964c9b6",
+      "sha256": "ff2a5ebf6cb5a578545a6e0ac6acb34d474067f6a8b86cfa0467b5ac3dd3f583",
+      "rows": 107
+    },
+    {
+      "commit": "1f16394aa0dddfa96c1374b28229e055a6f49378",
+      "sha256": "f240946dae38d8208de0a6cbf2d3a2fb8c9b8665123b3bf1507e6388751eb4d4",
+      "rows": 107
+    },
+    {
+      "commit": "fa9d3e71432d6f6ae630f7c09edbd9cdde8c3deb",
+      "sha256": "8c129a4f314b193a4cd6c4433a147422a6fae9e7a8236d4dfad2bc8c4d27a565",
+      "rows": 107
+    },
+    {
+      "commit": "1bb2bbb75982dd836df898e19485be0301fae2fd",
+      "sha256": "4ea5f7ea15e0eadde3a8be3d9462b7acfe68a7edbd3620657125a5e8ee6da6ea",
+      "rows": 107
+    },
+    {
+      "commit": "d664f2da243b75e4c94ba4c81920021377ec9375",
+      "sha256": "887a6e3709de0f6afaf361bf85e3f4114b5fe25db73b0e77e0747fa7f449aba4",
+      "rows": 107
+    },
+    {
+      "commit": "ef10a229c17dd5883f22ab7dd84d55a1eeb416aa",
+      "sha256": "3a6d403cb36b1ad0d976c760697500d73c267f1211dd0d03912a271fd81fc172",
+      "rows": 107
+    },
+    {
+      "commit": "da3f7082a977d7dd953ca4b48e3a2da768d3e223",
+      "sha256": "f835c571d1e9799d874054650a4f7b3f46160f501c63a0106404b8f58e7936f7",
+      "rows": 107
+    },
+    {
+      "commit": "15d598d2a11976ceb3aba3cf641b4f6bc74a6286",
+      "sha256": "2034be0223ea398a418ed335d400558cc04ffc5e34d1ec028d233b99690bd247",
+      "rows": 107
+    },
+    {
+      "commit": "25e2375b6267a8dc211c0dd22e5ce32cd05bae16",
+      "sha256": "d6614667c39672ec282f162e7993b478a47e1f3bb0dd6fc8aabbf612279df7ee",
+      "rows": 107
+    },
+    {
+      "commit": "afc9c90cb8150174b702dc4c274ff720edb9538a",
+      "sha256": "7639b36ee60ac0412dea89fc411e4fb4405009ac5985ddbb3804044369a3c54f",
+      "rows": 107
+    },
+    {
+      "commit": "a6cb3a82a45e99e4044a683d3dd2d73dae62a305",
+      "sha256": "cd86aa8bf28bfcf471f2a93b309533a6ba9b71866b14f7ec09f165baadb2e6ad",
+      "rows": 107
+    },
+    {
+      "commit": "79e729059a4e5fa77303e8e0af4b5bb5db6c5f1a",
+      "sha256": "0054026b9640e13145192a6dcf3ce6898a22adea54479d6024c2823a67f00458",
+      "rows": 107
+    },
+    {
+      "commit": "1a4ead0190700bb8990dd05f0003001c57c53814",
+      "sha256": "ee074c9461656e5917961e0d95c55e2ed3d62031924b3358c1a508848ee6da2d",
+      "rows": 107
+    },
+    {
+      "commit": "e7e4ab8bb25cacc150d421eaac720efa080251e0",
+      "sha256": "94c1fd248d34f41148ca3d70b7be9f2934655d165127c18a582b08878058ecaf",
+      "rows": 107
+    },
+    {
+      "commit": "ef634ac7a27e992cc7765044e369eab5cb73b425",
+      "sha256": "b2fec52840665780bfed9556d8f80e6e9918b14aa026b1faff84ad59bd075312",
+      "rows": 107
+    },
+    {
+      "commit": "1fb81b8ca25ecee5d94ddefb62fafed8fcc178c6",
+      "sha256": "56843dfe87269c2700c6771d75b9fc9c63573e960b7adb1bb08a274ccb896394",
+      "rows": 107
+    },
+    {
+      "commit": "e34d6864a4b50b3ece70f4a4c7d03041a6e1aaa4",
+      "sha256": "f4b372fe271681d029053d023744f23e5d22411d7087695556b22ff4881f276c",
+      "rows": 107
+    },
+    {
+      "commit": "6b1a31b30a3545ca7f9757a4cc311ddaf9d4344a",
+      "sha256": "3e8f31826adb896034720a16a3c80bf18e2b89f2df7ce16460b955f4a2ef329f",
+      "rows": 107
+    },
+    {
+      "commit": "b90d7b10213b198ba1531d9741e4a7efdaab5eff",
+      "sha256": "acb9dfe9f59a7676d2d8a4f038de8754596b8da3d72c45ca9c6429a6c82519e2",
+      "rows": 107
+    },
+    {
+      "commit": "037e0d5295486a5b6c6a70ec5e8fd8ed408ae7d0",
+      "sha256": "1b6b3c40ba8dae44467549b46cc47f63ba4b6121189dd2bb41fc83982c722ad6",
+      "rows": 107
+    },
+    {
+      "commit": "c33af787805a05c0a051140d13d1eeb1c2fd41c7",
+      "sha256": "7b579e3a6947624b4c07af7588d1b83a6c3ea8fb074409d31787f707630cc137",
+      "rows": 107
+    },
+    {
+      "commit": "12a7e9f04c367eab94acf6cf012e3c062a647163",
+      "sha256": "4ffddaa92906d6d806220c972b6b4da1c392935e907aca1a45688f5bc32b54a8",
+      "rows": 107
+    },
+    {
+      "commit": "1bbbee36388d74da505f558a6b8264b7fa0970e3",
+      "sha256": "c7517ed7bb8ea3bb6b1fd853764dc4abd21fc8f7eec5719e580545b75e33cb21",
+      "rows": 107
+    },
+    {
+      "commit": "50797a63412be8497bd444646390ab366bd64175",
+      "sha256": "3e840b922c5a845604ccde0ddd1056c9c814a62466349ce2c79594aada5cf6c3",
+      "rows": 107
+    },
+    {
+      "commit": "45b486fa4c92b1482d826bcc88967a356c7c7c75",
+      "sha256": "b2e6a9aa76f114b684ba3931f42b84d97329cfc2f16037bce79b874fcae24690",
+      "rows": 107
+    },
+    {
+      "commit": "5343eed29b2064c4e4bebf97bbff75457ca22e4e",
+      "sha256": "c27b04c1dd5ed583a020d8d6ff71b9e647a920a37be33323dd600b99eb183a43",
+      "rows": 107
+    },
+    {
+      "commit": "9dba78aee09a92001dd80e097f4e2422cc82c3ba",
+      "sha256": "735b09c2eabece99319c8121de8fe2bea1f9e3d7c5f2ecde6ae63af482b27ada",
+      "rows": 107
+    },
+    {
+      "commit": "faccb634f05ca05d63f209647c38a34d543ecbef",
+      "sha256": "fb6cb01b3be427a3f25ebfc26f6eae7c0bfe7d8fbe303fe8aba714349c78605a",
+      "rows": 107
+    },
+    {
+      "commit": "c14fe7552680a646d2c6cf528e247040b9189588",
+      "sha256": "ca0bbe14cc6fbe309535e9f4b49a0ddcc10c947d4971e1bbba38aea4e07bcc85",
+      "rows": 107
+    },
+    {
+      "commit": "aa4944159f7b51d4e1ef706c0bfe5aed69a6f725",
+      "sha256": "2abbdcdfa847c9d7ee43dd79bd936d3e1bf84dd16579ef3789af5b506c3d0fda",
+      "rows": 107
+    },
+    {
+      "commit": "4418f6090bff7cb79a3063ce3108cbfa2e22b854",
+      "sha256": "e56d84d4f61606369ef2974bbf644b1ba38e9d441a12750fa16a4de27d87fed4",
+      "rows": 107
+    },
+    {
+      "commit": "3d2b1093b15a3fea28c7f559d7b34d4905b6c92e",
+      "sha256": "6342c0ae195920bed4a6370c22af262dc4f52bfe37dd1da95dd9f070b91d559d",
+      "rows": 107
+    },
+    {
+      "commit": "008dc5af0e711c4b0b0f49e1dce89306d1f27870",
+      "sha256": "2811c40221de2b208072a0e70750ef8563949bedf5a9ccd55bde621a1c0bbd60",
+      "rows": 107
+    },
+    {
+      "commit": "e82781f361bcb20b5e39861d1a4f0a23d6325906",
+      "sha256": "193ead1c77a822880d3d7aca314fe52ea122731a789f77662ff9ec1d5c1c0263",
+      "rows": 107
+    },
+    {
+      "commit": "12738a9b4b9b39ed86abdbc401aaad0800297c62",
+      "sha256": "87ce5dca7c44c4fcc54869ebccca745a7825b08c0921f4bab5737c8929fb638a",
+      "rows": 107
+    },
+    {
+      "commit": "507b0ec9bd92059cef9b5298ed23facaaed73408",
+      "sha256": "a4eecdaa62dff550f4ff05cfff35bcc3d5759f5a8482e5a7fd5155b5b931144c",
+      "rows": 107
+    },
+    {
+      "commit": "d3563c2d02772d1417be2fc8a4febb7166887b56",
+      "sha256": "162f6d6777cea43ef8aadb2928524eeb069ca58de37c98e2f17ffb79df96e73d",
+      "rows": 107
+    },
+    {
+      "commit": "51742a9aa2278af9772c770c7c7336aca1142e7b",
+      "sha256": "42927b4dc06afc14b1b2d60fdecb05b24440d84c8aeb784ee4e32634200b429f",
+      "rows": 107
+    },
+    {
+      "commit": "f9560380b2b6a12362261cce7163140695388480",
+      "sha256": "e93e873a444c549e64d27b5f3ae34bd612cee3bc5e6d8986800c51aaa23ff7c7",
+      "rows": 107
+    },
+    {
+      "commit": "9eaa148859cea740f79f13b276037a6e122942ec",
+      "sha256": "8b529893a3e8607e064a5e9bc37a489ae3886451753297f4aad806fb1df48bfa",
+      "rows": 107
+    },
+    {
+      "commit": "75f41e41957ed867a4fffb7d80b19d8953e4067c",
+      "sha256": "e2489aa4dfbed6543c72f760cb2cea3575bdab704a530e7185f0926bae663665",
+      "rows": 107
+    },
+    {
+      "commit": "64603b36b557c0e567440a6a4d1ccf443aa1e5e3",
+      "sha256": "355eb8e91dd7c7e7e9aa8ca82dd9730ca1c212aaba263120f812a57b5135b491",
+      "rows": 107
+    },
+    {
+      "commit": "77a0d6cd6d4e9f09b3b1c6b8691699ee574802d6",
+      "sha256": "d8a57b6973a2e6d439d3bc2cedf066d984d9758ce0dd3fcb2212bff1f18552b1",
+      "rows": 107
+    },
+    {
+      "commit": "da2a9d6bde54a622a36ee953b19bee57822888f8",
+      "sha256": "61e2bd79aa91f1485018d3eee2b0476d346a06bde5b255fca6d145e5fc428fa2",
+      "rows": 107
+    },
+    {
+      "commit": "09a9e25533ee69979a78e9d0056e18052de6f41d",
+      "sha256": "42e03de47711cff06662ef9ce604f1700cd785f4d64671f88aa1884cf331e9e0",
+      "rows": 107
+    },
+    {
+      "commit": "34997f6e82b3bf1233276b4a0f63903fddeb1e7e",
+      "sha256": "fbad0775c0aaa961ea1a007ed1141fe51e0ea9dd25127c0b20759a7a30b88b87",
+      "rows": 107
+    },
+    {
+      "commit": "642ae30a486a8497a654b121322a082eeda99e88",
+      "sha256": "a81b1e7ad90affa7d25f376568a84541502b0f15b7135d52839088d7aca872cc",
+      "rows": 107
+    },
+    {
+      "commit": "2940dc93d7ad642bb98a0b1f701722832a573ac4",
+      "sha256": "6f4841f5dda271b28d623d4dcd6702af560c395f5804af01bfdd9797449966e2",
+      "rows": 107
+    },
+    {
+      "commit": "826ed2d40e9d8b68ef8f690ef840051b949f109e",
+      "sha256": "e8cc518db3d5da24c75c9756252871db55e55e457620753ca24574abfd60b596",
+      "rows": 107
+    },
+    {
+      "commit": "9c07b6b270b88af6bb3c63be4ee3cac572be4810",
+      "sha256": "737ac4bbe5497e2a6f3230646cb8012f16c1745e5b1059d4d9c842e78fdcec81",
+      "rows": 107
+    },
+    {
+      "commit": "3afbd7d769bd0d0441646c41236f8dc7b4d3b5d4",
+      "sha256": "38f072f128fb286986934303b811f4e5718177cf6cf1da7fe56945c6ac57d1cb",
+      "rows": 107
+    },
+    {
+      "commit": "1f3f5afb4185116755a3f49e0c0b0783d6339464",
+      "sha256": "889530894feb1dbc4f26fb7ed4296f67ac1b00e8860fef37594e8b60b3828cba",
+      "rows": 107
+    },
+    {
+      "commit": "eb5ce6c8873b263eb21dfd21938c9de13ee40b20",
+      "sha256": "8cb7e8ca2b8fd3b79d59cadf6ad82e724a438b05db3647e6f4475a4d51217bf9",
+      "rows": 107
+    },
+    {
+      "commit": "1017f393374a24cdb1d2f3a7746d71d78b5d17f2",
+      "sha256": "b4c787053e9d4ab94cc065f9d40d6b3eaec4d414c1c63d77eaef27abfdb7fda1",
+      "rows": 107
+    },
+    {
+      "commit": "4ecb86fbf905f0db7d9ac7bcca4fa14fcc0ecc50",
+      "sha256": "1e930ada488591f6c00bc06bb3fed9ef23d1a677755cdea1f427a4ec0a776141",
+      "rows": 107
+    },
+    {
+      "commit": "d93a311e6e1a6fc98d1c3105ab0afa1c7e953e17",
+      "sha256": "739866bf8e49fab004aece83a314d23ced7ed1d57e4797f17de5a70262cb2ae0",
+      "rows": 107
+    }
+  ],
+  "observations": [
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "LOURDES",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "Frisian Faith Shipping Company Limited",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "Maria Cristina",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "ASIAN WELFARE LOTTERIES CO LTD",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "CB GENERAL INSURANCE PLC",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "CAMBODIAN RESOURCE ENERGY DEVELOPMENT CO LTD",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "CAMBODIAN UNITE WEI YE INVESTMENT CO LTD",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "DT ZHI ZAO CO LTD",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "FIRST AQUATIC INDUSTRIAL CO LTD",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "MO NET BEAUTY CO LTD",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "PRINCE INTERNATIONAL AIRLINES CO LTD",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "RICHENG PROPERTY DEVELOPER CO LTD",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "TIAN XU INTERNATIONAL TECHNOLOGY PLC",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "ZHX PRINTING EQUIPMENT CAMBODIA CO LTD",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "Qiu Yong",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "邱 用",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "He Yujing",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "何 雨静",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "Super Light Speed Kh Technology Co., Ltd.",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "Pang Visal",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "庞 伟志",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "Cambodia First Unite Construction Group Co., Ltd.",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "First Unite International Logistics Co., Ltd.",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "First Unite Networks Entertainment Co., Ltd.",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "First Unite Property Co., Ltd.",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "First Unite Decoration Cambodia Co., Ltd.",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "Cambodian First Unite Construction machinery Co., Ltd.",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "Linkedus Technology Co., Ltd.",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "Cambo Duty Free Merchandise Co., Ltd.",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "Marco Polo Hotel Co. Ltd.",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "U-Life Go Now Co., Ltd.",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "U-Life Kh Super App Co., Ltd.",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "MERITWISE GROUP PUBLIC LTD",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "CHEN HUA HOLDINGS PTE LTD",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "GREENMEADOWS PROPERTIES SDN BHD",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "Zhao Mengyao",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "趙 梦瑶",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "GREENBAY MULTI MEDIA PTE LTD",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "SUN SPEED HOLDINGS LIMITED",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "PREMIUM FINANCIAL LIMITED",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "永寶物業按揭有限公司",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "GLAD VAST LIMITED",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "欣豁有限公司",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "GLAD SPARKLE LIMITED",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "欣閃有限公司",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "GLAD HARVEST LIMITED",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "欣實有限公司",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "GLAD GLORY LIMITED",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "DIRECT ASTUTE HK LIMITED",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "DIRECT ASTUTE LIMITED",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "SOLAR SCAPE FINANCE LIMITED",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "陽景財務有限公司",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "SOLAR SCAPE LIMITED",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "VICTORY FLORA LIMITED",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "WIN APPLAUSE LIMITED",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "CELESTIAL DRIVE LIMITED",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "SINO SAGACIOUS LIMITED",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "Guillermo Faustino Rodriguez Lopez Calleja",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "Gloria C",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "TENTACOOL COMMERCIAL INC",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "Rodriguez Any Lastres",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "EMPRESA IMPORTADORA Y EXPORTADORA DE PRODUCTOS DE LA ELECTRONICA Y LAS COMUNICACIONES",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "CUBAELECTRONICA",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "EMPRESA COMERCIALIZADORA DE SERVICIOS TECNICOS Y TECNOLOGICOS",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "TECNOSIME",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "BEIJING H AND C TECHNOLOGIES CO., LTD",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "Beijing Huacheng Haopu Technology Co, Ltd",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "北京华成昊普科技有限公司",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "Beijing H&C Technologies Co., LTD",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "Chui Kok Wa",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "INTERNACIONAL MARITIMA SA",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "PETROLEOS MARITIMOS DEL CARIBE S.A.",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "PETROMARCA S.A.",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "EMILIA",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "Diverse Trade Inc",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 04:51:36",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42283126683",
+      "commit": "43eab0d77fe8c7185999996d6df87074a5571433",
+      "snapshot_sha256": "b6209df4230bb9ab181bfe86d9303e6f45bab8d8e622c5d5dac7e6df57c60030"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "Million Exchange",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 04:51:36",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42283126683",
+      "commit": "43eab0d77fe8c7185999996d6df87074a5571433",
+      "snapshot_sha256": "b6209df4230bb9ab181bfe86d9303e6f45bab8d8e622c5d5dac7e6df57c60030"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "Millionex",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 04:51:36",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42283126683",
+      "commit": "43eab0d77fe8c7185999996d6df87074a5571433",
+      "snapshot_sha256": "b6209df4230bb9ab181bfe86d9303e6f45bab8d8e622c5d5dac7e6df57c60030"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "Million Money Exchange",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 04:51:36",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42283126683",
+      "commit": "43eab0d77fe8c7185999996d6df87074a5571433",
+      "snapshot_sha256": "b6209df4230bb9ab181bfe86d9303e6f45bab8d8e622c5d5dac7e6df57c60030"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "NIA Nations Currency Ltd",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 04:51:36",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42283126683",
+      "commit": "43eab0d77fe8c7185999996d6df87074a5571433",
+      "snapshot_sha256": "b6209df4230bb9ab181bfe86d9303e6f45bab8d8e622c5d5dac7e6df57c60030"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "NIA Exchange",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 04:51:36",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42283126683",
+      "commit": "43eab0d77fe8c7185999996d6df87074a5571433",
+      "snapshot_sha256": "b6209df4230bb9ab181bfe86d9303e6f45bab8d8e622c5d5dac7e6df57c60030"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "NIA Nations Exchange",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 04:51:36",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42283126683",
+      "commit": "43eab0d77fe8c7185999996d6df87074a5571433",
+      "snapshot_sha256": "b6209df4230bb9ab181bfe86d9303e6f45bab8d8e622c5d5dac7e6df57c60030"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "NIA Nations Currency Exchange",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 04:51:36",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42283126683",
+      "commit": "43eab0d77fe8c7185999996d6df87074a5571433",
+      "snapshot_sha256": "b6209df4230bb9ab181bfe86d9303e6f45bab8d8e622c5d5dac7e6df57c60030"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "CCC Inc",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 04:51:36",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42283126683",
+      "commit": "43eab0d77fe8c7185999996d6df87074a5571433",
+      "snapshot_sha256": "b6209df4230bb9ab181bfe86d9303e6f45bab8d8e622c5d5dac7e6df57c60030"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "CCurrency Exchange",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 04:51:36",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42283126683",
+      "commit": "43eab0d77fe8c7185999996d6df87074a5571433",
+      "snapshot_sha256": "b6209df4230bb9ab181bfe86d9303e6f45bab8d8e622c5d5dac7e6df57c60030"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "Sarafi C",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 04:51:36",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42283126683",
+      "commit": "43eab0d77fe8c7185999996d6df87074a5571433",
+      "snapshot_sha256": "b6209df4230bb9ab181bfe86d9303e6f45bab8d8e622c5d5dac7e6df57c60030"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "Cryptoyal",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 04:51:36",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42283126683",
+      "commit": "43eab0d77fe8c7185999996d6df87074a5571433",
+      "snapshot_sha256": "b6209df4230bb9ab181bfe86d9303e6f45bab8d8e622c5d5dac7e6df57c60030"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "B Galaxy Inc",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 04:51:36",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42283126683",
+      "commit": "43eab0d77fe8c7185999996d6df87074a5571433",
+      "snapshot_sha256": "b6209df4230bb9ab181bfe86d9303e6f45bab8d8e622c5d5dac7e6df57c60030"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "C Exchaneg",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 04:51:36",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42283126683",
+      "commit": "43eab0d77fe8c7185999996d6df87074a5571433",
+      "snapshot_sha256": "b6209df4230bb9ab181bfe86d9303e6f45bab8d8e622c5d5dac7e6df57c60030"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "2397639 Ontario Ltd",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 04:51:36",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42283126683",
+      "commit": "43eab0d77fe8c7185999996d6df87074a5571433",
+      "snapshot_sha256": "b6209df4230bb9ab181bfe86d9303e6f45bab8d8e622c5d5dac7e6df57c60030"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "Farah Exchange",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 04:51:36",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42283126683",
+      "commit": "43eab0d77fe8c7185999996d6df87074a5571433",
+      "snapshot_sha256": "b6209df4230bb9ab181bfe86d9303e6f45bab8d8e622c5d5dac7e6df57c60030"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "1380079 BC Ltd",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 04:51:36",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42283126683",
+      "commit": "43eab0d77fe8c7185999996d6df87074a5571433",
+      "snapshot_sha256": "b6209df4230bb9ab181bfe86d9303e6f45bab8d8e622c5d5dac7e6df57c60030"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "Amin Exchange Vancouver",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 04:51:36",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42283126683",
+      "commit": "43eab0d77fe8c7185999996d6df87074a5571433",
+      "snapshot_sha256": "b6209df4230bb9ab181bfe86d9303e6f45bab8d8e622c5d5dac7e6df57c60030"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "Sarafi Amin",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 04:51:36",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42283126683",
+      "commit": "43eab0d77fe8c7185999996d6df87074a5571433",
+      "snapshot_sha256": "b6209df4230bb9ab181bfe86d9303e6f45bab8d8e622c5d5dac7e6df57c60030"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "Top PC Technician Inc",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 04:51:36",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42283126683",
+      "commit": "43eab0d77fe8c7185999996d6df87074a5571433",
+      "snapshot_sha256": "b6209df4230bb9ab181bfe86d9303e6f45bab8d8e622c5d5dac7e6df57c60030"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "2840711 Ontario Inc",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 04:51:36",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42283126683",
+      "commit": "43eab0d77fe8c7185999996d6df87074a5571433",
+      "snapshot_sha256": "b6209df4230bb9ab181bfe86d9303e6f45bab8d8e622c5d5dac7e6df57c60030"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "Aminex Toronto",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 04:51:36",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42283126683",
+      "commit": "43eab0d77fe8c7185999996d6df87074a5571433",
+      "snapshot_sha256": "b6209df4230bb9ab181bfe86d9303e6f45bab8d8e622c5d5dac7e6df57c60030"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "Amin Exchange Toronto",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 04:51:36",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42283126683",
+      "commit": "43eab0d77fe8c7185999996d6df87074a5571433",
+      "snapshot_sha256": "b6209df4230bb9ab181bfe86d9303e6f45bab8d8e622c5d5dac7e6df57c60030"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "Darvish Exchange",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 04:51:36",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42283126683",
+      "commit": "43eab0d77fe8c7185999996d6df87074a5571433",
+      "snapshot_sha256": "b6209df4230bb9ab181bfe86d9303e6f45bab8d8e622c5d5dac7e6df57c60030"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "Kanata MD Inc",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 04:51:36",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42283126683",
+      "commit": "43eab0d77fe8c7185999996d6df87074a5571433",
+      "snapshot_sha256": "b6209df4230bb9ab181bfe86d9303e6f45bab8d8e622c5d5dac7e6df57c60030"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "QIU, Yong",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "HE, Yujing",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "PANG, Visal",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "ZHAO, Mengyao",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "RODRIGUEZ LASTRES, Any",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "CHUI, Kok Wa",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "追加",
+      "name": "PANG, Weizhi",
+      "before": "",
+      "after": "制裁リスト（OFAC：SDN）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    },
+    {
+      "source": "OFAC",
+      "kind": "変更",
+      "name": "Pang Weizhi",
+      "before": "制裁リスト（UK FCDO）",
+      "after": "制裁リスト（OFAC：SDN／UK FCDO）",
+      "first_detected_at_jst": "2026-11-07 02:31:25",
+      "first_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42262212142",
+      "commit": "c936f38eb7447a78389f638d9a706f750beadb91",
+      "snapshot_sha256": "dff601c6e0253134b811af84893fa10380facff5b8544c325b5538bb365050ab"
+    }
+  ]
+}

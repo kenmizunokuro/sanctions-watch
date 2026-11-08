@@ -170,6 +170,13 @@ class PersistMonitorFailureTest(unittest.TestCase):
         rows = m.dashboard.build_status_rows(self.root, [dict(source="ofac_sdn", status="unchanged",
             checked_at="2026-10-01T09:03:00Z")], {}, mof_detail=True)
         self.assertEqual(next(row for row in rows if row[0] == "OFAC SDN")[1], "変更なし")
+        self.write_attempt(run_id='126', finished_at='2026-10-01T09:04:30Z', stage='integrity_failed',
+                           fetch_finished_at='2026-10-01T09:04:10Z')
+        self.assertTrue(m.persist_failure(self.root, run_id='126', candidate_sha256=digest, base_sha256=base_digest))
+        repeated = git(self.remote, 'show', 'main:data/dashboard/ofac_pending.csv')
+        self.assertEqual(repeated, candidate, 'unchanged candidates keep initial detection and original run evidence')
+        detailed = git(self.remote, 'show', 'main:data/dashboard/status_detail.csv')
+        self.assertIn('2026-10-01 18:04:30', detailed, 'monitor status still reflects the latest attempt')
 
     def test_remote_newer_attempt_is_not_overwritten_by_delayed_failure_save(self):
         m = module("src.persist_monitor_failure")

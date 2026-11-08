@@ -72,8 +72,13 @@ def persist_failure(root: Path, *, run_id: str, run_attempt: str | None = None,
                     paths.append(ofac_integrity.PATH.as_posix())
                 if preview is not None:
                     if hashlib.sha256((clean / "data/master/master.csv").read_bytes()).hexdigest() == base_sha256:
-                        ofac_pending.write(clean / ofac_pending.PATH, preview)
-                        paths.append(ofac_pending.PATH.as_posix())
+                        try:
+                            pending_path = clean / ofac_pending.PATH
+                            stable_preview = ofac_pending.retain_first_detection(preview, ofac_pending.read(pending_path))
+                            ofac_pending.write(pending_path, stable_preview)
+                            paths.append(ofac_pending.PATH.as_posix())
+                        except (OSError, ValueError, csv.Error) as exc:
+                            print(f'OFAC候補の初回検知証跡を確認できないため候補の更新を保留します: {exc}', file=sys.stderr)
                     else:
                         print("OFAC差分候補の比較元masterが更新済みのため、次回取得で再計算します", file=sys.stderr)
                 _git(clean, "add", "--", *paths)
