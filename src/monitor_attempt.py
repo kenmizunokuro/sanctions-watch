@@ -7,6 +7,7 @@ import os
 import subprocess
 import sys
 import tempfile
+import zlib
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -56,7 +57,8 @@ def _write(path: Path, record: dict) -> None:
             staged.unlink(missing_ok=True)
 
 
-def mark_integrity_failure(root: Path, *, run_id: str, run_attempt: str) -> bool:
+def mark_integrity_failure(root: Path, *, run_id: str, run_attempt: str,
+                           audit_report: str = '', audit_report_sha256: str = '') -> bool:
     path = root / ATTEMPT_PATH
     if not run_id or not run_attempt or not path.exists():
         return False
@@ -65,12 +67,18 @@ def mark_integrity_failure(root: Path, *, run_id: str, run_attempt: str) -> bool
             or record.get("outcome") != "success" or record.get("exit_code") != 0
             or not {"ofac", "all"}.intersection(record.get("sources", []))):
         return False
+    from . import ofac_integrity
+    try:
+        integrity = ofac_integrity.capture(root, audit_report, audit_report_sha256)
+    except (OSError, ValueError, TypeError, KeyError, EOFError, zlib.error) as exc:
+        integrity = dict(status='UNAVAILABLE', reason=str(exc)[:500])
     _write(path, record | {
         "outcome": "failure",
         "exit_code": 1,
         "stage": INTEGRITY_FAILED,
         "fetch_finished_at": record["finished_at"],
         "finished_at": timestamp(),
+        "integrity": integrity,
     })
     return True
 
@@ -83,7 +91,9 @@ def main() -> int:
     args = parser.parse_args()
     if args.mark_integrity_failure:
         if mark_integrity_failure(ROOT, run_id=os.environ.get("GITHUB_RUN_ID", ""),
-                                  run_attempt=os.environ.get("GITHUB_RUN_ATTEMPT", "")):
+                                  run_attempt=os.environ.get("GITHUB_RUN_ATTEMPT", ""),
+                                  audit_report=os.environ.get('OFAC_AUDIT_REPORT', ''),
+                                  audit_report_sha256=os.environ.get('OFAC_AUDIT_REPORT_SHA256', '')):
             return 0
         print("OFAC監査停止に対応する同一実行の取得成功記録がありません", file=sys.stderr)
         return 1

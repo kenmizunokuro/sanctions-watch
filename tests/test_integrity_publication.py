@@ -5,6 +5,7 @@ import os
 import subprocess
 import sys
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 from tests import test_integrity_audit as fixtures
@@ -34,6 +35,26 @@ class GateTests(unittest.TestCase):
         self.assertFalse((self.root/'published').exists());self.assertEqual(self.mpath.read_bytes(),before)
         reports=[p for p in self.root.glob('data/integrity_audit/*.json.gz') if not p.name.startswith('triage-')]
         self.assertEqual(len(reports),1)
+
+    def test_blocked_gate_outputs_the_exact_report_for_failure_diagnostics(self):
+        import hashlib
+        self.mpath.write_text(self.mpath.read_text().replace('有効','無効'))
+        output = self.root / 'outputs'
+        with patch.dict(os.environ, {'GITHUB_OUTPUT': str(output)}):
+            result = self.run_gate('success', 'ofac')
+        self.assertNotEqual(result.returncode, 0)
+        values = dict(line.split('=', 1) for line in output.read_text().splitlines())
+        report = self.root / values['audit_report']
+        self.assertEqual(hashlib.sha256(report.read_bytes()).hexdigest(), values['audit_report_sha256'])
+        self.assertFalse((self.root / 'published').exists())
+        from src import monitor_attempt
+        with patch.dict(os.environ, {'GITHUB_RUN_ID':'123', 'GITHUB_RUN_ATTEMPT':'1'}):
+            monitor_attempt.run_attempt(self.root, [sys.executable, '-c', 'pass'], ['ofac'])
+        monitor_attempt.mark_integrity_failure(self.root, run_id='123', run_attempt='1',
+            audit_report=values['audit_report'], audit_report_sha256=values['audit_report_sha256'])
+        receipt = json.loads((self.root / monitor_attempt.ATTEMPT_PATH).read_text())
+        self.assertEqual(receipt['integrity']['status'], 'BLOCKED')
+        self.assertEqual(receipt['integrity']['blocking_counts'], {'STATUS_MISMATCH': 9})
 
     def test_declared_mof_cache_path_passes_relative_root(self):
         path=self.root/'data/state.json';state=json.loads(path.read_text())

@@ -131,7 +131,10 @@ class PersistMonitorFailureTest(unittest.TestCase):
         git(self.root, "push", "origin", "main")
         previous = git(self.remote, "rev-parse", "main")
         path.write_text(header + "2026-10-01T09:00:30Z,ofac_sdn,fetched,candidate,,999,\n")
-        self.write_attempt(stage="integrity_failed", fetch_finished_at="2026-10-01T09:00:30Z")
+        self.write_attempt(stage="integrity_failed", fetch_finished_at="2026-10-01T09:00:30Z",
+            integrity=dict(status='BLOCKED', report='data/integrity_audit/report.json.gz',
+                report_sha256='a' * 64, blocking_counts={'EXTRA_REGISTRATION': 3},
+                blockers=[dict(name='CARLOTA C'), dict(name='GIRALT'), dict(name='NEDAS')]))
         diff = self.root / m.ofac_pending.DIFF_PATH
         diff.parent.mkdir()
         diff.write_text("出所,種別,受取人名,変更前,変更後\nOFAC,追加,NEW NAME,,OFAC:SDN\n", encoding="utf-8")
@@ -141,13 +144,18 @@ class PersistMonitorFailureTest(unittest.TestCase):
         self.assertTrue(m.persist_failure(self.root, run_id="123", run_attempt="1", candidate_sha256=digest,
                                           base_sha256=base_digest))
         files = git(self.remote, "diff", "--name-only", previous, "main").splitlines()
-        self.assertEqual(files, ["data/dashboard/ofac_pending.csv", "data/dashboard/status.csv", "data/dashboard/status_detail.csv",
+        self.assertEqual(files, ["data/dashboard/ofac_integrity.csv", "data/dashboard/ofac_pending.csv", "data/dashboard/status.csv", "data/dashboard/status_detail.csv",
                                  "data/monitoring/ofac_attempt.json"])
         base = git(self.remote, "show", "main:data/dashboard/status.csv")
         detailed = git(self.remote, "show", "main:data/dashboard/status_detail.csv")
         self.assertIn("OFAC SDN,エラー,2026-10-01 18:01:00,", base)
         self.assertIn("OFAC SDN,取得済・監査停止（master未反映）,2026-10-01 18:01:00,,10,original", detailed)
         self.assertNotIn("candidate", detailed)
+        diagnostic = git(self.remote, 'show', 'main:data/dashboard/ofac_integrity.csv')
+        self.assertIn('監査停止3件：EXTRA_REGISTRATION 3件', diagnostic)
+        self.assertIn('CARLOTA C、GIRALT、NEDAS', diagnostic)
+        self.assertEqual(git(self.remote, 'show', 'main:data/master/master.csv'), 'original master')
+        self.assertEqual(git(self.remote, 'show', 'main:data/state.json'), '{"original":true}')
         candidate = git(self.remote, "show", "main:data/dashboard/ofac_pending.csv")
         self.assertIn("OFAC,追加,NEW NAME,,OFAC:SDN,監査停止・master未反映,", candidate)
         self.write_attempt(run_id="124", finished_at="2026-10-01T09:02:00Z")
