@@ -3,6 +3,7 @@ import gzip
 import hashlib
 import json
 import shutil
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -37,12 +38,13 @@ class MofLegacyReconcileTests(unittest.TestCase):
                            inputs={L.LEDGER_PATH: hashlib.sha256((self.root / L.LEDGER_PATH).read_bytes()).hexdigest(),
                                    'data/master/master.csv': 'b' * 64},
                            findings=findings)
-        self.report_path = self.root / 'audit.json.gz'
+        self.report_path = self.root / 'data/integrity_audit/audit.json.gz'
+        self.report_path.parent.mkdir(parents=True)
         self.failure = dict(stage='integrity_blocked', source='mof', outcome='failure', run_id='123',
                             run_attempt='1', run_url=self.run_url, finished_at=self.checked,
                             fetch=dict(SOURCE, run_id='123', run_attempt='1', run_url=self.run_url,
                                        checked_at='2026-11-07T02:55:00Z', master_applied=False),
-                            integrity={})
+                            integrity={'report': 'data/integrity_audit/audit.json.gz'})
         self.write_report()
         self.rows, _ = V.build_review(base, candidate, ledger, SOURCE, detected_at=self.checked, run_url=self.run_url)
         self.write_review()
@@ -75,6 +77,44 @@ class MofLegacyReconcileTests(unittest.TestCase):
         self.report_path.write_bytes(self.report_path.read_bytes() + b'changed')
         with self.assertRaisesRegex(ValueError, '監査報告.*SHA256'):
             R.reconcile(self.root, self.report_path)
+
+    def test_published_failure_automatically_writes_verified_artifact(self):
+        from src import mof_failure as F
+        def git(*args):
+            return subprocess.run(['git', '-C', str(self.root), *args], check=True,
+                                  capture_output=True, text=True).stdout.strip()
+        with tempfile.TemporaryDirectory() as directory:
+            origin = Path(directory) / 'origin.git'
+            subprocess.run(['git', 'init', '--bare', str(origin)], check=True, capture_output=True)
+            (self.root / F.FAILURE_PATH).unlink()
+            git('init', '-b', 'main')
+            git('config', 'user.name', 'Tests')
+            git('config', 'user.email', 'tests@example.invalid')
+            git('add', '.')
+            git('commit', '-m', 'approved baseline')
+            git('remote', 'add', 'origin', str(origin))
+            git('push', '-u', 'origin', 'main')
+            before = git('show', 'HEAD:data/master/master.csv')
+            self.write_report()
+            (self.root / 'data/master/master.csv').write_text('rejected candidate')
+            self.assertTrue(F.persist(self.root, self.failure))
+            result = json.loads((self.root / R.RECONCILIATION_PATH).read_bytes())
+            self.assertEqual(result['status'], 'REVIEW_REQUIRED')
+            self.assertEqual(result['count'], 6)
+            git('fetch', 'origin', 'main')
+            self.assertEqual(git('show', 'origin/main:data/master/master.csv'), before)
+            self.assertNotIn(R.RECONCILIATION_PATH.as_posix(), git('ls-tree', '-r', '--name-only', 'origin/main'))
+
+    def test_failed_reconciliation_replaces_previous_verified_output(self):
+        R.write_reconciliation(self.root, self.root, self.failure)
+        self.assertEqual(json.loads((self.root / R.RECONCILIATION_PATH).read_bytes())['count'], 6)
+        self.rows[0][13] = 'e' * 64
+        self.write_review()
+        R.write_reconciliation(self.root, self.root, self.failure)
+        result = json.loads((self.root / R.RECONCILIATION_PATH).read_bytes())
+        self.assertEqual(result['status'], 'REVIEW_UNAVAILABLE')
+        self.assertEqual(result['run_url'], self.run_url)
+        self.assertNotIn('cases', result)
 
     def test_stale_or_tampered_review_row_rejects_entire_packet(self):
         for column, value in ((0, 'MOF-LEGACY-forged'), (1, '2026-11-07T03:01:00Z'),

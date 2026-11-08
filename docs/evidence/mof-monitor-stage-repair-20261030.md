@@ -42,6 +42,8 @@ Apps Scriptの `コード.gs`（GitHubの `apps_script/Code.gs`）をv0.5.1に�
 
 ## 旧登録の再レビュー用照合
 
+財務省監視が停止して失敗証跡を公開した場合は、その公開済みマスターを基準に自動照合する。結果は実行ごとの `mof-legacy-reconciliation-実行ID-試行番号` Artifact に90日間保存する。対象行の照合が完了すると `REVIEW_REQUIRED` と候補・承認IDを記録する。資料不足や不一致の場合は `REVIEW_UNAVAILABLE` と理由を記録する。
+
 対象実行の失敗証跡を公開したコミットの作業ツリーを用意し、GitHub Actions の `source-integrity-実行ID-試行番号` Artifact を展開する。最新コードの作業ツリーから実行し、公開時の作業ツリーと日付から始まる監査報告の `.json.gz` を指定する。
 
 ```bash

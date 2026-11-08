@@ -14,6 +14,9 @@ from pathlib import Path
 
 from . import integrity_legacy as L, mof_legacy_review as R
 from .mof_failure import FAILURE_PATH
+from .monitor_attempt import _write
+
+RECONCILIATION_PATH = Path("data/monitoring/mof_legacy_reconciliation.json")
 
 
 def reconcile(root: Path, report_path: Path) -> dict:
@@ -98,6 +101,20 @@ def reconcile(root: Path, report_path: Path) -> dict:
                 audit_report_sha256=report_hash, candidate_master_sha256=report["inputs"]["data/master/master.csv"],
                 acceptance_expires_at=ledger["expires_at"], count=len(cases),
                 cases=sorted(cases, key=lambda case: case["match_key"]))
+
+
+def write_reconciliation(candidate_root: Path, published_root: Path, failure: dict) -> None:
+    """Produce a run-bound artifact after failure evidence was published."""
+    try:
+        report_path = (candidate_root / failure["integrity"]["report"]).resolve()
+        if not report_path.is_relative_to((candidate_root / "data/integrity_audit").resolve()):
+            raise ValueError("監査報告の保存先が監査ディレクトリ外です")
+        result = reconcile(published_root, report_path)
+    except (OSError, ValueError, KeyError, TypeError, EOFError, csv.Error, zlib.error) as error:
+        result = dict(status="REVIEW_UNAVAILABLE", run_url=failure.get("run_url", ""),
+                      run_attempt=failure.get("run_attempt", ""), error=str(error)[:500])
+    _write(candidate_root / RECONCILIATION_PATH, result)
+    print(f"MOF legacy reconciliation: {result['status']}; count={result.get('count', 0)}")
 
 
 def main(argv=None) -> int:
