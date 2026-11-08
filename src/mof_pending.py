@@ -10,6 +10,7 @@ import csv
 import hashlib
 import json
 import os
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -93,6 +94,62 @@ def write_csv(root: Path, rows: list[list[str]]) -> Path:
     return out
 
 
+def read_csv(root: Path) -> list[list[str]]:
+    path = root / PATH
+    if not path.exists():
+        return []
+    with path.open(encoding='utf-8', newline='') as stream:
+        reader = csv.reader(stream, strict=True)
+        if next(reader, None) != COLUMNS:
+            raise ValueError('MOF candidate observation columns changed')
+        return list(reader)
+
+
+def _observations(rows: list[list[str]]) -> dict[str, list[str]]:
+    if len(rows) > MAX_CANDIDATES:
+        raise ValueError('excessive MOF candidate observations')
+    result = {}
+    for row in rows:
+        if (len(row) != len(COLUMNS)
+                or not re.fullmatch(r'MOF-PENDING-[a-f0-9]{24}', row[0])
+                or row[2] != '財務省' or row[3] not in ALLOWED_KINDS
+                or not row[4].strip() or row[15] != STATUS
+                or not all(re.fullmatch('[a-f0-9]{64}', row[i]) for i in (11, 12))
+                or not row[14].startswith('https://www.mof.go.jp/')
+                or (row[16] and not re.fullmatch(
+                    r'https://github\.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+/actions/runs/[0-9]+', row[16]))):
+            raise ValueError('invalid MOF candidate observation')
+        if datetime.strptime(row[1], '%Y-%m-%dT%H:%M:%SZ').strftime('%Y-%m-%dT%H:%M:%SZ') != row[1]:
+            raise ValueError('invalid MOF candidate observation time')
+        if row[0] in result:
+            raise ValueError('duplicate MOF candidate observation ID')
+        result[row[0]] = row
+    return result
+
+
+def retain_first_detection(current: list[list[str]], previous: list[list[str]]) -> list[list[str]]:
+    """Inherit only continuously open identical candidates, keeping current raw paths.
+
+    ID binds original content hashes and diff. All business fields are checked
+    too; the archive filename can change when identical bytes are fetched again.
+    An empty prior table breaks continuity. Latest checks belong to the receipt.
+    """
+    _observations(current)
+    prior = _observations(previous)
+    output = []
+    for row in current:
+        item = list(row)
+        saved = prior.get(row[0])
+        if saved:
+            if saved[2:13] + saved[14:16] != row[2:13] + row[14:16]:
+                raise ValueError('MOF candidate ID has conflicting observation details')
+            if saved[1] > row[1]:
+                raise ValueError('MOF first observation is later than the current fetch')
+            item[1], item[16] = saved[1], saved[16]
+        output.append(item)
+    return output
+
+
 def run(root: Path) -> dict:
     root = root.resolve()
     state = R._load_state(root)
@@ -115,6 +172,7 @@ def run(root: Path) -> dict:
     run_url = (f"https://github.com/{repo}/actions/runs/{github_run}"
                if repo and github_run else "")
     rows = candidate_rows(diffs, detected_at=stamp, source_url=url, run_url=run_url)
+    rows = retain_first_detection(rows, read_csv(root))
     path = write_csv(root, rows)
     result = {
         "state": "PENDING_REVIEW" if rows else "NO_SOURCE_DIFF",

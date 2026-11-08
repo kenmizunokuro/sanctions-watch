@@ -7,6 +7,7 @@ import os
 import subprocess
 import tempfile
 import unittest
+from datetime import datetime, timezone
 from pathlib import Path
 from unittest.mock import patch
 
@@ -114,6 +115,68 @@ class MofPendingTests(unittest.TestCase):
         key = P._case_id("a" * 64, "b" * 64, "情報改訂", "1", "旅券番号", "x", "y")
         changed = P._case_id("a" * 64, "c" * 64, "情報改訂", "1", "旅券番号", "x", "y")
         self.assertNotEqual(key, changed)
+
+    def run_at(self, stamp, run_id):
+        with patch.object(P, 'datetime', wraps=datetime) as clock, patch.dict(os.environ, {
+            'GITHUB_REPOSITORY': 'example/repo', 'GITHUB_RUN_ID': run_id,
+        }):
+            clock.now.return_value = datetime.fromisoformat(stamp.replace('Z', '+00:00'))
+            return P.run(self.root)
+
+    def rows(self):
+        with (self.root / P.PATH).open(encoding='utf-8', newline='') as stream:
+            return list(csv.reader(stream))[1:]
+
+    def test_repeated_fetch_keeps_original_observation_and_run_but_receipt_is_current(self):
+        self.run_at('2026-10-30T03:00:00Z', '123')
+        self.run_at('2026-10-31T04:00:00Z', '456')
+        self.assertEqual({r[1] for r in self.rows()}, {'2026-10-30T03:00:00Z'})
+        self.assertEqual({r[16] for r in self.rows()}, {'https://github.com/example/repo/actions/runs/123'})
+        receipt = json.loads((self.root / 'data/monitoring/mof_candidate.json').read_text())
+        self.assertEqual(receipt['checked_at'], '2026-10-31T04:00:00Z')
+        self.assertEqual(receipt['run_id'], '456')
+
+    def test_cleared_candidate_recurrence_gets_new_observation(self):
+        self.run_at('2026-10-30T03:00:00Z', '123')
+        P.write_csv(self.root, [])
+        self.run_at('2026-10-31T04:00:00Z', '456')
+        self.assertEqual({r[1] for r in self.rows()}, {'2026-10-31T04:00:00Z'})
+
+    def test_retention_keeps_current_archive_and_new_candidate_time(self):
+        self.run_at('2026-10-30T03:00:00Z', '123')
+        old = self.rows()
+        self.run_at('2026-10-31T04:00:00Z', '456')
+        current = self.rows()
+        for row in current:
+            row[1], row[13], row[16] = '2026-10-31T04:00:00Z', 'new.csv.gz', 'https://github.com/example/repo/actions/runs/456'
+        new = list(current[0])
+        new[0], new[12] = 'MOF-PENDING-' + 'f' * 24, 'f' * 64
+        merged = P.retain_first_detection([*current, new], old)
+        self.assertEqual([r[1] for r in merged], ['2026-10-30T03:00:00Z'] * 3 + ['2026-10-31T04:00:00Z'])
+        self.assertEqual({r[13] for r in merged}, {'new.csv.gz'})
+        self.assertEqual(merged[-1][16], 'https://github.com/example/repo/actions/runs/456')
+
+    def test_conflicting_future_or_duplicate_prior_observations_are_rejected(self):
+        self.run_at('2026-10-30T03:00:00Z', '123')
+        current = self.rows()
+        for label, index, value in [('future', 1, '2026-10-31T04:00:00Z'),
+                                     ('name', 4, 'DIFFERENT NAME'), ('bad time', 1, 'yesterday'),
+                                     ('bad URL', 16, 'https://evil.invalid/123')]:
+            with self.subTest(label=label):
+                prior = [list(row) for row in current]
+                prior[0][index] = value
+                with self.assertRaises(ValueError):
+                    P.retain_first_detection(current, prior)
+        with self.assertRaises(ValueError):
+            P.retain_first_detection(current, [*current, current[0]])
+
+    def test_invalid_prior_schema_cannot_be_replaced_by_new_generation(self):
+        self.run_at('2026-10-30T03:00:00Z', '123')
+        path = self.root / P.PATH
+        path.write_text('bad,columns\n')
+        with self.assertRaises(ValueError):
+            self.run_at('2026-10-31T04:00:00Z', '456')
+        self.assertEqual(path.read_text(), 'bad,columns\n')
 
 
 if __name__ == "__main__":

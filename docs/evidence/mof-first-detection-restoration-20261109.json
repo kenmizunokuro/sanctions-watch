@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "base_commit": "ed6bd205324eba8b092d00c74e24f33d5d6d1d17",
+  "path": "data/dashboard/mof_pending.csv",
+  "input_sha256": "d8f81021f984421719573159b5736a4e484680b38d6621fa996dc8f16b6743b4",
+  "output_sha256": "db89fc478a6bf6535dea85ff50f6637e940dbd59e0fb658612fdbc0f0fe15e1e",
+  "method": "Replay first-parent published candidate snapshots chronologically. Retain first timestamp and run URL only for continuously present identical MOF candidate IDs and business fields. Retain the latest raw filename. A cleared/deleted table breaks continuity; a new source hash starts new candidates.",
+  "limitation": "Earliest verifiable stored observation only; no inference from official publication dates or unrecorded earlier observations. The existing fetch receipt remains immutable evidence of the originally fetched candidate bytes.",
+  "candidates": 79,
+  "changed_observations": 79,
+  "restored_utc": {
+    "2026-11-04T20:00:03Z": 79
+  },
+  "snapshots": [
+    {
+      "commit": "ff1e7f7370e79bbe639768300ce09a01ff7eabae",
+      "sha256": "a347dfe68fdfdc9b81d3243235ce115819b5658fdc0e2225832b12622d11d6ae",
+      "rows": 39
+    },
+    {
+      "commit": "f2612fd730223cd277153bc467426229bf1ba609",
+      "sha256": "ff1ff6f79eb402da38ef8d7511a1986f11def0a266c10ac16955e34e2d1789c5",
+      "rows": 79
+    },
+    {
+      "commit": "4502ad9bf591df743c04969c903d1958c428da7c",
+      "sha256": "13512e26f3cc06a82b6a38e069f5a0dc8951f2982a29cdf89682870ba1a4aecf",
+      "rows": 79
+    },
+    {
+      "commit": "3d773e9de89ddaf7592467eec4794ae8062ca6ef",
+      "sha256": "ea4f00a8ad84b923ae20fd35996094adb3060b6b2cc87c7cc831751d6db349f8",
+      "rows": 79
+    },
+    {
+      "commit": "489c930253b3dd90b998cd2d72a94f092de46a21",
+      "sha256": "4b324907d7feb6c6dcce82cc2b16155055a2122a8f25a66ca1dec2249b9202bf",
+      "rows": 79
+    },
+    {
+      "commit": "6a3f36bd0fc023ae80fea05d906a897e457c1843",
+      "sha256": "617f9c390510ade81ee106a7c52d2e5b6841fffc63ca9762a045fd736fc3f912",
+      "rows": 79
+    },
+    {
+      "commit": "1e5d12b21ec62807c3e8ea2f968f2551faef6416",
+      "sha256": "088127e512814c305a8a8d127920c0c482af6c70798e2c0ccc082349ad2fe6fa",
+      "rows": 79
+    },
+    {
+      "commit": "8d01bd8013deb3cbe96be85f2caf1ca9b681c500",
+      "sha256": "23b76edf0d7275492e840e08f895156bf3be9918bb269d6b03c7cd8a728226af",
+      "rows": 79
+    },
+    {
+      "commit": "e0873912df51d608dc12a1d554339dbf9a7684be",
+      "sha256": "b247d21ca26d74f38e9f4add9652d491638060b8e1fcca7111d289de201acca6",
+      "rows": 79
+    },
+    {
+      "commit": "9293d5baa1a142c9bf1fe5be61f6bd847c7d1fa0",
+      "sha256": "dfab0a2ae1b1997a72ab83ce2140f7c74fbe34ad15a9835138287f12732f80e1",
+      "rows": 79
+    },
+    {
+      "commit": "0873b28dc0871e60c2ac7918e91f4b9a4c85c31f",
+      "sha256": "30865edb6d176cdb3e0eaaf793e3e3f7fbfd5412cc56ef4678eb9692f19abd9b",
+      "rows": 79
+    },
+    {
+      "commit": "66d52066964b79d311298cb6a3772278db6b47e6",
+      "sha256": "dee43ef48646efe3fdec16839a21191a98e4eda34bc1bf17ecb6385ee5f2b068",
+      "rows": 79
+    },
+    {
+      "commit": "0b67739726f8ed07cc42736468cf0eb010386f8c",
+      "sha256": "0b42a28675e4267ee46bf47a918eaedd0d92969ac4a9b0d066a9af52d02fc04f",
+      "rows": 79
+    },
+    {
+      "commit": "77712a6aa62dbcdb7f9e64f6769dbf928a4d663b",
+      "sha256": "6aacd6270b57137f774944e9d6a0cc00da24350405ed2085c81c96ec336af960",
+      "rows": 79
+    },
+    {
+      "commit": "15c1148009d3c3ece6c733e41e7a5c96ea35df2a",
+      "sha256": "252fe2d001e5b9d1dca33dff1a5d41fa889149fe4c291d0290803cfefbdccc57",
+      "rows": 79
+    },
+    {
+      "commit": "320fa020da961b2c3a19cda214fcdc0caccba4f4",
+      "sha256": "3d268b5cba19a907b7d6abc3e1d6e74cdb7a1a0471754574bcbfb3f6b80f90d2",
+      "rows": 79
+    },
+    {
+      "commit": "550ba7c9ffb38b9ba914f4ac435a90aab5fcae06",
+      "sha256": "b373a09f19ac938743e1c4b5be7b8bdb9c8a28e526122cb4d9575bbe6918f77f",
+      "rows": 79
+    },
+    {
+      "commit": "8866ec8afa3fe26672665d6f8a26cf1fbed22349",
+      "sha256": "d8f81021f984421719573159b5736a4e484680b38d6621fa996dc8f16b6743b4",
+      "rows": 79
+    }
+  ]
+}
