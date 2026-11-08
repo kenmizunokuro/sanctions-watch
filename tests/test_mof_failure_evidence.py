@@ -1,5 +1,6 @@
 """Only evidence from this fetched candidate can qualify a publication hold."""
 import gzip
+import csv
 import hashlib
 import json
 import os
@@ -162,6 +163,122 @@ class MofFailureEvidenceTests(unittest.TestCase):
             self.assertIn('財務省,エラー,', legacy)
             self.assertEqual(git('show', 'origin/main:data/master/master.csv'),
                              'unchanged master sentinel')
+
+    def _origin(self):
+        folder = tempfile.TemporaryDirectory()
+        self.addCleanup(folder.cleanup)
+        origin = Path(folder.name) / 'origin.git'
+        subprocess.run(['git', 'init', '--bare', str(origin)], check=True, capture_output=True)
+        def git(*args):
+            return subprocess.run(['git', '-C', str(self.root), *args], check=True,
+                                  capture_output=True, text=True).stdout.strip()
+        git('init', '-b', 'main')
+        git('config', 'user.email', 'tests@example.invalid')
+        git('config', 'user.name', 'Tests')
+        git('add', '.')
+        git('commit', '-m', 'published baseline')
+        git('remote', 'add', 'origin', str(origin))
+        git('push', '-u', 'origin', 'main')
+        return origin, git
+
+    def test_clean_main_merge_preserves_observation_and_separate_receipt_hash(self):
+        record = F.failure_record()
+        current = P.read_csv(self.root)
+        old = [list(r) for r in current]
+        for row in old:
+            row[1], row[16] = '2026-10-30T03:00:00Z', 'https://github.com/example/repo/actions/runs/100'
+        P.write_csv(self.root, old)
+        _, git = self._origin()
+        P.write_csv(self.root, current)
+        candidate_bytes = (self.root / P.PATH).read_bytes()
+        (self.root / 'data/master/master.csv').write_text('unapproved candidate master')
+        self.assertTrue(F.persist(self.root, record))
+        git('fetch', 'origin', 'main')
+        published = git('show', 'origin/main:data/dashboard/mof_pending.csv') + '\n'
+        rows = list(csv.reader(published.splitlines()))[1:]
+        self.assertEqual({r[1] for r in rows}, {'2026-10-30T03:00:00Z'})
+        self.assertEqual({r[16] for r in rows}, {'https://github.com/example/repo/actions/runs/100'})
+        saved = json.loads(git('show', 'origin/main:data/monitoring/mof_failure.json'))
+        self.assertEqual(saved['fetch']['pending_sha256'], hashlib.sha256(candidate_bytes).hexdigest())
+        self.assertEqual(saved['pending_publication']['sha256'], hashlib.sha256(published.encode()).hexdigest())
+        self.assertEqual(git('show', 'origin/main:data/master/master.csv'), 'unchanged master sentinel')
+
+    def test_push_retry_uses_concurrently_published_first_observation(self):
+        record = F.failure_record()
+        current = P.read_csv(self.root)
+        P.write_csv(self.root, [])
+        origin, git = self._origin()
+        P.write_csv(self.root, current)
+        original_git = F._git
+        raced = False
+        def racing_git(root, *args, **kwargs):
+            nonlocal raced
+            if args[:1] == ('push',) and not raced:
+                raced = True
+                rival = origin.parent / 'rival'
+                subprocess.run(['git', 'clone', '-b', 'main', str(origin), str(rival)], check=True, capture_output=True)
+                older = [list(r) for r in current]
+                for row in older:
+                    row[1], row[16] = '2026-10-30T03:00:00Z', 'https://github.com/example/repo/actions/runs/100'
+                P.write_csv(rival, older)
+                original_git(rival, 'add', '.')
+                original_git(rival, '-c', 'user.name=Tests', '-c', 'user.email=tests@example.invalid',
+                             'commit', '-m', 'concurrent first observation')
+                original_git(rival, 'push', 'origin', 'main')
+            return original_git(root, *args, **kwargs)
+        with patch.object(F, '_git', side_effect=racing_git):
+            self.assertTrue(F.persist(self.root, record))
+        git('fetch', 'origin', 'main')
+        published = git('show', 'origin/main:data/dashboard/mof_pending.csv')
+        self.assertEqual({r[1] for r in list(csv.reader(published.splitlines()))[1:]}, {'2026-10-30T03:00:00Z'})
+
+    def test_invalid_published_evidence_keeps_table_but_records_latest_failure(self):
+        record = F.failure_record()
+        current = P.read_csv(self.root)
+        (self.root / P.PATH).write_text('bad,columns\n')
+        _, git = self._origin()
+        P.write_csv(self.root, current)
+        self.assertTrue(F.persist(self.root, record))
+        git('fetch', 'origin', 'main')
+        self.assertEqual(git('show', 'origin/main:data/dashboard/mof_pending.csv'), 'bad,columns')
+        saved = json.loads(git('show', 'origin/main:data/monitoring/mof_failure.json'))
+        self.assertEqual(saved['run_id'], '123')
+        self.assertEqual(saved['pending_publication']['status'], 'WITHHELD')
+
+    def test_generation_failure_from_invalid_candidate_still_records_monitor_failure(self):
+        (self.root / P.PATH).write_text('bad,columns\n')
+        _, git = self._origin()
+        with self.assertRaises(ValueError):
+            P.run(self.root)
+        with patch.dict(os.environ, {'MOF_PENDING_OUTCOME': 'failure'}):
+            record = F.failure_record()
+        self.assertTrue(F.persist(self.root, record))
+        git('fetch', 'origin', 'main')
+        saved = json.loads(git('show', 'origin/main:data/monitoring/mof_failure.json'))
+        self.assertEqual(saved['run_id'], '123')
+        self.assertEqual(saved['pending_publication']['status'], 'WITHHELD')
+        self.assertEqual(git('show', 'origin/main:data/dashboard/mof_pending.csv'), 'bad,columns')
+
+    def test_concurrent_clear_cannot_resurrect_inherited_observation(self):
+        older = P.read_csv(self.root)
+        for row in older:
+            row[1], row[16] = '2026-10-30T03:00:00Z', 'https://github.com/example/repo/actions/runs/100'
+        P.write_csv(self.root, older)
+        P.run(self.root)  # Latest receipt, but candidate inherits the old time.
+        current = P.read_csv(self.root)
+        record = F.failure_record()
+        _, git = self._origin()
+        P.write_csv(self.root, [])
+        git('add', '.')
+        git('commit', '-m', 'concurrent review completion clears candidates')
+        git('push', 'origin', 'main')
+        P.write_csv(self.root, current)
+        self.assertTrue(F.persist(self.root, record))
+        git('fetch', 'origin', 'main')
+        published = git('show', 'origin/main:data/dashboard/mof_pending.csv')
+        rows = list(csv.reader(published.splitlines()))[1:]
+        self.assertEqual({r[1] for r in rows}, {record['fetch']['checked_at']})
+        self.assertEqual({r[16] for r in rows}, {'https://github.com/example/repo/actions/runs/123'})
 
 
 if __name__ == '__main__':

@@ -170,6 +170,7 @@ def persist(root: Path, record: dict) -> bool:
                     if previous.get("finished_at", "") >= record["finished_at"]:
                         return False
                 destination.parent.mkdir(parents=True, exist_ok=True)
+                published_record = dict(record)
                 destination.write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
                 # Rebuild only the presentation file on an untouched main
@@ -188,17 +189,49 @@ def persist(root: Path, record: dict) -> bool:
                 # files from the failed attempt to the production checkout.
                 if pending_file.exists():
                     from .mof_pending_gate import pending_count
-                    count = pending_count(root)
                     target = clean / PENDING_PATH
                     target.parent.mkdir(parents=True, exist_ok=True)
-                    if count or not target.exists():
-                        shutil.copyfile(pending_file, target)
-                        targets.append(PENDING_PATH.as_posix())
+                    from . import mof_pending
+                    try:
+                        count = pending_count(root)
+                        if count or not target.exists():
+                            fetched = record.get('fetch') or {}
+                            if (fetched.get('run_id') != record['run_id']
+                                    or fetched.get('run_attempt') != record.get('run_attempt')
+                                    or fetched.get('run_url') != record['run_url']
+                                    or fetched.get('pending_count') != count
+                                    or fetched.get('pending_sha256') != hashlib.sha256(pending_file.read_bytes()).hexdigest()):
+                                raise ValueError('MOF observation metadata is not bound to this fetched candidate')
+                            # Generation may already have inherited observations
+                            # from its old checkout. Start from THIS fetch so a
+                            # concurrent clear in fresh main breaks continuity.
+                            current = mof_pending.read_csv(root)
+                            current = [list(row) for row in current]
+                            for row in current:
+                                row[1], row[16] = fetched['checked_at'], fetched['run_url']
+                            rows = mof_pending.retain_first_detection(
+                                current, mof_pending.read_csv(clean))
+                            mof_pending.write_csv(clean, rows)
+                            targets.append(PENDING_PATH.as_posix())
+                            # The fetch receipt remains bound to the rejected
+                            # candidate bytes. Published bytes can inherit an
+                            # older observation from a concurrent main commit.
+                            published_record['pending_publication'] = {
+                                'status': 'PUBLISHED', 'count': len(rows),
+                                'sha256': hashlib.sha256(target.read_bytes()).hexdigest(),
+                            }
+                    except (OSError, ValueError, KeyError, csv.Error) as exc:
+                        published_record['pending_publication'] = {
+                            'status': 'WITHHELD', 'reason': str(exc)[:500],
+                        }
+                        print(f'MOF candidate observations could not be verified; table update withheld: {exc}',
+                              file=sys.stderr)
                 if review_file.exists() and _review_case_count(review_file):
                     target = clean / REVIEW_PATH
                     target.parent.mkdir(parents=True, exist_ok=True)
                     shutil.copyfile(review_file, target)
                     targets.append(REVIEW_PATH.as_posix())
+                destination.write_text(json.dumps(published_record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
                 _git(clean, "add", "--", *targets)
                 _git(clean, "-c", "user.name=sanctions-watch[bot]",
                      "-c", "user.email=sanctions-watch@users.noreply.github.com",
