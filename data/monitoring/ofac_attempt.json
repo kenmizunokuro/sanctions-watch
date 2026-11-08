@@ -1,27 +1,27 @@
 {
-  "started_at": "2026-11-08T16:11:28Z",
-  "finished_at": "2026-11-08T16:15:59Z",
+  "started_at": "2026-11-08T16:51:30Z",
+  "finished_at": "2026-11-08T16:55:54Z",
   "outcome": "failure",
   "exit_code": 1,
   "sources": [
     "ofac"
   ],
-  "run_id": "42498505349",
+  "run_id": "42501914043",
   "run_attempt": "1",
-  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42498505349",
+  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42501914043",
   "stage": "integrity_failed",
-  "fetch_finished_at": "2026-11-08T16:12:00Z",
+  "fetch_finished_at": "2026-11-08T16:51:58Z",
   "integrity": {
     "status": "BLOCKED",
-    "report": "data/integrity_audit/20261108T161557494029Z__6eae5544f82f4c56__506ed50c.json.gz",
-    "report_sha256": "dbfe5138fe3129ce37cd8373b110da65ac263bebe7186eca8727a60149fd8ccd",
+    "report": "data/integrity_audit/20261108T165551963352Z__4a1f603770ddb244__5d1f9595.json.gz",
+    "report_sha256": "e881cfc406bdffe94c2f82b1e249fdd8316a9634bc318c9a23a98b3f84579698",
     "inputs": {
       "data/kubun_map.json": "007da2fec65dd0357f5d3f91b2b68927f8dcf1c97b95253cc1c0c51a1d55e3f6",
-      "data/master/master.csv": "bfd4553798b09ec17105c38ae01fa11de1105e5a6af52d503ddaa1f26d27621b",
-      "data/master/ofac_alias_history.csv": "6886ecebdf98781dac645806decd594549d4b60d6f3a8fb2af9700b947f59c83",
+      "data/master/master.csv": "316b26278e5e6018d31ffb10ea3cf9c623d548332aa7e3cdc87178b0edca8683",
+      "data/master/ofac_alias_history.csv": "2b03a6d5e35c68c4e8b456e99f65810d6b4e58bb2d90a84e1104e925ab829dbb",
       "data/review/integrity_legacy_acceptances.json": "c4698e8f222276aeccfffe4004a961e796718cd227630be9a0abd88e7a02e14e",
       "data/review/integrity_retention_decisions.json": "8671fc39de114fb94cb858cf03ff9da07a1b4104c59c5ed42ac587b2ec701d35",
-      "data/state.json": "6601d75614aba654b38cf61f344af2ea7fda9eae945541e719408f4275398ced",
+      "data/state.json": "93b5da4226183c0efcbcac412aacf71899125fda4480425130d55055e5edbcda",
       "docs/evidence/source-integrity-legacy-retention-policy-proposal-20261026.json": "7d54d514a3c9dfa6708dce5bbec0c6dc595ad6defa5dad4ab0cf26c48c0c4881",
       "docs/evidence/source-integrity-legacy-scope-20261026.json.gz": "83713003dc24b7efafa4683c703f9f40b31b0721015abe655aff3c88694a0289"
     },

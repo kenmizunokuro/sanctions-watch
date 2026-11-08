@@ -1,2 +1,2 @@
 監査終了日時（JST）,証跡状態,停止件数,停止理由,監査報告SHA256,GitHub実行URL
-2026-11-09 01:15:59,BLOCKED,3,監査停止3件：EXTRA_REGISTRATION 3件／対象（最大10件）：CARLOTA C、GIRALT、NEDAS,dbfe5138fe3129ce37cd8373b110da65ac263bebe7186eca8727a60149fd8ccd,https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42498505349
+2026-11-09 01:55:54,BLOCKED,3,監査停止3件：EXTRA_REGISTRATION 3件／対象（最大10件）：CARLOTA C、GIRALT、NEDAS,e881cfc406bdffe94c2f82b1e249fdd8316a9634bc318c9a23a98b3f84579698,https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42501914043
