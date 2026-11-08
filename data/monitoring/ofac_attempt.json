@@ -1,14 +1,49 @@
 {
-  "started_at": "2026-11-08T15:01:18Z",
-  "finished_at": "2026-11-08T15:04:40Z",
+  "started_at": "2026-11-08T15:41:19Z",
+  "finished_at": "2026-11-08T15:45:49Z",
   "outcome": "failure",
   "exit_code": 1,
   "sources": [
     "ofac"
   ],
-  "run_id": "42492561875",
+  "run_id": "42495973594",
   "run_attempt": "1",
-  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42492561875",
+  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42495973594",
   "stage": "integrity_failed",
-  "fetch_finished_at": "2026-11-08T15:01:41Z"
+  "fetch_finished_at": "2026-11-08T15:41:49Z",
+  "integrity": {
+    "status": "BLOCKED",
+    "report": "data/integrity_audit/20261108T154547085605Z__5f5b2573de5f70fb__3c41bf60.json.gz",
+    "report_sha256": "966b6461e111d8ca18f76350bcfb6abc7792a83c9a8d74e9e8474497397f1c4d",
+    "inputs": {
+      "data/kubun_map.json": "007da2fec65dd0357f5d3f91b2b68927f8dcf1c97b95253cc1c0c51a1d55e3f6",
+      "data/master/master.csv": "3cdc9172bb85e8fc4a16c932f6404100c91b9595f7c7c8c9e6a1e7d67e731c3d",
+      "data/master/ofac_alias_history.csv": "fa61c15346faf3a306e6709e94d91d6fc2141fb7a718d75150764e6b75571e6c",
+      "data/review/integrity_legacy_acceptances.json": "c4698e8f222276aeccfffe4004a961e796718cd227630be9a0abd88e7a02e14e",
+      "data/review/integrity_retention_decisions.json": "8671fc39de114fb94cb858cf03ff9da07a1b4104c59c5ed42ac587b2ec701d35",
+      "data/state.json": "3f5748f0a91c14dbb576a89843b271fc3f929d7599b4c869c2561081b79b29b6",
+      "docs/evidence/source-integrity-legacy-retention-policy-proposal-20261026.json": "7d54d514a3c9dfa6708dce5bbec0c6dc595ad6defa5dad4ab0cf26c48c0c4881",
+      "docs/evidence/source-integrity-legacy-scope-20261026.json.gz": "83713003dc24b7efafa4683c703f9f40b31b0721015abe655aff3c88694a0289"
+    },
+    "blocking_counts": {
+      "EXTRA_REGISTRATION": 3
+    },
+    "blockers": [
+      {
+        "kind": "EXTRA_REGISTRATION",
+        "name": "CARLOTA C",
+        "detail": "現在原本に根拠の無い出典付き登録（保持行を含む。削除禁止）"
+      },
+      {
+        "kind": "EXTRA_REGISTRATION",
+        "name": "GIRALT",
+        "detail": "現在原本に根拠の無い出典付き登録（保持行を含む。削除禁止）"
+      },
+      {
+        "kind": "EXTRA_REGISTRATION",
+        "name": "NEDAS",
+        "detail": "現在原本に根拠の無い出典付き登録（保持行を含む。削除禁止）"
+      }
+    ]
+  }
 }
