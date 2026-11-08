@@ -1,14 +1,14 @@
 {
-  "started_at": "2026-11-08T13:11:09Z",
-  "finished_at": "2026-11-08T13:14:34Z",
+  "started_at": "2026-11-08T13:36:53Z",
+  "finished_at": "2026-11-08T13:40:16Z",
   "outcome": "failure",
   "exit_code": 1,
   "sources": [
     "ofac"
   ],
-  "run_id": "42483661536",
+  "run_id": "42485738557",
   "run_attempt": "1",
-  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42483661536",
+  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42485738557",
   "stage": "integrity_failed",
-  "fetch_finished_at": "2026-11-08T13:11:35Z"
+  "fetch_finished_at": "2026-11-08T13:37:17Z"
 }
