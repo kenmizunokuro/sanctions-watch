@@ -207,6 +207,20 @@ OFAC Advanced XMLの合成原本から主名称・強い別名・弱い別名を
 検出する。2回目以降の実行では検出時に `SchemaError` で止まるので、
 `data/kubun_map.json` を人が更新する。
 
+## 取得成功後にOFAC監査が停止した場合
+
+OFACの取得成功とマスターへの反映は別に記録する。完全性監査で停止した実行は、
+`data/monitoring/ofac_attempt.json` の `integrity` に停止種別・件数・対象名（最大10件）と
+監査報告のパス・SHA256を保存する。監査報告はActions Artifactで90日保管する。
+今回の報告SHA256と、監査対象master・state・名称履歴等の入力SHA256が一致した場合だけ
+理由を採用する。監査プロセスの異常終了などで報告が無ければ `UNAVAILABLE` と記録する。
+
+Apps Script v0.5.5の `Code.gs` を稼働側に反映し、`syncOfacReviewOnly` を実行すると、
+`14_OFAC差分候補` のA3に停止理由と実行URLを表示する。全体同期でも同じ表示を更新する。
+`data/dashboard/ofac_integrity.csv` とOFAC状態CSVの日時が揃わない場合は理由未確認と表示し、
+正常反映後は古い理由を消す。差分候補が0件でも監査停止理由は表示する。
+この表示は保持承認・掲載終了判断を代行しない。
+
 ## OFACの実データで踏んだ罠
 
 **名前が「姓, 名」形式。** 既存マスターや財務省は自然順で持っている。

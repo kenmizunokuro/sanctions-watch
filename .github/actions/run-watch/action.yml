@@ -218,6 +218,9 @@ runs:
     - name: OFAC 取得後の監査停止を記録
       if: failure() && steps.watch.outcome == 'success' && (steps.integrity.outcome == 'failure' || steps.commit_candidate.outputs.integrity_failed == 'true') && (contains(inputs.sources, 'ofac') || inputs.sources == 'all')
       shell: bash
+      env:
+        OFAC_AUDIT_REPORT: ${{ steps.commit_candidate.outputs.audit_report || steps.integrity.outputs.audit_report }}
+        OFAC_AUDIT_REPORT_SHA256: ${{ steps.commit_candidate.outputs.audit_report_sha256 || steps.integrity.outputs.audit_report_sha256 }}
       run: python -m src.monitor_attempt --mark-integrity-failure
 
     - name: OFAC 失敗証跡を準備

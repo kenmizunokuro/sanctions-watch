@@ -11,7 +11,7 @@ import tempfile
 from datetime import datetime
 from pathlib import Path
 
-from . import dashboard, ofac_pending, state
+from . import dashboard, ofac_pending, ofac_integrity, state
 from .monitor_attempt import ATTEMPT_PATH, INTEGRITY_FAILED, ROOT
 
 
@@ -67,6 +67,9 @@ def persist_failure(root: Path, *, run_id: str, run_attempt: str | None = None,
                 destination.write_text(text, encoding="utf-8")
                 dashboard.write_status(clean, [], state.load_state(clean))
                 paths = [ATTEMPT_PATH.as_posix(), "data/dashboard/status.csv", "data/dashboard/status_detail.csv"]
+                if record.get('stage') == INTEGRITY_FAILED:
+                    ofac_integrity.write_summary(clean, record)
+                    paths.append(ofac_integrity.PATH.as_posix())
                 if preview is not None:
                     if hashlib.sha256((clean / "data/master/master.csv").read_bytes()).hexdigest() == base_sha256:
                         ofac_pending.write(clean / ofac_pending.PATH, preview)

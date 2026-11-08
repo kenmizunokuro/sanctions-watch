@@ -311,7 +311,7 @@ test('OFAC candidate feed ignores stale cache and isolates its own error', () =>
   assert.deepEqual(displayed,[0]);
   c.fetchCsvBatch_=()=>{throw Error('temporary error');};
   assert.doesNotThrow(()=>c.syncOfacCandidateFeed_(ss,status,{}));
-  assert.match(notes[0],/前回取得時点/);
+  assert.ok(notes.some(note=>/前回取得時点/.test(note)));
 });
 
 test('OFAC-only sync writes candidate rows without running the full sheet sync', () => {
@@ -327,16 +327,52 @@ test('OFAC-only sync writes candidate rows without running the full sheet sync',
   const row=['2026-11-07 02:31:25','OFAC','追加','LOURDES','','after','監査停止・master未反映',
     'https://github.com/test/repo/actions/runs/123'];
   c.fetchCsvBatch_=(specs)=>{
-    assert.deepEqual(Array.from(specs,s=>s.key),['ofac_pending','status_detail']);
+    assert.deepEqual(Array.from(specs,s=>s.key),['ofac_pending','status_detail','ofac_integrity']);
     return {ofac_pending:{code:200,rows:[row]},status_detail:{code:200,rows:[
       ['OFAC SDN','掲載終了候補・要レビュー','2026-11-06 01:31:22'],
       ['OFAC Consolidated','変更なし','2026-11-06 01:31:22'],
     ]}};
   };
+  c.writeOfacIntegrityNote_=()=>{};
   assert.equal(c.syncOfacReviewOnly(),1);
   assert.deepEqual(written,[row]);
   assert.equal(flushed,1);
   assert.equal(released,1);
+});
+
+test('OFAC diagnostic note rejects stale generations, corrupt hashes and duplicate rows', () => {
+  const c=ctx();
+  const status=['OFAC SDN','OFAC Consolidated'].map(name=>[name,'取得済・監査停止（master未反映）','2026-11-09 01:00:00']);
+  const row=['2026-11-09 01:00:00','BLOCKED','3','監査停止3件：CARLOTA C、GIRALT、NEDAS','a'.repeat(64),
+    'https://github.com/test/repo/actions/runs/123'];
+  assert.match(c.ofacIntegrityNote_(status,[row]),/CARLOTA C、GIRALT、NEDAS/);
+  for(const rows of [[row,row],[row.map((v,i)=>i===0?'2026-11-08 01:00:00':v)],
+    [row.map((v,i)=>i===4?'bad':v)],[]]) {
+    const note=c.ofacIntegrityNote_(status,rows);
+    assert.match(note,/確認できません/);
+    assert.doesNotMatch(note,/CARLOTA/);
+  }
+  assert.equal(c.ofacIntegrityNote_(status.map(r=>[r[0],'変更なし',r[2]]),[row]),'');
+  assert.match(c.ofacIntegrityNote_(status,[[row[0],'UNAVAILABLE','','監査報告がありません','',row[5]]]),/監査報告がありません/);
+});
+
+test('OFAC-only sync displays diagnostics even without pending diff rows', () => {
+  const c=ctx(); const writes=[];
+  const sheet={getRange:range=>({setValue:value=>writes.push([range,value])})};
+  const ss={getSheetByName:()=>sheet};
+  c.LockService={getScriptLock:()=>({tryLock:()=>true,releaseLock:()=>{}})};
+  c.SpreadsheetApp={getActiveSpreadsheet:()=>ss,flush:()=>{}};
+  c.Logger={log:()=>{}};
+  const statuses=['OFAC SDN','OFAC Consolidated'].map(name=>[name,'取得済・監査停止（master未反映）','2026-11-09 01:00:00']);
+  c.fetchCsvBatch_=()=>({ofac_pending:{code:200,rows:[]},status_detail:{code:200,rows:statuses},
+    ofac_integrity:{code:200,rows:[['2026-11-09 01:00:00','BLOCKED','1','=UNTRUSTED NAME','b'.repeat(64),
+      'https://github.com/test/repo/actions/runs/123']]}});
+  assert.equal(c.syncOfacReviewOnly(),null);
+  assert.match(writes.find(r=>r[0]==='A3')[1],/^監査停止理由：=UNTRUSTED NAME/);
+  c.fetchCsvBatch_=()=>({ofac_pending:{code:200,rows:[]},status_detail:{code:200,rows:statuses.map(r=>[r[0],'変更なし',r[2]])}});
+  c.syncOfacCandidateSheet_=()=>{};
+  c.syncOfacReviewOnly();
+  assert.deepEqual(writes.at(-1),['A3','']);
 });
 
 test('OFAC-only sync reports the failed stage and always releases the lock', () => {
@@ -347,4 +383,16 @@ test('OFAC-only sync reports the failed stage and always releases the lock', () 
   c.getSpreadsheet_=()=>{throw Error('must not open the sheet before fetching');};
   assert.throws(()=>c.syncOfacReviewOnly(), /CSV取得.*HTTP 403/);
   assert.equal(released,1);
+});
+
+test('OFAC-only sync invalidates prior diagnostics when fetching fails', () => {
+  const c=ctx(); const writes=[];
+  const sheet={getRange:range=>({setValue:value=>writes.push([range,value])})};
+  c.LockService={getScriptLock:()=>({tryLock:()=>true,releaseLock:()=>{}})};
+  c.SpreadsheetApp={getActiveSpreadsheet:()=>({getSheetByName:()=>sheet})};
+  c.Logger={log:()=>{}};
+  c.fetchCsvBatch_=()=>{throw Error('HTTP 500');};
+  assert.throws(()=>c.syncOfacReviewOnly(),/CSV取得.*HTTP 500/);
+  assert.match(writes.find(r=>r[0]==='A3')?.[1] || '',/監査停止理由を確認できません/);
+  assert.match(writes.find(r=>r[0]==='A2')?.[1] || '',/前回取得時点/);
 });

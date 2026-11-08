@@ -10,6 +10,7 @@ import csv
 import gzip
 import hashlib
 import json
+import os
 import re
 import sys
 import uuid
@@ -363,6 +364,11 @@ def main(argv=None):
     print(json.dumps(dict(status=result['status'], counts=result['counts'],
                           blocking_counts=result['blocking_counts'], report=str(path),
                           triage_paths=triage_paths), ensure_ascii=False))
+    output = os.environ.get('GITHUB_OUTPUT')
+    if output:
+        with open(output, 'a', encoding='utf-8') as stream:
+            stream.write(f'audit_report={path.resolve().relative_to(args.root.resolve()).as_posix()}\n')
+            stream.write(f'audit_report_sha256={sha(path.read_bytes())}\n')
     return 0 if result['publication_allowed'] else 1
 
 

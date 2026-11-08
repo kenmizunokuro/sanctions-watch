@@ -1,4 +1,4 @@
-const VERSION = '0.5.4';
+const VERSION = '0.5.5';
 const DEFAULT_TZ = 'Asia/Tokyo';
 const LOCK_WAIT_MS = 15000;
 const MAX_RETRIES = 2;
@@ -61,8 +61,10 @@ const MOF_PENDING_URL = 'https://raw.githubusercontent.com/kenmizunokuro/sanctio
 const MOF_LEGACY_URL = 'https://raw.githubusercontent.com/kenmizunokuro/sanctions-watch/main/data/dashboard/mof_legacy_review.csv';
 const STATUS_DETAIL_URL = 'https://raw.githubusercontent.com/kenmizunokuro/sanctions-watch/main/data/dashboard/status_detail.csv';
 const OFAC_PENDING_URL = 'https://raw.githubusercontent.com/kenmizunokuro/sanctions-watch/main/data/dashboard/ofac_pending.csv';
+const OFAC_INTEGRITY_URL = 'https://raw.githubusercontent.com/kenmizunokuro/sanctions-watch/main/data/dashboard/ofac_integrity.csv';
 
 const EXPECTED = {
+  ofacIntegrity: ['監査終了日時（JST）','証跡状態','停止件数','停止理由','監査報告SHA256','GitHub実行URL'],
   ofacPending: ['検知日時（JST）','出所','種別','受取人名','変更前','変更後','状態','GitHub実行URL'],
   unReviews: ['イベントID','検知日時','区分','国連参照番号','対象名／発表','状態','追加対象者','掲載終了候補','変更対象者','SHA256','一次ソースURL'],
   mofPending: ['候補ID','検知日時UTC','出所','種別','対象者','番号','国連参照番号','変更項目','変更前','変更後','影響区分','前回原本SHA256','今回原本SHA256','今回原本ファイル','取得URL','検証状態','GitHub実行URL'],
@@ -1717,6 +1719,40 @@ function ofacCandidateSpec_() {
     optional: false, conditional: false};
 }
 
+function ofacIntegritySpec_() {
+  return {key: 'ofac_integrity', url: OFAC_INTEGRITY_URL, expected: EXPECTED.ofacIntegrity,
+    optional: true, conditional: false};
+}
+
+function ofacIntegrityNote_(status, rows) {
+  const sources = ['OFAC SDN', 'OFAC Consolidated'];
+  if (!status.some(r => sources.includes(r[0]) && r[1] === '取得済・監査停止（master未反映）')) return '';
+  const unavailable = '監査停止理由を確認できません。今回の状態と一致する監査証跡がありません。';
+  if (rows.length !== 1) return unavailable;
+  const row = rows[0];
+  if (row.length !== EXPECTED.ofacIntegrity.length || !parseJst_(row[0]) || !row[3].trim() ||
+      !/^https:\/\/github\.com\/[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+\/actions\/runs\/[0-9]+$/.test(row[5])) return unavailable;
+  if (!sources.every(source => {
+    const matches = status.filter(r => r[0] === source);
+    return matches.length === 1 && matches[0][1] === '取得済・監査停止（master未反映）' && matches[0][2] === row[0];
+  })) return unavailable;
+  if (row[1] === 'BLOCKED') {
+    if (!/^[1-9][0-9]*$/.test(row[2]) || !/^[a-f0-9]{64}$/.test(row[4])) return unavailable;
+  } else if (row[1] !== 'UNAVAILABLE' || row[2] !== '' || row[4] !== '') return unavailable;
+  // The fixed prefix keeps untrusted source names literal in Sheets.
+  return '監査停止理由：' + row[3] + '／実行：' + row[5];
+}
+
+function writeOfacIntegrityNote_(ss, status, rows) {
+  const note = ofacIntegrityNote_(status, rows);
+  let sheet = ss.getSheetByName(TAB.OFAC_PENDING);
+  if (!sheet && note) {
+    syncOfacCandidateSheet_(ss, []);
+    sheet = ss.getSheetByName(TAB.OFAC_PENDING);
+  }
+  if (sheet) sheet.getRange('A3').setValue(note);
+}
+
 function applyOfacCandidateFeed_(ss, status, rows) {
   const successful = ['取得あり', '更新あり', '変更なし', '元データ更新・実質変更なし', '掲載終了候補・要レビュー'];
   const ofac = ['OFAC SDN', 'OFAC Consolidated'].map(source => status.find(row => row[0] === source));
@@ -1737,13 +1773,18 @@ function applyOfacCandidateFeed_(ss, status, rows) {
 
 function syncOfacCandidateFeed_(ss, status, metrics) {
   try {
-    const feed = fetchCsvBatch_([ofacCandidateSpec_()], metrics).ofac_pending;
+    const feeds = fetchCsvBatch_([ofacCandidateSpec_(), ofacIntegritySpec_()], metrics);
+    const feed = feeds.ofac_pending;
     if (feed.code === 200) applyOfacCandidateFeed_(ss, status, feed.rows);
+    writeOfacIntegrityNote_(ss, status, feeds.ofac_integrity && feeds.ofac_integrity.code === 200 ? feeds.ofac_integrity.rows : []);
   } catch (err) {
     Logger.log('OFAC差分候補の取得・表示エラー: ' + String(err).slice(0, 500));
     try {
       const sheet = ss.getSheetByName(TAB.OFAC_PENDING);
-      if (sheet) sheet.getRange('A2').setValue('候補の更新に失敗。表示中の行は前回取得時点です。');
+      if (sheet) {
+        sheet.getRange('A2').setValue('候補の更新に失敗。表示中の行は前回取得時点です。');
+        sheet.getRange('A3').setValue('監査停止理由を確認できません。今回の取得に失敗しました。');
+      }
     } catch (sheetError) {
       Logger.log('OFAC差分候補の状態表示エラー: ' + String(sheetError).slice(0, 500));
     }
@@ -1754,24 +1795,38 @@ function syncOfacReviewOnly() {
   const lock = LockService.getScriptLock();
   if (!lock.tryLock(LOCK_WAIT_MS)) throw new Error('OFAC差分候補を同期できません。他の同期が実行中です。');
   let stage = 'CSV取得';
+  let ss = null;
   try {
     const metrics = {http200: 0, http304: 0, bytes: 0, retries: 0};
     const feeds = fetchCsvBatch_([ofacCandidateSpec_(),
       {key: 'status_detail', url: STATUS_DETAIL_URL, expected: EXPECTED.status, optional: false, conditional: false},
+      ofacIntegritySpec_(),
     ], metrics);
     if (feeds.ofac_pending.code !== 200 || feeds.status_detail.code !== 200) {
       throw new Error('候補CSVと状態CSVをHTTP 200で取得できませんでした');
     }
     stage = '対象スプレッドシートを開く';
-    const ss = SpreadsheetApp.getActiveSpreadsheet() || getSpreadsheet_();
+    ss = SpreadsheetApp.getActiveSpreadsheet() || getSpreadsheet_();
     stage = '14_OFAC差分候補へ反映';
     const count = applyOfacCandidateFeed_(ss, feeds.status_detail.rows, feeds.ofac_pending.rows);
+    writeOfacIntegrityNote_(ss, feeds.status_detail.rows,
+      feeds.ofac_integrity && feeds.ofac_integrity.code === 200 ? feeds.ofac_integrity.rows : []);
     stage = '書き込み確定';
     SpreadsheetApp.flush();
     Logger.log(count === null ? '候補CSVが空で正常反映を確認できないため、前回表示を保持しました。' :
       `14_OFAC差分候補に${count}件を同期しました。`);
     return count;
   } catch (err) {
+    try {
+      const failedSs = ss || SpreadsheetApp.getActiveSpreadsheet() || getSpreadsheet_();
+      const sheet = failedSs.getSheetByName(TAB.OFAC_PENDING);
+      if (sheet) {
+        sheet.getRange('A2').setValue('候補の更新に失敗。表示中の行は前回取得時点です。');
+        sheet.getRange('A3').setValue('監査停止理由を確認できません。今回の同期に失敗しました。');
+      }
+    } catch (noteError) {
+      if (typeof Logger !== 'undefined') Logger.log('OFAC差分候補の状態表示エラー: ' + String(noteError).slice(0, 500));
+    }
     throw new Error(`OFAC差分候補の同期 [${stage}] ${err.message || err}`);
   } finally {
     lock.releaseLock();
