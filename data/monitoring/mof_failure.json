@@ -1,34 +1,34 @@
 {
   "outcome": "failure",
   "source": "mof",
-  "finished_at": "2026-11-08T15:22:47Z",
-  "run_id": "42494035396",
+  "finished_at": "2026-11-08T16:03:39Z",
+  "run_id": "42497454798",
   "run_attempt": "1",
-  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42494035396",
+  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42497454798",
   "message": "MOF fetched and diffed; integrity BLOCKED; master not applied",
   "fetch": {
     "schema_version": 1,
-    "run_id": "42494035396",
+    "run_id": "42497454798",
     "run_attempt": "1",
-    "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42494035396",
-    "checked_at": "2026-11-08T15:18:42Z",
+    "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42497454798",
+    "checked_at": "2026-11-08T15:59:34Z",
     "sha256": "71eaf728c702c881fb13856043f63d42276094c79cf91bae4ad90eadfa3caadd",
     "url": "https://www.mof.go.jp/policy/international_policy/gaitame_kawase/gaitame/economic_sanctions/shisantouketsu20261105.csv",
-    "raw_path": "data/raw/mof/20261108T151835Z__shisantouketsu20261105.csv.gz",
+    "raw_path": "data/raw/mof/20261108T155927Z__shisantouketsu20261105.csv.gz",
     "asof": "令和8年11月5日",
     "record_count": 15249,
     "etag": "\"3296ec-65f6fe795e4cc\"",
     "last_modified": "Wed, 04 Nov 2026 09:21:31 GMT",
     "pending_count": 79,
     "master_applied": false,
-    "pending_sha256": "d8f81021f984421719573159b5736a4e484680b38d6621fa996dc8f16b6743b4"
+    "pending_sha256": "1cb37658e531c538457cbd1f91e8c19d20a2283653983ef458e8872b3f9a7586"
   },
   "stage": "integrity_blocked",
   "integrity": {
     "status": "BLOCKED",
     "publication_allowed": false,
-    "report": "data/integrity_audit/20261108T152238417769Z__67395f02140b4d73__cbfcb067.json.gz",
-    "report_sha256": "f9a92b52f6cd0085ac73e7767288fad83a38751bc7faa4bb3507cb72db602c77",
+    "report": "data/integrity_audit/20261108T160330035080Z__dd7d5443c6ade56b__a75ecaa6.json.gz",
+    "report_sha256": "693e61aa3b6e7646d1008a7a976c8b5cd93b8b580cdabcb3a4224e7729a8bd34",
     "counts": {
       "CATEGORY_LABEL_UNRESOLVED": 8,
       "EXTRA_REGISTRATION": 7026,
@@ -54,5 +54,10 @@
         "detail": "legacy candidate bindings invalid: 6 row(s); see binding_mismatches"
       }
     ]
+  },
+  "pending_publication": {
+    "status": "PUBLISHED",
+    "count": 79,
+    "sha256": "1cb37658e531c538457cbd1f91e8c19d20a2283653983ef458e8872b3f9a7586"
   }
 }
