@@ -206,6 +206,8 @@ def persist(root: Path, record: dict) -> bool:
                 pushed = _git(clean, "push", "origin", "HEAD:refs/heads/main", check=False)
                 if pushed.returncode == 0:
                     print(f"MOF failure recorded: {record['run_url']}")
+                    from .mof_legacy_reconcile import write_reconciliation
+                    write_reconciliation(root, clean, record)
                     return True
             raise RuntimeError("MOF failure-only push rejected after 3 retries")
         finally:
