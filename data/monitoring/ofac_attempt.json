@@ -1,86 +1,12 @@
 {
-  "started_at": "2026-11-09T06:43:44Z",
-  "finished_at": "2026-11-09T06:48:07Z",
-  "outcome": "failure",
-  "exit_code": 1,
+  "started_at": "2026-11-09T07:18:24Z",
+  "finished_at": "2026-11-09T07:18:51Z",
+  "outcome": "success",
+  "exit_code": 0,
   "sources": [
     "ofac"
   ],
-  "run_id": "42574466806",
+  "run_id": "42577795235",
   "run_attempt": "1",
-  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42574466806",
-  "stage": "integrity_failed",
-  "fetch_finished_at": "2026-11-09T06:44:14Z",
-  "integrity": {
-    "status": "BLOCKED",
-    "report": "data/integrity_audit/20261109T064805121278Z__0a4e21865e88248b__218e9909.json.gz",
-    "report_sha256": "bf65156a944457fb02ac54df9d49bc9cf0f80016d2c28f7100577d6aa00f6b5e",
-    "inputs": {
-      "data/kubun_map.json": "007da2fec65dd0357f5d3f91b2b68927f8dcf1c97b95253cc1c0c51a1d55e3f6",
-      "data/master/master.csv": "e693eef29690da7614c6348a3439a31cb5314d07f5ce002d93ddba3c60e85130",
-      "data/master/ofac_alias_history.csv": "86ae6dda538d62f87d012865a16d09d5784a919a618f16ba9781f95484b94413",
-      "data/review/integrity_legacy_acceptances.json": "503516847a9979fd3b9bfda89b8d9f0731b3b755871bee3230a3d4e189d8825c",
-      "data/review/integrity_retention_decisions.json": "8671fc39de114fb94cb858cf03ff9da07a1b4104c59c5ed42ac587b2ec701d35",
-      "data/state.json": "d66ba6b60df4ae7cb69e19a3c6ca03b29404498ce289f61190a0fd8a52042277",
-      "docs/evidence/source-integrity-legacy-retention-policy-proposal-20261026.json": "7d54d514a3c9dfa6708dce5bbec0c6dc595ad6defa5dad4ab0cf26c48c0c4881",
-      "docs/evidence/source-integrity-legacy-scope-20261026.json.gz": "83713003dc24b7efafa4683c703f9f40b31b0721015abe655aff3c88694a0289"
-    },
-    "blocking_counts": {
-      "EXTRA_REGISTRATION": 3,
-      "SOURCE_MISMATCH": 6,
-      "STATUS_MISMATCH": 6
-    },
-    "blockers": [
-      {
-        "kind": "STATUS_MISMATCH",
-        "name": "Abu Ahmad Akhlaq",
-        "detail": "公式掲載中だがmasterは有効でない（除外理由のレビュー必須）"
-      },
-      {
-        "kind": "SOURCE_MISMATCH",
-        "name": "Abu Ahmad Akhlaq",
-        "detail": "名称は存在するが出典/カテゴリが対応しない"
-      },
-      {
-        "kind": "STATUS_MISMATCH",
-        "name": "Abu Ahmad al-Shami",
-        "detail": "公式掲載中だがmasterは有効でない（除外理由のレビュー必須）"
-      },
-      {
-        "kind": "SOURCE_MISMATCH",
-        "name": "Abu Ahmad al-Shami",
-        "detail": "名称は存在するが出典/カテゴリが対応しない"
-      },
-      {
-        "kind": "STATUS_MISMATCH",
-        "name": "Abu al-Darda'",
-        "detail": "公式掲載中だがmasterは有効でない（除外理由のレビュー必須）"
-      },
-      {
-        "kind": "SOURCE_MISMATCH",
-        "name": "Abu al-Darda'",
-        "detail": "名称は存在するが出典/カテゴリが対応しない"
-      },
-      {
-        "kind": "STATUS_MISMATCH",
-        "name": "BASSAM AHMAD AL-HASRI",
-        "detail": "公式掲載中だがmasterは有効でない（除外理由のレビュー必須）"
-      },
-      {
-        "kind": "SOURCE_MISMATCH",
-        "name": "BASSAM AHMAD AL-HASRI",
-        "detail": "名称は存在するが出典/カテゴリが対応しない"
-      },
-      {
-        "kind": "STATUS_MISMATCH",
-        "name": "Bassam Ahmad Husari",
-        "detail": "公式掲載中だがmasterは有効でない（除外理由のレビュー必須）"
-      },
-      {
-        "kind": "SOURCE_MISMATCH",
-        "name": "Bassam Ahmad Husari",
-        "detail": "名称は存在するが出典/カテゴリが対応しない"
-      }
-    ]
-  }
+  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42577795235"
 }

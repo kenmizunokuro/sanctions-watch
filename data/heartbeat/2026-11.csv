@@ -235,3 +235,5 @@ checked_at,source,status,content_hash,source_updated,record_count,raw_path
 2026-11-08T19:42:00Z,un_press,error,,,0,
 2026-11-08T23:15:54Z,un_xml,review_required,b8eaa0c6e373e8dfc5ff0da9e72d636d984ea5dce7a9c8defcd498b8be8f8533,2026-11-08T00:00:00.869Z,1007,
 2026-11-08T23:15:54Z,un_press,error,,,0,
+2026-11-09T07:18:45Z,ofac_sdn,review_required,60698e6e3edd49ac9398576aae7e98e06f2c0bf44cc41e485bca4732ac56805f,"Fri, 06 Nov 2026 19:33:16 GMT",90023,data/raw/ofac_sdn_advanced/20261109T071829Z__sdn_advanced.xml.gz
+2026-11-09T07:18:45Z,ofac_cons,unchanged,599771b4fb7363f5f0be0009372bbe23f2e3d39a361ad7d624564656c9c407a0,"Wed, 04 Nov 2026 17:33:12 GMT",3396,
