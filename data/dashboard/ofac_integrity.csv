@@ -1,2 +1,2 @@
 監査終了日時（JST）,証跡状態,停止件数,停止理由,監査報告SHA256,GitHub実行URL
-2026-11-09 15:48:07,BLOCKED,15,監査停止15件：EXTRA_REGISTRATION 3件、SOURCE_MISMATCH 6件、STATUS_MISMATCH 6件／対象（最大10件）：Abu Ahmad Akhlaq、Abu Ahmad Akhlaq、Abu Ahmad al-Shami、Abu Ahmad al-Shami、Abu al-Darda'、Abu al-Darda'、BASSAM AHMAD AL-HASRI、BASSAM AHMAD AL-HASRI、Bassam Ahmad Husari、Bassam Ahmad Husari,bf65156a944457fb02ac54df9d49bc9cf0f80016d2c28f7100577d6aa00f6b5e,https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42574466806
+2026-11-10 05:09:31,BLOCKED,1,監査停止1件：EXTRA_REGISTRATION 1件／対象（最大10件）：Volta Shipping Services FZCO,151cb5f5ff91066df625ad249521ff599df6d9a5edb27070453c0de3ab13d86b,https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42688728027
