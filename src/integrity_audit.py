@@ -305,7 +305,7 @@ def audit(root: Path, sources: list[str], upstream_failed: bool = False) -> dict
             result['inputs']['data/review/integrity_retention_decisions.json']=sha(body)
             ledger=json.loads(body)
             investigation=T.triage(root,result)
-            result=D.apply(result,investigation,ledger)
+            result=D.apply(result,investigation,ledger,root=root)
         except (OSError,ValueError,KeyError,csv.Error) as exc:
             result['findings'].append(dict(kind='RETENTION_DECISION_ERROR',detail=str(exc),blocking=True))
     legacy_path=root/'data/review/integrity_legacy_acceptances.json'
@@ -321,6 +321,11 @@ def audit(root: Path, sources: list[str], upstream_failed: bool = False) -> dict
             result=L.apply(root,result,T.triage(root,result),ledger,scope)
         except (OSError,ValueError,KeyError,TypeError,csv.Error,EOFError,zlib.error) as exc:
             result['findings'].append(dict(kind='LEGACY_ACCEPTANCE_ERROR',detail=str(exc),blocking=True))
+    from . import integrity_approved_delist as approved_delist
+    try:
+        result=approved_delist.apply(root,result)
+    except (OSError,ValueError,KeyError,TypeError,EOFError) as exc:
+        result['findings'].append(dict(kind='APPROVED_DELIST_ERROR',detail=str(exc),blocking=True))
     return _finish(result)
 
 

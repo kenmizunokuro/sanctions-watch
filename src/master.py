@@ -148,6 +148,12 @@ def _recompute(row: dict) -> dict:
                 "refuse to overwrite review evidence"
             )
         row["remark"] = summary + "\n" + annotation
+    elif "OFAC_VESSEL_HISTORY_V1:" in str(row.get("review_flag", "")):
+        _, separator, annotation = str(row.get("remark", "")).partition("\n")
+        if (not separator or not annotation.startswith("OFAC船名履歴:")
+                or "FixedRef:" not in annotation or "IMO:" not in annotation):
+            raise ValueError("vessel history annotation missing; refuse to erase evidence")
+        row["remark"] = summary + "\n" + annotation
     else:
         row["remark"] = summary
     return row
