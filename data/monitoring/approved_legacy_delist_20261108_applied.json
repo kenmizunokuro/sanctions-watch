@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "status": "APPLIED",
+  "count": 6,
+  "approval_sha256": "223a3be4ed97ea2e75c0a059cf8f286a09ae22f76f7267eae851cd57dc093c95",
+  "approved_at": "2026-11-08T13:52:32Z",
+  "applied_at": "2026-11-09T02:14:07Z",
+  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42549524098",
+  "master_before_sha256": "efbf9d80e256fe50818fabf3096e695b4587d2a9a1171e718f154206f5d67676",
+  "master_after_sha256": "3bed6b97636939a688f8f69f20f5937e08c4c541e5130894d06448eb5b854dc9",
+  "remaining_legacy_count": 2423,
+  "outputs": {
+    "data/master/master.csv": "3bed6b97636939a688f8f69f20f5937e08c4c541e5130894d06448eb5b854dc9",
+    "data/review/integrity_legacy_acceptances.json": "503516847a9979fd3b9bfda89b8d9f0731b3b755871bee3230a3d4e189d8825c",
+    "data/dashboard/list.csv": "51e5e9a036eb44727c67395f74e9f8d223bced4defb16bc332d6f1089b2611c2",
+    "data/dashboard/screening.csv.gz": "27f9f3eca1f38481ec6791745456ca5c560ffb1874dad9a47145cd501f46ebe5",
+    "data/dashboard/changes.csv": "ee0aa3bd62c3e440fd829159d4b3b9f581eb3b54a5c94eb97416ea26a0319276",
+    "data/diff/latest.csv": "d7eabe521c43d46be2aa9108655cbebb28db86c9906c8ec00ef414c227bdc9a6",
+    "data/dashboard/mof_legacy_review.csv": "d00177bd6142480ea6db3e10c393fb8a3fbf271d213a4d0f0e17544e612487a5"
+  }
+}

@@ -2094,11 +2094,13 @@ abuadamausdeutschland,ABU ADAM AUS DEUTSCHLAND,有効,制裁リスト,高,174857
 abuadamfromgermany,ABU ADAM FROM GERMANY,有効,制裁リスト,高,1748573587000,1748573587000,OFAC,,制裁リスト（OFAC）,,,"[""ABU ADAM FROM GERMANY""]"
 abuahmad,Abu Ahmad,有効,制裁リスト,高,1711631401000,1788040002931,財務省,財務省:イラク前政権関係者等(Ⅰ);財務省:タリバーン関係者等,制裁リスト（財務省：イラク前政権関係者等(Ⅰ)、タリバーン関係者等）,,,"[""Abu Ahmad""]"
 abuahmad(nomdeguerre),Abu Ahmad (nom de guerre),無効,制裁リスト,高,1748575168000,1788266942832,,,制裁リスト,全ての出所から掲載が無くなったため無効化（制裁解除または統廃合）,,"[""Abu Ahmad (nom de guerre)""]"
-abuahmadakhlaq,Abu Ahmad Akhlaq,有効,旧登録・一次出典未確認／制裁リスト,高,1748573587000,1788040002931,OFAC;財務省,財務省:タリバーン関係者等,"制裁リスト（財務省：タリバーン関係者等／OFAC）
-旧登録・一次出典未確認。旧登録の照合文字列として期限付き保持。現行公式掲載・本人同一性・当初取込意図を確認済みと扱わない。保持期限UTC: 2026-11-25T08:21:15Z",,LEGACY_UNVERIFIED_V1:ORIGIN_UNRESOLVED,"[""Abu Ahmad Akhlaq""]"
+abuahmadakhlaq,Abu Ahmad Akhlaq,無効,旧登録・一次出典未確認／制裁リスト,高,1748573587000,1794145952004,,,"制裁リスト（財務省：タリバーン関係者等／OFAC）
+旧登録・一次出典未確認。旧登録の照合文字列として期限付き保持。現行公式掲載・本人同一性・当初取込意図を確認済みと扱わない。保持期限UTC: 2026-11-25T08:21:15Z
+2026-11-08 利用者承認により掲載終了。OFAC 2026-08-24、国連 2026-10-24、日本 2026-10-30の掲載終了を確認。有効スクリーニング対象から除外。",全ての出所から掲載が無くなったため無効化（制裁解除または統廃合）,APPROVED_LEGACY_DELIST_20261108,"[""Abu Ahmad Akhlaq""]"
 abuahmadal-masri,Abu Ahmad AL-MASRI,有効,制裁リスト,高,1749171595000,1749171595000,OFAC,,制裁リスト（OFAC）,,,"[""Abu Ahmad AL-MASRI""]"
-abuahmadal-shami,Abu Ahmad al-Shami,有効,旧登録・一次出典未確認／制裁リスト,高,1749171596000,1788040002931,OFAC;財務省,財務省:タリバーン関係者等,"制裁リスト（財務省：タリバーン関係者等／OFAC）
-旧登録・一次出典未確認。旧登録の照合文字列として期限付き保持。現行公式掲載・本人同一性・当初取込意図を確認済みと扱わない。保持期限UTC: 2026-11-25T08:21:15Z",,LEGACY_UNVERIFIED_V1:ORIGIN_UNRESOLVED,"[""Abu Ahmad al-Shami""]"
+abuahmadal-shami,Abu Ahmad al-Shami,無効,旧登録・一次出典未確認／制裁リスト,高,1749171596000,1794145952004,,,"制裁リスト（財務省：タリバーン関係者等／OFAC）
+旧登録・一次出典未確認。旧登録の照合文字列として期限付き保持。現行公式掲載・本人同一性・当初取込意図を確認済みと扱わない。保持期限UTC: 2026-11-25T08:21:15Z
+2026-11-08 利用者承認により掲載終了。OFAC 2026-08-24、国連 2026-10-24、日本 2026-10-30の掲載終了を確認。有効スクリーニング対象から除外。",全ての出所から掲載が無くなったため無効化（制裁解除または統廃合）,APPROVED_LEGACY_DELIST_20261108,"[""Abu Ahmad al-Shami""]"
 abuahmadal-shami),Abu Ahmad al-Shami）,無効,制裁リスト,高,1748575168000,1788266942832,,,制裁リスト,全ての出所から掲載が無くなったため無効化（制裁解除または統廃合）,,"[""Abu Ahmad al-Shami）""]"
 abuahmadishab,ABU AHMAD ISHAB,有効,制裁リスト,高,1748573582000,1748573582000,OFAC,,制裁リスト（OFAC）,,,"[""ABU AHMAD ISHAB""]"
 abuahmadsafawi,Abu Ahmad Safawi,有効,制裁リスト,高,1779673099000,1779673099000,OFAC,,制裁リスト（OFAC）,,,"[""Abu Ahmad Safawi""]"
@@ -2114,8 +2116,9 @@ abual-athir,Abu al-Athir,有効,制裁リスト,高,1748575168000,1788040002931,
 abual-athiral-shami,Abu al-Athir al-Shami,有効,制裁リスト,高,1748575168000,1788040002931,財務省,財務省:タリバーン関係者等,制裁リスト（財務省：タリバーン関係者等）,,,"[""Abu al-Athir al-Shami""]"
 abual-bara'qatarji,Abu al-Bara' Qatarji,有効,旧登録・一次出典未確認／制裁リスト,高,1749171597000,1749171597000,OFAC,,"制裁リスト（OFAC）
 旧登録・一次出典未確認。旧登録の照合文字列として期限付き保持。現行公式掲載・本人同一性・当初取込意図を確認済みと扱わない。保持期限UTC: 2026-11-25T08:21:15Z",,LEGACY_UNVERIFIED_V1:ORIGIN_UNRESOLVED,"[""Abu al-Bara' Qatarji""]"
-abual-darda,Abu al-Darda',有効,旧登録・一次出典未確認／制裁リスト,高,1711631401000,1787952019743,OFAC;財務省,財務省:タリバーン関係者等,"制裁リスト（財務省：タリバーン関係者等／OFAC）
-旧登録・一次出典未確認。旧登録の照合文字列として期限付き保持。現行公式掲載・本人同一性・当初取込意図を確認済みと扱わない。保持期限UTC: 2026-11-25T08:21:15Z",,LEGACY_UNVERIFIED_V1:ORIGIN_UNRESOLVED,"[""Abu al-Darda'""]"
+abual-darda,Abu al-Darda',無効,旧登録・一次出典未確認／制裁リスト,高,1711631401000,1794145952004,,,"制裁リスト（財務省：タリバーン関係者等／OFAC）
+旧登録・一次出典未確認。旧登録の照合文字列として期限付き保持。現行公式掲載・本人同一性・当初取込意図を確認済みと扱わない。保持期限UTC: 2026-11-25T08:21:15Z
+2026-11-08 利用者承認により掲載終了。OFAC 2026-08-24、国連 2026-10-24、日本 2026-10-30の掲載終了を確認。有効スクリーニング対象から除外。",全ての出所から掲載が無くなったため無効化（制裁解除または統廃合）,APPROVED_LEGACY_DELIST_20261108,"[""Abu al-Darda'""]"
 abual-fadl,Abu al-Fadl,有効,制裁リスト,高,1749171595000,1749171595000,OFAC,,制裁リスト（OFAC）,,,"[""Abu al-Fadl""]"
 abual-foutouh,Abu al-Foutouh,有効,旧登録・一次出典未確認／制裁リスト,高,1749171596000,1749171596000,OFAC,,"制裁リスト（OFAC）
 旧登録・一次出典未確認。旧登録の照合文字列として期限付き保持。現行公式掲載・本人同一性・当初取込意図を確認済みと扱わない。保持期限UTC: 2026-11-25T08:21:15Z",,LEGACY_UNVERIFIED_V1:ORIGIN_UNRESOLVED,"[""Abu al-Foutouh""]"
@@ -14486,10 +14489,12 @@ basovoleksandr,Basov Oleksandr,有効,制裁リスト,高,1788485206502,17884852
 basquefatherlandandliberty,BASQUE FATHERLAND AND LIBERTY,有効,制裁リスト,高,1748573587000,1788040337525,OFAC,OFAC:SDN,制裁リスト（OFAC：SDN）,,,"[""BASQUE FATHERLAND AND LIBERTY""]"
 basraimurtuzamunir,BASRAI Murtuza Munir,有効,制裁リスト,高,1788485206502,1788485206502,OFAC,OFAC:SDN,制裁リスト（OFAC：SDN）,,,"[""BASRAI Murtuza Munir""]"
 basraimurtuzamustafamunir,Basrai Murtuza Mustafamunir,有効,制裁リスト,高,1788485206502,1788485206502,OFAC,OFAC:SDN,制裁リスト（OFAC：SDN）,,,"[""Basrai Murtuza Mustafamunir""]"
-bassamahmadal-hasri,BASSAM AHMAD AL-HASRI,有効,旧登録・一次出典未確認／制裁リスト,高,1648719374000,1788039040433,OFAC;財務省,財務省:タリバーン関係者等,"制裁リスト（財務省：タリバーン関係者等／OFAC）
-旧登録・一次出典未確認。旧登録の照合文字列として期限付き保持。現行公式掲載・本人同一性・当初取込意図を確認済みと扱わない。保持期限UTC: 2026-11-25T08:21:15Z",,LEGACY_UNVERIFIED_V1:ORIGIN_UNRESOLVED,"[""AL-HASRI, Bassam Ahmad"", ""BASSAM AHMAD AL-HASRI""]"
-bassamahmadhusari,Bassam Ahmad Husari,有効,旧登録・一次出典未確認／制裁リスト,高,1748573587000,1788040002931,OFAC;財務省,財務省:タリバーン関係者等,"制裁リスト（財務省：タリバーン関係者等／OFAC）
-旧登録・一次出典未確認。旧登録の照合文字列として期限付き保持。現行公式掲載・本人同一性・当初取込意図を確認済みと扱わない。保持期限UTC: 2026-11-25T08:21:15Z",,LEGACY_UNVERIFIED_V1:ORIGIN_UNRESOLVED,"[""Bassam Ahmad Husari""]"
+bassamahmadal-hasri,BASSAM AHMAD AL-HASRI,無効,旧登録・一次出典未確認／制裁リスト,高,1648719374000,1794145952004,,,"制裁リスト（財務省：タリバーン関係者等／OFAC）
+旧登録・一次出典未確認。旧登録の照合文字列として期限付き保持。現行公式掲載・本人同一性・当初取込意図を確認済みと扱わない。保持期限UTC: 2026-11-25T08:21:15Z
+2026-11-08 利用者承認により掲載終了。OFAC 2026-08-24、国連 2026-10-24、日本 2026-10-30の掲載終了を確認。有効スクリーニング対象から除外。",全ての出所から掲載が無くなったため無効化（制裁解除または統廃合）,APPROVED_LEGACY_DELIST_20261108,"[""AL-HASRI, Bassam Ahmad"", ""BASSAM AHMAD AL-HASRI""]"
+bassamahmadhusari,Bassam Ahmad Husari,無効,旧登録・一次出典未確認／制裁リスト,高,1748573587000,1794145952004,,,"制裁リスト（財務省：タリバーン関係者等／OFAC）
+旧登録・一次出典未確認。旧登録の照合文字列として期限付き保持。現行公式掲載・本人同一性・当初取込意図を確認済みと扱わない。保持期限UTC: 2026-11-25T08:21:15Z
+2026-11-08 利用者承認により掲載終了。OFAC 2026-08-24、国連 2026-10-24、日本 2026-10-30の掲載終了を確認。有効スクリーニング対象から除外。",全ての出所から掲載が無くなったため無効化（制裁解除または統廃合）,APPROVED_LEGACY_DELIST_20261108,"[""Bassam Ahmad Husari""]"
 bassamal-hassan,"AL-HASSAN, Bassam",有効,制裁リスト,高,1745545941000,1788040337525,OFAC,OFAC:SDN,制裁リスト（OFAC：SDN）,,,"[""AL-HASSAN, Bassam"", ""Bassam AL-HASSAN""]"
 bassamal-saeediandpartnersfreezonecompany,Bassam Al-Saeedi and Partners Free Zone Company,有効,制裁リスト,高,1769137366000,1769137366000,OFAC,,制裁リスト（OFAC）,,,"[""Bassam Al-Saeedi and Partners Free Zone Company""]"
 bassamal-saeediandpartnersfzc,Bassam Al-Saeedi and Partners FZC,有効,制裁リスト,高,1769137366000,1769137366000,OFAC,,制裁リスト（OFAC）,,,"[""Bassam Al-Saeedi and Partners FZC""]"
@@ -32370,8 +32375,9 @@ iyadmahrus,Iyad Mahrus,有効,制裁リスト,高,1748573582000,1788040337525,OF
 iyadmakhlouf,Iyad Makhlouf,有効,制裁リスト,高,1748573587000,1788040337525,OFAC,OFAC:SDN,制裁リスト（OFAC：SDN）,,,"[""Iyad Makhlouf""]"
 iyadmakhluf,"MAKHLUF, Iyad",有効,制裁リスト,高,1745545941000,1788040337525,OFAC,OFAC:SDN,制裁リスト（OFAC：SDN）,,,"[""Iyad Makhluf"", ""MAKHLUF, Iyad""]"
 iyadmohammadesammahrous,"MAHROUS, Iyad Mohammad Esam",有効,制裁リスト,高,1745545941000,1788040337525,OFAC,OFAC:SDN,制裁リスト（OFAC：SDN）,,,"[""Iyad Mohammad Esam Mahrous"", ""MAHROUS, Iyad Mohammad Esam""]"
-iyadnazmisalihkhalil,IYAD NAZMI SALIH KHALIL,有効,旧登録・一次出典未確認／制裁リスト,高,1648719374000,1788039040433,OFAC;財務省,財務省:タリバーン関係者等,"制裁リスト（財務省：タリバーン関係者等／OFAC）
-旧登録・一次出典未確認。旧登録の照合文字列として期限付き保持。現行公式掲載・本人同一性・当初取込意図を確認済みと扱わない。保持期限UTC: 2026-11-25T08:21:15Z",,LEGACY_UNVERIFIED_V1:ORIGIN_UNRESOLVED,"[""IYAD NAZMI SALIH KHALIL"", ""KHALIL, Iyad Nazmi Salih""]"
+iyadnazmisalihkhalil,IYAD NAZMI SALIH KHALIL,無効,旧登録・一次出典未確認／制裁リスト,高,1648719374000,1794145952004,,,"制裁リスト（財務省：タリバーン関係者等／OFAC）
+旧登録・一次出典未確認。旧登録の照合文字列として期限付き保持。現行公式掲載・本人同一性・当初取込意図を確認済みと扱わない。保持期限UTC: 2026-11-25T08:21:15Z
+2026-11-08 利用者承認により掲載終了。OFAC 2026-08-24、国連 2026-10-24、日本 2026-10-30の掲載終了を確認。有効スクリーニング対象から除外。",全ての出所から掲載が無くなったため無効化（制裁解除または統廃合）,APPROVED_LEGACY_DELIST_20261108,"[""IYAD NAZMI SALIH KHALIL"", ""KHALIL, Iyad Nazmi Salih""]"
 iyadsalim,"SALIM, Iyad",有効,旧登録・告知言及のみ対象関係未確認／制裁リスト,高,1745545941000,1788039040433,OFAC,,"制裁リスト（OFAC）
 旧登録・告知言及のみ対象関係未確認。旧登録の照合文字列として期限付き保持。現行公式掲載・本人同一性・当初取込意図を確認済みと扱わない。保持期限UTC: 2026-11-25T08:21:15Z",,LEGACY_UNVERIFIED_V1:NOTICE_MENTION_ONLY,"[""Iyad Salim"", ""SALIM, Iyad""]"
 iyafsoranfgbu,IYAF SO RAN FGBU,有効,制裁リスト,高,1748573587000,1788040337525,OFAC,OFAC:SDN,制裁リスト（OFAC：SDN）,,,"[""IYAF SO RAN FGBU""]"

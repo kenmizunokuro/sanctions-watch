@@ -954,22 +954,6 @@
       "reviewed_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
     },
     {
-      "accepted_master_sha256": "5cbf3be1d607db26c026a08ebe8b38516c799c4cf964e19cb7ae94858af2c5ba",
-      "accepted_review_id": "ef089eb8a0f7226ed335fd642e090f6ea4ddf36b7dfe96781aaca0c4d7b2ba55",
-      "classification": "ORIGIN_UNRESOLVED",
-      "master_key": "abuahmadakhlaq",
-      "original_review_id": "2c9732a188048580b1e063cc52b5d7a5c5ea424db876b93528beca525a88fcb0",
-      "reviewed_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
-    },
-    {
-      "accepted_master_sha256": "d1cd3679bf6f3b33bff09654f50e12b05f285ff81e162d7a9fd092165e945fee",
-      "accepted_review_id": "06db12b3e60e67bb92238f6140ed9a3923530c8d2dcaa66a3e33ee665d5410e3",
-      "classification": "ORIGIN_UNRESOLVED",
-      "master_key": "abuahmadal-shami",
-      "original_review_id": "6c08f5c254caf426020537779f8161816b8851ca15802c3bbf64503e54413f62",
-      "reviewed_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
-    },
-    {
       "accepted_master_sha256": "b9cde7eff17c17cf036ee844b7bc0ca3015210650d1f65e1504dce8a5e03f331",
       "accepted_review_id": "45d9f2c47be4ece2bd7f257e2cc8183ef5fa8799a3c3ee68af65cb0775e97df8",
       "classification": "ORIGIN_UNRESOLVED",
@@ -983,14 +967,6 @@
       "classification": "ORIGIN_UNRESOLVED",
       "master_key": "abual-bara'qatarji",
       "original_review_id": "765b210427b90efcd2edfaa6724d324d7640fe579eeb6bcf1bfd1decf9a3a2b4",
-      "reviewed_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
-    },
-    {
-      "accepted_master_sha256": "c4fc456ddf8a8e18c61182beb5e16762be0358037f4c4ad7848e36cc94ac0f6d",
-      "accepted_review_id": "925a34cabb60c3673febd2611dd2b8247c16243c90d7b46b16ac212732c9dc16",
-      "classification": "ORIGIN_UNRESOLVED",
-      "master_key": "abual-darda",
-      "original_review_id": "0034715b4ad75c48b7a3370e45699c5e1d776d1b00da5e293558bb5082b95920",
       "reviewed_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
     },
     {
@@ -3696,22 +3672,6 @@
       "master_key": "basilsha'ban",
       "original_review_id": "ffe3cc4837aba5c5b409d4d4b4ae7b9837de794160a772afcdaebf5e5b915d05",
       "reviewed_evidence_sha256": "948f44c7bdb4905abeed5de28a0681a725464abd0e27b42f2c27826bfba3611b"
-    },
-    {
-      "accepted_master_sha256": "4ef2b4e8a4f936bf5b847ec05a9885abf434439ea3823462c52d1ca2af61a232",
-      "accepted_review_id": "cd7c0c1b9808206316748cf26d5dfd664087404e4995577a419b5272cbab0f22",
-      "classification": "ORIGIN_UNRESOLVED",
-      "master_key": "bassamahmadal-hasri",
-      "original_review_id": "327b7b329df7223a80a69397a09ba14de9f4697bb4a83c0d28c38f89a1ae8dba",
-      "reviewed_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
-    },
-    {
-      "accepted_master_sha256": "11634a2d9a79ff021562b1ae917b7250ed91d355d191d6bcb68db8032512d98a",
-      "accepted_review_id": "f335aad7b09beba5eb0979d55920e9708f6e9268c36389250ac7be6ee92c56cb",
-      "classification": "ORIGIN_UNRESOLVED",
-      "master_key": "bassamahmadhusari",
-      "original_review_id": "86b4df37c5a928083c06dcea202cfb8f5e18c17171bbef4195dde0558698bfc1",
-      "reviewed_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
     },
     {
       "accepted_master_sha256": "563a0ab2e76118b19deecdca7323501590b1e21777e47e69f1b45c60a80e08f4",
@@ -7823,14 +7783,6 @@
       "classification": "ORIGIN_UNRESOLVED",
       "master_key": "ivanvladimirovichpotanin",
       "original_review_id": "0bee8fbd52030e40121677182b20af9e16aa313e1004ee9d9ab5236d0669fb3a",
-      "reviewed_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
-    },
-    {
-      "accepted_master_sha256": "f9ce47cb9078f35dcbce0b2994bd6d892ea549bec0e8b6df9bfef4ab539d833a",
-      "accepted_review_id": "161d181b6e7e18b48b0c482650a5ea539eade5ef0104aa5af9f08759223dda4b",
-      "classification": "ORIGIN_UNRESOLVED",
-      "master_key": "iyadnazmisalihkhalil",
-      "original_review_id": "d215896f8c20f3378f9366e6162c9ac123c493f4d47f55af4f3fd5924163438e",
       "reviewed_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
     },
     {
