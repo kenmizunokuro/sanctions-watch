@@ -1,2 +1,2 @@
 監査終了日時（JST）,証跡状態,停止件数,停止理由,監査報告SHA256,GitHub実行URL
-2026-11-10 08:19:24,BLOCKED,1,監査停止1件：EXTRA_REGISTRATION 1件／対象（最大10件）：Volta Shipping Services FZCO,0a3a44acc06cf226e3de3be4171f9374fe5217548f4bb0a9f252d19ed25634e0,https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42718230789
+2026-11-10 08:49:18,BLOCKED,1,監査停止1件：EXTRA_REGISTRATION 1件／対象（最大10件）：Volta Shipping Services FZCO,0413889ddb2fd0821778ff40b93c95122d8fde94bc205a313a923f6a1099bf70,https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42722324294
