@@ -46,6 +46,11 @@ runs:
         python -m tests.test_mof_re_review
         python -m unittest
 
+    - name: 承認済み旧登録6名称の未反映分を先に保存
+      if: github.ref == 'refs/heads/main'
+      shell: bash
+      run: bash .github/scripts/apply-approved-legacy-delist.sh
+
     - name: 取得と差分抽出
       id: watch
       shell: bash

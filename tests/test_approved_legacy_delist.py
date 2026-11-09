@@ -5,6 +5,8 @@ import hashlib
 import io
 import json
 import shutil
+import subprocess
+import os
 import tempfile
 import unittest
 from datetime import datetime, timezone
@@ -140,3 +142,50 @@ class ApprovedLegacyDelistTests(unittest.TestCase):
                 A.apply(self.root, now=NOW)
         self.assertGreaterEqual(calls, 2)
         self.assertEqual(saved, self.snapshot())
+
+    def test_monitor_entrypoint_publishes_once_to_real_origin_before_polling(self):
+        script = ROOT / '.github/scripts/apply-approved-legacy-delist.sh'
+        def git(*args):
+            return subprocess.run(['git', '-C', str(self.root), *args], check=True,
+                                  capture_output=True, text=True).stdout.strip()
+        folder = Path(self.enterContext(tempfile.TemporaryDirectory()))
+        origin = folder / 'origin.git'
+        subprocess.run(['git', 'init', '--bare', str(origin)], check=True, capture_output=True)
+        git('init', '-b', 'main')
+        git('config', 'user.name', 'Tests')
+        git('config', 'user.email', 'tests@example.invalid')
+        git('add', '.')
+        git('commit', '-m', 'baseline')
+        git('remote', 'add', 'origin', str(origin))
+        git('push', '-u', 'origin', 'main')
+        before = git('rev-parse', 'HEAD')
+        env = dict(os.environ, GITHUB_REF='refs/heads/main', GITHUB_REPOSITORY='example/repo',
+                   GITHUB_RUN_ID='123', PYTHONPATH=str(ROOT) + os.pathsep + os.getenv('PYTHONPATH', ''))
+        journal = self.root / A.RECEIPT
+        journal.parent.mkdir(parents=True, exist_ok=True)
+        journal.write_text(json.dumps({'status': 'APPLIED', 'count': 6,
+                                      'approval_sha256': A.APPROVAL_SHA256}))
+        interrupted = subprocess.run(['bash', str(script)], cwd=self.root, env=env, capture_output=True, text=True)
+        self.assertNotEqual(interrupted.returncode, 0)
+        git('add', A.RECEIPT.as_posix())
+        git('commit', '-m', 'unpublished application journal')
+        unpushed = subprocess.run(['bash', str(script)], cwd=self.root, env=env, capture_output=True, text=True)
+        self.assertNotEqual(unpushed.returncode, 0)
+        self.assertEqual(git('ls-remote', 'origin', 'refs/heads/main').split()[0], before)
+        git('reset', '--hard', before)
+        result = subprocess.run(['bash', str(script)], cwd=self.root, env=env, capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        published = git('ls-remote', 'origin', 'refs/heads/main').split()[0]
+        self.assertNotEqual(published, before)
+        rows = V._read_rows(git('show', published + ':data/master/master.csv'))
+        self.assertTrue(all(rows[key]['status'] == '無効' for key in SIX))
+        changed = set(git('diff', '--name-only', before, published).splitlines())
+        self.assertTrue(changed <= set(A.TARGETS) | {A.RECEIPT.as_posix()})
+        self.assertIn(A.RECEIPT.as_posix(), changed)
+        again = subprocess.run(['bash', str(script)], cwd=self.root, env=env, capture_output=True, text=True)
+        self.assertEqual(again.returncode, 0, again.stderr)
+        self.assertEqual(git('rev-parse', 'HEAD'), published)
+        (self.root / A.RECEIPT).write_text('[]')
+        corrupt = subprocess.run(['bash', str(script)], cwd=self.root, env=env, capture_output=True, text=True)
+        self.assertNotEqual(corrupt.returncode, 0)
+        self.assertEqual(git('ls-remote', 'origin', 'refs/heads/main').split()[0], published)
