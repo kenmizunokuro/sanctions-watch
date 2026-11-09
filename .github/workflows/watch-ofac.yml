@@ -4,6 +4,9 @@ name: watch-ofac
 # 17分にしているのは、毎時00分が GitHub 側で最も混んでスケジュール遅延・
 # スキップが起きやすいため。
 on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/watch-ofac.yml']
   schedule:
     - cron: "17 * * * *"
   workflow_dispatch:
@@ -21,6 +24,8 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v6
+        with:
+          ref: main
       - uses: ./.github/actions/run-watch
         with:
           sources: ofac

@@ -1,0 +1,397 @@
+{
+  "schema_version": 1,
+  "decision": "APPROVED_RETAIN_HISTORICAL_VESSEL_NAMES",
+  "approved_date": "2026-11-09",
+  "instruction": "変更後名とひも付け、旧名も有効スクリーニングに保持",
+  "user_response": "良いよ",
+  "reviewed_at": "2026-11-09T06:52:54Z",
+  "expires_at": "2026-11-25T08:21:15Z",
+  "notice": {
+    "source_url": "https://ofac.treasury.gov/recent-actions/20261105",
+    "raw_path": "docs/evidence/vessel-name-history/ofac-20261105.html.gz",
+    "source_hash": "249fd2c305d7a95261e26954b0ed414075fef7470adbadc50141b1d4f7eccd59",
+    "publication_date": "2026-11-05"
+  },
+  "historical": {
+    "alias": {
+      "raw_path": "docs/evidence/integrity-archives/ofac_sdn/20260829T214252Z__alt.csv.gz",
+      "repository_provenance": {
+        "original_commit": "283b090b6822f6fffb3226728ff83003072eb443",
+        "original_git_blob": "1047b923340cd27f6511a53ba4b6429e13482caa",
+        "original_path": "data/raw/ofac_sdn/20260829T214252Z__alt.csv",
+        "stored_commit": "102ab2f64d192a66afbe26f50260c9b0ba9abf9d",
+        "stored_git_blob": "582e7f8fbd1b722ce7e180379f3f73df9393e848",
+        "stored_path": "data/raw/ofac_sdn/20260829T214252Z__alt.csv.gz"
+      },
+      "retrieval": "Restored from existing Git history; not a new remote retrieval or evidence of current listing.",
+      "role": "alias",
+      "source": "ofac_sdn",
+      "source_hash": "a4cae601ae9cd8ef977dc08da48d47a2cc59a1383cc0677fa812421b48025e39",
+      "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/ALT.CSV"
+    },
+    "primary": {
+      "raw_path": "docs/evidence/integrity-archives/ofac_sdn/20260829T214252Z__sdn.csv.gz",
+      "repository_provenance": {
+        "original_commit": "283b090b6822f6fffb3226728ff83003072eb443",
+        "original_git_blob": "73cf4a0f9aa2e3d57e9a7195a44c07ae8cb05c40",
+        "original_path": "data/raw/ofac_sdn/20260829T214252Z__sdn.csv",
+        "stored_commit": "102ab2f64d192a66afbe26f50260c9b0ba9abf9d",
+        "stored_git_blob": "04f0b58c8e90c2f9506dc87d8828723d5516e66c",
+        "stored_path": "data/raw/ofac_sdn/20260829T214252Z__sdn.csv.gz"
+      },
+      "retrieval": "Restored from existing Git history; not a new remote retrieval or evidence of current listing.",
+      "role": "primary",
+      "source": "ofac_sdn",
+      "source_hash": "a2ccea04237a13459009bc527502bb6a08d4e84fe97b46fcce1ed621e9a8301e",
+      "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/SDN.CSV"
+    }
+  },
+  "current_verification": {
+    "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/SDN.CSV",
+    "source_hash": "7f43332dae0d1b78ce44c31692d87a3c66e4075bcd97e36d3f18585572ff55b8",
+    "verified_at": "2026-11-09T06:52:54Z",
+    "records": [
+      [
+        "27431",
+        "MARIA CRISTINA",
+        "vessel",
+        "VENEZUELA-EO13850] [CUBA-EO14404",
+        "-0- ",
+        "CLBN",
+        "Chemical/Products Tanker",
+        "-0- ",
+        "-0- ",
+        "Cuba",
+        "-0- ",
+        "Vessel Year of Build 2010; Vessel Registration Identification IMO 9502453; MMSI 323147000; Linked To: CAROIL TRANSPORT MARINE LTD."
+      ],
+      [
+        "27425",
+        "LOURDES",
+        "vessel",
+        "VENEZUELA-EO13850] [CUBA-EO14404",
+        "-0- ",
+        "CLBO",
+        "Crude Oil Tanker",
+        "-0- ",
+        "-0- ",
+        "Cuba",
+        "-0- ",
+        "Vessel Year of Build 2002; Vessel Registration Identification IMO 9259692; MMSI 323143000; Linked To: PETROLEOS MARITIMOS DEL CARIBE S.A."
+      ],
+      [
+        "26704",
+        "ESPERANZA",
+        "vessel",
+        "VENEZUELA-EO13850] [CUBA-EO14404",
+        "-0- ",
+        "CLBM",
+        "Crude Oil Tanker",
+        "-0- ",
+        "-0- ",
+        "Cuba",
+        "-0- ",
+        "Vessel Year of Build 2005; Vessel Registration Identification IMO 9289166; MMSI 323142000; Linked To: CAROIL TRANSPORT MARINE LTD."
+      ]
+    ]
+  },
+  "cases": [
+    {
+      "master_key": "carlotac",
+      "old_name": "CARLOTA C",
+      "replacement_name": "MARIA CRISTINA",
+      "party_id": "27431",
+      "imo": "9502453",
+      "notice_date": "2026-11-05",
+      "before": {
+        "match_key": "carlotac",
+        "display_name": "CARLOTA C",
+        "status": "有効",
+        "risk_type": "制裁リスト",
+        "risk_level": "高",
+        "first_seen_ms": "1745545941000",
+        "last_updated_ms": "1788040337525",
+        "sources": "OFAC",
+        "categories": "OFAC:SDN",
+        "remark": "制裁リスト（OFAC：SDN）",
+        "invalid_reason": "",
+        "review_flag": "",
+        "variants": "[\"CARLOTA C\"]"
+      },
+      "after": {
+        "match_key": "carlotac",
+        "display_name": "CARLOTA C",
+        "status": "有効",
+        "risk_type": "制裁リスト／旧船名（船名履歴）",
+        "risk_level": "高",
+        "first_seen_ms": "1745545941000",
+        "last_updated_ms": "1788040337525",
+        "sources": "OFAC",
+        "categories": "OFAC:SDN",
+        "remark": "制裁リスト（OFAC：SDN）\nOFAC船名履歴: CARLOTA C → MARIA CRISTINA（2026-11-05公表時点）。旧名を保持。FixedRef: 27431 / IMO: 9502453。根拠: https://ofac.treasury.gov/recent-actions/20261105",
+        "invalid_reason": "",
+        "review_flag": "OFAC_VESSEL_HISTORY_V1:27431:9502453",
+        "variants": "[\"CARLOTA C\"]"
+      },
+      "after_sha256": "e9a46774af5857866808185171a95b35e11081ec2123154cabb17177f3364054",
+      "retention_decision": {
+        "review_id": "a02e8a391d948b78495567323ab3201659f50ad2243a6b2061b4ba221211461a",
+        "decision": "APPROVED_RETAIN",
+        "reviewed_at": "2026-11-09T06:52:54Z",
+        "expires_at": "2026-11-25T08:21:15Z",
+        "reviewed_by": "User explicit approval on 2026-11-09: 良いよ",
+        "reason": "CARLOTA Cを旧船名としてMARIA CRISTINAへひも付け保持。FixedRef 27431 / IMO 9502453。現行名とは区別する。",
+        "reviewed_evidence_sha256": "375b0c6a68c0ea5dc01e6bdd37d871a2238235f065805edc3923ca5292c358b4",
+        "vessel_history": {
+          "master_key": "carlotac",
+          "old_name": "CARLOTA C",
+          "replacement_name": "MARIA CRISTINA",
+          "party_id": "27431",
+          "imo": "9502453",
+          "notice_date": "2026-11-05"
+        }
+      },
+      "notice_record_number": 60,
+      "notice_record_sha256": "3b6bed34959d9f20d011812dc78916830c5db5bd6fe9dc1e7af6c9490dc7ff42",
+      "reviewed_classification": "HISTORICAL_ALIAS_CONFIRMED",
+      "reviewed_index_links": [
+        {
+          "alias_current": "0",
+          "first_seen_ms": "1788483946814",
+          "formats": "classic_csv",
+          "last_changed_ms": "1794206837134",
+          "list": "SDN",
+          "low_quality": "0",
+          "match_key": "carlotac",
+          "name": "CARLOTA C",
+          "party_current": "1",
+          "party_id": "27431",
+          "primary": "0"
+        },
+        {
+          "alias_current": "0",
+          "first_seen_ms": "1788483946814",
+          "formats": "advanced_xml_v3",
+          "last_changed_ms": "1794206837134",
+          "list": "SDN",
+          "low_quality": "0",
+          "match_key": "carlotac",
+          "name": "Carlota C",
+          "party_current": "1",
+          "party_id": "27431",
+          "primary": "1"
+        }
+      ],
+      "reviewed_evidence": [
+        {
+          "category": "SDN",
+          "current": false,
+          "field": "name",
+          "locator": "Party:27431/DocumentedName:37325/Script:215",
+          "name": "Carlota C",
+          "primary": true,
+          "raw_path": "docs/evidence/integrity-archives/ofac_sdn_advanced/20260904T010536Z__sdn_advanced.xml.gz",
+          "source_hash": "657e2ecd8ed722d5640e4076058a24982c6e722aac2a631eea3da1e052861f93",
+          "source_id": "27431",
+          "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+          "transform": "exact",
+          "weak": false
+        },
+        {
+          "category": "SDN",
+          "current": false,
+          "field": "name",
+          "locator": "line:6230",
+          "name": "CARLOTA C",
+          "primary": true,
+          "raw_path": "docs/evidence/integrity-archives/ofac_sdn/20260829T214252Z__sdn.csv.gz",
+          "source_hash": "a2ccea04237a13459009bc527502bb6a08d4e84fe97b46fcce1ed621e9a8301e",
+          "source_id": "27431",
+          "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/SDN.CSV",
+          "transform": "exact",
+          "weak": false
+        }
+      ]
+    },
+    {
+      "master_key": "giralt",
+      "old_name": "GIRALT",
+      "replacement_name": "LOURDES",
+      "party_id": "27425",
+      "imo": "9259692",
+      "notice_date": "2026-11-05",
+      "before": {
+        "match_key": "giralt",
+        "display_name": "GIRALT",
+        "status": "有効",
+        "risk_type": "制裁リスト",
+        "risk_level": "高",
+        "first_seen_ms": "1745545941000",
+        "last_updated_ms": "1788040337525",
+        "sources": "OFAC",
+        "categories": "OFAC:SDN",
+        "remark": "制裁リスト（OFAC：SDN）",
+        "invalid_reason": "",
+        "review_flag": "",
+        "variants": "[\"GIRALT\"]"
+      },
+      "after": {
+        "match_key": "giralt",
+        "display_name": "GIRALT",
+        "status": "有効",
+        "risk_type": "制裁リスト／旧船名（船名履歴）",
+        "risk_level": "高",
+        "first_seen_ms": "1745545941000",
+        "last_updated_ms": "1788040337525",
+        "sources": "OFAC",
+        "categories": "OFAC:SDN",
+        "remark": "制裁リスト（OFAC：SDN）\nOFAC船名履歴: GIRALT → LOURDES（2026-11-05公表時点）。旧名を保持。FixedRef: 27425 / IMO: 9259692。根拠: https://ofac.treasury.gov/recent-actions/20261105",
+        "invalid_reason": "",
+        "review_flag": "OFAC_VESSEL_HISTORY_V1:27425:9259692",
+        "variants": "[\"GIRALT\"]"
+      },
+      "after_sha256": "ca8a9fd6889c1b7e381047407fdfdb26ad6f82cf4c81b930c7f41ff9b8b4fb0c",
+      "retention_decision": {
+        "review_id": "90bd1cef4396e2c7c1665c87cf3db42cb2ac84c5bfd8457b0080e2d4b3062709",
+        "decision": "APPROVED_RETAIN",
+        "reviewed_at": "2026-11-09T06:52:54Z",
+        "expires_at": "2026-11-25T08:21:15Z",
+        "reviewed_by": "User explicit approval on 2026-11-09: 良いよ",
+        "reason": "GIRALTを旧船名としてLOURDESへひも付け保持。FixedRef 27425 / IMO 9259692。現行名とは区別する。",
+        "reviewed_evidence_sha256": "7ef06234564074e68a760d981763ae78d7f861f93a5dcd8b4d15ba56c07349ba",
+        "vessel_history": {
+          "master_key": "giralt",
+          "old_name": "GIRALT",
+          "replacement_name": "LOURDES",
+          "party_id": "27425",
+          "imo": "9259692",
+          "notice_date": "2026-11-05"
+        }
+      },
+      "notice_record_number": 64,
+      "notice_record_sha256": "8be840bb3ad30a56599484fac861e795f95972bd538fd4c045034990d418ea41",
+      "reviewed_classification": "HISTORICAL_ALIAS_CONFIRMED",
+      "reviewed_index_links": [
+        {
+          "alias_current": "0",
+          "first_seen_ms": "1788483946814",
+          "formats": "advanced_xml_v3;classic_csv",
+          "last_changed_ms": "1794206837134",
+          "list": "SDN",
+          "low_quality": "0",
+          "match_key": "giralt",
+          "name": "GIRALT",
+          "party_current": "1",
+          "party_id": "27425",
+          "primary": "1"
+        }
+      ],
+      "reviewed_evidence": [
+        {
+          "category": "SDN",
+          "current": false,
+          "field": "name",
+          "locator": "Party:27425/DocumentedName:37318/Script:215",
+          "name": "GIRALT",
+          "primary": true,
+          "raw_path": "docs/evidence/integrity-archives/ofac_sdn_advanced/20260904T010536Z__sdn_advanced.xml.gz",
+          "source_hash": "657e2ecd8ed722d5640e4076058a24982c6e722aac2a631eea3da1e052861f93",
+          "source_id": "27425",
+          "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+          "transform": "exact",
+          "weak": false
+        }
+      ]
+    },
+    {
+      "master_key": "nedas",
+      "old_name": "NEDAS",
+      "replacement_name": "ESPERANZA",
+      "party_id": "26704",
+      "imo": "9289166",
+      "notice_date": "2026-11-05",
+      "before": {
+        "match_key": "nedas",
+        "display_name": "NEDAS",
+        "status": "有効",
+        "risk_type": "制裁リスト",
+        "risk_level": "高",
+        "first_seen_ms": "1748573582000",
+        "last_updated_ms": "1788040337525",
+        "sources": "OFAC",
+        "categories": "OFAC:SDN",
+        "remark": "制裁リスト（OFAC：SDN）",
+        "invalid_reason": "",
+        "review_flag": "",
+        "variants": "[\"NEDAS\"]"
+      },
+      "after": {
+        "match_key": "nedas",
+        "display_name": "NEDAS",
+        "status": "有効",
+        "risk_type": "制裁リスト／旧船名（船名履歴）",
+        "risk_level": "高",
+        "first_seen_ms": "1748573582000",
+        "last_updated_ms": "1788040337525",
+        "sources": "OFAC",
+        "categories": "OFAC:SDN",
+        "remark": "制裁リスト（OFAC：SDN）\nOFAC船名履歴: NEDAS → ESPERANZA（2026-11-05公表時点）。旧名を保持。FixedRef: 26704 / IMO: 9289166。根拠: https://ofac.treasury.gov/recent-actions/20261105",
+        "invalid_reason": "",
+        "review_flag": "OFAC_VESSEL_HISTORY_V1:26704:9289166",
+        "variants": "[\"NEDAS\"]"
+      },
+      "after_sha256": "0c6f8a92dd7164de8f7538880d56e125511c3d32dab899c68571c318740520d0",
+      "retention_decision": {
+        "review_id": "d10c193fdf99339c341b3ffcb312f328bb13af1bba734ff12754b983b9a7c8a6",
+        "decision": "APPROVED_RETAIN",
+        "reviewed_at": "2026-11-09T06:52:54Z",
+        "expires_at": "2026-11-25T08:21:15Z",
+        "reviewed_by": "User explicit approval on 2026-11-09: 良いよ",
+        "reason": "NEDASを旧船名としてESPERANZAへひも付け保持。FixedRef 26704 / IMO 9289166。現行名とは区別する。",
+        "reviewed_evidence_sha256": "55582386efcd2a95b3599e3d9f533071b84da3975be3893948596e01b5d8b833",
+        "vessel_history": {
+          "master_key": "nedas",
+          "old_name": "NEDAS",
+          "replacement_name": "ESPERANZA",
+          "party_id": "26704",
+          "imo": "9289166",
+          "notice_date": "2026-11-05"
+        }
+      },
+      "notice_record_number": 63,
+      "notice_record_sha256": "53fbacd419a05b956fe8d96bebece641c3f06d6c453c9efde6758c677542c103",
+      "reviewed_classification": "HISTORICAL_ALIAS_CONFIRMED",
+      "reviewed_index_links": [
+        {
+          "alias_current": "0",
+          "first_seen_ms": "1788483946814",
+          "formats": "advanced_xml_v3;classic_csv",
+          "last_changed_ms": "1794206837134",
+          "list": "SDN",
+          "low_quality": "0",
+          "match_key": "nedas",
+          "name": "NEDAS",
+          "party_current": "1",
+          "party_id": "26704",
+          "primary": "0"
+        }
+      ],
+      "reviewed_evidence": [
+        {
+          "category": "SDN",
+          "current": false,
+          "field": "name",
+          "locator": "Party:26704/DocumentedName:38016/Script:215",
+          "name": "NEDAS",
+          "primary": false,
+          "raw_path": "docs/evidence/integrity-archives/ofac_sdn_advanced/20260904T010536Z__sdn_advanced.xml.gz",
+          "source_hash": "657e2ecd8ed722d5640e4076058a24982c6e722aac2a631eea3da1e052861f93",
+          "source_id": "26704",
+          "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+          "transform": "exact",
+          "weak": false
+        }
+      ]
+    }
+  ]
+}

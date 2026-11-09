@@ -11,6 +11,18 @@ on:
       - src/mof_pending_gate.py
       - apps_script/Code.gs
       - apps_script/MofPending.gs
+      - src/vessel_history.py
+      - src/approved_vessel_history.py
+      - src/integrity_approved_delist.py
+      - src/integrity_decisions.py
+      - src/integrity_audit.py
+      - data/review/approved_vessel_history_20261109.json
+      - docs/evidence/vessel-name-history/**
+      - .github/scripts/apply-approved-vessel-history.sh
+      - .github/actions/run-watch/action.yml
+      - tests/test_vessel_history.py
+      - tests/test_approved_vessel_history.py
+      - tests/test_integrity_approved_delist.py
       - tests/test_mof_pending.py
       - tests/test_mof_pending_gas.cjs
       - .github/workflows/watch-jp.yml
@@ -40,3 +52,5 @@ jobs:
           python -m unittest -v tests.test_mof_pending tests.test_integrity_legacy
           python -m tests.test_offline
           node --test tests/test_mof_pending_gas.cjs
+      - name: Approved vessel history and historical delist audit
+        run: python -m unittest -v tests.test_vessel_history tests.test_approved_vessel_history tests.test_integrity_approved_delist

@@ -26,7 +26,7 @@ def _date(value):
         raise DecisionError('承認日時が不正') from exc
 
 
-def apply(report,triage,ledger,*,now=None):
+def apply(report,triage,ledger,*,now=None,root=None):
     """Copy the report; only an eligible exact review ID may become nonblocking.
 
     Expired/stale entries never release current findings. A resolved old finding
@@ -65,10 +65,20 @@ def apply(report,triage,ledger,*,now=None):
             state='INELIGIBLE'
         elif reviewed>now:state='FUTURE_REVIEW'
         elif expires<=now:state='EXPIRED'
+        vessel_facts=None;vessel_error=None
+        if state=='APPLIED' and ('vessel_history' in row or 'OFAC_VESSEL_HISTORY_V1:' in str((finding.get('master') or {}).get('review_flag',''))):
+            try:
+                from . import vessel_history as V
+                if root is None:raise ValueError('vessel review requires repository evidence root')
+                vessel_facts=V.verify_decision(root,result,row)
+            except (OSError,ValueError,KeyError,TypeError,EOFError) as exc:
+                state='EVIDENCE_INVALID';vessel_error=str(exc)
         result['retention_review'].append(dict(review_id=ident,status=state,reviewed_by=row['reviewed_by'],
                                                reviewed_at=row['reviewed_at'],expires_at=row['expires_at'],reason=row['reason'],
                                                reviewed_evidence_sha256=row['reviewed_evidence_sha256'],
                                                current_evidence_sha256=item['evidence_sha256']))
+        if vessel_facts is not None:result['retention_review'][-1]['vessel_history']=vessel_facts
+        if vessel_error is not None:result['retention_review'][-1]['evidence_error']=vessel_error
         if state=='APPLIED':
             finding.update(blocking=False,retention_approved=True,retention_review_id=ident)
     result['retention_review'].extend(dict(review_id=ident,status='STALE_OR_RESOLVED') for ident in sorted(set(entries)-matched))
