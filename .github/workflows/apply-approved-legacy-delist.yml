@@ -1,9 +1,6 @@
 name: apply-approved-legacy-delist
 
 on:
-  push:
-    branches: [main]
-    paths: ['data/review/approved_legacy_delist_20261108.json']
   workflow_dispatch:
 
 permissions:
