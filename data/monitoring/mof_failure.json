@@ -1,34 +1,34 @@
 {
   "outcome": "failure",
   "source": "mof",
-  "finished_at": "2026-11-09T01:31:40Z",
-  "run_id": "42545643784",
+  "finished_at": "2026-11-09T02:02:16Z",
+  "run_id": "42547968318",
   "run_attempt": "1",
-  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42545643784",
+  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42547968318",
   "message": "MOF fetched and diffed; integrity BLOCKED; master not applied",
   "fetch": {
     "schema_version": 1,
-    "run_id": "42545643784",
+    "run_id": "42547968318",
     "run_attempt": "1",
-    "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42545643784",
-    "checked_at": "2026-11-09T01:28:34Z",
+    "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42547968318",
+    "checked_at": "2026-11-09T01:59:15Z",
     "sha256": "71eaf728c702c881fb13856043f63d42276094c79cf91bae4ad90eadfa3caadd",
     "url": "https://www.mof.go.jp/policy/international_policy/gaitame_kawase/gaitame/economic_sanctions/shisantouketsu20261105.csv",
-    "raw_path": "data/raw/mof/20261109T012828Z__shisantouketsu20261105.csv.gz",
+    "raw_path": "data/raw/mof/20261109T015909Z__shisantouketsu20261105.csv.gz",
     "asof": "令和8年11月5日",
     "record_count": 15249,
-    "etag": "\"3296ec-65f6fe795e4cc\"",
+    "etag": "\"3296ec-65f6fe79b0094\"",
     "last_modified": "Wed, 04 Nov 2026 09:21:31 GMT",
     "pending_count": 79,
     "master_applied": false,
-    "pending_sha256": "d1ce317402953ec2ee3ab1909ebe5a238eae1ac5b2d7455aa600b37c8006b976"
+    "pending_sha256": "af843f668bcead8ca0825db3e4a65dbed440045203a066d11d9ba5ef6a417616"
   },
   "stage": "integrity_blocked",
   "integrity": {
     "status": "BLOCKED",
     "publication_allowed": false,
-    "report": "data/integrity_audit/20261109T013131676991Z__fd8ee66fa0714a9d__592f3cc7.json.gz",
-    "report_sha256": "45344da0f86193962eabaa56e3ed674c4f818209b6a6fcc6731658c50e1c74d7",
+    "report": "data/integrity_audit/20261109T020210211937Z__e6108ceb93f74a79__abde8095.json.gz",
+    "report_sha256": "636839380e95afe48188387eba468673984ed54bf8cc430862e53348e8d4c3d5",
     "counts": {
       "CATEGORY_LABEL_UNRESOLVED": 8,
       "EXTRA_REGISTRATION": 7026,
@@ -58,12 +58,12 @@
   "pending_publication": {
     "status": "PUBLISHED",
     "count": 79,
-    "sha256": "d1ce317402953ec2ee3ab1909ebe5a238eae1ac5b2d7455aa600b37c8006b976"
+    "sha256": "af843f668bcead8ca0825db3e4a65dbed440045203a066d11d9ba5ef6a417616"
   },
   "legacy_publication": {
     "status": "PUBLISHED",
     "count": 6,
-    "generated_at": "2026-11-09T01:31:38Z",
-    "sha256": "b2bff6a4fa9967d95cddab9e7b4f86da8e43c6319656e22ca8c3976e5fca415a"
+    "generated_at": "2026-11-09T02:02:14Z",
+    "sha256": "4e184d846c49b6f0c80bc478b2ee9f8b7b3d0824b2b53f0c039156bad8486158"
   }
 }
