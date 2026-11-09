@@ -1,38 +1,38 @@
 {
   "outcome": "failure",
   "source": "mof",
-  "finished_at": "2026-11-09T07:13:07Z",
-  "run_id": "42577075186",
+  "finished_at": "2026-11-09T22:46:32Z",
+  "run_id": "42713760403",
   "run_attempt": "1",
-  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42577075186",
+  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42713760403",
   "message": "MOF fetched and diffed; review required; master not applied",
   "fetch": {
     "schema_version": 1,
-    "run_id": "42577075186",
+    "run_id": "42713760403",
     "run_attempt": "1",
-    "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42577075186",
-    "checked_at": "2026-11-09T07:09:09Z",
+    "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42713760403",
+    "checked_at": "2026-11-09T22:43:25Z",
     "sha256": "71eaf728c702c881fb13856043f63d42276094c79cf91bae4ad90eadfa3caadd",
     "url": "https://www.mof.go.jp/policy/international_policy/gaitame_kawase/gaitame/economic_sanctions/shisantouketsu20261105.csv",
-    "raw_path": "data/raw/mof/20261109T070902Z__shisantouketsu20261105.csv.gz",
+    "raw_path": "data/raw/mof/20261109T224319Z__shisantouketsu20261105.csv.gz",
     "asof": "令和8年11月5日",
     "record_count": 15249,
     "etag": "\"3296ec-65f6fe79b0094\"",
     "last_modified": "Wed, 04 Nov 2026 09:21:31 GMT",
     "pending_count": 79,
     "master_applied": false,
-    "pending_sha256": "b62ef194fc8fecbfcda6dd467698e9fe3cc9f5065f925b8802c91c5a48c8842e"
+    "pending_sha256": "b4fae0ffac9e5a4a74ee873c108ebcd4b168fb48b686cd58a64925fc10d64fd8"
   },
   "stage": "approval_required",
   "pending_publication": {
     "status": "PUBLISHED",
     "count": 79,
-    "sha256": "b62ef194fc8fecbfcda6dd467698e9fe3cc9f5065f925b8802c91c5a48c8842e"
+    "sha256": "b4fae0ffac9e5a4a74ee873c108ebcd4b168fb48b686cd58a64925fc10d64fd8"
   },
   "legacy_publication": {
     "status": "PUBLISHED",
     "count": 0,
-    "generated_at": "2026-11-09T07:13:06Z",
+    "generated_at": "2026-11-09T22:46:30Z",
     "sha256": "d00177bd6142480ea6db3e10c393fb8a3fbf271d213a4d0f0e17544e612487a5"
   }
 }
