@@ -1,69 +1,38 @@
 {
   "outcome": "failure",
   "source": "mof",
-  "finished_at": "2026-11-09T02:02:16Z",
-  "run_id": "42547968318",
+  "finished_at": "2026-11-09T02:17:43Z",
+  "run_id": "42549524098",
   "run_attempt": "1",
-  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42547968318",
-  "message": "MOF fetched and diffed; integrity BLOCKED; master not applied",
+  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42549524098",
+  "message": "MOF fetched and diffed; review required; master not applied",
   "fetch": {
     "schema_version": 1,
-    "run_id": "42547968318",
+    "run_id": "42549524098",
     "run_attempt": "1",
-    "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42547968318",
-    "checked_at": "2026-11-09T01:59:15Z",
+    "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42549524098",
+    "checked_at": "2026-11-09T02:14:42Z",
     "sha256": "71eaf728c702c881fb13856043f63d42276094c79cf91bae4ad90eadfa3caadd",
     "url": "https://www.mof.go.jp/policy/international_policy/gaitame_kawase/gaitame/economic_sanctions/shisantouketsu20261105.csv",
-    "raw_path": "data/raw/mof/20261109T015909Z__shisantouketsu20261105.csv.gz",
+    "raw_path": "data/raw/mof/20261109T021437Z__shisantouketsu20261105.csv.gz",
     "asof": "令和8年11月5日",
     "record_count": 15249,
-    "etag": "\"3296ec-65f6fe79b0094\"",
+    "etag": "\"3296ec-65f6fe795e4cc\"",
     "last_modified": "Wed, 04 Nov 2026 09:21:31 GMT",
     "pending_count": 79,
     "master_applied": false,
-    "pending_sha256": "af843f668bcead8ca0825db3e4a65dbed440045203a066d11d9ba5ef6a417616"
+    "pending_sha256": "f0e145716415826da7e64e5c9c0fe67d52ec908a59efca0ce5685a4635367c7f"
   },
-  "stage": "integrity_blocked",
-  "integrity": {
-    "status": "BLOCKED",
-    "publication_allowed": false,
-    "report": "data/integrity_audit/20261109T020210211937Z__e6108ceb93f74a79__abde8095.json.gz",
-    "report_sha256": "636839380e95afe48188387eba468673984ed54bf8cc430862e53348e8d4c3d5",
-    "counts": {
-      "CATEGORY_LABEL_UNRESOLVED": 8,
-      "EXTRA_REGISTRATION": 7026,
-      "LEGACY_ACCEPTANCE_INVALID": 1,
-      "WEAK_ALIAS_ACTIVE": 2878
-    },
-    "blocking_counts": {
-      "EXTRA_REGISTRATION": 2426,
-      "LEGACY_ACCEPTANCE_INVALID": 1,
-      "WEAK_ALIAS_ACTIVE": 3
-    },
-    "reasons": [
-      {
-        "kind": "WEAK_ALIAS_ACTIVE",
-        "detail": "Weak-only名称が通常masterで有効"
-      },
-      {
-        "kind": "EXTRA_REGISTRATION",
-        "detail": "現在原本に根拠の無い出典付き登録（保持行を含む。削除禁止）"
-      },
-      {
-        "kind": "LEGACY_ACCEPTANCE_INVALID",
-        "detail": "legacy candidate bindings invalid: 6 row(s); see binding_mismatches"
-      }
-    ]
-  },
+  "stage": "approval_required",
   "pending_publication": {
     "status": "PUBLISHED",
     "count": 79,
-    "sha256": "af843f668bcead8ca0825db3e4a65dbed440045203a066d11d9ba5ef6a417616"
+    "sha256": "f0e145716415826da7e64e5c9c0fe67d52ec908a59efca0ce5685a4635367c7f"
   },
   "legacy_publication": {
     "status": "PUBLISHED",
-    "count": 6,
-    "generated_at": "2026-11-09T02:02:14Z",
-    "sha256": "4e184d846c49b6f0c80bc478b2ee9f8b7b3d0824b2b53f0c039156bad8486158"
+    "count": 0,
+    "generated_at": "2026-11-09T02:17:41Z",
+    "sha256": "d00177bd6142480ea6db3e10c393fb8a3fbf271d213a4d0f0e17544e612487a5"
   }
 }
