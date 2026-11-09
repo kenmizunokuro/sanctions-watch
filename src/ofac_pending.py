@@ -15,6 +15,9 @@ DIFF_HEADER = ["出所", "種別", "受取人名", "変更前", "変更後"]
 HEADER = ["検知日時（JST）", *DIFF_HEADER, "状態", "GitHub実行URL"]
 STATE = "監査停止・master未反映"
 KINDS = {"追加", "初回同期（Advanced XML）", "掲載終了", "掲載終了候補（要確認）", "変更"}
+PROMOTION_PATH = Path("data/monitoring/ofac_promotion_history.csv")
+PROMOTION_HEADER = ["検知日時（JST）", "反映日時（UTC）", *DIFF_HEADER,
+                    "初回検知実行URL", "反映実行URL"]
 
 
 def build(body: bytes, digest: str, finished_at: str, run_url: str) -> list[list[str]]:
@@ -93,6 +96,58 @@ def retain_first_detection(current: list[list[str]], previous: list[list[str]]) 
             item[0], item[7] = saved[0], saved[7]
         output.append(item)
     return output
+
+
+def promotion_evidence(
+    previous: list[list[str]], diff_rows: list[list[str]], *,
+    applied_at: datetime, run_url: str = "",
+) -> tuple[dict[tuple[str, ...], str], list[list[str]]]:
+    """Match only still-open exact events; application time never replaces detection.
+
+    Keys are the original five diff columns, before the dashboard's existing
+    display-name cleanup. History is evidence only, never a lookup for recurrence.
+    """
+    prior = _indexed(previous)
+    if applied_at.tzinfo is None or applied_at.utcoffset() is None:
+        raise ValueError("OFAC反映日時にはタイムゾーンが必要です")
+    stamp = applied_at.astimezone(timezone(timedelta(hours=9))).strftime("%Y-%m-%d %H:%M:%S")
+    if any(row[0] > stamp for row in prior.values()):
+        raise ValueError("OFAC候補の初回検知日時が反映日時より未来です")
+    detected_at = {}
+    history = []
+    for row in diff_rows:
+        key = tuple(row)
+        saved = prior.get(key)
+        if saved is None:
+            continue
+        if key in detected_at:
+            raise ValueError("OFAC反映差分の同一候補が重複しています")
+        if run_url and not re.fullmatch(r'https://github\.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+/actions/runs/[0-9]+', run_url):
+            raise ValueError("OFAC反映実行URLが不正です")
+        detected_at[key] = saved[0]
+        history.append([saved[0], applied_at.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                        *row, saved[7], run_url])
+    return detected_at, history
+
+
+def append_promotion_history(path: Path, rows: list[list[str]]) -> None:
+    """Append to a seeded atomic temp, preserving every prior byte and row."""
+    if not rows:
+        return
+    existing = path.read_bytes() if path.exists() else b""
+    if existing:
+        previous = list(csv.reader(io.StringIO(existing.decode("utf-8"), newline=""), strict=True))
+        if (not previous or previous[0] != PROMOTION_HEADER
+                or any(len(row) != len(PROMOTION_HEADER) for row in previous[1:])):
+            raise ValueError("OFAC反映履歴のCSV構造が不正です")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8", newline="") as stream:
+        if existing and not existing.endswith((b"\n", b"\r")):
+            stream.write("\n")
+        writer = csv.writer(stream, lineterminator="\n")
+        if not existing:
+            writer.writerow(PROMOTION_HEADER)
+        writer.writerows(rows)
 
 
 if __name__ == "__main__":

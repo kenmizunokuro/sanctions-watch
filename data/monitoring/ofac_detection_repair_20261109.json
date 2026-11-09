@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "decision": "CORRECT_FIRST_DETECTION_ON_PROMOTION",
+  "instruction": "検知時間が全部更新されてしまったので、本当に検知した時間にしてほしい",
+  "prepared_at": "2026-11-09T07:30:29Z",
+  "count": 107,
+  "source_main_commit": "2ebb41b8a8914012097cdcc58b4d464aeaea4af1",
+  "original_pending_commit": "10329af4a66a47a01b7cb87f187ebd6e1d22c4ef",
+  "original_pending_path": "data/dashboard/ofac_pending.csv",
+  "original_pending_sha256": "5ea6582f5563b58cf92df310d1e81fb8bcd3e62c759659595a6351d1362ce273",
+  "pending_snapshot": "docs/evidence/ofac-promotion-20261109/pending-before-publication.csv.gz",
+  "pending_snapshot_gzip_sha256": "1acd3fd11772d0d1cc81d9302c6df79d62fc14d717f38c694e4c07701e4e4f01",
+  "source_publication_commit": "764fb8815977246c25d4615b5ac3457a9a587e63",
+  "source_publication_run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42577795235",
+  "changes_before_sha256": "7d1bb260164a29877dd702b2684778f094147d0115ed46805bac4854bff22ff0",
+  "changes_after_sha256": "c26faceb16962d6849394bb2141f5654707b02b0356efbf4d1700fe155e7b3cd",
+  "promotion_history_sha256": "4a37d6d2d88f347433da6124d70ab64147a54fd7b00b54289c03922165960b96",
+  "semantics": "Only the first detection column was corrected for uniquely matched published events. The prior publication timestamp is retained as reflection processing time in promotion history; Git commit records the public publication time. Master and current source snapshots are unchanged."
+}
