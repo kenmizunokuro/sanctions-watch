@@ -1,48 +1,85 @@
 {
-  "started_at": "2026-11-09T01:51:48Z",
-  "finished_at": "2026-11-09T01:56:16Z",
+  "started_at": "2026-11-09T02:33:31Z",
+  "finished_at": "2026-11-09T02:37:30Z",
   "outcome": "failure",
   "exit_code": 1,
   "sources": [
     "ofac"
   ],
-  "run_id": "42547648454",
+  "run_id": "42551299528",
   "run_attempt": "1",
-  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42547648454",
+  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42551299528",
   "stage": "integrity_failed",
-  "fetch_finished_at": "2026-11-09T01:52:17Z",
+  "fetch_finished_at": "2026-11-09T02:33:57Z",
   "integrity": {
     "status": "BLOCKED",
-    "report": "data/integrity_audit/20261109T015614341257Z__37d8b22b666a46a3__b84557a0.json.gz",
-    "report_sha256": "52f9cad9f537324ee1bcea22150ec736b40af4df222ac3230376595ebde2c032",
+    "report": "data/integrity_audit/20261109T023728767364Z__fa1d23b5c13c6820__85b6963d.json.gz",
+    "report_sha256": "e1dbee41f29fac182ae687103890832e170d0ddbc00bb9a3e2d256dd754cb371",
     "inputs": {
       "data/kubun_map.json": "007da2fec65dd0357f5d3f91b2b68927f8dcf1c97b95253cc1c0c51a1d55e3f6",
-      "data/master/master.csv": "296299e5d45f75484b71acb1b9f098ed17f2106f1675069b1e6d96d06603820a",
-      "data/master/ofac_alias_history.csv": "4adb1615d96b1381f14c88ab666530143eec279e916fc714ed72ab1cab48b575",
-      "data/review/integrity_legacy_acceptances.json": "c4698e8f222276aeccfffe4004a961e796718cd227630be9a0abd88e7a02e14e",
+      "data/master/master.csv": "11aa14d1d68ac00439525e848cebd38705e422768b6fd170ac69f9a77a6091e6",
+      "data/master/ofac_alias_history.csv": "84edcd62e94bd3d909d362ddfa8ee5e1fdbe67323202485eee2e59170f875522",
+      "data/review/integrity_legacy_acceptances.json": "503516847a9979fd3b9bfda89b8d9f0731b3b755871bee3230a3d4e189d8825c",
       "data/review/integrity_retention_decisions.json": "8671fc39de114fb94cb858cf03ff9da07a1b4104c59c5ed42ac587b2ec701d35",
-      "data/state.json": "b3938d8af639ec8a61a1253a50679e5b488c77a10943d95ab7690acb39b00ca2",
+      "data/state.json": "cac05e02c43b32ec47c7f1cb274ad550c38b9a488b896d649363f9fb09e3e9ef",
       "docs/evidence/source-integrity-legacy-retention-policy-proposal-20261026.json": "7d54d514a3c9dfa6708dce5bbec0c6dc595ad6defa5dad4ab0cf26c48c0c4881",
       "docs/evidence/source-integrity-legacy-scope-20261026.json.gz": "83713003dc24b7efafa4683c703f9f40b31b0721015abe655aff3c88694a0289"
     },
     "blocking_counts": {
-      "EXTRA_REGISTRATION": 3
+      "EXTRA_REGISTRATION": 3,
+      "SOURCE_MISMATCH": 6,
+      "STATUS_MISMATCH": 6
     },
     "blockers": [
       {
-        "kind": "EXTRA_REGISTRATION",
-        "name": "CARLOTA C",
-        "detail": "現在原本に根拠の無い出典付き登録（保持行を含む。削除禁止）"
+        "kind": "STATUS_MISMATCH",
+        "name": "Abu Ahmad Akhlaq",
+        "detail": "公式掲載中だがmasterは有効でない（除外理由のレビュー必須）"
       },
       {
-        "kind": "EXTRA_REGISTRATION",
-        "name": "GIRALT",
-        "detail": "現在原本に根拠の無い出典付き登録（保持行を含む。削除禁止）"
+        "kind": "SOURCE_MISMATCH",
+        "name": "Abu Ahmad Akhlaq",
+        "detail": "名称は存在するが出典/カテゴリが対応しない"
       },
       {
-        "kind": "EXTRA_REGISTRATION",
-        "name": "NEDAS",
-        "detail": "現在原本に根拠の無い出典付き登録（保持行を含む。削除禁止）"
+        "kind": "STATUS_MISMATCH",
+        "name": "Abu Ahmad al-Shami",
+        "detail": "公式掲載中だがmasterは有効でない（除外理由のレビュー必須）"
+      },
+      {
+        "kind": "SOURCE_MISMATCH",
+        "name": "Abu Ahmad al-Shami",
+        "detail": "名称は存在するが出典/カテゴリが対応しない"
+      },
+      {
+        "kind": "STATUS_MISMATCH",
+        "name": "Abu al-Darda'",
+        "detail": "公式掲載中だがmasterは有効でない（除外理由のレビュー必須）"
+      },
+      {
+        "kind": "SOURCE_MISMATCH",
+        "name": "Abu al-Darda'",
+        "detail": "名称は存在するが出典/カテゴリが対応しない"
+      },
+      {
+        "kind": "STATUS_MISMATCH",
+        "name": "BASSAM AHMAD AL-HASRI",
+        "detail": "公式掲載中だがmasterは有効でない（除外理由のレビュー必須）"
+      },
+      {
+        "kind": "SOURCE_MISMATCH",
+        "name": "BASSAM AHMAD AL-HASRI",
+        "detail": "名称は存在するが出典/カテゴリが対応しない"
+      },
+      {
+        "kind": "STATUS_MISMATCH",
+        "name": "Bassam Ahmad Husari",
+        "detail": "公式掲載中だがmasterは有効でない（除外理由のレビュー必須）"
+      },
+      {
+        "kind": "SOURCE_MISMATCH",
+        "name": "Bassam Ahmad Husari",
+        "detail": "名称は存在するが出典/カテゴリが対応しない"
       }
     ]
   }
