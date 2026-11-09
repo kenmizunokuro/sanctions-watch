@@ -10,7 +10,7 @@ from unittest.mock import patch
 from pathlib import Path
 
 from src import integrity_legacy as L, mof_legacy_reconcile as R, mof_legacy_review as V
-from tests.test_mof_legacy_review import ROOT, SIX, SOURCE
+from tests.test_mof_legacy_review import ROOT, SIX, SOURCE, historical_fixture
 
 
 class MofLegacyReconcileTests(unittest.TestCase):
@@ -20,8 +20,10 @@ class MofLegacyReconcileTests(unittest.TestCase):
             path = self.root / name
             path.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(ROOT / name, path)
-        ledger = json.loads((self.root / L.LEDGER_PATH).read_bytes())
-        base = V._read_rows((self.root / 'data/master/master.csv').read_text())
+        base, ledger = historical_fixture()
+        from src import master as M
+        M.save(base, self.root / 'data/master/master.csv')
+        (self.root / L.LEDGER_PATH).write_text(json.dumps(ledger))
         candidate = base.copy()
         bindings = []
         self.run_url = 'https://github.com/example/repo/actions/runs/123'
@@ -250,6 +252,29 @@ class MofLegacyReconcileTests(unittest.TestCase):
         self.assertTrue(raced)
         self.assertEqual({row[1] for row in rows}, {self.checked})
         self.assertEqual({row[16] for row in rows}, {self.run_url})
+
+    def test_obsolete_master_generation_cannot_restore_completed_cases(self):
+        from src import mof_failure as F
+        fresh = [list(row) for row in self.rows]
+        origin, git = self._origin()
+        V.write_generated(self.root, fresh, generated_at=self.checked,
+                          run_id='123', run_attempt='1', run_url=self.run_url)
+        rival = origin.parent / 'rival'
+        subprocess.run(['git', 'clone', '-b', 'main', str(origin), str(rival)], check=True, capture_output=True)
+        # A different master generation and completed queue have already been published.
+        master = rival / 'data/master/master.csv'
+        master.write_bytes(master.read_bytes() + b'\n')
+        with (rival / V.OUT).open('w', newline='') as stream:
+            csv.writer(stream).writerow(V.COLS)
+        for command in (['add', '.'], ['-c', 'user.name=Tests', '-c', 'user.email=tests@example.invalid',
+                         'commit', '-m', 'publish completed review generation'], ['push', 'origin', 'main']):
+            subprocess.run(['git', '-C', str(rival), *command], check=True, capture_output=True)
+        self.assertTrue(F.persist(self.root, self.failure))
+        git('fetch', 'origin', 'main')
+        published = list(csv.reader(git('show', 'origin/main:' + V.OUT.as_posix()).splitlines()))
+        self.assertEqual(published, [V.COLS])
+        saved = json.loads(git('show', 'origin/main:data/monitoring/mof_failure.json'))
+        self.assertEqual(saved['legacy_publication']['status'], 'WITHHELD')
 
     def test_historical_full_row_case_ids_remain_reconcilable(self):
         for row in self.rows:

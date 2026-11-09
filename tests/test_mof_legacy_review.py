@@ -8,6 +8,7 @@ import unittest
 from pathlib import Path
 
 from src import mof_legacy_review as R
+from src import integrity_legacy as L
 
 ROOT = Path(__file__).resolve().parent.parent
 SOURCE = {
@@ -21,14 +22,21 @@ SIX = {
 }
 
 
+def historical_fixture():
+    """Pin pre-delist review cases to the immutable approved legacy scope."""
+    base = R._read_rows((ROOT / 'data/master/master.csv').read_text(encoding='utf-8'))
+    ledger = json.loads((ROOT / L.LEDGER_PATH).read_bytes())
+    scope = L.load_scope(ROOT)
+    ledger['entries'] = [L._entry(ident, item, ledger['expires_at']) for ident, item in scope.items()]
+    for item in scope.values():
+        base[item['master_key']] = L.annotate(item['finding']['master'], item['classification'], ledger['expires_at'])
+    return base, ledger
+
+
 class MofLegacyReviewTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.base = R._read_rows(
-            (ROOT / "data/master/master.csv").read_text(encoding="utf-8"))
-        cls.ledger = json.loads(
-            (ROOT / "data/review/integrity_legacy_acceptances.json")
-            .read_text(encoding="utf-8"))
+        cls.base, cls.ledger = historical_fixture()
 
     def test_review_only_six_mof_source_relations_with_no_automatic_delist(self):
         self.assertEqual(len(SIX), 6)
@@ -125,7 +133,8 @@ class MofLegacyReviewTests(unittest.TestCase):
     def test_acceptance_and_source_evidence_must_be_valid(self):
         for ledger, source in [
             ({**self.ledger, "state": "DRAFT"}, SOURCE),
-            ({**self.ledger, "entries": self.ledger["entries"][:-1]}, SOURCE),
+            ({**self.ledger, "entries": self.ledger["entries"] + [self.ledger['entries'][0]]}, SOURCE),
+            ({**self.ledger, "entries": self.ledger['entries'][:-1]}, SOURCE),
             (self.ledger, {"sha256": "", "url": SOURCE["url"]}),
         ]:
             with self.subTest(state=ledger.get("state"), sha=source.get("sha256")):
