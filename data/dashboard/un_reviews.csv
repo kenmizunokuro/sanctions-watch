@@ -1007,18 +1007,18 @@
 87d841d82df7938d1b1fe0df5d82eab1c8faaccdb0e4cc86b649cd7e3143745c:YEi.010,2026-11-08T07:58:10Z,初回収録（国連）,YEi.010,MANSUR AL-SA’ADI,PENDING_REVIEW,,,,b8eaa0c6e373e8dfc5ff0da9e72d636d984ea5dce7a9c8defcd498b8be8f8533,https://main.un.org/securitycouncil/en/content/un-sc-consolidated-list
 87d841d82df7938d1b1fe0df5d82eab1c8faaccdb0e4cc86b649cd7e3143745c:YEi.011,2026-11-08T07:58:10Z,初回収録（国連）,YEi.011,MOTLAQ AMER AL-MARRANI,PENDING_REVIEW,,,,b8eaa0c6e373e8dfc5ff0da9e72d636d984ea5dce7a9c8defcd498b8be8f8533,https://main.un.org/securitycouncil/en/content/un-sc-consolidated-list
 87d841d82df7938d1b1fe0df5d82eab1c8faaccdb0e4cc86b649cd7e3143745c:YEi.012,2026-11-08T07:58:10Z,初回収録（国連）,YEi.012,AHMAD AL-HAMZI,PENDING_REVIEW,,,,b8eaa0c6e373e8dfc5ff0da9e72d636d984ea5dce7a9c8defcd498b8be8f8533,https://main.un.org/securitycouncil/en/content/un-sc-consolidated-list
-updates:fetch,2026-11-08T23:15:54Z,国連更新履歴取得エラー,,empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/content/list-updates-unsc-consolidated-list
-fetch:1267,2026-11-08T23:15:54Z,取得エラー・要確認,,1267委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/1267/press-releases
-fetch:1518,2026-11-08T23:15:54Z,取得エラー・要確認,,1518委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/1518/press-releases
-fetch:1533,2026-11-08T23:15:54Z,取得エラー・要確認,,1533委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/1533/press-releases
-fetch:1591,2026-11-08T23:15:54Z,取得エラー・要確認,,1591委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/1591/press-releases
-fetch:1718,2026-11-08T23:15:54Z,取得エラー・要確認,,1718委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/1718/press-releases
-fetch:1737,2026-11-08T23:15:54Z,取得エラー・要確認,,1737委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/1737/press-releases
-fetch:1970,2026-11-08T23:15:54Z,取得エラー・要確認,,1970委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/1970/press-releases
-fetch:1988,2026-11-08T23:15:54Z,取得エラー・要確認,,1988委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/1988/press-releases
-fetch:2048,2026-11-08T23:15:54Z,取得エラー・要確認,,2048委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/2048/press-releases
-fetch:2140,2026-11-08T23:15:54Z,取得エラー・要確認,,2140委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/2140/press-releases
-fetch:2206,2026-11-08T23:15:54Z,取得エラー・要確認,,2206委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/2206/press-releases
-fetch:2653,2026-11-08T23:15:54Z,取得エラー・要確認,,2653委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/2653/press-releases
-fetch:2713,2026-11-08T23:15:54Z,取得エラー・要確認,,2713委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/2713/press-releases
-fetch:2745,2026-11-08T23:15:54Z,取得エラー・要確認,,2745委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/2745/press-releases
+updates:fetch,2026-11-09T10:32:19Z,国連更新履歴取得エラー,,empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/content/list-updates-unsc-consolidated-list
+fetch:1267,2026-11-09T10:32:19Z,取得エラー・要確認,,1267委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/1267/press-releases
+fetch:1518,2026-11-09T10:32:19Z,取得エラー・要確認,,1518委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/1518/press-releases
+fetch:1533,2026-11-09T10:32:19Z,取得エラー・要確認,,1533委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/1533/press-releases
+fetch:1591,2026-11-09T10:32:19Z,取得エラー・要確認,,1591委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/1591/press-releases
+fetch:1718,2026-11-09T10:32:19Z,取得エラー・要確認,,1718委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/1718/press-releases
+fetch:1737,2026-11-09T10:32:19Z,取得エラー・要確認,,1737委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/1737/press-releases
+fetch:1970,2026-11-09T10:32:19Z,取得エラー・要確認,,1970委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/1970/press-releases
+fetch:1988,2026-11-09T10:32:19Z,取得エラー・要確認,,1988委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/1988/press-releases
+fetch:2048,2026-11-09T10:32:19Z,取得エラー・要確認,,2048委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/2048/press-releases
+fetch:2140,2026-11-09T10:32:19Z,取得エラー・要確認,,2140委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/2140/press-releases
+fetch:2206,2026-11-09T10:32:19Z,取得エラー・要確認,,2206委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/2206/press-releases
+fetch:2653,2026-11-09T10:32:19Z,取得エラー・要確認,,2653委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/2653/press-releases
+fetch:2713,2026-11-09T10:32:19Z,取得エラー・要確認,,2713委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/2713/press-releases
+fetch:2745,2026-11-09T10:32:19Z,取得エラー・要確認,,2745委員会 HTTP 202: empty UN response: HTTP 202,FETCH_FAILED,,,,,https://main.un.org/securitycouncil/en/sanctions/2745/press-releases
