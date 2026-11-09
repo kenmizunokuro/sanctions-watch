@@ -26,6 +26,7 @@ import requests
 from . import dashboard as D
 from . import master as M
 from . import ofac_index as OI
+from . import ofac_pending as OP
 from . import ofac_removal as OR
 from . import ofac_removal_queue as ORQ
 from . import persistence as P
@@ -85,6 +86,22 @@ def _persist_outputs_atomically(
     """
     now = now or datetime.now(timezone.utc)
     writes: list[P.FileWrite] = []
+    diff_rows = M.diff_rows(diffs) if diffs else []
+    repo = os.environ.get("GITHUB_REPOSITORY", "")
+    run_id = os.environ.get("GITHUB_RUN_ID", "")
+    server = os.environ.get("GITHUB_SERVER_URL", "https://github.com")
+    run_url = f"{server}/{repo}/actions/runs/{run_id}" if repo and run_id else ""
+    # Read original-root evidence before constructing the temporary projection.
+    # The workflow clears the queue only after publication checks succeed.
+    detected_at, promotions = OP.promotion_evidence(
+        OP.read(root / OP.PATH), diff_rows, applied_at=now, run_url=run_url,
+    )
+    if promotions:
+        writes.append(P.FileWrite(
+            target=root / OP.PROMOTION_PATH,
+            writer=lambda path: OP.append_promotion_history(path, promotions),
+            seed_existing=True,
+        ))
 
     if ofac_index_rows is not None:
         writes.append(
@@ -210,10 +227,11 @@ def _persist_outputs_atomically(
         )
         D.append_changes(
             projection_root,
-            M.diff_rows(diffs) if diffs else [],
+            diff_rows,
             when=now.astimezone(D.JST).strftime(
                 "%Y-%m-%d %H:%M:%S"
             ),
+            detected_at=detected_at,
         )
         D.append_ofac_removal_reviews(
             projection_root,

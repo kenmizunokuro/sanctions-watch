@@ -403,6 +403,11 @@ function syncAll_(executionType) {
       ss
     );
 
+    // 08の人間レビューを退避してから、承認済み107件だけ検知日時キーを補正。
+    // source mergeより前に実行し、03/08の旧キーと補正キーの二重登録を防ぐ。
+    syncStage = 'OFAC初回検知日時の既存履歴を補正';
+    migrateOfacFirstDetectionHistory_(ss);
+
     /*
      * 2026/9/4のAdvanced XML初回master反映を
      * 公式新規追加から切り分ける。
@@ -3355,6 +3360,237 @@ function syncChangesMirror_(
  * 未解消差分キュー
  * ========================================================= */
 
+function approvedOfacFirstDetectionCorrections_() {
+  /*
+   * 2026-11-09の承認済み107件に限定した固定対応表。追加のHTTP取得はしない。
+   * 出典: data/monitoring/ofac_promotion_history.csv (c5396c5)
+   * SHA256: 4a37d6d2d88f347433da6124d70ab64147a54fd7b00b54289c03922165960b96
+   * 各組: [初回検知JST, 旧表示JST, 出所, 種別, 変更前, 変更後, 正確な名称一覧]
+   * 旧表示JSTは反映日時UTCからAsia/Tokyoへ変換したもの。
+   */
+  const groups = [
+  [
+    "2026-11-07 02:31:25",
+    "2026-11-09 16:18:45",
+    "OFAC",
+    "追加",
+    "",
+    "制裁リスト（OFAC：SDN）",
+    [
+      "LOURDES",
+      "Frisian Faith Shipping Company Limited",
+      "Maria Cristina",
+      "ASIAN WELFARE LOTTERIES CO LTD",
+      "CB GENERAL INSURANCE PLC",
+      "CAMBODIAN RESOURCE ENERGY DEVELOPMENT CO LTD",
+      "CAMBODIAN UNITE WEI YE INVESTMENT CO LTD",
+      "DT ZHI ZAO CO LTD",
+      "FIRST AQUATIC INDUSTRIAL CO LTD",
+      "MO NET BEAUTY CO LTD",
+      "PRINCE INTERNATIONAL AIRLINES CO LTD",
+      "RICHENG PROPERTY DEVELOPER CO LTD",
+      "TIAN XU INTERNATIONAL TECHNOLOGY PLC",
+      "ZHX PRINTING EQUIPMENT CAMBODIA CO LTD",
+      "Qiu Yong",
+      "邱 用",
+      "He Yujing",
+      "何 雨静",
+      "Super Light Speed Kh Technology Co., Ltd.",
+      "Pang Visal",
+      "庞 伟志",
+      "Cambodia First Unite Construction Group Co., Ltd.",
+      "First Unite International Logistics Co., Ltd.",
+      "First Unite Networks Entertainment Co., Ltd.",
+      "First Unite Property Co., Ltd.",
+      "First Unite Decoration Cambodia Co., Ltd.",
+      "Cambodian First Unite Construction machinery Co., Ltd.",
+      "Linkedus Technology Co., Ltd.",
+      "Cambo Duty Free Merchandise Co., Ltd.",
+      "Marco Polo Hotel Co. Ltd.",
+      "U-Life Go Now Co., Ltd.",
+      "U-Life Kh Super App Co., Ltd.",
+      "MERITWISE GROUP PUBLIC LTD",
+      "CHEN HUA HOLDINGS PTE LTD",
+      "GREENMEADOWS PROPERTIES SDN BHD",
+      "Zhao Mengyao",
+      "趙 梦瑶",
+      "GREENBAY MULTI MEDIA PTE LTD",
+      "SUN SPEED HOLDINGS LIMITED",
+      "PREMIUM FINANCIAL LIMITED",
+      "永寶物業按揭有限公司",
+      "GLAD VAST LIMITED",
+      "欣豁有限公司",
+      "GLAD SPARKLE LIMITED",
+      "欣閃有限公司",
+      "GLAD HARVEST LIMITED",
+      "欣實有限公司",
+      "GLAD GLORY LIMITED",
+      "DIRECT ASTUTE HK LIMITED",
+      "DIRECT ASTUTE LIMITED",
+      "SOLAR SCAPE FINANCE LIMITED",
+      "陽景財務有限公司",
+      "SOLAR SCAPE LIMITED",
+      "VICTORY FLORA LIMITED",
+      "WIN APPLAUSE LIMITED",
+      "CELESTIAL DRIVE LIMITED",
+      "SINO SAGACIOUS LIMITED",
+      "Guillermo Faustino Rodriguez Lopez Calleja",
+      "Gloria C",
+      "TENTACOOL COMMERCIAL INC",
+      "Rodriguez Any Lastres",
+      "EMPRESA IMPORTADORA Y EXPORTADORA DE PRODUCTOS DE LA ELECTRONICA Y LAS COMUNICACIONES",
+      "CUBAELECTRONICA",
+      "EMPRESA COMERCIALIZADORA DE SERVICIOS TECNICOS Y TECNOLOGICOS",
+      "TECNOSIME",
+      "BEIJING H AND C TECHNOLOGIES CO., LTD",
+      "Beijing Huacheng Haopu Technology Co, Ltd",
+      "北京华成昊普科技有限公司",
+      "Beijing H&C Technologies Co., LTD",
+      "Chui Kok Wa",
+      "INTERNACIONAL MARITIMA SA",
+      "PETROLEOS MARITIMOS DEL CARIBE S.A.",
+      "PETROMARCA S.A.",
+      "EMILIA",
+      "QIU, Yong",
+      "HE, Yujing",
+      "PANG, Visal",
+      "ZHAO, Mengyao",
+      "RODRIGUEZ LASTRES, Any",
+      "CHUI, Kok Wa",
+      "PANG, Weizhi"
+    ]
+  ],
+  [
+    "2026-11-07 04:51:36",
+    "2026-11-09 16:18:45",
+    "OFAC",
+    "追加",
+    "",
+    "制裁リスト（OFAC：SDN）",
+    [
+      "Diverse Trade Inc",
+      "Million Exchange",
+      "Millionex",
+      "Million Money Exchange",
+      "NIA Nations Currency Ltd",
+      "NIA Exchange",
+      "NIA Nations Exchange",
+      "NIA Nations Currency Exchange",
+      "CCC Inc",
+      "CCurrency Exchange",
+      "Sarafi C",
+      "Cryptoyal",
+      "B Galaxy Inc",
+      "C Exchaneg",
+      "2397639 Ontario Ltd",
+      "Farah Exchange",
+      "1380079 BC Ltd",
+      "Amin Exchange Vancouver",
+      "Sarafi Amin",
+      "Top PC Technician Inc",
+      "2840711 Ontario Inc",
+      "Aminex Toronto",
+      "Amin Exchange Toronto",
+      "Darvish Exchange",
+      "Kanata MD Inc"
+    ]
+  ],
+  [
+    "2026-11-07 02:31:25",
+    "2026-11-09 16:18:45",
+    "OFAC",
+    "変更",
+    "制裁リスト（UK FCDO）",
+    "制裁リスト（OFAC：SDN／UK FCDO）",
+    [
+      "Pang Weizhi"
+    ]
+  ]
+];
+  return groups.flatMap(group => group[6].map(name => [
+    group[0], group[1], group[2], group[3], name, group[4], group[5],
+  ]));
+}
+
+
+function mergeOfacCorrectionReviews_(target, duplicate) {
+  const statuses = Array.from(new Set([target[6], duplicate[6]]
+    .map(normalizeQueueStatus_).filter(status => status !== '未確認')));
+  const comments = Array.from(new Set([target[7], duplicate[7]]
+    .map(value => String(value == null ? '' : value)).filter(value => value !== '')));
+  if (statuses.length > 1) {
+    target[6] = '要確認';
+    comments.push('検知日時補正時の対応状況競合: ' + statuses.join(' / '));
+  } else {
+    target[6] = statuses[0] || target[6] || duplicate[6] || '未確認';
+  }
+  target[7] = Array.from(new Set(comments)).join('\n');
+}
+
+
+function matchApprovedOfacFirstDetection_(row, approved) {
+  const event = JSON.stringify(row.slice(1, 6).map(value => String(value == null ? '' : value)));
+  const correction = approved.get(event);
+  if (!correction) return null;
+  const value = typeof row[0] === 'string' ? row[0].replace(/\//g, '-') : row[0];
+  const ms = changeTimestampMs_(value);
+  if (ms !== changeTimestampMs_(correction[0]) && ms !== changeTimestampMs_(correction[1])) return null;
+  return {correction, ms};
+}
+
+
+function migrateOfacFirstDetectionRows_(rows) {
+  const approved = new Map(approvedOfacFirstDetectionCorrections_()
+    .map(row => [JSON.stringify(row.slice(2)), row]));
+  const seen = new Map();
+  const result = [];
+  let changed = 0;
+  rows.forEach(row => {
+    const out = row.slice(0, 9);
+    const matched = matchApprovedOfacFirstDetection_(out, approved);
+    if (!matched) {
+      result.push(out);
+      return;
+    }
+    const {correction, ms} = matched;
+    // Utilities.formatDateは正確な対象イベント・瞬間が一致した行だけに使う。
+    const stamp = Utilities.formatDate(new Date(ms), DEFAULT_TZ, 'yyyy-MM-dd HH:mm:ss');
+    const wasOld = stamp === correction[1];
+    if (wasOld) out[0] = correction[0];
+    const base = out.slice(0, 6);
+    base[0] = correction[0];
+    const correctedKey = buildChangeKey_(base);
+    const needsUpdate = wasOld || out[8] !== correctedKey;
+    out[8] = correctedKey;
+    if (seen.has(correctedKey)) {
+      mergeOfacCorrectionReviews_(result[seen.get(correctedKey)], out);
+      changed++;
+    } else {
+      seen.set(correctedKey, result.length);
+      result.push(out);
+      if (needsUpdate) changed++;
+    }
+  });
+  return {rows: result, changed};
+}
+
+
+function migrateOfacFirstDetectionHistory_(ss) {
+  const sheet = requireSheet_(ss, TAB.CHANGES);
+  const count = sheet.getLastRow() - ROW.DATA_START + 1;
+  if (count <= 0) return 0;
+  const rows = sheet.getRange(ROW.DATA_START, 1, count, 9).getValues();
+  const result = migrateOfacFirstDetectionRows_(rows);
+  if (!result.changed) return 0;
+  sheet.getRange(ROW.DATA_START, 1, result.rows.length, 9).setValues(result.rows);
+  if (result.rows.length < count) {
+    sheet.getRange(ROW.DATA_START + result.rows.length, 1, count - result.rows.length, 9)
+      .clearContent();
+  }
+  return result.changed;
+}
+
+
 function normalizeLegacyOfacBackfillRow_(row) {
   const out = row.slice();
   const legacyStamp =
@@ -3702,10 +3938,13 @@ function syncQueueStatusesToHistory_(ss) {
           .getValues()
       : [];
 
+  // 03補正後に取得失敗した場合、08だけ旧キーのまま残り得る。
+  // 実際の6列が承認済み旧/新イベントと一致する未対応キーだけを別名として解決。
+  const archival = aliasOfacFirstDetectionQueueRows_(historyRows, queueRows);
   const result =
     reconcileUnresolvedQueueRows_(
-      historyRows,
-      queueRows
+      archival.historyRows,
+      archival.queueRows
     );
 
   history
@@ -3737,6 +3976,64 @@ function syncQueueStatusesToHistory_(ss) {
         ]
       )
     );
+
+  if (archival.notesChanged) {
+    history.getRange(ROW.DATA_START, 8, result.historyRows.length, 1)
+      .setValues(result.historyRows.map(row => [row[7]]));
+  }
+}
+
+
+function aliasOfacFirstDetectionQueueRows_(historyRows, queueRows) {
+  const approved = new Map(approvedOfacFirstDetectionCorrections_()
+    .map(row => [JSON.stringify(row.slice(2)), row]));
+  const correctedKey = row => {
+    const matched = matchApprovedOfacFirstDetection_(row, approved);
+    return matched ? buildChangeKey_([matched.correction[0], ...row.slice(1, 6)]) : '';
+  };
+  const existing = new Set(historyRows.map(row => queueEventKey_(row, 8)));
+  const targets = new Map();
+  historyRows.forEach(row => {
+    const key = correctedKey(row);
+    if (!key) return;
+    if (!targets.has(key)) targets.set(key, new Set());
+    targets.get(key).add(queueEventKey_(row, 8));
+  });
+  const aliased = queueRows.map(row => row.slice());
+  const affectedKeys = new Set();
+  queueRows.forEach(row => {
+    // Exact existing keys keep their existing archival behavior and priority.
+    if (existing.has(queueEventKey_(row, 7))) return;
+    const key = correctedKey(row);
+    if (!key || !targets.has(key)) return;
+    targets.get(key).forEach(target => {
+      const copy = row.slice();
+      copy[7] = target;
+      aliased.push(copy);
+      affectedKeys.add(target);
+    });
+  });
+  const history = historyRows.map(row => row.slice());
+  let notesChanged = false;
+  affectedKeys.forEach(key => {
+    const updates = aliased.filter(row => queueEventKey_(row, 7) === key);
+    const statuses = Array.from(new Set(updates.map(row => normalizeQueueStatus_(row[6]))
+      .filter(status => status !== '未確認')));
+    const update = updates[0].slice();
+    update[6] = statuses.length > 1 ? '要確認' : (statuses[0] || '未確認');
+    aliased.push(update);
+    if (statuses.length < 2) return;
+    const note = '検知日時補正時の対応状況競合: ' + statuses.join(' / ');
+    history.forEach(row => {
+      if (queueEventKey_(row, 8) !== key) return;
+      const comment = String(row[7] == null ? '' : row[7]);
+      if (!comment.split('\n').includes(note)) {
+        row[7] = comment ? comment + '\n' + note : note;
+        notesChanged = true;
+      }
+    });
+  });
+  return {historyRows: history, queueRows: aliased, notesChanged};
 }
 
 

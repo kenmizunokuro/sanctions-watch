@@ -476,6 +476,7 @@ def prepend_change_rows(
     rows: list[list],
     *,
     when: str,
+    detected_at: dict[tuple[str, ...], str] | None = None,
 ) -> Path:
     """指定されたchanges.csvへ新しい履歴を先頭追加する。
 
@@ -502,16 +503,16 @@ def prepend_change_rows(
                 row[3] = name
             old.append(row)
 
-    clean_rows = []
+    new = []
     for row in rows:
+        stamp = (detected_at or {}).get(tuple(row), when)
         row = list(row)
         if len(row) >= 3:
             name = canonical_display_name(row[2])
             if is_trailing_unknown_artifact(name):
                 continue
             row[2] = name
-        clean_rows.append(row)
-    new = [[when] + row for row in clean_rows]
+        new.append([stamp] + row)
     # atomic_replace_manyの一時ファイルも正式changes.csvと同じディレクトリ。
     # 共通writerで保護し、METIの個別workflowでも承認待ちを落とさない。
     queue_path = path.parent.parent / "review" / "ofac_party_removal_queue.csv"
@@ -524,12 +525,13 @@ def prepend_change_rows(
     return path
 
 
-def append_changes(root: Path, diff_rows: list[list], when: str = "") -> Path:
+def append_changes(root: Path, diff_rows: list[list], when: str = "", *,
+                   detected_at: dict[tuple[str, ...], str] | None = None) -> Path:
     """変更履歴に追記する。新しいものが上。"""
 
     stamp = when or datetime.now(JST).strftime("%Y-%m-%d %H:%M:%S")
     path = root / DASH / "changes.csv"
-    return prepend_change_rows(path, diff_rows, when=stamp)
+    return prepend_change_rows(path, diff_rows, when=stamp, detected_at=detected_at)
 
 
 def _ofac_removal_review_rows(queue_rows: list[dict]) -> list[list[str]]:

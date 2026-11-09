@@ -6,7 +6,11 @@ name: watch-ofac
 on:
   push:
     branches: [main]
-    paths: ['.github/workflows/watch-ofac.yml']
+    paths:
+      - '.github/workflows/watch-ofac.yml'
+      - 'src/watch.py'
+      - 'src/ofac_pending.py'
+      - 'src/dashboard.py'
   schedule:
     - cron: "17 * * * *"
   workflow_dispatch:
