@@ -16555,7 +16555,8 @@ carlospesebre,CARLOS PESEBRE,有効,制裁リスト,高,1748573582000,1748573582
 carlossaezdeeguilazmurguiondo,"SAEZ DE EGUILAZ MURGUIONDO, Carlos",有効,制裁リスト,高,1745545941000,1788040337525,OFAC,OFAC:SDN,制裁リスト（OFAC：SDN）,,,"[""Carlos SAEZ DE EGUILAZ MURGUIONDO"", ""SAEZ DE EGUILAZ MURGUIONDO, Carlos""]"
 carlosveracalva,"VERA CALVA, Carlos",有効,制裁リスト,高,1745545941000,1788040337525,OFAC,OFAC:SDN,制裁リスト（OFAC：SDN）,,,"[""Carlos VERA CALVA"", ""VERA CALVA, Carlos""]"
 carlosvillelagomezsantelices,"VILLELA GOMEZ SANTELICES, Carlos",有効,制裁リスト,高,1790715151655,1790715151655,OFAC,OFAC:SDN,制裁リスト（OFAC：SDN）,,,"[""VILLELA GOMEZ SANTELICES, Carlos""]"
-carlotac,CARLOTA C,有効,制裁リスト,高,1745545941000,1788040337525,OFAC,OFAC:SDN,制裁リスト（OFAC：SDN）,,,"[""CARLOTA C""]"
+carlotac,CARLOTA C,有効,制裁リスト／旧船名（船名履歴）,高,1745545941000,1788040337525,OFAC,OFAC:SDN,"制裁リスト（OFAC：SDN）
+OFAC船名履歴: CARLOTA C → MARIA CRISTINA（2026-11-05公表時点）。旧名を保持。FixedRef: 27431 / IMO: 9502453。根拠: https://ofac.treasury.gov/recent-actions/20261105",,OFAC_VESSEL_HISTORY_V1:27431:9502453,"[""CARLOTA C""]"
 carmenameliaaraujolaveaga,"ARAUJO LAVEAGA, Carmen Amelia",有効,制裁リスト,高,1745545941000,1788040337525,OFAC,OFAC:SDN,制裁リスト（OFAC：SDN）,,,"[""ARAUJO LAVEAGA, Carmen Amelia"", ""Carmen Amelia ARAUJO LAVEAGA""]"
 carmenauxiliadorazuletademerchan,"ZULETA DE MERCHAN, Carmen Auxiliadora",有効,制裁リスト,高,1745545941000,1788040337525,OFAC,OFAC:SDN,制裁リスト（OFAC：SDN）,,,"[""Carmen Auxiliadora ZULETA DE MERCHAN"", ""ZULETA DE MERCHAN, Carmen Auxiliadora""]"
 carmenauxiliadorazuletademerchán,Carmen Auxiliadora ZULETA DE MERCHÁN,有効,制裁リスト,高,1748574377000,1748574377000,OFAC,,制裁リスト（OFAC）,,,"[""Carmen Auxiliadora ZULETA DE MERCHÁN""]"
@@ -26147,7 +26148,8 @@ giovettyluisadefatima,Giovetty Luisa de Fatima,有効,制裁リスト,高,178848
 gipronickelinstitute,GIPRONICKEL INSTITUTE,有効,制裁リスト,高,1724733605000,1788040337525,OFAC,OFAC:SDN,制裁リスト（OFAC：SDN）,,,"[""GIPRONICKEL INSTITUTE""]"
 giraldofrancojuancarlos,GIRALDO FRANCO Juan Carlos,有効,制裁リスト,高,1788485206502,1788485206502,OFAC,OFAC:SDN,制裁リスト（OFAC：SDN）,,,"[""GIRALDO FRANCO Juan Carlos""]"
 giraldosernahernan,GIRALDO SERNA Hernan,有効,制裁リスト,高,1788485206502,1788485206502,OFAC,OFAC:SDN,制裁リスト（OFAC：SDN）,,,"[""GIRALDO SERNA Hernan""]"
-giralt,GIRALT,有効,制裁リスト,高,1745545941000,1788040337525,OFAC,OFAC:SDN,制裁リスト（OFAC：SDN）,,,"[""GIRALT""]"
+giralt,GIRALT,有効,制裁リスト／旧船名（船名履歴）,高,1745545941000,1788040337525,OFAC,OFAC:SDN,"制裁リスト（OFAC：SDN）
+OFAC船名履歴: GIRALT → LOURDES（2026-11-05公表時点）。旧名を保持。FixedRef: 27425 / IMO: 9259692。根拠: https://ofac.treasury.gov/recent-actions/20261105",,OFAC_VESSEL_HISTORY_V1:27425:9259692,"[""GIRALT""]"
 girgorijigorevichgrigorev,Girgorij Igorevich Grigorev,有効,制裁リスト,高,1748573582000,1788040337525,OFAC,OFAC:SDN,制裁リスト（OFAC：SDN）,,,"[""Girgorij Igorevich Grigorev""]"
 girkinigorvsevolodovich,GIRKIN Igor Vsevolodovich,有効,制裁リスト,高,1788485206502,1788485206502,OFAC,OFAC:SDN,制裁リスト（OFAC：SDN）,,,"[""GIRKIN Igor Vsevolodovich""]"
 gistavedore,GistaveDore,有効,制裁リスト,高,1748573582000,1748573582000,OFAC,,制裁リスト（OFAC）,,,"[""GistaveDore""]"
@@ -49822,7 +49824,8 @@ nechiporukromanviktorovich,Nechiporuk Roman Viktorovich,有効,制裁リスト,�
 necleus,NECLEUS,有効,制裁リスト,高,1754013679000,1788040337525,OFAC,OFAC:SDN,制裁リスト（OFAC：SDN）,,,"[""NECLEUS""]"
 nedaindustrialgroup,NEDA INDUSTRIAL GROUP,有効,制裁リスト,高,1745545941000,1788040337525,OFAC;経産省,OFAC:SDN,制裁リスト（経産省／OFAC：SDN）,,,"[""NEDA INDUSTRIAL GROUP""]"
 nedalsaleh,"SALEH, Nedal",有効,制裁リスト,高,1745545941000,1788040337525,OFAC,OFAC:SDN,制裁リスト（OFAC：SDN）,,,"[""Nedal SALEH"", ""SALEH, Nedal""]"
-nedas,NEDAS,有効,制裁リスト,高,1748573582000,1788040337525,OFAC,OFAC:SDN,制裁リスト（OFAC：SDN）,,,"[""NEDAS""]"
+nedas,NEDAS,有効,制裁リスト／旧船名（船名履歴）,高,1748573582000,1788040337525,OFAC,OFAC:SDN,"制裁リスト（OFAC：SDN）
+OFAC船名履歴: NEDAS → ESPERANZA（2026-11-05公表時点）。旧名を保持。FixedRef: 26704 / IMO: 9289166。根拠: https://ofac.treasury.gov/recent-actions/20261105",,OFAC_VESSEL_HISTORY_V1:26704:9289166,"[""NEDAS""]"
 nedeljkovicsinisa,Nedeljkovic Sinisa,有効,制裁リスト,高,1788485206502,1788485206502,OFAC,OFAC:SDN,制裁リスト（OFAC：SDN）,,,"[""Nedeljkovic Sinisa""]"
 neel,NEEL,有効,制裁リスト,高,1751595152000,1788040337525,OFAC,OFAC:SDN,制裁リスト（OFAC：SDN）,,,"[""NEEL""]"
 nefazpao,Nefaz PAO,有効,制裁リスト,高,1677577307000,1788040337525,OFAC;財務省,OFAC:SDN;財務省:ロシア連邦(団体(特定銀行を除く)),制裁リスト（財務省：ロシア連邦(団体(特定銀行を除く))／OFAC：SDN）,,,"[""Nefaz PAO""]"

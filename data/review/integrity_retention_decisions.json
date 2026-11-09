@@ -67274,6 +67274,57 @@
       "reviewed_at": "2026-10-26T08:21:15Z",
       "reviewed_by": "User explicit approval in this conversation (OK, production scope)",
       "reviewed_evidence_sha256": "e685e7eea535fa5239219b47a03c4b52c94ab9c37eed9ee14a58654e986843f7"
+    },
+    {
+      "review_id": "a02e8a391d948b78495567323ab3201659f50ad2243a6b2061b4ba221211461a",
+      "decision": "APPROVED_RETAIN",
+      "reviewed_at": "2026-11-09T06:52:54Z",
+      "expires_at": "2026-11-25T08:21:15Z",
+      "reviewed_by": "User explicit approval on 2026-11-09: 良いよ",
+      "reason": "CARLOTA Cを旧船名としてMARIA CRISTINAへひも付け保持。FixedRef 27431 / IMO 9502453。現行名とは区別する。",
+      "reviewed_evidence_sha256": "375b0c6a68c0ea5dc01e6bdd37d871a2238235f065805edc3923ca5292c358b4",
+      "vessel_history": {
+        "master_key": "carlotac",
+        "old_name": "CARLOTA C",
+        "replacement_name": "MARIA CRISTINA",
+        "party_id": "27431",
+        "imo": "9502453",
+        "notice_date": "2026-11-05"
+      }
+    },
+    {
+      "review_id": "90bd1cef4396e2c7c1665c87cf3db42cb2ac84c5bfd8457b0080e2d4b3062709",
+      "decision": "APPROVED_RETAIN",
+      "reviewed_at": "2026-11-09T06:52:54Z",
+      "expires_at": "2026-11-25T08:21:15Z",
+      "reviewed_by": "User explicit approval on 2026-11-09: 良いよ",
+      "reason": "GIRALTを旧船名としてLOURDESへひも付け保持。FixedRef 27425 / IMO 9259692。現行名とは区別する。",
+      "reviewed_evidence_sha256": "7ef06234564074e68a760d981763ae78d7f861f93a5dcd8b4d15ba56c07349ba",
+      "vessel_history": {
+        "master_key": "giralt",
+        "old_name": "GIRALT",
+        "replacement_name": "LOURDES",
+        "party_id": "27425",
+        "imo": "9259692",
+        "notice_date": "2026-11-05"
+      }
+    },
+    {
+      "review_id": "d10c193fdf99339c341b3ffcb312f328bb13af1bba734ff12754b983b9a7c8a6",
+      "decision": "APPROVED_RETAIN",
+      "reviewed_at": "2026-11-09T06:52:54Z",
+      "expires_at": "2026-11-25T08:21:15Z",
+      "reviewed_by": "User explicit approval on 2026-11-09: 良いよ",
+      "reason": "NEDASを旧船名としてESPERANZAへひも付け保持。FixedRef 26704 / IMO 9289166。現行名とは区別する。",
+      "reviewed_evidence_sha256": "55582386efcd2a95b3599e3d9f533071b84da3975be3893948596e01b5d8b833",
+      "vessel_history": {
+        "master_key": "nedas",
+        "old_name": "NEDAS",
+        "replacement_name": "ESPERANZA",
+        "party_id": "26704",
+        "imo": "9289166",
+        "notice_date": "2026-11-05"
+      }
     }
   ],
   "schema_version": 1

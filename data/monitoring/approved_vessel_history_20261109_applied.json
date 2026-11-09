@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "status": "APPLIED",
+  "count": 3,
+  "approval_sha256": "7ad33e0b50ae788ba78348853513a3f2b5adca5f66f9a5af6b93cdeb66d0a273",
+  "approved_date": "2026-11-09",
+  "reviewed_at": "2026-11-09T06:52:54Z",
+  "expires_at": "2026-11-25T08:21:15Z",
+  "applied_at": "2026-11-09T07:18:07Z",
+  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42577795235",
+  "master_before_sha256": "3bed6b97636939a688f8f69f20f5937e08c4c541e5130894d06448eb5b854dc9",
+  "master_after_sha256": "85dd9aff90d8147a9fc8333a2d89d3d197f8a816346b95398770122337477c0b",
+  "outputs": {
+    "data/master/master.csv": "85dd9aff90d8147a9fc8333a2d89d3d197f8a816346b95398770122337477c0b",
+    "data/review/integrity_retention_decisions.json": "f6f2a48ac27db31224d27ee388d1dbd9bc143740e775afa72dc3e2da80c065e5",
+    "data/dashboard/list.csv": "01b8d6911bf349c658efa3c6aa7e84d89aac1cb665d2e2f943ae1930bb3b159e",
+    "data/dashboard/screening.csv.gz": "41689c9f73ec1ca0d120dd8afa032fe6ea4e299257e283e0672f588d09341440",
+    "data/dashboard/changes.csv": "7b3a2b7d7c0045daf131ac92500e81213b762de7bff44665e8f0bf79136b8c21",
+    "data/diff/latest.csv": "ea43fe52567ef4c4165dee24f292231462430b4693e09b442336fed6651ef1b2",
+    "data/evidence/ofac_vessel_name_history.csv": "4c23480c19b927816785fe9b9f49e749eed2cd1a2d367e9ad50f6c3657df7003"
+  }
+}

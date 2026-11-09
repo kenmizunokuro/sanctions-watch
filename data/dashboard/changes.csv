@@ -137,6 +137,12 @@
 2026-10-01 04:27:02,OFAC,掲載終了候補（要確認）,Maraya,制裁リスト（OFAC：SDN）; FixedRef=28301; event_id=eef66c298c11ec747f6da9c0385d3c50d1d19117e57c5b8d3803059d8081c4c7; SHA256=5afe67d5b6709be142c09ddd3550b58593d7a706e82cbd68a8001ffc3c90e28b,削除承認待ち（名簿は有効のまま・削除未反映）
 2026-09-23 23:32:21,OFAC,掲載終了候補（要確認）,Safari Club,制裁リスト（OFAC：SDN）; FixedRef=21264; event_id=51cd022b2b3bd6ed22e24f914240a2c1c1b97fd8588f94f006dfdec72d766556; SHA256=83553ea89120cba98271cd3724531dd3d603e27521c4b47be6548a3856ed068b,削除承認待ち（名簿は有効のまま・削除未反映）
 2026-09-23 23:32:21,OFAC,掲載終了候補（要確認）,Olenga Francois,制裁リスト（OFAC：SDN）; FixedRef=21263; event_id=51cd022b2b3bd6ed22e24f914240a2c1c1b97fd8588f94f006dfdec72d766556; SHA256=83553ea89120cba98271cd3724531dd3d603e27521c4b47be6548a3856ed068b,削除承認待ち（名簿は有効のまま・削除未反映）
+2026-11-09 16:18:07,OFAC,変更,CARLOTA C,制裁リスト（OFAC：SDN）,"制裁リスト（OFAC：SDN）
+OFAC船名履歴: CARLOTA C → MARIA CRISTINA（2026-11-05公表時点）。旧名を保持。FixedRef: 27431 / IMO: 9502453。根拠: https://ofac.treasury.gov/recent-actions/20261105"
+2026-11-09 16:18:07,OFAC,変更,GIRALT,制裁リスト（OFAC：SDN）,"制裁リスト（OFAC：SDN）
+OFAC船名履歴: GIRALT → LOURDES（2026-11-05公表時点）。旧名を保持。FixedRef: 27425 / IMO: 9259692。根拠: https://ofac.treasury.gov/recent-actions/20261105"
+2026-11-09 16:18:07,OFAC,変更,NEDAS,制裁リスト（OFAC：SDN）,"制裁リスト（OFAC：SDN）
+OFAC船名履歴: NEDAS → ESPERANZA（2026-11-05公表時点）。旧名を保持。FixedRef: 26704 / IMO: 9289166。根拠: https://ofac.treasury.gov/recent-actions/20261105"
 2026-11-09 11:14:07,財務省,掲載終了,Abu Ahmad Akhlaq,"制裁リスト（財務省：タリバーン関係者等／OFAC）
 旧登録・一次出典未確認。旧登録の照合文字列として期限付き保持。現行公式掲載・本人同一性・当初取込意図を確認済みと扱わない。保持期限UTC: 2026-11-25T08:21:15Z","制裁リスト（財務省：タリバーン関係者等／OFAC）
 旧登録・一次出典未確認。旧登録の照合文字列として期限付き保持。現行公式掲載・本人同一性・当初取込意図を確認済みと扱わない。保持期限UTC: 2026-11-25T08:21:15Z
@@ -5014,6 +5020,3 @@
 2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,AL-HARBI Mansur,,制裁リスト（OFAC：SDN）
 2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,ALSBHUA Azam Abdullah Razeeq Al Mouled,,制裁リスト（OFAC：SDN）
 2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,AL-MAKY Abu Muslem,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,AL-HARBI Abu Suliman,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,AL-HARBI Abu Abdalla,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,ALSBHUA Azam A.R.,,制裁リスト（OFAC：SDN）
