@@ -229,6 +229,8 @@ def persist(root: Path, record: dict) -> bool:
                     from . import mof_legacy_review as legacy
                     try:
                         current, receipt = legacy.read_generated(root, record)
+                        if hashlib.sha256((clean / 'data/master/master.csv').read_bytes()).hexdigest() != receipt['base_master_sha256']:
+                            raise ValueError('MOF legacy review base master changed; regenerate before publication')
                         rows = legacy.retain_first_detection(current, legacy.read_csv(clean))
                         target = clean / REVIEW_PATH
                         target.parent.mkdir(parents=True, exist_ok=True)

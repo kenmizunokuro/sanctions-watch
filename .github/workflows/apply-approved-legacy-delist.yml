@@ -1,0 +1,65 @@
+name: apply-approved-legacy-delist
+
+on:
+  push:
+    branches: [main]
+    paths: ['data/review/approved_legacy_delist_20261108.json']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sanctions-watch-commit
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: 承認済みの6名称だけを同一世代へ反映
+        run: python -m src.approved_legacy_delist --apply
+      - name: 適用後の回帰と配布データ整合性
+        run: |
+          python -m unittest
+          python -m tests.test_offline
+          node --test tests/*.cjs
+      - name: 承認済み変更だけをmainへ保存
+        run: |
+          git config user.name 'sanctions-watch[bot]'
+          git config user.email 'sanctions-watch@users.noreply.github.com'
+          git add -- \
+            data/master/master.csv \
+            data/review/integrity_legacy_acceptances.json \
+            data/dashboard/list.csv \
+            data/dashboard/screening.csv.gz \
+            data/dashboard/changes.csv \
+            data/diff/latest.csv \
+            data/dashboard/mof_legacy_review.csv \
+            data/monitoring/approved_legacy_delist_20261108_applied.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'fix(master): publish six approved legacy name delistings'
+            # Do not rebase a materialized business-data generation onto a
+            # changed main. A concurrent publication must be reviewed afresh.
+            git push origin HEAD:refs/heads/main
+          fi
+      - name: 適用証跡
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: approved-legacy-delist-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            data/review/approved_legacy_delist_20261108.json
+            data/monitoring/approved_legacy_delist_20261108_applied.json
+          retention-days: 90
+          if-no-files-found: error

@@ -147,7 +147,8 @@ def retain_first_detection(current: list[list[str]], previous: list[list[str]]) 
 
 
 def write_generated(root: Path, rows: list[list[str]], *, generated_at: str,
-                    run_id: str, run_attempt: str, run_url: str) -> None:
+                    run_id: str, run_attempt: str, run_url: str,
+                    base_master_sha256: str = '') -> None:
     """Write a receipt last so an interrupted/failed generator cannot clear a queue."""
     from .monitor_attempt import _write
     path = root / OUT
@@ -156,6 +157,8 @@ def write_generated(root: Path, rows: list[list[str]], *, generated_at: str,
         csv.writer(stream, lineterminator="\n").writerows([COLS, *rows])
     _write(root / RECEIPT, dict(schema_version=1, generated_at=generated_at,
            run_id=run_id, run_attempt=run_attempt, run_url=run_url,
+           base_master_sha256=base_master_sha256 or hashlib.sha256(
+               (root / 'data/master/master.csv').read_bytes()).hexdigest(),
            count=len(rows), sha256=hashlib.sha256(path.read_bytes()).hexdigest()))
 
 
@@ -164,6 +167,7 @@ def read_generated(root: Path, failure: dict) -> tuple[list[list[str]], dict]:
     fetched = failure.get("fetch") or {}
     if (not isinstance(receipt, dict) or not isinstance(fetched, dict)
             or receipt.get("schema_version") != 1
+            or not re.fullmatch(r'[0-9a-f]{64}', str(receipt.get('base_master_sha256', '')))
             or any(not receipt.get(k) or receipt[k] != failure.get(k) or receipt[k] != fetched.get(k)
                    for k in ("run_id", "run_attempt", "run_url"))
             or fetched.get("master_applied") is not False
@@ -182,10 +186,12 @@ def read_generated(root: Path, failure: dict) -> tuple[list[list[str]], dict]:
 def build_review(base: dict[str, dict], candidate: dict[str, dict],
                  ledger: dict, source: dict, *, detected_at: str,
                  run_url: str = "") -> tuple[list[list[str]], dict]:
-    if (ledger.get("state") != "ACTIVE"
-            or not isinstance(ledger.get("entries"), list)
-            or len(ledger["entries"]) != 2429):
-        raise ValueError("active legacy acceptance is absent or changed")
+    from . import integrity_legacy as legacy
+    scope = legacy.load_scope(ROOT)
+    accepted = legacy._validate(ledger, scope)
+    # A withdrawn acceptance is valid only when its old annotated row is also
+    # resolved. A silently shortened ledger cannot waive another old finding.
+    legacy._row_bindings(list(base.values()), accepted, scope, ledger)
     if not source.get("sha256") or not source.get("url"):
         raise ValueError("MOF candidate has no source document hash/URL")
 
@@ -216,9 +222,9 @@ def run(root: Path = ROOT) -> dict:
     root = root.resolve()
     old = subprocess.run(
         ["git", "-C", str(root), "show", "HEAD:data/master/master.csv"],
-        capture_output=True, check=True, text=True, encoding="utf-8",
+        capture_output=True, check=True,
     ).stdout
-    base = _read_rows(old)
+    base = _read_rows(old.decode('utf-8'))
     candidate = _read_rows((root / "data/master/master.csv").read_text(encoding="utf-8"))
     ledger = json.loads((root / "data/review/integrity_legacy_acceptances.json")
                         .read_text(encoding="utf-8"))
@@ -231,7 +237,8 @@ def run(root: Path = ROOT) -> dict:
     cases, totals = build_review(
         base, candidate, ledger, source, detected_at=now, run_url=url)
     write_generated(root, cases, generated_at=now, run_id=run_id,
-                    run_attempt=os.environ.get("GITHUB_RUN_ATTEMPT", ""), run_url=url)
+                    run_attempt=os.environ.get("GITHUB_RUN_ATTEMPT", ""), run_url=url,
+                    base_master_sha256=hashlib.sha256(old).hexdigest())
     print(json.dumps(totals | {"review_csv": str(OUT),
                                "source_hash": source["sha256"],
                                "run_url": url}, ensure_ascii=False))

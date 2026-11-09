@@ -1,0 +1,272 @@
+{
+  "schema_version": 1,
+  "decision": "APPROVED_DELIST",
+  "approved_at": "2026-11-08T13:52:32Z",
+  "approved_by": "User explicit approval in this conversation",
+  "instruction": "いいよ、差分には掲載してね",
+  "official_urls": [
+    "https://ofac.treasury.gov/recent-actions/20260824",
+    "https://main.un.org/securitycouncil/sites/default/files/2026/2026_NV_015_24Oct26.pdf",
+    "https://www.mof.go.jp/policy/international_policy/gaitame_kawase/gaitame/economic_sanctions/taliban_kankeisha_20261030.pdf"
+  ],
+  "cases": [
+    {
+      "match_key": "abuahmadakhlaq",
+      "display_name": "Abu Ahmad Akhlaq",
+      "before": {
+        "match_key": "abuahmadakhlaq",
+        "display_name": "Abu Ahmad Akhlaq",
+        "status": "有効",
+        "risk_type": "旧登録・一次出典未確認／制裁リスト",
+        "risk_level": "高",
+        "first_seen_ms": "1748573587000",
+        "last_updated_ms": "1788040002931",
+        "sources": "OFAC;財務省",
+        "categories": "財務省:タリバーン関係者等",
+        "remark": "制裁リスト（財務省：タリバーン関係者等／OFAC）\n旧登録・一次出典未確認。旧登録の照合文字列として期限付き保持。現行公式掲載・本人同一性・当初取込意図を確認済みと扱わない。保持期限UTC: 2026-11-25T08:21:15Z",
+        "invalid_reason": "",
+        "review_flag": "LEGACY_UNVERIFIED_V1:ORIGIN_UNRESOLVED",
+        "variants": "[\"Abu Ahmad Akhlaq\"]"
+      },
+      "after": {
+        "match_key": "abuahmadakhlaq",
+        "display_name": "Abu Ahmad Akhlaq",
+        "status": "無効",
+        "risk_type": "旧登録・一次出典未確認／制裁リスト",
+        "risk_level": "高",
+        "first_seen_ms": "1748573587000",
+        "last_updated_ms": "1794145952004",
+        "sources": "",
+        "categories": "",
+        "remark": "制裁リスト（財務省：タリバーン関係者等／OFAC）\n旧登録・一次出典未確認。旧登録の照合文字列として期限付き保持。現行公式掲載・本人同一性・当初取込意図を確認済みと扱わない。保持期限UTC: 2026-11-25T08:21:15Z\n2026-11-08 利用者承認により掲載終了。OFAC 2026-08-24、国連 2026-10-24、日本 2026-10-30の掲載終了を確認。有効スクリーニング対象から除外。",
+        "invalid_reason": "全ての出所から掲載が無くなったため無効化（制裁解除または統廃合）",
+        "review_flag": "APPROVED_LEGACY_DELIST_20261108",
+        "variants": "[\"Abu Ahmad Akhlaq\"]"
+      },
+      "withdrawn_acceptance": {
+        "accepted_master_sha256": "5cbf3be1d607db26c026a08ebe8b38516c799c4cf964e19cb7ae94858af2c5ba",
+        "accepted_review_id": "ef089eb8a0f7226ed335fd642e090f6ea4ddf36b7dfe96781aaca0c4d7b2ba55",
+        "classification": "ORIGIN_UNRESOLVED",
+        "master_key": "abuahmadakhlaq",
+        "original_review_id": "2c9732a188048580b1e063cc52b5d7a5c5ea424db876b93528beca525a88fcb0",
+        "reviewed_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "after_sha256": "e538ee7b30c55b445d3e2df5e7947af9235489d03c7d6ef22b73985bad04b0ff"
+    },
+    {
+      "match_key": "abuahmadal-shami",
+      "display_name": "Abu Ahmad al-Shami",
+      "before": {
+        "match_key": "abuahmadal-shami",
+        "display_name": "Abu Ahmad al-Shami",
+        "status": "有効",
+        "risk_type": "旧登録・一次出典未確認／制裁リスト",
+        "risk_level": "高",
+        "first_seen_ms": "1749171596000",
+        "last_updated_ms": "1788040002931",
+        "sources": "OFAC;財務省",
+        "categories": "財務省:タリバーン関係者等",
+        "remark": "制裁リスト（財務省：タリバーン関係者等／OFAC）\n旧登録・一次出典未確認。旧登録の照合文字列として期限付き保持。現行公式掲載・本人同一性・当初取込意図を確認済みと扱わない。保持期限UTC: 2026-11-25T08:21:15Z",
+        "invalid_reason": "",
+        "review_flag": "LEGACY_UNVERIFIED_V1:ORIGIN_UNRESOLVED",
+        "variants": "[\"Abu Ahmad al-Shami\"]"
+      },
+      "after": {
+        "match_key": "abuahmadal-shami",
+        "display_name": "Abu Ahmad al-Shami",
+        "status": "無効",
+        "risk_type": "旧登録・一次出典未確認／制裁リスト",
+        "risk_level": "高",
+        "first_seen_ms": "1749171596000",
+        "last_updated_ms": "1794145952004",
+        "sources": "",
+        "categories": "",
+        "remark": "制裁リスト（財務省：タリバーン関係者等／OFAC）\n旧登録・一次出典未確認。旧登録の照合文字列として期限付き保持。現行公式掲載・本人同一性・当初取込意図を確認済みと扱わない。保持期限UTC: 2026-11-25T08:21:15Z\n2026-11-08 利用者承認により掲載終了。OFAC 2026-08-24、国連 2026-10-24、日本 2026-10-30の掲載終了を確認。有効スクリーニング対象から除外。",
+        "invalid_reason": "全ての出所から掲載が無くなったため無効化（制裁解除または統廃合）",
+        "review_flag": "APPROVED_LEGACY_DELIST_20261108",
+        "variants": "[\"Abu Ahmad al-Shami\"]"
+      },
+      "withdrawn_acceptance": {
+        "accepted_master_sha256": "d1cd3679bf6f3b33bff09654f50e12b05f285ff81e162d7a9fd092165e945fee",
+        "accepted_review_id": "06db12b3e60e67bb92238f6140ed9a3923530c8d2dcaa66a3e33ee665d5410e3",
+        "classification": "ORIGIN_UNRESOLVED",
+        "master_key": "abuahmadal-shami",
+        "original_review_id": "6c08f5c254caf426020537779f8161816b8851ca15802c3bbf64503e54413f62",
+        "reviewed_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "after_sha256": "e54899f4838c816e21ee98765b04922471643bf211923ef469a74c76eb9c0ebc"
+    },
+    {
+      "match_key": "abual-darda",
+      "display_name": "Abu al-Darda'",
+      "before": {
+        "match_key": "abual-darda",
+        "display_name": "Abu al-Darda'",
+        "status": "有効",
+        "risk_type": "旧登録・一次出典未確認／制裁リスト",
+        "risk_level": "高",
+        "first_seen_ms": "1711631401000",
+        "last_updated_ms": "1787952019743",
+        "sources": "OFAC;財務省",
+        "categories": "財務省:タリバーン関係者等",
+        "remark": "制裁リスト（財務省：タリバーン関係者等／OFAC）\n旧登録・一次出典未確認。旧登録の照合文字列として期限付き保持。現行公式掲載・本人同一性・当初取込意図を確認済みと扱わない。保持期限UTC: 2026-11-25T08:21:15Z",
+        "invalid_reason": "",
+        "review_flag": "LEGACY_UNVERIFIED_V1:ORIGIN_UNRESOLVED",
+        "variants": "[\"Abu al-Darda'\"]"
+      },
+      "after": {
+        "match_key": "abual-darda",
+        "display_name": "Abu al-Darda'",
+        "status": "無効",
+        "risk_type": "旧登録・一次出典未確認／制裁リスト",
+        "risk_level": "高",
+        "first_seen_ms": "1711631401000",
+        "last_updated_ms": "1794145952004",
+        "sources": "",
+        "categories": "",
+        "remark": "制裁リスト（財務省：タリバーン関係者等／OFAC）\n旧登録・一次出典未確認。旧登録の照合文字列として期限付き保持。現行公式掲載・本人同一性・当初取込意図を確認済みと扱わない。保持期限UTC: 2026-11-25T08:21:15Z\n2026-11-08 利用者承認により掲載終了。OFAC 2026-08-24、国連 2026-10-24、日本 2026-10-30の掲載終了を確認。有効スクリーニング対象から除外。",
+        "invalid_reason": "全ての出所から掲載が無くなったため無効化（制裁解除または統廃合）",
+        "review_flag": "APPROVED_LEGACY_DELIST_20261108",
+        "variants": "[\"Abu al-Darda'\"]"
+      },
+      "withdrawn_acceptance": {
+        "accepted_master_sha256": "c4fc456ddf8a8e18c61182beb5e16762be0358037f4c4ad7848e36cc94ac0f6d",
+        "accepted_review_id": "925a34cabb60c3673febd2611dd2b8247c16243c90d7b46b16ac212732c9dc16",
+        "classification": "ORIGIN_UNRESOLVED",
+        "master_key": "abual-darda",
+        "original_review_id": "0034715b4ad75c48b7a3370e45699c5e1d776d1b00da5e293558bb5082b95920",
+        "reviewed_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "after_sha256": "c15161e1cfc6354638b48876d39f74f080d0b1730d4ca6c2eb00dd00aa619a6f"
+    },
+    {
+      "match_key": "bassamahmadal-hasri",
+      "display_name": "BASSAM AHMAD AL-HASRI",
+      "before": {
+        "match_key": "bassamahmadal-hasri",
+        "display_name": "BASSAM AHMAD AL-HASRI",
+        "status": "有効",
+        "risk_type": "旧登録・一次出典未確認／制裁リスト",
+        "risk_level": "高",
+        "first_seen_ms": "1648719374000",
+        "last_updated_ms": "1788039040433",
+        "sources": "OFAC;財務省",
+        "categories": "財務省:タリバーン関係者等",
+        "remark": "制裁リスト（財務省：タリバーン関係者等／OFAC）\n旧登録・一次出典未確認。旧登録の照合文字列として期限付き保持。現行公式掲載・本人同一性・当初取込意図を確認済みと扱わない。保持期限UTC: 2026-11-25T08:21:15Z",
+        "invalid_reason": "",
+        "review_flag": "LEGACY_UNVERIFIED_V1:ORIGIN_UNRESOLVED",
+        "variants": "[\"AL-HASRI, Bassam Ahmad\", \"BASSAM AHMAD AL-HASRI\"]"
+      },
+      "after": {
+        "match_key": "bassamahmadal-hasri",
+        "display_name": "BASSAM AHMAD AL-HASRI",
+        "status": "無効",
+        "risk_type": "旧登録・一次出典未確認／制裁リスト",
+        "risk_level": "高",
+        "first_seen_ms": "1648719374000",
+        "last_updated_ms": "1794145952004",
+        "sources": "",
+        "categories": "",
+        "remark": "制裁リスト（財務省：タリバーン関係者等／OFAC）\n旧登録・一次出典未確認。旧登録の照合文字列として期限付き保持。現行公式掲載・本人同一性・当初取込意図を確認済みと扱わない。保持期限UTC: 2026-11-25T08:21:15Z\n2026-11-08 利用者承認により掲載終了。OFAC 2026-08-24、国連 2026-10-24、日本 2026-10-30の掲載終了を確認。有効スクリーニング対象から除外。",
+        "invalid_reason": "全ての出所から掲載が無くなったため無効化（制裁解除または統廃合）",
+        "review_flag": "APPROVED_LEGACY_DELIST_20261108",
+        "variants": "[\"AL-HASRI, Bassam Ahmad\", \"BASSAM AHMAD AL-HASRI\"]"
+      },
+      "withdrawn_acceptance": {
+        "accepted_master_sha256": "4ef2b4e8a4f936bf5b847ec05a9885abf434439ea3823462c52d1ca2af61a232",
+        "accepted_review_id": "cd7c0c1b9808206316748cf26d5dfd664087404e4995577a419b5272cbab0f22",
+        "classification": "ORIGIN_UNRESOLVED",
+        "master_key": "bassamahmadal-hasri",
+        "original_review_id": "327b7b329df7223a80a69397a09ba14de9f4697bb4a83c0d28c38f89a1ae8dba",
+        "reviewed_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "after_sha256": "b9c5ff7cb96764a02c2376ddda8b198430f217b22e04e0c4e591e9e2c49da3f9"
+    },
+    {
+      "match_key": "bassamahmadhusari",
+      "display_name": "Bassam Ahmad Husari",
+      "before": {
+        "match_key": "bassamahmadhusari",
+        "display_name": "Bassam Ahmad Husari",
+        "status": "有効",
+        "risk_type": "旧登録・一次出典未確認／制裁リスト",
+        "risk_level": "高",
+        "first_seen_ms": "1748573587000",
+        "last_updated_ms": "1788040002931",
+        "sources": "OFAC;財務省",
+        "categories": "財務省:タリバーン関係者等",
+        "remark": "制裁リスト（財務省：タリバーン関係者等／OFAC）\n旧登録・一次出典未確認。旧登録の照合文字列として期限付き保持。現行公式掲載・本人同一性・当初取込意図を確認済みと扱わない。保持期限UTC: 2026-11-25T08:21:15Z",
+        "invalid_reason": "",
+        "review_flag": "LEGACY_UNVERIFIED_V1:ORIGIN_UNRESOLVED",
+        "variants": "[\"Bassam Ahmad Husari\"]"
+      },
+      "after": {
+        "match_key": "bassamahmadhusari",
+        "display_name": "Bassam Ahmad Husari",
+        "status": "無効",
+        "risk_type": "旧登録・一次出典未確認／制裁リスト",
+        "risk_level": "高",
+        "first_seen_ms": "1748573587000",
+        "last_updated_ms": "1794145952004",
+        "sources": "",
+        "categories": "",
+        "remark": "制裁リスト（財務省：タリバーン関係者等／OFAC）\n旧登録・一次出典未確認。旧登録の照合文字列として期限付き保持。現行公式掲載・本人同一性・当初取込意図を確認済みと扱わない。保持期限UTC: 2026-11-25T08:21:15Z\n2026-11-08 利用者承認により掲載終了。OFAC 2026-08-24、国連 2026-10-24、日本 2026-10-30の掲載終了を確認。有効スクリーニング対象から除外。",
+        "invalid_reason": "全ての出所から掲載が無くなったため無効化（制裁解除または統廃合）",
+        "review_flag": "APPROVED_LEGACY_DELIST_20261108",
+        "variants": "[\"Bassam Ahmad Husari\"]"
+      },
+      "withdrawn_acceptance": {
+        "accepted_master_sha256": "11634a2d9a79ff021562b1ae917b7250ed91d355d191d6bcb68db8032512d98a",
+        "accepted_review_id": "f335aad7b09beba5eb0979d55920e9708f6e9268c36389250ac7be6ee92c56cb",
+        "classification": "ORIGIN_UNRESOLVED",
+        "master_key": "bassamahmadhusari",
+        "original_review_id": "86b4df37c5a928083c06dcea202cfb8f5e18c17171bbef4195dde0558698bfc1",
+        "reviewed_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "after_sha256": "3bb895a67ce83f9baab2c0018c958940ff1a1ed91ee3da572b760e16a83d8c73"
+    },
+    {
+      "match_key": "iyadnazmisalihkhalil",
+      "display_name": "IYAD NAZMI SALIH KHALIL",
+      "before": {
+        "match_key": "iyadnazmisalihkhalil",
+        "display_name": "IYAD NAZMI SALIH KHALIL",
+        "status": "有効",
+        "risk_type": "旧登録・一次出典未確認／制裁リスト",
+        "risk_level": "高",
+        "first_seen_ms": "1648719374000",
+        "last_updated_ms": "1788039040433",
+        "sources": "OFAC;財務省",
+        "categories": "財務省:タリバーン関係者等",
+        "remark": "制裁リスト（財務省：タリバーン関係者等／OFAC）\n旧登録・一次出典未確認。旧登録の照合文字列として期限付き保持。現行公式掲載・本人同一性・当初取込意図を確認済みと扱わない。保持期限UTC: 2026-11-25T08:21:15Z",
+        "invalid_reason": "",
+        "review_flag": "LEGACY_UNVERIFIED_V1:ORIGIN_UNRESOLVED",
+        "variants": "[\"IYAD NAZMI SALIH KHALIL\", \"KHALIL, Iyad Nazmi Salih\"]"
+      },
+      "after": {
+        "match_key": "iyadnazmisalihkhalil",
+        "display_name": "IYAD NAZMI SALIH KHALIL",
+        "status": "無効",
+        "risk_type": "旧登録・一次出典未確認／制裁リスト",
+        "risk_level": "高",
+        "first_seen_ms": "1648719374000",
+        "last_updated_ms": "1794145952004",
+        "sources": "",
+        "categories": "",
+        "remark": "制裁リスト（財務省：タリバーン関係者等／OFAC）\n旧登録・一次出典未確認。旧登録の照合文字列として期限付き保持。現行公式掲載・本人同一性・当初取込意図を確認済みと扱わない。保持期限UTC: 2026-11-25T08:21:15Z\n2026-11-08 利用者承認により掲載終了。OFAC 2026-08-24、国連 2026-10-24、日本 2026-10-30の掲載終了を確認。有効スクリーニング対象から除外。",
+        "invalid_reason": "全ての出所から掲載が無くなったため無効化（制裁解除または統廃合）",
+        "review_flag": "APPROVED_LEGACY_DELIST_20261108",
+        "variants": "[\"IYAD NAZMI SALIH KHALIL\", \"KHALIL, Iyad Nazmi Salih\"]"
+      },
+      "withdrawn_acceptance": {
+        "accepted_master_sha256": "f9ce47cb9078f35dcbce0b2994bd6d892ea549bec0e8b6df9bfef4ab539d833a",
+        "accepted_review_id": "161d181b6e7e18b48b0c482650a5ea539eade5ef0104aa5af9f08759223dda4b",
+        "classification": "ORIGIN_UNRESOLVED",
+        "master_key": "iyadnazmisalihkhalil",
+        "original_review_id": "d215896f8c20f3378f9366e6162c9ac123c493f4d47f55af4f3fd5924163438e",
+        "reviewed_evidence_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      "after_sha256": "d1ea5fdad7c4427da11ad752037c4442f9cf2848c6b46ef1ff74996e3af15df8"
+    }
+  ]
+}
