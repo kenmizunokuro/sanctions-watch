@@ -63,6 +63,17 @@ def reconcile(root: Path, report_path: Path) -> dict:
         rows = [dict(zip(R.COLS, row, strict=True)) for row in reader]
     if len(rows) != len(by_key) or {row["match_key"] for row in rows} != by_key.keys():
         raise ValueError("旧登録の候補CSVと監査報告の対象行が一致しません")
+    publication = failure.get('legacy_publication')
+    if publication is not None:
+        if (not isinstance(publication, dict)
+                or publication.get('status') != 'PUBLISHED' or publication.get('count') != len(rows)
+                or publication.get('sha256') != hashlib.sha256((root / R.OUT).read_bytes()).hexdigest()
+                or not checked_at <= R._date(publication['generated_at']) <= finished_at):
+            raise ValueError('旧登録の候補CSVと今回の公開証跡が一致しません')
+    try:
+        R._indexed([list(row.values()) for row in rows])
+    except ValueError as exc:
+        raise ValueError(f'旧登録の候補CSVが不正です: {exc}') from exc
 
     base = R._read_rows((root / "data/master/master.csv").read_text(encoding="utf-8"))
     keys = {row["match_key"] for row in bindings}
@@ -76,8 +87,14 @@ def reconcile(root: Path, report_path: Path) -> dict:
     for row in rows:
         binding = by_key[row["match_key"]]
         key, review_id = binding["match_key"], binding["accepted_review_id"]
-        if not checked_at <= datetime.fromisoformat(row["検知日時UTC"]) <= finished_at:
+        observed_at = R._date(row['検知日時UTC'])
+        if (observed_at > finished_at or (publication is None and observed_at < checked_at)
+                or (publication is not None and observed_at > R._date(publication['generated_at']))):
             raise ValueError(f"旧登録の候補CSVの検知日時が実行範囲外です: {key}")
+        observation_url = row['実行URL']
+        if (publication is None and observation_url != run_url
+                or observation_url.rsplit('/actions/runs/', 1)[0] != run_url.rsplit('/actions/runs/', 1)[0]):
+            raise ValueError(f'旧登録の候補CSVの実行URLが公開証跡と一致しません: {key}')
         approval = accepted.get(review_id)
         prior = base.get(key)
         current = audited_rows.get(row["候補master SHA256"])
@@ -85,7 +102,14 @@ def reconcile(root: Path, report_path: Path) -> dict:
                 or R._hash(prior) != approval["accepted_master_sha256"]
                 or current is None or current["match_key"] != key):
             raise ValueError(f"旧登録の候補CSVを承認台帳・監査対象行と照合できません: {key}")
-        expected = R.review_case(prior, current, fetch, detected_at=row["検知日時UTC"], run_url=run_url)
+        expected = R.review_case(prior, current, fetch, detected_at=row["検知日時UTC"], run_url=observation_url)
+        # Historical packets used hashes of complete rows for the case ID.
+        # Their exact audit bindings remain valid after the stable-ID upgrade.
+        old_id = 'MOF-LEGACY-' + hashlib.sha256('\n'.join((
+            current['match_key'], R._hash(prior), R._hash(current), fetch['sha256']
+        )).encode()).hexdigest()[:20]
+        if row['候補ID'] == old_id:
+            expected[0] = old_id
         changed_fields = sorted(field for field in prior.keys() | current.keys()
                                 if field not in prior or field not in current or prior[field] != current[field])
         if expected != list(row.values()) or changed_fields != binding["changed_fields"]:

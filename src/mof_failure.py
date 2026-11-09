@@ -10,7 +10,6 @@ import gzip
 import hashlib
 import json
 import os
-import shutil
 import subprocess
 import sys
 import tempfile
@@ -226,11 +225,27 @@ def persist(root: Path, record: dict) -> bool:
                         }
                         print(f'MOF candidate observations could not be verified; table update withheld: {exc}',
                               file=sys.stderr)
-                if review_file.exists() and _review_case_count(review_file):
-                    target = clean / REVIEW_PATH
-                    target.parent.mkdir(parents=True, exist_ok=True)
-                    shutil.copyfile(review_file, target)
-                    targets.append(REVIEW_PATH.as_posix())
+                if review_file.exists():
+                    from . import mof_legacy_review as legacy
+                    try:
+                        current, receipt = legacy.read_generated(root, record)
+                        rows = legacy.retain_first_detection(current, legacy.read_csv(clean))
+                        target = clean / REVIEW_PATH
+                        target.parent.mkdir(parents=True, exist_ok=True)
+                        with target.open('w', encoding='utf-8', newline='') as stream:
+                            csv.writer(stream, lineterminator='\n').writerows([legacy.COLS, *rows])
+                        targets.append(REVIEW_PATH.as_posix())
+                        published_record['legacy_publication'] = {
+                            'status': 'PUBLISHED', 'count': len(rows),
+                            'generated_at': receipt['generated_at'],
+                            'sha256': hashlib.sha256(target.read_bytes()).hexdigest(),
+                        }
+                    except (OSError, ValueError, KeyError, TypeError, csv.Error) as exc:
+                        published_record['legacy_publication'] = {
+                            'status': 'WITHHELD', 'reason': str(exc)[:500],
+                        }
+                        print(f'MOF legacy observations could not be verified; table update withheld: {exc}',
+                              file=sys.stderr)
                 destination.write_text(json.dumps(published_record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
                 _git(clean, "add", "--", *targets)
                 _git(clean, "-c", "user.name=sanctions-watch[bot]",
@@ -240,7 +255,7 @@ def persist(root: Path, record: dict) -> bool:
                 if pushed.returncode == 0:
                     print(f"MOF failure recorded: {record['run_url']}")
                     from .mof_legacy_reconcile import write_reconciliation
-                    write_reconciliation(root, clean, record)
+                    write_reconciliation(root, clean, published_record)
                     return True
             raise RuntimeError("MOF failure-only push rejected after 3 retries")
         finally:
