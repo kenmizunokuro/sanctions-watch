@@ -71065,7 +71065,8 @@ voloshynoleg,Voloshyn Oleg,有効,制裁リスト,高,1788485206502,178848520650
 voloshynoleh,Voloshyn Oleh,有効,制裁リスト,高,1788485206502,1788485206502,OFAC,OFAC:SDN,制裁リスト（OFAC：SDN）,,,"[""Voloshyn Oleh""]"
 volosovikaleksandraleksandrovich,Volosovik Aleksandr Aleksandrovich,有効,制裁リスト,高,1788485206502,1788485206502,OFAC,OFAC:SDN,制裁リスト（OFAC：SDN）,,,"[""Volosovik Aleksandr Aleksandrovich""]"
 voltagllc,VOLTAG LLC,有効,制裁リスト,高,1745545941000,1788040337525,OFAC,OFAC:SDN,制裁リスト（OFAC：SDN）,,,"[""VOLTAG LLC""]"
-voltashippingservicesfzco,Volta Shipping Services FZCO,有効,制裁リスト,高,1784249483000,1788040337525,OFAC,OFAC:SDN,制裁リスト（OFAC：SDN）,,,"[""Volta Shipping Services FZCO""]"
+voltashippingservicesfzco,Volta Shipping Services FZCO,有効,制裁リスト（OFAC旧別名）,高,1784249483000,1788040337525,OFAC,OFAC:SDN,"制裁リスト（OFAC：SDN）
+OFAC別名履歴: VOLTA SHIPPING SERVICES FZCO / 現行別名: VOLTA CONTAINER LINE FZCO / 現行主名称: VOLTA SHIPPING SERVICES LLC / FixedRef:58138 / 公表日:2026-11-09 / 一次資料:https://ofac.treasury.gov/recent-actions/20261109 / 保持期限UTC:2026-11-25T08:21:15Z",,OFAC_ALIAS_HISTORY_V1:58138:voltashippingservicesfzco,"[""Volta Shipping Services FZCO""]"
 voltashippingservicesllc,Volta Shipping Services LLC,有効,制裁リスト,高,1784249483000,1788040337525,OFAC,OFAC:SDN,制裁リスト（OFAC：SDN）,,,"[""Volta Shipping Services LLC""]"
 voltratranscorenergy,Voltra Transcor Energy,有効,制裁リスト,高,1748573582000,1788040337525,OFAC,OFAC:SDN,制裁リスト（OFAC：SDN）,,,"[""Voltra Transcor Energy""]"
 voltratranscorenergybvba,VOLTRA TRANSCOR ENERGY BVBA,有効,制裁リスト,高,1745545941000,1788040337525,OFAC,OFAC:SDN,制裁リスト（OFAC：SDN）,,,"[""VOLTRA TRANSCOR ENERGY BVBA""]"

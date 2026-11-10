@@ -67325,6 +67325,19 @@
         "imo": "9289166",
         "notice_date": "2026-11-05"
       }
+    },
+    {
+      "review_id": "2f9fcaf24412983b833155dcc5c1b10d1ad983516bdc420d903ef8a2af558b45",
+      "decision": "APPROVED_RETAIN",
+      "reviewed_by": "ユーザー承認（2026-11-10: いいよ）",
+      "reason": "同じFixedRef58138の別名変更。旧別名を履歴名称として有効スクリーニングに保持し、新別名を通常監視で追加する承認。",
+      "reviewed_at": "2026-11-10T01:01:57Z",
+      "expires_at": "2026-11-25T08:21:15Z",
+      "reviewed_evidence_sha256": "8f31ff6bd0fbfe37add8156a092441d98a7d7ef832632c16ce693a4fac2b0261",
+      "alias_history": {
+        "master_key": "voltashippingservicesfzco",
+        "party_id": "58138"
+      }
     }
   ],
   "schema_version": 1

@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "status": "APPLIED",
+  "count": 1,
+  "approval_sha256": "e73aabbe874096351e4edcba6a374e32c62a823ed1214db1edaf22d11b0b4758",
+  "reviewed_at": "2026-11-10T01:01:57Z",
+  "expires_at": "2026-11-25T08:21:15Z",
+  "applied_at": "2026-11-10T01:28:29Z",
+  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42735465252",
+  "outputs": {
+    "data/master/master.csv": "a6601a7cefbf8862346a410cdd1c9e1c2306a2781c2dc41000abaa5cc51ed5b2",
+    "data/review/integrity_retention_decisions.json": "3d17592a39914be993f52477d31eb94549f2d46c7ee543853e4ba32f853a885c",
+    "data/dashboard/list.csv": "bf70f1f98587e0f32f370276fcc1de611217be9867336e73db9cc4104832f964",
+    "data/dashboard/screening.csv.gz": "5ebe7fe96f4ec75dd0ecdd692a9846c26f64b3f4448447f0ae817d03f672d3ff",
+    "data/dashboard/changes.csv": "6b61c5f87e022c79112068aa73719d7c78832f6ffceed253718abce563b7a74a",
+    "data/diff/latest.csv": "7c5f72840df85d362c09cf05080704c866cb679fa0bb93a9b8c10a50e3d2c292",
+    "data/evidence/ofac_volta_alias_history.csv": "6342686374f8f1077b77d36c06219036071a55c70fd60e680e6a755dee94f8a7"
+  }
+}

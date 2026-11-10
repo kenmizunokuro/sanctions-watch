@@ -137,6 +137,8 @@
 2026-10-01 04:27:02,OFAC,掲載終了候補（要確認）,Maraya,制裁リスト（OFAC：SDN）; FixedRef=28301; event_id=eef66c298c11ec747f6da9c0385d3c50d1d19117e57c5b8d3803059d8081c4c7; SHA256=5afe67d5b6709be142c09ddd3550b58593d7a706e82cbd68a8001ffc3c90e28b,削除承認待ち（名簿は有効のまま・削除未反映）
 2026-09-23 23:32:21,OFAC,掲載終了候補（要確認）,Safari Club,制裁リスト（OFAC：SDN）; FixedRef=21264; event_id=51cd022b2b3bd6ed22e24f914240a2c1c1b97fd8588f94f006dfdec72d766556; SHA256=83553ea89120cba98271cd3724531dd3d603e27521c4b47be6548a3856ed068b,削除承認待ち（名簿は有効のまま・削除未反映）
 2026-09-23 23:32:21,OFAC,掲載終了候補（要確認）,Olenga Francois,制裁リスト（OFAC：SDN）; FixedRef=21263; event_id=51cd022b2b3bd6ed22e24f914240a2c1c1b97fd8588f94f006dfdec72d766556; SHA256=83553ea89120cba98271cd3724531dd3d603e27521c4b47be6548a3856ed068b,削除承認待ち（名簿は有効のまま・削除未反映）
+2026-11-10 10:28:29,OFAC,変更,VOLTA SHIPPING SERVICES FZCO,制裁リスト（OFAC：SDN）,"制裁リスト（OFAC：SDN）
+OFAC別名履歴: VOLTA SHIPPING SERVICES FZCO / 現行別名: VOLTA CONTAINER LINE FZCO / 現行主名称: VOLTA SHIPPING SERVICES LLC / FixedRef:58138 / 公表日:2026-11-09 / 一次資料:https://ofac.treasury.gov/recent-actions/20261109 / 保持期限UTC:2026-11-25T08:21:15Z"
 2026-11-07 02:31:25,OFAC,追加,LOURDES,,制裁リスト（OFAC：SDN）
 2026-11-07 02:31:25,OFAC,追加,Frisian Faith Shipping Company Limited,,制裁リスト（OFAC：SDN）
 2026-11-07 02:31:25,OFAC,追加,Maria Cristina,,制裁リスト（OFAC：SDN）
@@ -5019,4 +5021,3 @@ OFAC船名履歴: NEDAS → ESPERANZA（2026-11-05公表時点）。旧名を保
 2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,KHANAFER Hicham Nmer,,制裁リスト（OFAC：SDN）
 2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,KANAFER Hisham,,制裁リスト（OFAC：SDN）
 2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,KANAFER Hicham,,制裁リスト（OFAC：SDN）
-2026-09-04 10:26:50,OFAC,初回同期（Advanced XML）,KHANAFIR Hisham,,制裁リスト（OFAC：SDN）
