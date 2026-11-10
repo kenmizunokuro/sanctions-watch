@@ -28255,15 +28255,6 @@
       "decision": "APPROVED_RETAIN",
       "expires_at": "2026-11-25T08:21:15Z",
       "reason": "Explicit production approval of the fixed7475 retention candidates; no current-listing or identity certification.",
-      "review_id": "694cd640cf640feb7264eec86eff40b34f6dfe69ea225abd41ec1fb88db34dbb",
-      "reviewed_at": "2026-10-26T08:21:15Z",
-      "reviewed_by": "User explicit approval in this conversation (OK, production scope)",
-      "reviewed_evidence_sha256": "1b0be1824e0752e52b8ad493e4f35972cd77877c9df153871e79c443d0ec009f"
-    },
-    {
-      "decision": "APPROVED_RETAIN",
-      "expires_at": "2026-11-25T08:21:15Z",
-      "reason": "Explicit production approval of the fixed7475 retention candidates; no current-listing or identity certification.",
       "review_id": "6953e2f5d04204fcd7a66a1c95d0cf80b896bbf56fb0c4020ef7cdf72d46574b",
       "reviewed_at": "2026-10-26T08:21:15Z",
       "reviewed_by": "User explicit approval in this conversation (OK, production scope)",
@@ -44689,15 +44680,6 @@
       "decision": "APPROVED_RETAIN",
       "expires_at": "2026-11-25T08:21:15Z",
       "reason": "Explicit production approval of the fixed7475 retention candidates; no current-listing or identity certification.",
-      "review_id": "a5d4718166808c0b98212911df43d91ec3dc3b25a53fcfa9b81e1eb641a446a7",
-      "reviewed_at": "2026-10-26T08:21:15Z",
-      "reviewed_by": "User explicit approval in this conversation (OK, production scope)",
-      "reviewed_evidence_sha256": "de6028ad97f347dca3b61a3e8a7195e4114ef0ea68e03c99f4c8dfee0e6f2bd4"
-    },
-    {
-      "decision": "APPROVED_RETAIN",
-      "expires_at": "2026-11-25T08:21:15Z",
-      "reason": "Explicit production approval of the fixed7475 retention candidates; no current-listing or identity certification.",
       "review_id": "a5d7205db5751272c2c6a4b9cd90d7ffa066dcfbca0199cafd7162b36b095c69",
       "reviewed_at": "2026-10-26T08:21:15Z",
       "reviewed_by": "User explicit approval in this conversation (OK, production scope)",
@@ -44815,15 +44797,6 @@
       "decision": "APPROVED_RETAIN",
       "expires_at": "2026-11-25T08:21:15Z",
       "reason": "Explicit production approval of the fixed7475 retention candidates; no current-listing or identity certification.",
-      "review_id": "a632e94f17a174b596370d8b386d9abe106026700fcc81aa301bde8382a9875f",
-      "reviewed_at": "2026-10-26T08:21:15Z",
-      "reviewed_by": "User explicit approval in this conversation (OK, production scope)",
-      "reviewed_evidence_sha256": "0aa6e422694c5038e987f4dfad4e6e9269bc4267bb073a2d58359c0673a661ef"
-    },
-    {
-      "decision": "APPROVED_RETAIN",
-      "expires_at": "2026-11-25T08:21:15Z",
-      "reason": "Explicit production approval of the fixed7475 retention candidates; no current-listing or identity certification.",
       "review_id": "a63c21c23441c67f77222ea925c16c9c8debe4b8099cc817a3d0350a4927971d",
       "reviewed_at": "2026-10-26T08:21:15Z",
       "reviewed_by": "User explicit approval in this conversation (OK, production scope)",
@@ -44837,15 +44810,6 @@
       "reviewed_at": "2026-10-26T08:21:15Z",
       "reviewed_by": "User explicit approval in this conversation (OK, production scope)",
       "reviewed_evidence_sha256": "7fd2b2e9616fe755edc1ac80224862dc6199fac69be23fe85eab9486136263dc"
-    },
-    {
-      "decision": "APPROVED_RETAIN",
-      "expires_at": "2026-11-25T08:21:15Z",
-      "reason": "Explicit production approval of the fixed7475 retention candidates; no current-listing or identity certification.",
-      "review_id": "a6599e53402aeb54f1f0b533f4f994deb499dd21f37d0842ebc6a19228f79690",
-      "reviewed_at": "2026-10-26T08:21:15Z",
-      "reviewed_by": "User explicit approval in this conversation (OK, production scope)",
-      "reviewed_evidence_sha256": "a4b21885a29a117a20937333592d07c4d26d14c5fc87901b6a0fe29164daa433"
     },
     {
       "decision": "APPROVED_RETAIN",
