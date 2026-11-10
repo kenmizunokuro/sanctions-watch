@@ -31,8 +31,8 @@ permissions:
 
 concurrency:
   group: sanctions-watch-commit
-  queue: max
   cancel-in-progress: false
+  queue: max
 
 jobs:
   crypto:
