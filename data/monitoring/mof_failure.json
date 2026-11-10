@@ -1,38 +1,59 @@
 {
   "outcome": "failure",
   "source": "mof",
-  "finished_at": "2026-11-09T22:46:32Z",
-  "run_id": "42713760403",
+  "finished_at": "2026-11-10T01:33:17Z",
+  "run_id": "42735465252",
   "run_attempt": "1",
-  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42713760403",
-  "message": "MOF fetched and diffed; review required; master not applied",
+  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42735465252",
+  "message": "MOF fetched and diffed; integrity BLOCKED; master not applied",
   "fetch": {
     "schema_version": 1,
-    "run_id": "42713760403",
+    "run_id": "42735465252",
     "run_attempt": "1",
-    "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42713760403",
-    "checked_at": "2026-11-09T22:43:25Z",
+    "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42735465252",
+    "checked_at": "2026-11-10T01:29:05Z",
     "sha256": "71eaf728c702c881fb13856043f63d42276094c79cf91bae4ad90eadfa3caadd",
     "url": "https://www.mof.go.jp/policy/international_policy/gaitame_kawase/gaitame/economic_sanctions/shisantouketsu20261105.csv",
-    "raw_path": "data/raw/mof/20261109T224319Z__shisantouketsu20261105.csv.gz",
+    "raw_path": "data/raw/mof/20261110T012858Z__shisantouketsu20261105.csv.gz",
     "asof": "令和8年11月5日",
     "record_count": 15249,
-    "etag": "\"3296ec-65f6fe79b0094\"",
+    "etag": "\"3296ec-65f6fe795e4cc\"",
     "last_modified": "Wed, 04 Nov 2026 09:21:31 GMT",
     "pending_count": 79,
     "master_applied": false,
-    "pending_sha256": "b4fae0ffac9e5a4a74ee873c108ebcd4b168fb48b686cd58a64925fc10d64fd8"
+    "pending_sha256": "8b77c818dc6952537f733a044b10a5b83320759c27efea2b8adbb0e7e8643d88"
   },
-  "stage": "approval_required",
+  "stage": "integrity_blocked",
+  "integrity": {
+    "status": "BLOCKED",
+    "publication_allowed": false,
+    "report": "data/integrity_audit/20261110T013310599894Z__5078771d0a2d327a__ec3a275d.json.gz",
+    "report_sha256": "cdcbc2669ddbfc9ab5ed83836956248e30b07efe81fc6421b1166110c65a4e3b",
+    "counts": {
+      "ALIAS_HISTORY_EVIDENCE_INVALID": 1,
+      "CATEGORY_LABEL_UNRESOLVED": 8,
+      "EXTRA_REGISTRATION": 7023,
+      "WEAK_ALIAS_ACTIVE": 2878
+    },
+    "blocking_counts": {
+      "ALIAS_HISTORY_EVIDENCE_INVALID": 1
+    },
+    "reasons": [
+      {
+        "kind": "ALIAS_HISTORY_EVIDENCE_INVALID",
+        "detail": "old alias is current again; re-review required"
+      }
+    ]
+  },
   "pending_publication": {
     "status": "PUBLISHED",
     "count": 79,
-    "sha256": "b4fae0ffac9e5a4a74ee873c108ebcd4b168fb48b686cd58a64925fc10d64fd8"
+    "sha256": "8b77c818dc6952537f733a044b10a5b83320759c27efea2b8adbb0e7e8643d88"
   },
   "legacy_publication": {
     "status": "PUBLISHED",
     "count": 0,
-    "generated_at": "2026-11-09T22:46:30Z",
+    "generated_at": "2026-11-10T01:33:15Z",
     "sha256": "d00177bd6142480ea6db3e10c393fb8a3fbf271d213a4d0f0e17544e612487a5"
   }
 }
