@@ -1,2 +1,2 @@
 監査終了日時（JST）,証跡状態,停止件数,停止理由,監査報告SHA256,GitHub実行URL
-2026-11-10 09:57:30,BLOCKED,1,監査停止1件：EXTRA_REGISTRATION 1件／対象（最大10件）：Volta Shipping Services FZCO,1c5c8e3e46318e9866ce09a1f6279cbfd01ca320da7099e1c14540c4dcdbcc27,https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42731330098
+2026-11-10 16:33:46,BLOCKED,310,監査停止310件：WEAK_ALIAS_ACTIVE 310件／対象（最大10件）：1-P、１・Ｐ、Aber Sabil、Abo Ghaith、Abosslah、Abou al Moukatel、Abou Mouqatel、Abou Shaukan、Abou Youcef、ABU-AL QASSIM OMAR Musab Boukrin,e85244e5de7c6d7b2cc16f8228163ae94ddbd2901049432655686732576f6270,https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42774569426
