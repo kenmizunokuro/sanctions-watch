@@ -51,3 +51,18 @@ Exactly4 official targets; existing project-identifying collector/UN validator; 
 Baseline: clean linked worktree reused on feat/un-transport-evidence-20261111 at0958cd7. Existing33 UN tests pass. Prior full814/offline213 checks passed before this change.
 
 Ruling: cloud-packaged helper scripts are not readable in this runtime; track the execution ledger and test logs in a local ignored workspace, with completion evidence summarized here. This changes bookkeeping only.
+
+### Task3: Explicit production challenge classification after measured evidence
+
+**Files:** Modify src/un_sources.py,src/un_watch.py,src/un_transport_probe.py and tests/test_un_watch.py. Curate GitHub JSON/diagnosis under docs/evidence/un-transport-20261111/.
+
+**Interfaces:** access_challenge(headers)->str returns only challenge/captcha or empty; UNAccessChallengeError derives from UNTransportError. The watcher's read path rejects an explicit challenge before document parsing/archiving; diagnostic uses the same predicate.
+
+- [ ] RED: HTTP200/202 explicit challenge produces a transport challenge error and preserves XML/previous document/master; empty202 without header stays generic; healthy CloudFront responses remain valid.
+- [ ] Implement the narrow predicate/error and read-path guard.
+- [ ] GREEN focused tests, then the full suite/offline checks; record measured GitHub evidence and RSS unavailability.
+- [ ] Include this task in the one final whole-branch review and PR checks. Validate new main run classification after merge, preserving explicit HTML errors and the master.
+
+Ruling: extend this same diagnosis change with source-error classification only after the GitHub header evidence confirmed the cause. It changes error specificity, not source acceptance or import decisions; an erroneous broad classification would create false outages, so explicit-header and healthy-CloudFront tests guard it.
+
+Task1 safety addition: a controlled --out data/state.json reproduction corrupted a temporary sentinel under the original CLI. Added RED→GREEN protection for business paths, symlinks, unrelated existing JSON and non-JSON outputs; own reports remain refreshable. This is part of the original no-business-writes requirement.

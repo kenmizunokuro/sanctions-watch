@@ -178,6 +178,11 @@ def _document(root, key, url, previous, parser, fetcher):
 
 def _read_document(root, key, url, previous, parser, fetched):
     U.validate_un_url(fetched.final_url or url)
+    challenge = U.access_challenge(fetched.headers)
+    if challenge:
+        raise U.UNAccessChallengeError(
+            f'UN access confirmation required: HTTP {fetched.http_status}; '
+            f'x-amzn-waf-action={challenge}; official document not delivered')
     if fetched.not_modified:
         path = previous.get('raw_path', '')
         if not path:

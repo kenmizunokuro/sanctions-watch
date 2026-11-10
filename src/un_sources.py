@@ -37,6 +37,19 @@ class UNTransportError(RuntimeError):
     """
 
 
+class UNAccessChallengeError(UNTransportError):
+    """An explicit access-confirmation header prevents document validation."""
+
+
+def access_challenge(headers) -> str:
+    """Recognize only the documented marker, never infer it from status alone."""
+    for key, value in headers.items():
+        if str(key).lower() == 'x-amzn-waf-action':
+            action = str(value).strip().lower()
+            return action if action in {'challenge', 'captcha'} else ''
+    return ''
+
+
 def digest(value) -> str:
     return hashlib.sha256(json.dumps(value, ensure_ascii=False, sort_keys=True,
                                      separators=(',', ':')).encode()).hexdigest()

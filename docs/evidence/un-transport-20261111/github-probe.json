@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-10T15:38:37Z",
+  "probe_completed": true,
+  "observations": [
+    {
+      "source": "xml",
+      "url": "https://scsanctions.un.org/resources/xml/en/name/consolidated.xml",
+      "final_url": "https://unsolprodfiles.blob.core.windows.net/publiclegacyxmlfiles/EN/consolidatedLegacyByNAME.xml",
+      "http_status": 200,
+      "body_bytes": 2177566,
+      "sha256": "bf4987beac908415f9148bb8cab2eb3796724f0ca54129b418dd146e7d9caf9b",
+      "etag": "\"0x8DF3EBDF3CA63A9\"",
+      "last_modified": "Tue, 10 Nov 2026 00:02:46 GMT",
+      "headers": {
+        "cache-control": "public, max-age=28800",
+        "content-length": "2177566",
+        "content-type": "application/xml",
+        "last-modified": "Tue, 10 Nov 2026 00:02:46 GMT",
+        "etag": "\"0x8DF3EBDF3CA63A9\"",
+        "server": "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0"
+      },
+      "transport_status": "HTTP200_UNVALIDATED"
+    },
+    {
+      "source": "updates",
+      "url": "https://main.un.org/securitycouncil/en/content/list-updates-unsc-consolidated-list",
+      "final_url": "https://main.un.org/securitycouncil/en/content/list-updates-unsc-consolidated-list",
+      "http_status": 202,
+      "body_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "etag": "",
+      "last_modified": "",
+      "headers": {
+        "server": "CloudFront",
+        "content-length": "0",
+        "x-amzn-waf-action": "challenge",
+        "cache-control": "no-store, max-age=0",
+        "content-type": "text/html; charset=UTF-8",
+        "x-cache": "Error from cloudfront",
+        "via": "1.1 a68dfffe125803043230783ec8e83a40.cloudfront.net (CloudFront)"
+      },
+      "transport_status": "ACCESS_CHALLENGE"
+    },
+    {
+      "source": "press_1267",
+      "url": "https://main.un.org/securitycouncil/en/sanctions/1267/press-releases",
+      "final_url": "https://main.un.org/securitycouncil/en/sanctions/1267/press-releases",
+      "http_status": 202,
+      "body_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "etag": "",
+      "last_modified": "",
+      "headers": {
+        "server": "CloudFront",
+        "content-length": "0",
+        "x-amzn-waf-action": "challenge",
+        "cache-control": "no-store, max-age=0",
+        "content-type": "text/html; charset=UTF-8",
+        "x-cache": "Error from cloudfront",
+        "via": "1.1 c9e462b6fec2db2b38560afd1b3c7ef8.cloudfront.net (CloudFront)"
+      },
+      "transport_status": "ACCESS_CHALLENGE"
+    },
+    {
+      "source": "rss",
+      "url": "https://main.un.org/securitycouncil/en/feed/1.0/updates_unsc_consolidated_list",
+      "final_url": "https://main.un.org/securitycouncil/en/feed/1.0/updates_unsc_consolidated_list",
+      "http_status": 202,
+      "body_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "etag": "",
+      "last_modified": "",
+      "headers": {
+        "server": "CloudFront",
+        "content-length": "0",
+        "x-amzn-waf-action": "challenge",
+        "cache-control": "no-store, max-age=0",
+        "content-type": "text/html; charset=UTF-8",
+        "x-cache": "Error from cloudfront",
+        "via": "1.1 e37d95da1c35dd507211b0f78a4a3a78.cloudfront.net (CloudFront)"
+      },
+      "transport_status": "ACCESS_CHALLENGE"
+    }
+  ]
+}
+

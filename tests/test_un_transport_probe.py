@@ -107,16 +107,32 @@ class UNTransportProbeTests(unittest.TestCase):
         self.items[RSS_URL].body=RSS
         self.assertNotIn('rss_shape',self.observation(self.probe(),RSS_URL))
 
+    def test_cli_rejects_business_paths_symlinks_and_unrelated_existing_json(self):
+        with tempfile.TemporaryDirectory() as folder, contextlib.chdir(folder):
+            Path('data').mkdir();Path('dist').mkdir()
+            Path('data/state.json').write_text('{"financial_state":true}')
+            Path('settings.json').write_text('{"settings":true}')
+            Path('dist/redirect.json').symlink_to('../data/state.json')
+            before = {p: p.read_bytes() for p in [Path('data/state.json'), Path('settings.json')]}
+            for out in ['data/state.json', 'data/new-report.json', 'dist/redirect.json', 'settings.json', 'dist/file.csv']:
+                with self.subTest(out=out),contextlib.redirect_stdout(io.StringIO()):
+                    with self.assertRaises(ValueError):self.P.main(['--out',out],fetcher=self.getter)
+            self.assertEqual(before, {p:p.read_bytes() for p in before})
+            self.assertFalse(Path('data/new-report.json').exists())
+
     def test_cli_writes_only_diagnostic_output_even_if_sources_fail(self):
         self.items[UPDATES].http_status=202;self.items[UPDATES].body=b''
         with tempfile.TemporaryDirectory() as folder,contextlib.chdir(folder):
             data=Path('data/master');data.mkdir(parents=True);(data/'master.csv').write_bytes(b'financial-master')
             Path('data/state.json').write_bytes(b'financial-state')
             before={str(p):p.read_bytes() for p in Path('data').rglob('*') if p.is_file()}
-            with contextlib.redirect_stdout(io.StringIO()):code=self.P.main(['--out','dist/probe.json'],fetcher=self.getter)
+            with contextlib.redirect_stdout(io.StringIO()):
+                code=self.P.main(['--out','dist/probe.json'],fetcher=self.getter)
+                self.items[UPDATES].http_status=200;self.items[UPDATES].body=b'<html>healthy again</html>'
+                code=self.P.main(['--out','dist/probe.json'],fetcher=self.getter)
             report=json.loads(Path('dist/probe.json').read_bytes())
             self.assertEqual(code,0);self.assertTrue(report['probe_completed'])
-            self.assertEqual(self.observation(report,UPDATES)['transport_status'],'EMPTY_202')
+            self.assertEqual(self.observation(report,UPDATES)['transport_status'],'HTTP200_UNVALIDATED')
             self.assertEqual(before,{str(p):p.read_bytes() for p in Path('data').rglob('*') if p.is_file()})
 
 

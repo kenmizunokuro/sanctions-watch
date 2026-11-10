@@ -28,3 +28,11 @@ Adopting RSS as a legal-list replacement is excluded: its current payload does n
 ## Completion
 
 Offline tests prove classification, safe redaction, continued observations after errors, unsafe RSS rejection and CLI output without business writes. Full regression remains green. A GitHub artifact provides the actual same-environment result. Subsequent recovery work must follow that result; HTTP202 is not reclassified as unchanged.
+
+## Confirmed GitHub result and production classification
+
+PR diagnostic42846398696 at2026-11-10T15:38:37Z returned XML200, while update-history, committee1267 and official RSS all returned empty202 with `x-amzn-waf-action: challenge`. This matches the AWS WAF ChallengeAction contract (https://docs.aws.amazon.com/waf/latest/APIReference/API_ChallengeAction.html). RSS is therefore not an available GitHub recovery path. No challenge-solving or alternate identity will be attempted.
+
+Add a specific UNAccessChallengeError(UNTransportError) when a fetched document explicitly has challenge/captcha in that response header, before parsing or archiving a challenge body. Unknown empty202 remains generic UNTransportError. Server:CloudFront alone is not evidence of a challenge. Source-failure observations preserve the previous valid XML/document and remain fetch_failed=1/schema_changed=0. Share the header predicate with the diagnostic; no business state is applied and no HTML source error is cleared.
+
+CLI output is a JSON diagnostic file outside data/.git/.github directories; symbolic links and unrelated existing JSON are rejected before any fetch. Existing completed probe reports can be refreshed atomically. This enforces the read-only business-state contract even for an erroneous --out argument.

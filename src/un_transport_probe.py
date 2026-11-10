@@ -9,7 +9,9 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
+import tempfile
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 from pathlib import Path
@@ -33,7 +35,7 @@ def _headers(headers):
 
 
 def _transport_status(code, body, headers):
-    if headers.get('x-amzn-waf-action', '').strip().lower() in {'challenge', 'captcha'}:
+    if U.access_challenge(headers):
         return 'ACCESS_CHALLENGE'
     if code == 202 and not body:
         return 'EMPTY_202'
@@ -101,14 +103,41 @@ def probe(*, fetcher=fetch, now=None):
     return result
 
 
+def _report_path(path):
+    if path.is_symlink():
+        raise ValueError('diagnostic report must not be a symbolic link')
+    target = path.resolve()
+    if target.suffix.lower() != '.json' or {'data', '.git', '.github'} & {p.lower() for p in target.parts}:
+        raise ValueError('diagnostic output must be JSON outside business data and repository metadata')
+    if target.exists():
+        try:
+            previous = json.loads(target.read_text(encoding='utf-8'))
+        except (ValueError, UnicodeError) as error:
+            raise ValueError('refusing to overwrite a non-diagnostic file') from error
+        if not (isinstance(previous, dict) and previous.get('schema_version') == 1
+                and previous.get('probe_completed') is True
+                and isinstance(previous.get('observations'), list)):
+            raise ValueError('refusing to overwrite a non-diagnostic JSON file')
+    return target
+
+
 def main(argv=None, *, fetcher=fetch):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--out', type=Path, default=Path('dist/un_transport_probe.json'))
     args = parser.parse_args(argv)
+    out = _report_path(args.out)
     report = probe(fetcher=fetcher)
     text = json.dumps(report, ensure_ascii=False, indent=2) + '\n'
-    args.out.parent.mkdir(parents=True, exist_ok=True)
-    args.out.write_text(text, encoding='utf-8')
+    out.parent.mkdir(parents=True, exist_ok=True)
+    staged = None
+    try:
+        with tempfile.NamedTemporaryFile(mode='w', encoding='utf-8', dir=out.parent, delete=False) as file:
+            staged = Path(file.name)
+            file.write(text)
+        os.replace(staged, out)
+    finally:
+        if staged is not None:
+            staged.unlink(missing_ok=True)
     print(text, end='')
     # Completion of evidence collection is distinct from official-source health.
     return 0
