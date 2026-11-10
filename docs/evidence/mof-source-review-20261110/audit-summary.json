@@ -1,0 +1,37 @@
+{
+  "status": "REVIEW",
+  "publication_allowed": true,
+  "counts": {
+    "CATEGORY_LABEL_UNRESOLVED": 8,
+    "EXTRA_REGISTRATION": 7020,
+    "WEAK_ALIAS_ACTIVE": 2880
+  },
+  "blocking_counts": {},
+  "official_name_count": 109090,
+  "master_row_count": 89521,
+  "inputs": {
+    "data/kubun_map.json": "007da2fec65dd0357f5d3f91b2b68927f8dcf1c97b95253cc1c0c51a1d55e3f6",
+    "data/master/master.csv": "c3ea52777c7e0b7e092ed471bad1ef01a1487ae4b10cc60d376b63d398fbacaf",
+    "data/master/ofac_alias_history.csv": "c611fb04c43a709fb6f5212bf3ebc3ea877284d6edd56444745a40b5b7ee88b8",
+    "data/monitoring/approved_legacy_delist_20261108_applied.json": "e187b47cc8557e76ed44285d0bea2556afba84b6050c3f5ae43e0dcc37c45a5d",
+    "data/review/approved_legacy_delist_20261108.json": "223a3be4ed97ea2e75c0a059cf8f286a09ae22f76f7267eae851cd57dc093c95",
+    "data/review/integrity_legacy_acceptances.json": "503516847a9979fd3b9bfda89b8d9f0731b3b755871bee3230a3d4e189d8825c",
+    "data/review/integrity_retention_decisions.json": "82b958c24c03d3494bb2f1b10de9a89367af24d1bbf3f0c9638dc76e770764ee",
+    "data/state.json": "d7c4aa560549edab25cfc0c0c9b28987c8e0dfdfed26668a580517b24b30b630",
+    "docs/evidence/source-integrity-legacy-retention-policy-proposal-20261026.json": "7d54d514a3c9dfa6708dce5bbec0c6dc595ad6defa5dad4ab0cf26c48c0c4881",
+    "docs/evidence/source-integrity-legacy-scope-20261026.json.gz": "83713003dc24b7efafa4683c703f9f40b31b0721015abe655aff3c88694a0289"
+  },
+  "candidate_report_sha256": "20f8adfa442651731b5c6ed8f72efd3dfca6f142c2e30e8670df92e266b9d530",
+  "candidate_report_file": "20261110T060514582303Z__c2118896bce27484__1bd4edc3.json.gz",
+  "candidate_master_sha256": "c3ea52777c7e0b7e092ed471bad1ef01a1487ae4b10cc60d376b63d398fbacaf",
+  "source_sha256": "71eaf728c702c881fb13856043f63d42276094c79cf91bae4ad90eadfa3caadd",
+  "master_applied": false,
+  "package_reconstruction": "358 exact rows; byte-for-byte roundtrip passed",
+  "independent_review": "All Critical/Important findings resolved; real Advanced XML collector fixture verified",
+  "validation": {
+    "python_regression": "805/805 PASS",
+    "offline": "213/213 PASS",
+    "independent_code_review": "No remaining Critical or Important findings",
+    "candidate_application": "PROPOSED_NOT_APPLIED"
+  }
+}

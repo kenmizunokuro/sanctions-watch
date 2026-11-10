@@ -90,10 +90,18 @@ def compare(expected: list[dict], master_rows: list[dict], index_rows: list[dict
 
     for (source,key), records in sorted(expected_keys.items()):
         rows = masters.get(key,[])
-        strong = [r for r in records if source!='OFAC' or not r['weak']]
+        strong = [r for r in records if not r['weak']]
         if not strong:
             for row in rows:
-                if set(row.get('sources','').split(';'))=={'OFAC'} and row.get('status')=='有効':
+                claimed=set(row.get('sources','').split(';'))
+                other_strong=any(
+                    any(not r['weak'] for r in expected_keys.get((other,key),[]))
+                    for other in claimed-{source}
+                )
+                category_claim=any(c.startswith(source+':') for c in row.get('categories','').split(';'))
+                mof_weak_active=(source=='財務省' and (source in claimed or category_claim) and not other_strong)
+                ofac_weak_active=(source=='OFAC' and claimed=={'OFAC'})
+                if row.get('status')=='有効' and (ofac_weak_active or mof_weak_active):
                     finding('WEAK_ALIAS_ACTIVE','Weak-only名称が通常masterで有効',official=records[0],master=row)
             continue
         for record in strong:
