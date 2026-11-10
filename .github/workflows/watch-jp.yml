@@ -23,6 +23,7 @@ permissions:
 
 concurrency:
   group: sanctions-watch-commit
+  queue: max
   cancel-in-progress: false
 
 jobs:

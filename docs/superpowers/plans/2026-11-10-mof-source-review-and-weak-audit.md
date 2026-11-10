@@ -53,9 +53,9 @@
 ### Task4: After the user's concrete approval
 
 - [x] Revalidated latest main0c37293: all358 before rows and4 prior decisions match. Exact proposal SHA23381e958a4dd1f50259667b3a0c57017c34dd545db23f1d26460d32357daa00 is pinned to the user's approval.
-- [ ] Apply the approved rows and source-state transition as one atomic publication with projections, raw source, source-record baseline, pending queue, change history and separate application receipt.
-- [ ] Publish31 Party delist names,7 same-Party revisions,313 reference-only quality decisions and54 material information revisions with correct detection/application timestamps.
-- [ ] Run the combined integrity gate and production monitor; verify public exports, latest differences and zero pending source candidates.
+- [x] Apply the approved rows and source-state transition as one atomic publication with projections, raw source, source-record baseline, pending queue, change history and separate application receipt.
+- [x] Publish31 Party delist names,7 same-Party revisions,313 reference-only quality decisions and54 material information revisions with correct detection/application timestamps.
+- [x] Run the combined integrity gate and production monitor; verify public exports, latest differences and zero pending source candidates.
 
 ## Execution record
 
@@ -65,4 +65,6 @@ Implemented the one-time atomic application, two fresh official-source checks ar
 
 Application, source mismatch, changed-before-row, expiry and real filesystem rollback tests pass. A review identified post-push release/monitor recovery as Important. Failure injection against a real local bare Git origin reproduced the missing-stage boundary; the delivery stage now resumes separately from application, binds to the committed audited generation, rejects supersession, and writes a durable DELIVERED journal. Both release-failure and monitor-failure retries pass; already-completed delivery is idempotent. A source change/failure only on the second check leaves all files unchanged. All9 application/delivery tests pass.
 
-Full regression, final real-source validation, remote CI and main publication remain in progress. The user's approved business rows are not yet published at this point in the execution record.
+Final814/814 regression and213/213 offline checks passed, as did all four PR CI workflows. PR61 merged as55aea0f. Production run42775224751 successfully applied358 rows, published412 events, generated9 re-review cases and cleared79 pending candidates. Combined audit blockers are0. APPLIED receipt is committed in0d8e42f and DELIVERED in71bd2e5. The release assets' GitHub SHA256 digests match the durable delivery journal; the live MOF monitor succeeded at2026-11-10T07:38:24Z. Public master verification confirms313 weak-only names are inactive/excluded from screening and28 supported names remain active. Source and quality detection timestamps remain separate and unchanged.
+
+A concurrent OFAC job42774569426 stopped at the new weak-alias gate before this migration was applied. Its retry was then cancelled while pending by another shared-group submission. Follow-up queue repair is documented in docs/evidence/shared-monitor-queue-20261110.md; use a newly triggered post-repair OFAC workflow for operational verification.
