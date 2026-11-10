@@ -298,3 +298,4 @@ checked_at,source,status,content_hash,source_updated,record_count,raw_path
 2026-11-10T19:04:48Z,un_press,error,,,0,
 2026-11-10T19:24:56Z,ofac_sdn,review_required,e56b4de609bdd7df6e570852dcee25c73ad0b478e3e6239c1677b359bcf0b9bc,"Mon, 09 Nov 2026 19:36:16 GMT",90023,
 2026-11-10T19:24:56Z,ofac_cons,unchanged,599771b4fb7363f5f0be0009372bbe23f2e3d39a361ad7d624564656c9c407a0,"Wed, 04 Nov 2026 17:33:12 GMT",3396,
+2026-11-10T20:02:24Z,mof,unchanged,71eaf728c702c881fb13856043f63d42276094c79cf91bae4ad90eadfa3caadd,令和8年11月5日,15249,
