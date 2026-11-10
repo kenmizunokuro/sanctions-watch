@@ -76271,9 +76271,11 @@ SDN,58137,WEFREIGHT INDIA PRIVATE LIMITED,wefreightindiaprivatelimited,178848394
 SDN,58137,Wefreight India Private LImited,wefreightindiaprivatelimited,1788483946814,1788483946814,1,1,advanced_xml_v3,0,0
 SDN,58137,وي فرايت انفستمنت ش م ح,ويفرايتانفستمنتشمح,1788483946814,1788483946814,1,1,advanced_xml_v3,0,0
 SDN,58137,وي فرايت للشحن ذ م م,ويفرايتللشحنذمم,1788483946814,1788483946814,1,1,advanced_xml_v3,1,0
-SDN,58138,VOLTA SHIPPING SERVICES FZCO,voltashippingservicesfzco,1788483946814,1788483946814,1,1,classic_csv,0,0
+SDN,58138,VOLTA CONTAINER LINE FZCO,voltacontainerlinefzco,1794274710702,1794274710702,1,1,classic_csv,0,0
+SDN,58138,VOLTA SHIPPING SERVICES FZCO,voltashippingservicesfzco,1788483946814,1794274710702,0,1,classic_csv,0,0
 SDN,58138,VOLTA SHIPPING SERVICES LLC,voltashippingservicesllc,1788483946814,1788483946814,1,1,classic_csv,0,0
-SDN,58138,Volta Shipping Services FZCO,voltashippingservicesfzco,1788483946814,1788483946814,1,1,advanced_xml_v3,0,0
+SDN,58138,Volta Container Line FZCO,voltacontainerlinefzco,1794274710702,1794274710702,1,1,advanced_xml_v3,0,0
+SDN,58138,Volta Shipping Services FZCO,voltashippingservicesfzco,1788483946814,1794274710702,0,1,advanced_xml_v3,0,0
 SDN,58138,Volta Shipping Services LLC,voltashippingservicesllc,1788483946814,1788483946814,1,1,advanced_xml_v3,1,0
 SDN,58138,فولتا لخدمات الشحن ذ م م,فولتالخدماتالشحنذمم,1788483946814,1788483946814,1,1,advanced_xml_v3,1,0
 SDN,58139,"ETTAIB, Dounia",douniaettaib,1788483946814,1788483946814,1,1,classic_csv,0,0
