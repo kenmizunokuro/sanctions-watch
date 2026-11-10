@@ -1,59 +1,38 @@
 {
   "outcome": "failure",
   "source": "mof",
-  "finished_at": "2026-11-10T01:33:17Z",
+  "finished_at": "2026-11-10T02:13:34Z",
   "run_id": "42735465252",
-  "run_attempt": "1",
+  "run_attempt": "2",
   "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42735465252",
-  "message": "MOF fetched and diffed; integrity BLOCKED; master not applied",
+  "message": "MOF fetched and diffed; review required; master not applied",
   "fetch": {
     "schema_version": 1,
     "run_id": "42735465252",
-    "run_attempt": "1",
+    "run_attempt": "2",
     "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42735465252",
-    "checked_at": "2026-11-10T01:29:05Z",
+    "checked_at": "2026-11-10T02:10:18Z",
     "sha256": "71eaf728c702c881fb13856043f63d42276094c79cf91bae4ad90eadfa3caadd",
     "url": "https://www.mof.go.jp/policy/international_policy/gaitame_kawase/gaitame/economic_sanctions/shisantouketsu20261105.csv",
-    "raw_path": "data/raw/mof/20261110T012858Z__shisantouketsu20261105.csv.gz",
+    "raw_path": "data/raw/mof/20261110T021012Z__shisantouketsu20261105.csv.gz",
     "asof": "令和8年11月5日",
     "record_count": 15249,
     "etag": "\"3296ec-65f6fe795e4cc\"",
     "last_modified": "Wed, 04 Nov 2026 09:21:31 GMT",
     "pending_count": 79,
     "master_applied": false,
-    "pending_sha256": "8b77c818dc6952537f733a044b10a5b83320759c27efea2b8adbb0e7e8643d88"
+    "pending_sha256": "69662a8024dd3f39a3ea235753bc1ca4cae6d4baa53f948dc1903afb6ca4c50b"
   },
-  "stage": "integrity_blocked",
-  "integrity": {
-    "status": "BLOCKED",
-    "publication_allowed": false,
-    "report": "data/integrity_audit/20261110T013310599894Z__5078771d0a2d327a__ec3a275d.json.gz",
-    "report_sha256": "cdcbc2669ddbfc9ab5ed83836956248e30b07efe81fc6421b1166110c65a4e3b",
-    "counts": {
-      "ALIAS_HISTORY_EVIDENCE_INVALID": 1,
-      "CATEGORY_LABEL_UNRESOLVED": 8,
-      "EXTRA_REGISTRATION": 7023,
-      "WEAK_ALIAS_ACTIVE": 2878
-    },
-    "blocking_counts": {
-      "ALIAS_HISTORY_EVIDENCE_INVALID": 1
-    },
-    "reasons": [
-      {
-        "kind": "ALIAS_HISTORY_EVIDENCE_INVALID",
-        "detail": "old alias is current again; re-review required"
-      }
-    ]
-  },
+  "stage": "approval_required",
   "pending_publication": {
     "status": "PUBLISHED",
     "count": 79,
-    "sha256": "8b77c818dc6952537f733a044b10a5b83320759c27efea2b8adbb0e7e8643d88"
+    "sha256": "69662a8024dd3f39a3ea235753bc1ca4cae6d4baa53f948dc1903afb6ca4c50b"
   },
   "legacy_publication": {
     "status": "PUBLISHED",
     "count": 0,
-    "generated_at": "2026-11-10T01:33:15Z",
+    "generated_at": "2026-11-10T02:13:32Z",
     "sha256": "d00177bd6142480ea6db3e10c393fb8a3fbf271d213a4d0f0e17544e612487a5"
   }
 }
