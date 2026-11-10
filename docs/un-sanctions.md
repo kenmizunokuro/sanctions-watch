@@ -98,3 +98,15 @@ master適用データは作業ブランチから別PRで公開する。OFAC・�
 国連追加で監視状況は9～16行になる。直近変更を22～25行へ移し、重ならないようにする。11のメモは表示上の記録であり、CLIの承認とは別。
 
 通知は既存`SLACK_WEBHOOK_URL`が設定されている場合だけ配信する。委員会発表検知、XML検証済候補、監視エラーを分けて通知する。未設定の場合はスキップをログに残す。
+
+## Read-only transport diagnosis
+
+`python -m src.un_transport_probe --out dist/un_transport_probe.json` compares the official XML, update-history page, one committee index and the official RSS feed using the same project-identifying collector and redirect policy. The `probe-un-transport` workflow runs the same command in GitHub and retains JSON evidence for30 days. It has read-only repository permissions and a separate CI concurrency group.
+
+The report contains bounded public HTTP metadata, byte counts and content hashes. Cookies, authorization, raw document bodies and temporary signature queries are excluded. An explicit challenge header is distinguished from an unexplained empty202. A diagnostic job's success means observation collection completed; `HTTP200_UNVALIDATED` is not sanctions validation or a recovery of production source health.
+
+The official homepage's current RSS URL is `https://main.un.org/securitycouncil/en/feed/1.0/updates_unsc_consolidated_list`. Observed items repeat the same page/GUID with publication labels and do not specify target IDs or actions. The diagnostic reports structural counts only. It cannot approve, delist or modify a master record, and does not clear HTML retrieval errors.
+
+A response entering the UN document reader with explicit `x-amzn-waf-action: challenge` or `captcha` is recorded as `UNAccessChallengeError` before parsing/archiving; HTTP errors rejected earlier by the collector keep their existing HTTP-error handling. HTTP202 alone remains a generic transport failure; a healthy CloudFront response is accepted for the usual schema checks. GitHub evidence and RSS feasibility are recorded in `docs/evidence/un-transport-20261111/findings.md`.
+
+Diagnostic output must be JSON outside business data/repository metadata directories. Symlinks and unrelated existing JSON are refused; a completed diagnostic report can be refreshed atomically. Exception text is reduced to controlled labels to avoid leaking signed relative request targets. Unsupported RSS encodings and unsafe declarations are reported without dropping the other observations.

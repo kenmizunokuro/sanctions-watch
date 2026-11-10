@@ -92,6 +92,60 @@ class UNWatchTests(unittest.TestCase):
         self.assertEqual(previous, self.state()['documents']['updates']['sha256'])
         self.assertIn('国連更新履歴取得エラー', (self.root / 'data/dashboard/un_reviews.csv').read_text())
 
+    def test_explicit_access_challenge_is_transport_failure_and_preserves_valid_data(self):
+        from src import un_updates as V
+        self.assertTrue(self.run_watch()['ok'])
+        previous = self.state()
+        master = self.root / 'data/master/master.csv'
+        master.parent.mkdir(parents=True, exist_ok=True)
+        master.write_bytes(b'financial-master-must-not-change')
+        for status, action in [(202, 'challenge'), (200, 'CaPtChA')]:
+            with self.subTest(status=status, action=action):
+                def fetcher(url, **kwargs):
+                    item = self.feed(url, **kwargs)
+                    if url == V.UPDATES_URL:
+                        item.http_status = status
+                        item.body = b'' if status == 202 else self.feed.updates
+                        item.sha256 = hashlib.sha256(item.body).hexdigest()
+                        item.headers = {'X-Amzn-Waf-Action': action}
+                    return item
+                result = W.run(self.root, fetcher=fetcher, now=NOW)
+                self.assertFalse(result['ok'])
+                failure = next(f for f in result['failures'] if f['source'] == 'un_updates')
+                self.assertEqual(failure['error_type'], 'UNAccessChallengeError')
+                self.assertIn('x-amzn-waf-action=' + action.lower(), failure['message'])
+                self.assertEqual(self.state()['snapshot_hash'], previous['snapshot_hash'])
+                self.assertEqual(self.state()['documents']['updates'], previous['documents']['updates'])
+                self.assertEqual(master.read_bytes(), b'financial-master-must-not-change')
+                with (self.root / 'data/source_audit/2026-10.csv').open() as f:
+                    entry = [r for r in csv.DictReader(f) if r['source'] == 'un_updates'][-1]
+                self.assertEqual(entry['http_status'], str(status))
+                self.assertEqual(entry['fetch_failed'], '1')
+                self.assertEqual(entry['schema_changed'], '0')
+                self.assertEqual(entry['raw_path'], '')
+
+    def test_empty_202_without_challenge_marker_is_not_attributed_to_access_control(self):
+        from src import un_updates as V
+        def fetcher(url, **kwargs):
+            item = self.feed(url, **kwargs)
+            if url == V.UPDATES_URL:
+                item.http_status = 202; item.body = b''
+                item.sha256 = hashlib.sha256(b'').hexdigest()
+                item.headers = {'Server': 'CloudFront'}
+            return item
+        result = W.run(self.root, fetcher=fetcher, now=NOW)
+        failure = next(f for f in result['failures'] if f['source'] == 'un_updates')
+        self.assertEqual(failure['error_type'], 'UNTransportError')
+        self.assertNotIn('x-amzn-waf-action', failure['message'])
+
+    def test_healthy_cloudfront_document_is_not_misclassified_as_challenge(self):
+        def fetcher(url, **kwargs):
+            item = self.feed(url, **kwargs)
+            item.headers = {'Server': 'CloudFront', 'X-Cache': 'Hit from cloudfront'}
+            return item
+        result = W.run(self.root, fetcher=fetcher, now=NOW)
+        self.assertTrue(result['ok']); self.assertEqual(result['failures'], [])
+
     def test_update_history_disjoint_page_sets_persistent_coverage_gap(self):
         self.run_watch()
         self.feed.updates = self.feed.updates.replace(
