@@ -50,6 +50,7 @@ jobs:
     concurrency:
       group: sanctions-watch-commit
       cancel-in-progress: false
+      queue: max
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
