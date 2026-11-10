@@ -10,6 +10,9 @@ on:
       - '.github/workflows/watch-ofac.yml'
       - 'src/watch.py'
       - 'src/ofac_pending.py'
+      - 'src/ofac_alias_history.py'
+      - 'data/review/approved_volta_alias_history_20261110.json'
+      - '.github/scripts/apply-approved-volta-alias-history.sh'
       - 'src/dashboard.py'
   schedule:
     - cron: "17 * * * *"

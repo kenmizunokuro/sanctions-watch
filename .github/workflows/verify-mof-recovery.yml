@@ -15,6 +15,11 @@ on:
       - src/ofac_pending.py
       - tests/test_ofac_promotion.py
       - tests/test_ofac_promotion_gas.cjs
+      - src/ofac_alias_history.py
+      - tests/test_ofac_alias_history.py
+      - data/review/approved_volta_alias_history_20261110.json
+      - docs/evidence/volta-alias-history/**
+      - .github/scripts/apply-approved-volta-alias-history.sh
       - src/vessel_history.py
       - src/approved_vessel_history.py
       - src/integrity_approved_delist.py
@@ -58,5 +63,5 @@ jobs:
           node --test tests/test_mof_pending_gas.cjs
       - name: Approved vessel history and historical delist audit
         run: |
-          python -m unittest -v tests.test_vessel_history tests.test_approved_vessel_history tests.test_integrity_approved_delist tests.test_ofac_promotion
+          python -m unittest -v tests.test_vessel_history tests.test_approved_vessel_history tests.test_integrity_approved_delist tests.test_ofac_promotion tests.test_ofac_alias_history
           node --test tests/test_ofac_promotion_gas.cjs

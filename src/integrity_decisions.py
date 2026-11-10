@@ -73,13 +73,26 @@ def apply(report,triage,ledger,*,now=None,root=None):
                 vessel_facts=V.verify_decision(root,result,row)
             except (OSError,ValueError,KeyError,TypeError,EOFError) as exc:
                 state='EVIDENCE_INVALID';vessel_error=str(exc)
+        alias_facts=None
+        if state=='APPLIED' and ('alias_history' in row or 'OFAC_ALIAS_HISTORY_V1:' in str((finding.get('master') or {}).get('review_flag',''))):
+            try:
+                from . import ofac_alias_history as H
+                if root is None:raise ValueError('alias review requires repository evidence root')
+                alias_facts=H.verify_decision(root,result,row)
+            except (OSError,ValueError,KeyError,TypeError,EOFError) as exc:
+                state='EVIDENCE_INVALID';vessel_error=str(exc)
         result['retention_review'].append(dict(review_id=ident,status=state,reviewed_by=row['reviewed_by'],
                                                reviewed_at=row['reviewed_at'],expires_at=row['expires_at'],reason=row['reason'],
                                                reviewed_evidence_sha256=row['reviewed_evidence_sha256'],
                                                current_evidence_sha256=item['evidence_sha256']))
         if vessel_facts is not None:result['retention_review'][-1]['vessel_history']=vessel_facts
+        if alias_facts is not None:result['retention_review'][-1]['alias_history']=alias_facts
         if vessel_error is not None:result['retention_review'][-1]['evidence_error']=vessel_error
         if state=='APPLIED':
             finding.update(blocking=False,retention_approved=True,retention_review_id=ident)
     result['retention_review'].extend(dict(review_id=ident,status='STALE_OR_RESOLVED') for ident in sorted(set(entries)-matched))
+    if root is not None and ('ofac' in result.get('scope', []) or any(
+            d.get('source', '').startswith('ofac_') for d in result.get('documents', []))):
+        from . import ofac_alias_history as H
+        result=H.validate_annotations(root,result,ledger,now=now)
     return result
