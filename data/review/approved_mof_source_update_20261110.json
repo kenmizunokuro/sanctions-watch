@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "decision": "APPROVED_APPLY_MOF_SOURCE_UPDATE",
+  "approved_by": "User explicit approval in this conversation",
+  "instruction": "よろしく",
+  "approval_recorded_at": "2026-11-10T06:45:23Z",
+  "expires_at": "2026-11-25T08:21:15Z",
+  "proposal_path": "docs/evidence/mof-source-review-20261110/proposed-changes.json.gz",
+  "proposal_sha256": "23381e958a4dd1f50259667b3a0c57017c34dd545db23f1d26460d32357daa00",
+  "row_count": 358,
+  "pending_count": 79,
+  "weak_reference_count": 313,
+  "retain_strong_count": 28,
+  "withdraw_retention_count": 4,
+  "source_url": "https://www.mof.go.jp/policy/international_policy/gaitame_kawase/gaitame/economic_sanctions/shisantouketsu20261105.csv",
+  "source_sha256": "71eaf728c702c881fb13856043f63d42276094c79cf91bae4ad90eadfa3caadd",
+  "approved_scope": "3 delisted Parties/31 names;7 current-Party name revisions;313 weak-only reference names (312 previously active+1 new);28 current strong-supported names retained;2 strong additions,4 reactivations,1 source addition;54 material field revisions;4 exact weak-only retention approvals withdrawn;preserve true detection times and all existing first_seen."
+}

@@ -1,0 +1,16 @@
+{
+  "status": "REVIEW_PACKAGE_VERIFIED_NOT_APPLIED",
+  "python_tests": 805,
+  "python_failed": 0,
+  "offline_tests": 213,
+  "offline_failed": 0,
+  "candidate_blocking_findings": 0,
+  "business_rows_proposed": 358,
+  "source_candidates": 79,
+  "code_sha256": {
+    "src/integrity_audit.py": "d5d34040ad1299891f217c19e2b2918897d59ec9df4296afc680824887f1810b",
+    "src/integrity_decisions.py": "44551497c4637d0939f7636fa8621dd590f4df2deb13613883c445e96a53b931",
+    "tests/test_integrity_audit.py": "90f994d365ab43c1bb027d4e1f962b1bdeae8a5274c3602ab25fddc103b11b85",
+    "tests/test_mof_weak_strong_retention.py": "56b9dcc3cdead84261c92725ca86622f2f58a648908ea2d424109047fc62fe74"
+  }
+}

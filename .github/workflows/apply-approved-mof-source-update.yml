@@ -1,0 +1,95 @@
+name: apply-approved-mof-source-update
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - src/approved_mof_source_update.py
+      - src/approved_mof_delivery.py
+      - data/review/approved_mof_source_update_20261110.json
+      - .github/workflows/apply-approved-mof-source-update.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sanctions-watch-commit
+  cancel-in-progress: false
+
+jobs:
+  apply:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Verify approved application and quality regressions
+        run: python -m unittest tests.test_approved_mof_source_update tests.test_mof_weak_strong_retention tests.test_integrity_audit
+      - name: Verify any existing journal is durably published
+        run: |
+          python - <<'PY'
+          import subprocess
+          from pathlib import Path
+          from src.approved_mof_source_update import RECEIPT
+          from src.approved_mof_delivery import DELIVERY
+          for marker in (RECEIPT,DELIVERY):
+            if Path(marker).exists():
+              body=Path(marker).read_bytes()
+              if subprocess.check_output(['git','show','HEAD:'+str(marker)])!=body:
+                  raise ValueError('MOF application journal is not committed')
+              subprocess.run(['git','fetch','origin','+refs/heads/main:refs/remotes/origin/main'],check=True)
+              if subprocess.check_output(['git','show','origin/main:'+str(marker)])!=body:
+                  raise ValueError('MOF application journal is not published')
+          PY
+          git diff --quiet
+          git diff --cached --quiet
+      - name: Apply only the user-approved MOF generation
+        id: apply
+        run: python -m src.approved_mof_source_update --apply
+      - name: Verify exact outputs, commit and publish without rebasing
+        if: steps.apply.outputs.applied == 'true'
+        run: |
+          python - <<'PY'
+          import hashlib,json,subprocess
+          from pathlib import Path
+          from src.approved_mof_source_update import RECEIPT
+          r=json.loads(Path(RECEIPT).read_bytes())
+          for rel,digest in r['outputs'].items():
+              if hashlib.sha256(Path(rel).read_bytes()).hexdigest()!=digest:
+                  raise ValueError('MOF output changed before commit: '+rel)
+          subprocess.run(['git','add','--',*r['outputs'],str(RECEIPT)],check=True)
+          subprocess.run(['git','-c','user.name=sanctions-watch[bot]','-c','user.email=sanctions-watch@users.noreply.github.com',
+                          'commit','-m','feat(mof): apply approved source review and weak-alias quality decisions'],check=True)
+          subprocess.run(['git','push','origin','HEAD:refs/heads/main'],check=True)
+          body=Path(RECEIPT).read_bytes()
+          subprocess.run(['git','fetch','origin','+refs/heads/main:refs/remotes/origin/main'],check=True)
+          if subprocess.check_output(['git','show','origin/main:'+str(RECEIPT)])!=body:
+              raise ValueError('MOF journal was not durably published')
+          for rel,digest in r['outputs'].items():
+              if hashlib.sha256(subprocess.check_output(['git','show','HEAD:'+rel])).hexdigest()!=digest:
+                  raise ValueError('MOF committed output differs: '+rel)
+          PY
+      - name: Resume bound release delivery and verify the live monitor
+        if: steps.apply.outputs.delivery_needed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python -m src.approved_mof_delivery --root .
+      - name: Preserve application evidence and import workbook
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: approved-mof-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            data/review/approved_mof_source_update_20261110.json
+            data/monitoring/approved_mof_source_update_20261110_*
+            dist/internal_import_mof_20261110_*.xlsx
+          retention-days: 90
+          if-no-files-found: error

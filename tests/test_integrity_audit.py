@@ -100,6 +100,46 @@ class CompareTests(unittest.TestCase):
                                      ms=[master(source='OFAC;財務省')],
                                      ix=[index(primary='0',low_quality='1')])['status'],'PASS')
 
+    def test_mof_weak_only_name_need_not_enter_normal_master(self):
+        e=dict(expected(weak=True,primary=False),source='財務省',category='2')
+        result=A.compare([e],[],[],{'2':'財務省:タリバーン関係者等'})
+        self.assertEqual(result['status'],'PASS')
+
+    def test_mof_weak_only_active_name_blocks_publication(self):
+        e=dict(expected(weak=True,primary=False),source='財務省',category='2')
+        row=master(source='財務省',category='財務省:タリバーン関係者等')
+        result=A.compare([e],[row],[],{'2':'財務省:タリバーン関係者等'})
+        self.assertEqual(result['blocking_counts'],{'WEAK_ALIAS_ACTIVE':1})
+
+    def test_mof_weak_name_supported_by_current_ofac_strong_name_stays_active(self):
+        e=dict(expected(weak=True,primary=False),source='財務省',category='2')
+        row=master(source='OFAC;財務省',category='OFAC:SDN;財務省:タリバーン関係者等')
+        result=A.compare([e,expected()],[row],[index()],
+                         {'SDN':'OFAC:SDN','2':'財務省:タリバーン関係者等'})
+        self.assertEqual(result['status'],'PASS')
+
+    def test_mof_weak_name_with_only_ofac_weak_support_is_still_blocked(self):
+        e=dict(expected(weak=True,primary=False),source='財務省',category='2')
+        row=master(source='OFAC;財務省',category='OFAC:SDN;財務省:タリバーン関係者等')
+        result=A.compare([e,expected(weak=True,primary=False)],[row],
+                         [index(primary='0',low_quality='1')],
+                         {'SDN':'OFAC:SDN','2':'財務省:タリバーン関係者等'})
+        self.assertEqual(result['blocking_counts'],{'WEAK_ALIAS_ACTIVE':1})
+
+    def test_mof_weak_name_does_not_block_an_ofac_only_strong_registration(self):
+        e=dict(expected(weak=True,primary=False),source='財務省',category='2')
+        result=A.compare([e,expected()],[master()],[index()],
+                         {'SDN':'OFAC:SDN','2':'財務省:タリバーン関係者等'})
+        self.assertEqual(result['status'],'PASS')
+
+    def test_mof_weak_active_category_claim_cannot_hide_behind_missing_source(self):
+        e=dict(expected(weak=True,primary=False),source='財務省',category='2')
+        for source in ('','経済産業省'):
+            with self.subTest(source=source):
+                row=master(source=source,category='財務省:タリバーン関係者等')
+                result=A.compare([e],[row],[],{'2':'財務省:タリバーン関係者等'})
+                self.assertEqual(result['blocking_counts'],{'WEAK_ALIAS_ACTIVE':1})
+
     def test_current_party_without_current_alias_is_not_silently_accepted(self):
         self.assertIn('SOURCE_ID_MISMATCH',kinds(self.compare(ix=[index(),index(ident='999',alias_current='0')])) )
 

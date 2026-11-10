@@ -52,6 +52,7 @@ def apply(report,triage,ledger,*,now=None,root=None):
     result=copy.deepcopy(report)
     result['retention_review']=[]
     matched=set()
+    reviewed_strong_forms=[]
     if len(triage['items'])!=len(result['findings']):raise DecisionError('triageと監査findingの件数不一致')
     for finding,item in zip(result['findings'],triage['items']):
         # Never use a triage finding from a different report to release this one.
@@ -90,6 +91,28 @@ def apply(report,triage,ledger,*,now=None,root=None):
         if vessel_error is not None:result['retention_review'][-1]['evidence_error']=vessel_error
         if state=='APPLIED':
             finding.update(blocking=False,retention_approved=True,retention_review_id=ident)
+            if (finding['kind']=='EXTRA_REGISTRATION'
+                    and item.get('classification')=='CURRENT_PERSON_ORDER_VARIANT'):
+                from .normalize import match_key
+                master=finding.get('master') or {}
+                strong=[p for p in item.get('evidence',[]) if p.get('current') is True
+                        and p.get('weak') is False and p.get('field')=='person_name_parts'
+                        and p.get('transform')=='given_middle_family'
+                        and p.get('source')=='OFAC'
+                        and match_key(p.get('name',''))==master.get('match_key')]
+                if strong and 'OFAC' in master.get('sources','').split(';'):
+                    reviewed_strong_forms.append((master,ident,strong))
+    # A separately approved, still-current strong OFAC name representation
+    # supports the identical screening row even when MOF labels it weak.
+    # No MOF retention waiver or new name generation is authorized here.
+    for finding in result['findings']:
+        if (finding['kind']=='WEAK_ALIAS_ACTIVE'
+                and (finding.get('official') or {}).get('source')=='財務省'):
+            for master,ident,strong in reviewed_strong_forms:
+                if finding.get('master')==master:
+                    finding.update(blocking=False,reviewed_strong_source='OFAC',
+                                   strong_form_review_id=ident,strong_form_evidence=copy.deepcopy(strong))
+                    break
     result['retention_review'].extend(dict(review_id=ident,status='STALE_OR_RESOLVED') for ident in sorted(set(entries)-matched))
     if root is not None and ('ofac' in result.get('scope', []) or any(
             d.get('source', '').startswith('ofac_') for d in result.get('documents', []))):
