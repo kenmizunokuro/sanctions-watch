@@ -40,11 +40,11 @@ Exactly4 official targets; existing project-identifying collector/UN validator; 
 
 **Interfaces:** python -m src.un_transport_probe --out dist/un_transport_probe.json. JSON artifact transport-un-RUN-ATTEMPT, retention30 days. Existing mandatory full/offline CI is retained.
 
-- [ ] Add a read-only workflow for matching PR/main changes and manual runs.10-minute job timeout; own concurrency group and latest-CI cancellation; artifact retained even when a source fails.
-- [ ] Parse YAML/embedded Python and git diff --check. Run the full Python suite and offline checks. Expected: all pass; no business data diff.
-- [ ] Request one independent whole-branch review; address Important/Critical defects by RED→GREEN tests and a green suite.
-- [ ] Publish a review branch/PR and inspect the diagnostic artifact before deciding any source-recovery behavior.
-- [ ] Merge after checks; confirm the main diagnostic output and record the factual source availability, without changing the production HTML error state.
+- [x] Add a read-only workflow for matching PR/main changes and manual runs.10-minute job timeout; own concurrency group and latest-CI cancellation; artifact retained even when a source fails.
+- [x] Parse YAML/embedded Python and git diff --check. Run the full Python suite and offline checks. Expected: all pass; no business data diff.
+- [x] Request one independent whole-branch review; address Important/Critical defects by RED→GREEN tests and a green suite.
+- [x] Publish a review branch/PR and inspect the diagnostic artifact before deciding any source-recovery behavior.
+- [x] Merge after checks; confirm the main diagnostic output and record the factual source availability, without changing the production HTML error state.
 
 ## Execution ledger
 
@@ -58,11 +58,19 @@ Ruling: cloud-packaged helper scripts are not readable in this runtime; track th
 
 **Interfaces:** access_challenge(headers)->str returns only challenge/captcha or empty; UNAccessChallengeError derives from UNTransportError. The watcher's read path rejects an explicit challenge before document parsing/archiving; diagnostic uses the same predicate.
 
-- [ ] RED: HTTP200/202 explicit challenge produces a transport challenge error and preserves XML/previous document/master; empty202 without header stays generic; healthy CloudFront responses remain valid.
-- [ ] Implement the narrow predicate/error and read-path guard.
-- [ ] GREEN focused tests, then the full suite/offline checks; record measured GitHub evidence and RSS unavailability.
-- [ ] Include this task in the one final whole-branch review and PR checks. Validate new main run classification after merge, preserving explicit HTML errors and the master.
+- [x] RED: HTTP200/202 explicit challenge produces a transport challenge error and preserves XML/previous document/master; empty202 without header stays generic; healthy CloudFront responses remain valid.
+- [x] Implement the narrow predicate/error and read-path guard.
+- [x] GREEN focused tests, then the full suite/offline checks; record measured GitHub evidence and RSS unavailability.
+- [x] Include this task in the one final whole-branch review and PR checks. Validate new main run classification after merge, preserving explicit HTML errors and the master.
 
 Ruling: extend this same diagnosis change with source-error classification only after the GitHub header evidence confirmed the cause. It changes error specificity, not source acceptance or import decisions; an erroneous broad classification would create false outages, so explicit-header and healthy-CloudFront tests guard it.
 
 Task1 safety addition: a controlled --out data/state.json reproduction corrupted a temporary sentinel under the original CLI. Added RED→GREEN protection for business paths, symlinks, unrelated existing JSON and non-JSON outputs; own reports remain refreshable. This is part of the original no-business-writes requirement.
+
+## Completion evidence (2026-11-11 JST)
+
+PR #64 merged as7f25b3ce5d9b6bb6eb790242745bc4a85b59d07a after all checks passed:828 Python tests and213 offline checks. Independent review findings (relative signed URL in exceptions, unknown RSS encoding, UTF16 DTD) were reproduced RED and fixed GREEN in one pass; no deferred findings.
+
+Main diagnostic run42851555206 completed. Main monitoring run42851555208 preserved explicit source failures while its observation publication succeeded, producing d6deb0f01736263e2d841dc9f11d62f6b6a69e51. Its15 failures are UNAccessChallengeError, HTTP202, fetch_failed=1, schema_changed=0, with no raw challenge archive. XML SHA256 bf4987beac908415f9148bb8cab2eb3796724f0ca54129b418dd146e7d9caf9b retained; master bytes unchanged from parent (SHA256 acf78ff686bddaad01c1b258f73801af3683e0a9e9e7177fe141e0be773b136a).
+
+XML remains available; GitHub HTML/RSS retrieval remains blocked by explicit access challenges. Diagnostic completion does not imply source recovery or approval/application of pending UN reviews.
