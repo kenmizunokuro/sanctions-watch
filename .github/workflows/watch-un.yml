@@ -53,6 +53,9 @@ jobs:
       queue: max
     steps:
       - uses: actions/checkout@v6
+        with:
+          # Acquire the writer lease before reading the current observation bundle.
+          ref: main
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
