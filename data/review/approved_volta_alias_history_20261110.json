@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "decision": "APPROVED_RETAIN_HISTORICAL_ALIAS",
+  "approved_date": "2026-11-10",
+  "user_response": "いいよ",
+  "instruction": "旧別名を履歴名称として保持し、新別名を追加する",
+  "reviewed_at": "2026-11-10T01:01:57Z",
+  "expires_at": "2026-11-25T08:21:15Z",
+  "master_key": "voltashippingservicesfzco",
+  "party_id": "58138",
+  "old_name": "VOLTA SHIPPING SERVICES FZCO",
+  "new_name": "VOLTA CONTAINER LINE FZCO",
+  "primary_name": "VOLTA SHIPPING SERVICES LLC",
+  "registration": "Registration Number 1290166",
+  "before": {
+    "match_key": "voltashippingservicesfzco",
+    "display_name": "Volta Shipping Services FZCO",
+    "status": "有効",
+    "risk_type": "制裁リスト",
+    "risk_level": "高",
+    "first_seen_ms": "1784249483000",
+    "last_updated_ms": "1788040337525",
+    "sources": "OFAC",
+    "categories": "OFAC:SDN",
+    "remark": "制裁リスト（OFAC：SDN）",
+    "invalid_reason": "",
+    "review_flag": "",
+    "variants": "[\"Volta Shipping Services FZCO\"]"
+  },
+  "after": {
+    "match_key": "voltashippingservicesfzco",
+    "display_name": "Volta Shipping Services FZCO",
+    "status": "有効",
+    "risk_type": "制裁リスト（OFAC旧別名）",
+    "risk_level": "高",
+    "first_seen_ms": "1784249483000",
+    "last_updated_ms": "1788040337525",
+    "sources": "OFAC",
+    "categories": "OFAC:SDN",
+    "remark": "制裁リスト（OFAC：SDN）\nOFAC別名履歴: VOLTA SHIPPING SERVICES FZCO / 現行別名: VOLTA CONTAINER LINE FZCO / 現行主名称: VOLTA SHIPPING SERVICES LLC / FixedRef:58138 / 公表日:2026-11-09 / 一次資料:https://ofac.treasury.gov/recent-actions/20261109 / 保持期限UTC:2026-11-25T08:21:15Z",
+    "invalid_reason": "",
+    "review_flag": "OFAC_ALIAS_HISTORY_V1:58138:voltashippingservicesfzco",
+    "variants": "[\"Volta Shipping Services FZCO\"]"
+  },
+  "after_sha256": "5b745ba409a440ae7ab86fea381d3a507a36b32908c342fa41abd06cfea9da9c",
+  "retention_decision": {
+    "review_id": "2f9fcaf24412983b833155dcc5c1b10d1ad983516bdc420d903ef8a2af558b45",
+    "decision": "APPROVED_RETAIN",
+    "reviewed_by": "ユーザー承認（2026-11-10: いいよ）",
+    "reason": "同じFixedRef58138の別名変更。旧別名を履歴名称として有効スクリーニングに保持し、新別名を通常監視で追加する承認。",
+    "reviewed_at": "2026-11-10T01:01:57Z",
+    "expires_at": "2026-11-25T08:21:15Z",
+    "reviewed_evidence_sha256": "8f31ff6bd0fbfe37add8156a092441d98a7d7ef832632c16ce693a4fac2b0261",
+    "alias_history": {
+      "master_key": "voltashippingservicesfzco",
+      "party_id": "58138"
+    }
+  },
+  "reviewed_index_links": [
+    {
+      "alias_current": "0",
+      "first_seen_ms": "1788483946814",
+      "formats": "classic_csv",
+      "last_changed_ms": "1794270312625",
+      "list": "SDN",
+      "low_quality": "0",
+      "match_key": "voltashippingservicesfzco",
+      "name": "VOLTA SHIPPING SERVICES FZCO",
+      "party_current": "1",
+      "party_id": "58138",
+      "primary": "0"
+    },
+    {
+      "alias_current": "0",
+      "first_seen_ms": "1788483946814",
+      "formats": "advanced_xml_v3",
+      "last_changed_ms": "1794270312625",
+      "list": "SDN",
+      "low_quality": "0",
+      "match_key": "voltashippingservicesfzco",
+      "name": "Volta Shipping Services FZCO",
+      "party_current": "1",
+      "party_id": "58138",
+      "primary": "0"
+    }
+  ],
+  "reviewed_evidence": [
+    {
+      "category": "SDN",
+      "current": false,
+      "field": "name",
+      "locator": "Party:58138/DocumentedName:90582/Script:215",
+      "name": "Volta Shipping Services FZCO",
+      "primary": false,
+      "raw_path": "docs/evidence/integrity-archives/ofac_sdn_advanced/20260904T010536Z__sdn_advanced.xml.gz",
+      "source_hash": "657e2ecd8ed722d5640e4076058a24982c6e722aac2a631eea3da1e052861f93",
+      "source_id": "58138",
+      "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+      "transform": "exact",
+      "weak": false
+    },
+    {
+      "category": "SDN",
+      "current": false,
+      "field": "name",
+      "locator": "line:20040",
+      "name": "VOLTA SHIPPING SERVICES FZCO",
+      "primary": false,
+      "raw_path": "docs/evidence/integrity-archives/ofac_sdn/20260829T214252Z__alt.csv.gz",
+      "source_hash": "a4cae601ae9cd8ef977dc08da48d47a2cc59a1383cc0677fa812421b48025e39",
+      "source_id": "58138",
+      "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/ALT.CSV",
+      "transform": "exact",
+      "weak": false
+    }
+  ],
+  "historical": {
+    "raw_path": "docs/evidence/integrity-archives/ofac_sdn/20260829T214252Z__alt.csv.gz",
+    "repository_provenance": {
+      "original_commit": "283b090b6822f6fffb3226728ff83003072eb443",
+      "original_git_blob": "1047b923340cd27f6511a53ba4b6429e13482caa",
+      "original_path": "data/raw/ofac_sdn/20260829T214252Z__alt.csv",
+      "stored_commit": "102ab2f64d192a66afbe26f50260c9b0ba9abf9d",
+      "stored_git_blob": "582e7f8fbd1b722ce7e180379f3f73df9393e848",
+      "stored_path": "data/raw/ofac_sdn/20260829T214252Z__alt.csv.gz"
+    },
+    "retrieval": "Restored from existing Git history; not a new remote retrieval or evidence of current listing.",
+    "role": "alias",
+    "source": "ofac_sdn",
+    "source_hash": "a4cae601ae9cd8ef977dc08da48d47a2cc59a1383cc0677fa812421b48025e39",
+    "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/ALT.CSV"
+  },
+  "notice": {
+    "raw_path": "docs/evidence/volta-alias-history/ofac-20261109.html.gz",
+    "source_url": "https://ofac.treasury.gov/recent-actions/20261109",
+    "source_hash": "6495afa5e2c60f9ad483f209a9fa81d0aeacffc074936ef02d6b3311d9043403",
+    "record_number": 2,
+    "record_sha256": "9271de722e5a76e50bcc77cb6edbda078e79116a777f6597fc8927474cb3f169"
+  },
+  "current_verification": {
+    "verified_at": "2026-11-10T01:01:57Z",
+    "source_url": "https://sanctionslistservice.ofac.treas.gov/api/download/SDN.CSV",
+    "source_hash": "7f43332dae0d1b78ce44c31692d87a3c66e4075bcd97e36d3f18585572ff55b8",
+    "primary_record": [
+      "58138",
+      "VOLTA SHIPPING SERVICES LLC",
+      "-0- ",
+      "IRAN-EO13902",
+      "-0- ",
+      "-0- ",
+      "-0- ",
+      "-0- ",
+      "-0- ",
+      "-0- ",
+      "-0- ",
+      "Secondary sanctions risk: See Section 2 of E.O. 13902; Organization Established Date 07 Jun 2017; alt. Organization Established Date 01 Oct 2023; License 784220 (United Arab Emirates); alt. License 50335 (United Arab Emirates); Chamber of Commerce Number 290374 (United Arab Emirates); Registration Number 1290166 (United Arab Emirates); Economic Register Number (CBLS) 10957213; Linked To: SHAMKHANI, Mohammad Hossein."
+    ]
+  }
+}

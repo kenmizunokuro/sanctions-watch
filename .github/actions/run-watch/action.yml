@@ -56,6 +56,11 @@ runs:
       shell: bash
       run: bash .github/scripts/apply-approved-vessel-history.sh
 
+    - name: 承認済みVolta旧別名の保持根拠を先に保存
+      if: github.ref == 'refs/heads/main'
+      shell: bash
+      run: bash .github/scripts/apply-approved-volta-alias-history.sh
+
     - name: 取得と差分抽出
       id: watch
       shell: bash
