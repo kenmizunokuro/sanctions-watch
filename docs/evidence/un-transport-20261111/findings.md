@@ -20,3 +20,7 @@ The read-only probe remains available for future comparison, with bounded public
 ## Verification
 
 The7 diagnostic tests were observed failing before implementation, then passed. Two challenge subcases were reproduced:202 was indistinguishable from a generic response, and200 with a valid-looking table could be accepted despite the challenge header. Both now fail closed with a specific transport reason. Related55 tests and the initial821-test full suite/offline213 passed; the expanded final suite and independent review are recorded in the PR checks and execution plan.
+
+## Review hardening
+
+Independent review reproduced a relative signed-request target embedded in a real urllib3 MaxRetryError, an unknown RSS encoding that aborted the whole report, and a UTF16 DTD that bypassed a byte-pattern check. All reproductions were observed failing before correction. Diagnostic exception messages now use controlled class labels rather than arbitrary exception text, while safe URL/HTTP/header evidence remains. RSS parsing rejects DTDs through the parser's encoding-independent callback and records unsupported encodings as a shape failure, retaining every other observation. No access-control challenge is solved.

@@ -107,6 +107,35 @@ class UNTransportProbeTests(unittest.TestCase):
         self.items[RSS_URL].body=RSS
         self.assertNotIn('rss_shape',self.observation(self.probe(),RSS_URL))
 
+    def test_real_urllib3_relative_signed_request_target_never_leaks(self):
+        from urllib3.connectionpool import HTTPSConnectionPool
+        from urllib3.exceptions import MaxRetryError
+        pool = HTTPSConnectionPool('unsolprodfiles.blob.core.windows.net')
+        self.items[XML] = requests.ConnectionError(MaxRetryError(
+            pool, '/publiclegacyxmlfiles/EN/current.xml?sv=1&sig=TEMPORARY_SECRET',
+            reason=ConnectionRefusedError('refused')))
+        result = self.probe()
+        self.assertNotIn('TEMPORARY_SECRET', json.dumps(result))
+        self.assertEqual(self.observation(result, XML)['error_type'], 'ConnectionError')
+        self.assertEqual(len(result['observations']), 4)
+
+    def test_unknown_rss_encoding_retains_all_observations(self):
+        self.items[RSS_URL].body = b'<?xml version="1.0" encoding="nonexistent"?><rss><channel/></rss>'
+        try:result = self.probe()
+        except Exception as error:self.fail('RSS encoding must be an observation, not discard the report: '+type(error).__name__)
+        self.assertTrue(result['probe_completed']);self.assertEqual(len(result['observations']),4)
+        self.assertEqual(self.observation(result,RSS_URL)['rss_shape']['format'],'unsupported_encoding')
+        self.assertEqual(self.observation(result,XML)['http_status'],200)
+
+    def test_utf16_entity_declarations_are_rejected_before_expansion(self):
+        text='<?xml version="1.0" encoding="UTF-16"?><!DOCTYPE rss [<!ENTITY e "EXPANDED">]><rss><channel><item><guid>&e;</guid></item></channel></rss>'
+        for encoding in ['utf-16','utf-16-le','utf-16-be']:
+            with self.subTest(encoding=encoding):
+                self.items[RSS_URL].body=text.encode(encoding)
+                item=self.observation(self.probe(),RSS_URL)
+                self.assertEqual(item['rss_shape']['format'],'unsafe_xml')
+                self.assertNotIn('item_count',item['rss_shape'])
+
     def test_cli_rejects_business_paths_symlinks_and_unrelated_existing_json(self):
         with tempfile.TemporaryDirectory() as folder, contextlib.chdir(folder):
             Path('data').mkdir();Path('dist').mkdir()

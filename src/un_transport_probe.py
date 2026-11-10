@@ -10,7 +10,6 @@ import argparse
 import hashlib
 import json
 import os
-import re
 import tempfile
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
@@ -48,14 +47,26 @@ def _transport_status(code, body, headers):
     return 'NON_DOCUMENT_STATUS' if code is not None else 'FETCH_ERROR'
 
 
+class _UnsafeRSS(ValueError):
+    pass
+
+
+class _RejectDTDBuilder(ET.TreeBuilder):
+    def doctype(self, name, public_id, system_id):
+        # The parser decodes the XML encoding before invoking this callback.
+        raise _UnsafeRSS('DTD declarations are not diagnostic RSS data')
+
+
 def _rss_shape(body):
     # Only structural evidence, not target names, dates of detection, or actions.
     if len(body) > 1024 * 1024:
         return {'format': 'oversized_xml'}
-    if re.search(br'<!\s*(?:DOCTYPE|ENTITY)', body, re.I):
-        return {'format': 'unsafe_xml'}
     try:
-        root = ET.fromstring(body)
+        root = ET.fromstring(body, parser=ET.XMLParser(target=_RejectDTDBuilder()))
+    except _UnsafeRSS:
+        return {'format': 'unsafe_xml'}
+    except (LookupError, ValueError):
+        return {'format': 'unsupported_encoding'}
     except ET.ParseError:
         return {'format': 'invalid_xml'}
     channels = root.findall('channel')
@@ -92,7 +103,10 @@ def probe(*, fetcher=fetch, now=None):
             if response is not None:
                 item.update(http_status=response.status_code,
                             final_url=A.safe_audit_url(response.url or url), headers=_headers(response.headers))
-            item.update(error_type=type(error).__name__, error_message=A._clean_error(error))
+            # urllib3 may embed a signed *relative* request target in an error.
+            # Keep controlled labels and the explicit safe metadata, not raw text.
+            item.update(error_type=type(error).__name__,
+                        error_message=f'{type(error).__name__} while collecting configured UN source')
         item['etag'] = item['headers'].get('etag', item['etag'])
         item['last_modified'] = item['headers'].get('last-modified', item['last_modified'])
         item['transport_status'] = _transport_status(item['http_status'], body, item['headers'])
