@@ -477595,97 +477595,97 @@
   ],
   "failures": [
     {
-      "error_type": "UNTransportError",
+      "error_type": "UNAccessChallengeError",
       "http_status": 202,
-      "message": "empty UN response: HTTP 202",
+      "message": "UN access confirmation required: HTTP 202; x-amzn-waf-action=challenge; official document not delivered",
       "source": "un_updates"
     },
     {
-      "error_type": "UNTransportError",
+      "error_type": "UNAccessChallengeError",
       "http_status": 202,
-      "message": "empty UN response: HTTP 202",
+      "message": "UN access confirmation required: HTTP 202; x-amzn-waf-action=challenge; official document not delivered",
       "source": "press:1267"
     },
     {
-      "error_type": "UNTransportError",
+      "error_type": "UNAccessChallengeError",
       "http_status": 202,
-      "message": "empty UN response: HTTP 202",
+      "message": "UN access confirmation required: HTTP 202; x-amzn-waf-action=challenge; official document not delivered",
       "source": "press:1518"
     },
     {
-      "error_type": "UNTransportError",
+      "error_type": "UNAccessChallengeError",
       "http_status": 202,
-      "message": "empty UN response: HTTP 202",
+      "message": "UN access confirmation required: HTTP 202; x-amzn-waf-action=challenge; official document not delivered",
       "source": "press:1533"
     },
     {
-      "error_type": "UNTransportError",
+      "error_type": "UNAccessChallengeError",
       "http_status": 202,
-      "message": "empty UN response: HTTP 202",
+      "message": "UN access confirmation required: HTTP 202; x-amzn-waf-action=challenge; official document not delivered",
       "source": "press:1591"
     },
     {
-      "error_type": "UNTransportError",
+      "error_type": "UNAccessChallengeError",
       "http_status": 202,
-      "message": "empty UN response: HTTP 202",
+      "message": "UN access confirmation required: HTTP 202; x-amzn-waf-action=challenge; official document not delivered",
       "source": "press:1718"
     },
     {
-      "error_type": "UNTransportError",
+      "error_type": "UNAccessChallengeError",
       "http_status": 202,
-      "message": "empty UN response: HTTP 202",
+      "message": "UN access confirmation required: HTTP 202; x-amzn-waf-action=challenge; official document not delivered",
       "source": "press:1737"
     },
     {
-      "error_type": "UNTransportError",
+      "error_type": "UNAccessChallengeError",
       "http_status": 202,
-      "message": "empty UN response: HTTP 202",
+      "message": "UN access confirmation required: HTTP 202; x-amzn-waf-action=challenge; official document not delivered",
       "source": "press:1970"
     },
     {
-      "error_type": "UNTransportError",
+      "error_type": "UNAccessChallengeError",
       "http_status": 202,
-      "message": "empty UN response: HTTP 202",
+      "message": "UN access confirmation required: HTTP 202; x-amzn-waf-action=challenge; official document not delivered",
       "source": "press:1988"
     },
     {
-      "error_type": "UNTransportError",
+      "error_type": "UNAccessChallengeError",
       "http_status": 202,
-      "message": "empty UN response: HTTP 202",
+      "message": "UN access confirmation required: HTTP 202; x-amzn-waf-action=challenge; official document not delivered",
       "source": "press:2048"
     },
     {
-      "error_type": "UNTransportError",
+      "error_type": "UNAccessChallengeError",
       "http_status": 202,
-      "message": "empty UN response: HTTP 202",
+      "message": "UN access confirmation required: HTTP 202; x-amzn-waf-action=challenge; official document not delivered",
       "source": "press:2140"
     },
     {
-      "error_type": "UNTransportError",
+      "error_type": "UNAccessChallengeError",
       "http_status": 202,
-      "message": "empty UN response: HTTP 202",
+      "message": "UN access confirmation required: HTTP 202; x-amzn-waf-action=challenge; official document not delivered",
       "source": "press:2206"
     },
     {
-      "error_type": "UNTransportError",
+      "error_type": "UNAccessChallengeError",
       "http_status": 202,
-      "message": "empty UN response: HTTP 202",
+      "message": "UN access confirmation required: HTTP 202; x-amzn-waf-action=challenge; official document not delivered",
       "source": "press:2653"
     },
     {
-      "error_type": "UNTransportError",
+      "error_type": "UNAccessChallengeError",
       "http_status": 202,
-      "message": "empty UN response: HTTP 202",
+      "message": "UN access confirmation required: HTTP 202; x-amzn-waf-action=challenge; official document not delivered",
       "source": "press:2713"
     },
     {
-      "error_type": "UNTransportError",
+      "error_type": "UNAccessChallengeError",
       "http_status": 202,
-      "message": "empty UN response: HTTP 202",
+      "message": "UN access confirmation required: HTTP 202; x-amzn-waf-action=challenge; official document not delivered",
       "source": "press:2745"
     }
   ],
-  "last_checked_at": "2026-11-10T15:13:37Z",
+  "last_checked_at": "2026-11-10T16:15:31Z",
   "notices": {},
   "press_status": "error",
   "record_count": 1007,
@@ -477694,6 +477694,6 @@
   "snapshot_hash": "bf4987beac908415f9148bb8cab2eb3796724f0ca54129b418dd146e7d9caf9b",
   "source_updated": "2026-11-10T00:00:03.333Z",
   "updates_status": "error",
-  "xml_last_success_at": "2026-11-10T15:13:37Z",
+  "xml_last_success_at": "2026-11-10T16:15:31Z",
   "xml_status": "review_required"
 }
