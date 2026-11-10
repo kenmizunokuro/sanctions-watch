@@ -271,3 +271,4 @@ checked_at,source,status,content_hash,source_updated,record_count,raw_path
 2026-11-10T06:03:42Z,ofac_cons,unchanged,599771b4fb7363f5f0be0009372bbe23f2e3d39a361ad7d624564656c9c407a0,"Wed, 04 Nov 2026 17:33:12 GMT",3396,
 2026-11-10T07:35:45Z,mof,changed,71eaf728c702c881fb13856043f63d42276094c79cf91bae4ad90eadfa3caadd,令和8年11月5日,15249,data/raw/mof/20261110T073545Z__shisantouketsu20261105.csv.gz
 2026-11-10T07:38:24Z,mof,unchanged,71eaf728c702c881fb13856043f63d42276094c79cf91bae4ad90eadfa3caadd,令和8年11月5日,15249,
+2026-11-10T08:02:41Z,mof,unchanged,71eaf728c702c881fb13856043f63d42276094c79cf91bae4ad90eadfa3caadd,令和8年11月5日,15249,
