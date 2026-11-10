@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "status": "DELIVERED",
+  "approval_sha256": "844ef4a7eec010950d3e53e154202c77cfb0e6a2f80a0efdc6749aa98465029e",
+  "application_receipt_sha256": "c5ff8f970ba621b25dec62c38604a10aa67b0ca9cc50570cc3e71a36aff792d0",
+  "verified_at": "2026-11-10T07:38:26Z",
+  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42775224751",
+  "material_inputs": {
+    "data/kubun_map.json": "007da2fec65dd0357f5d3f91b2b68927f8dcf1c97b95253cc1c0c51a1d55e3f6",
+    "data/master/master.csv": "acf78ff686bddaad01c1b258f73801af3683e0a9e9e7177fe141e0be773b136a",
+    "data/master/ofac_alias_history.csv": "c611fb04c43a709fb6f5212bf3ebc3ea877284d6edd56444745a40b5b7ee88b8",
+    "data/monitoring/approved_legacy_delist_20261108_applied.json": "e187b47cc8557e76ed44285d0bea2556afba84b6050c3f5ae43e0dcc37c45a5d",
+    "data/review/approved_legacy_delist_20261108.json": "223a3be4ed97ea2e75c0a059cf8f286a09ae22f76f7267eae851cd57dc093c95",
+    "data/review/integrity_legacy_acceptances.json": "503516847a9979fd3b9bfda89b8d9f0731b3b755871bee3230a3d4e189d8825c",
+    "data/review/integrity_retention_decisions.json": "d6f6876b25a89d5338023d77d738904e8da49cf8dfd053cc7a98048719f18d00",
+    "data/state.json": "d7c4aa560549edab25cfc0c0c9b28987c8e0dfdfed26668a580517b24b30b630",
+    "docs/evidence/source-integrity-legacy-retention-policy-proposal-20261026.json": "7d54d514a3c9dfa6708dce5bbec0c6dc595ad6defa5dad4ab0cf26c48c0c4881",
+    "docs/evidence/source-integrity-legacy-scope-20261026.json.gz": "83713003dc24b7efafa4683c703f9f40b31b0721015abe655aff3c88694a0289"
+  },
+  "assets": {
+    "black_receiver_name_all.xlsx": "4b7b6d998a77d23ada1e965bc1664d1a47498c107b5cccd9aed9b2fcd4e463d1",
+    "internal_import_mof_20261110_latest.xlsx": "275befba253f4a69bcbc1905084fd5a1c4ee9fc13c2dd6fab159d912d39c0aeb",
+    "latest.csv": "158f7646b4b3535390b16287e66149368057cf90376bb5006b5cc271b1700fa5"
+  }
+}
