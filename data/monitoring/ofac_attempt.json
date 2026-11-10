@@ -1,86 +1,12 @@
 {
-  "started_at": "2026-11-10T07:25:00Z",
-  "finished_at": "2026-11-10T07:33:46Z",
-  "outcome": "failure",
-  "exit_code": 1,
+  "started_at": "2026-11-10T08:18:54Z",
+  "finished_at": "2026-11-10T08:19:02Z",
+  "outcome": "success",
+  "exit_code": 0,
   "sources": [
     "ofac"
   ],
-  "run_id": "42774569426",
+  "run_id": "42778716518",
   "run_attempt": "1",
-  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42774569426",
-  "stage": "integrity_failed",
-  "fetch_finished_at": "2026-11-10T07:25:09Z",
-  "integrity": {
-    "status": "BLOCKED",
-    "report": "data/integrity_audit/20261110T073343785636Z__f10299b87d7ccafe__3adc3ea4.json.gz",
-    "report_sha256": "e85244e5de7c6d7b2cc16f8228163ae94ddbd2901049432655686732576f6270",
-    "inputs": {
-      "data/kubun_map.json": "007da2fec65dd0357f5d3f91b2b68927f8dcf1c97b95253cc1c0c51a1d55e3f6",
-      "data/master/master.csv": "08bea6b655d34caeb82e3e9dcfe350defa56c99caced2eaa2fa0aa8c9e71fa0b",
-      "data/master/ofac_alias_history.csv": "c611fb04c43a709fb6f5212bf3ebc3ea877284d6edd56444745a40b5b7ee88b8",
-      "data/monitoring/approved_legacy_delist_20261108_applied.json": "e187b47cc8557e76ed44285d0bea2556afba84b6050c3f5ae43e0dcc37c45a5d",
-      "data/review/approved_legacy_delist_20261108.json": "223a3be4ed97ea2e75c0a059cf8f286a09ae22f76f7267eae851cd57dc093c95",
-      "data/review/integrity_legacy_acceptances.json": "503516847a9979fd3b9bfda89b8d9f0731b3b755871bee3230a3d4e189d8825c",
-      "data/review/integrity_retention_decisions.json": "3d17592a39914be993f52477d31eb94549f2d46c7ee543853e4ba32f853a885c",
-      "data/state.json": "083b5d354146399e4e54d2ee22d441e3f9904a19dfcb3f204df5697bf2d7d8ad",
-      "docs/evidence/source-integrity-legacy-retention-policy-proposal-20261026.json": "7d54d514a3c9dfa6708dce5bbec0c6dc595ad6defa5dad4ab0cf26c48c0c4881",
-      "docs/evidence/source-integrity-legacy-scope-20261026.json.gz": "83713003dc24b7efafa4683c703f9f40b31b0721015abe655aff3c88694a0289"
-    },
-    "blocking_counts": {
-      "WEAK_ALIAS_ACTIVE": 310
-    },
-    "blockers": [
-      {
-        "kind": "WEAK_ALIAS_ACTIVE",
-        "name": "1-P",
-        "detail": "Weak-only名称が通常masterで有効"
-      },
-      {
-        "kind": "WEAK_ALIAS_ACTIVE",
-        "name": "１・Ｐ",
-        "detail": "Weak-only名称が通常masterで有効"
-      },
-      {
-        "kind": "WEAK_ALIAS_ACTIVE",
-        "name": "Aber Sabil",
-        "detail": "Weak-only名称が通常masterで有効"
-      },
-      {
-        "kind": "WEAK_ALIAS_ACTIVE",
-        "name": "Abo Ghaith",
-        "detail": "Weak-only名称が通常masterで有効"
-      },
-      {
-        "kind": "WEAK_ALIAS_ACTIVE",
-        "name": "Abosslah",
-        "detail": "Weak-only名称が通常masterで有効"
-      },
-      {
-        "kind": "WEAK_ALIAS_ACTIVE",
-        "name": "Abou al Moukatel",
-        "detail": "Weak-only名称が通常masterで有効"
-      },
-      {
-        "kind": "WEAK_ALIAS_ACTIVE",
-        "name": "Abou Mouqatel",
-        "detail": "Weak-only名称が通常masterで有効"
-      },
-      {
-        "kind": "WEAK_ALIAS_ACTIVE",
-        "name": "Abou Shaukan",
-        "detail": "Weak-only名称が通常masterで有効"
-      },
-      {
-        "kind": "WEAK_ALIAS_ACTIVE",
-        "name": "Abou Youcef",
-        "detail": "Weak-only名称が通常masterで有効"
-      },
-      {
-        "kind": "WEAK_ALIAS_ACTIVE",
-        "name": "ABU-AL QASSIM OMAR Musab Boukrin",
-        "detail": "Weak-only名称が通常masterで有効"
-      }
-    ]
-  }
+  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/42778716518"
 }
