@@ -10,7 +10,7 @@ import os
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-from . import dashboard, source_audit as A, state as S, un_sources as U, un_updates as V
+from . import dashboard, source_audit as A, state as S, un_sources as U, un_updates as V, un_press_rss as P
 from .fetch import fetch, read_raw
 from .persistence import FileWrite, atomic_replace_many
 from .un_lock import locked
@@ -131,6 +131,26 @@ def _review_rows(state: dict) -> list[list]:
     for committee, gap in sorted(state['coverage_gaps'].items()):
         rows.append(['coverage:' + committee, gap['detected_at'], '未確認期間あり', '', committee,
                      'REVIEW_REQUIRED', '', '', '', '', U.press_url(committee)])
+    sensor = state.get('press_rss', {})
+    if sensor:
+        rows.append(['rss:status', state['last_checked_at'], '国連公式RSS補助監視（直近記事のみ）', '',
+                     '取得成功: ' + sensor.get('last_success_at', 'なし') +
+                     ' / 最新記事: ' + sensor.get('latest_publication_at', '不明') +
+                     ' / 全件網羅・名簿反映を示すものではありません',
+                     sensor['status'].upper(), '', '', '', sensor.get('source_hash', ''), P.URL])
+        for event in sensor.get('events', []):
+            if event['status'] == 'PENDING_REVIEW':
+                rows.append(['rss:' + event['event_id'], event['detected_at'],
+                             '国連公式RSS・新着候補' if event['change'] == 'NEW' else '国連公式RSS・改訂候補',
+                             '', event['record']['title'], 'PENDING_REVIEW', '', '', '',
+                             event['source_hash'], event['record']['url']])
+        if sensor.get('error'):
+            rows.append(['rss:fetch', state['last_checked_at'], '国連公式RSS取得・解析エラー', '',
+                         sensor['error'], 'FETCH_FAILED', '', '', '', '', P.URL])
+        if sensor.get('coverage_gap'):
+            gap = sensor['coverage_gap']
+            rows.append(['rss:coverage', gap['detected_at'], '国連公式RSS・未確認期間あり', '',
+                         gap['reason'], 'REVIEW_REQUIRED', '', '', '', gap['source_hash'], P.URL])
     return rows
 
 
@@ -168,7 +188,7 @@ def projections(root: Path, state: dict, *, now: datetime) -> list[FileWrite]:
 
 def _document(root, key, url, previous, parser, fetcher):
     fetched = fetcher(url, prev=previous, url_validator=U.validate_un_url,
-                      max_bytes=U.MAX_BYTES, timeout=30)
+                      max_bytes=P.MAX_BYTES if key == 'press_rss' else U.MAX_BYTES, timeout=30)
     try:
         return _read_document(root, key, url, previous, parser, fetched)
     except Exception as error:
@@ -201,7 +221,7 @@ def _read_document(root, key, url, previous, parser, fetched):
         actual = hashlib.sha256(body).hexdigest()
         if actual != fetched.sha256:
             raise U.UNSchemaError('UN response hash mismatch')
-        suffix = 'xml' if key == 'xml' else 'html'
+        suffix = 'xml' if key in {'xml', 'press_rss'} else 'html'
         raw = root / f'data/raw/un/{actual}.{suffix}.gz'
         raw.parent.mkdir(parents=True, exist_ok=True)
         if raw.exists():
@@ -396,6 +416,27 @@ def run(root: Path, *, fetcher=fetch, now=None) -> dict:
             audit.append(A.error_entry('un_press', 'committee_' + committee, error, url=url,
                                        schema_changed=isinstance(error, U.UNSchemaError),
                                        fetch_failed=not isinstance(error, U.UNSchemaError)))
+    # Independent bounded news sensor. Its success never clears committee failures.
+    try:
+        fetched, metadata, items = _document(
+            root, 'press_rss', P.URL, state['documents'].get('press_rss', {}),
+            lambda body: P.parse(body, now=now), fetcher)
+        sensor = P.observe(state.get('press_rss', {}), items, source_hash=metadata['sha256'], now=now)
+        state['press_rss'] = sensor
+        state['documents']['press_rss'] = metadata
+        audit.append(A.entry('un_press_rss', 'auxiliary_global_news', sensor['status'], fetched=fetched,
+                             record_count=len(items), source_updated=sensor['latest_publication_at'],
+                             diff_counts={'added': sensor['new_articles'], 'changed': sensor['revised_articles']}))
+    except Exception as error:
+        issue = dict(source='un_press_rss', error_type=type(error).__name__, message=A._clean_error(error),
+                     http_status=getattr(getattr(error, 'fetched', None), 'http_status', ''))
+        failures.append(issue)
+        sensor = state.setdefault('press_rss', {})
+        sensor.update(error=issue['message'], new_candidates=0)
+        P.refresh_status(sensor)
+        audit.append(A.error_entry('un_press_rss', 'auxiliary_global_news', error, url=P.URL,
+                                   schema_changed=isinstance(error, U.UNSchemaError),
+                                   fetch_failed=not isinstance(error, U.UNSchemaError)))
     pending = any(e['status'] in {'PENDING_REVIEW', 'APPROVED'} for e in state['events'])
     state['xml_status'] = 'error' if not xml_ok else 'review_required' if pending else 'unchanged'
     state['press_status'] = ('error' if not press_ok or state['coverage_gaps'] else 'review_required'
@@ -414,10 +455,11 @@ def run(root: Path, *, fetcher=fetch, now=None) -> dict:
                          lambda p: S.append_heartbeat(p, hb, now=now), seed_existing=True)]
     atomic_replace_many(writes)
     return dict(ok=xml_ok and press_ok and updates_ok and not state['coverage_gaps']
-                and not state.get('updates_coverage_gap'),
+                and not state.get('updates_coverage_gap') and state['press_rss']['status'] == 'observed',
                 snapshot_hash=state.get('snapshot_hash', ''), failures=failures,
                 review_count=len(_review_rows(state)), xml_status=state['xml_status'],
-                press_status=state['press_status'], updates_status=state['updates_status'])
+                press_status=state['press_status'], updates_status=state['updates_status'],
+                press_rss_status=state['press_rss']['status'])
 
 
 def main() -> int:
@@ -433,10 +475,13 @@ def main() -> int:
     previous_updates = {e['event_id'] for e in before.get('updates_events', [])}
     result['new_updates'] = sum(e['status'] == 'PENDING_REVIEW' and e['event_id'] not in previous_updates
                                 for e in after.get('updates_events', []))
+    prior_rss = {e['event_id'] for e in before.get('press_rss', {}).get('events', [])}
+    result['new_press_rss'] = sum(e['status'] == 'PENDING_REVIEW' and e['event_id'] not in prior_rss
+                                  for e in after.get('press_rss', {}).get('events', []))
     output = os.environ.get('GITHUB_OUTPUT')
     if output:
         with open(output, 'a', encoding='utf-8') as file:
-            for key in ['new_xml_events', 'new_notices', 'new_updates', 'review_count']:
+            for key in ['new_xml_events', 'new_notices', 'new_updates', 'new_press_rss', 'review_count']:
                 file.write(f'{key}={result[key]}\n')
     print(json.dumps(result, ensure_ascii=False))
     return 0 if result['ok'] else 1

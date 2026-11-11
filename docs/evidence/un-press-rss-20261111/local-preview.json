@@ -1,0 +1,12 @@
+{
+  "checked_at": "2026-11-11T00:40:25Z",
+  "http_status": 200,
+  "source_url": "https://press.un.org/en/rss.xml",
+  "source_sha256": "e95a87ef6866004585af42c7ef311ab4c2bdc76ba57a0a8abf8eb8f1402e7e10",
+  "item_count": 10,
+  "matched_titles": 0,
+  "latest_publication_at": "2026-11-10T23:21:41Z",
+  "status": "observed",
+  "new_candidates": 0,
+  "master_created": false
+}
