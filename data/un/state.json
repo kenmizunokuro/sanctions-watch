@@ -3,12 +3,12 @@
   "current_event_id": "193e3721a1760258ed20413819abc034c92a01889feac024422162417287bf50",
   "documents": {
     "press_rss": {
-      "etag": "W/\"1794398843\"",
+      "etag": "W/\"1794432090\"",
       "filename": "rss.xml",
       "final_url": "https://press.un.org/en/rss.xml",
-      "last_modified": "Wed, 11 Nov 2026 12:07:23 GMT",
-      "raw_path": "data/raw/un/e95a87ef6866004585af42c7ef311ab4c2bdc76ba57a0a8abf8eb8f1402e7e10.xml.gz",
-      "sha256": "e95a87ef6866004585af42c7ef311ab4c2bdc76ba57a0a8abf8eb8f1402e7e10",
+      "last_modified": "Wed, 11 Nov 2026 21:21:30 GMT",
+      "raw_path": "data/raw/un/79bc6d600b3635c4aff9e82f7fa7f8be2070e2e73efcaca923f1be9a1889020e.xml.gz",
+      "sha256": "79bc6d600b3635c4aff9e82f7fa7f8be2070e2e73efcaca923f1be9a1889020e",
       "url": "https://press.un.org/en/rss.xml"
     },
     "xml": {
@@ -509465,7 +509465,7 @@
       "source": "press:2745"
     }
   ],
-  "last_checked_at": "2026-11-11T14:18:05Z",
+  "last_checked_at": "2026-11-11T21:36:45Z",
   "notices": {},
   "press_rss": {
     "coverage_gap": {
@@ -509479,24 +509479,17 @@
     "items": [
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/db261110.doc.htm",
-        "publication_at": "2026-11-10T20:34:16Z",
+        "guid": "https://press.un.org/en/2026/db261111.doc.htm",
+        "publication_at": "2026-11-11T20:02:21Z",
         "title": "Daily Press Briefing by the Office of the Spokesperson for the Secretary-General",
-        "url": "https://press.un.org/en/2026/db261110.doc.htm"
+        "url": "https://press.un.org/en/2026/db261111.doc.htm"
       },
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/ga12807.doc.htm",
-        "publication_at": "2026-11-10T22:03:55Z",
-        "title": "General Assembly Scrutinizes Veto that Ended UN Mission in Western Sahara After 35 Years",
-        "url": "https://press.un.org/en/2026/ga12807.doc.htm"
-      },
-      {
-        "candidate": false,
-        "guid": "https://press.un.org/en/2026/gaab4524.doc.htm",
-        "publication_at": "2026-11-10T22:21:03Z",
-        "title": "Stable Financing of Resident Coordinator System Key to Implement UN80 Reforms at Country, Regional Levels, Deputy Secretary-General Tells Fifth Committee",
-        "url": "https://press.un.org/en/2026/gaab4524.doc.htm"
+        "guid": "https://press.un.org/en/2026/ga12808.doc.htm",
+        "publication_at": "2026-11-11T21:14:32Z",
+        "title": "General Assembly Elects 19 Members to Committee for Programme and Coordination, Selects Countries to Propose Appointees for Joint Inspection Unit",
+        "url": "https://press.un.org/en/2026/ga12808.doc.htm"
       },
       {
         "candidate": false,
@@ -509507,13 +509500,6 @@
       },
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/gaspd852.doc.htm",
-        "publication_at": "2026-11-10T22:28:57Z",
-        "title": "Peacekeeping Is Not an Abstraction, Hosting Countries Tell Fourth Committee",
-        "url": "https://press.un.org/en/2026/gaspd852.doc.htm"
-      },
-      {
-        "candidate": false,
         "guid": "https://press.un.org/en/2026/sc16504.doc.htm",
         "publication_at": "2026-11-10T22:50:57Z",
         "title": "South Sudan Still Lacks Conditions for Credible Elections as Planned Vote Nears, Security Council Hears",
@@ -509521,24 +509507,17 @@
       },
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/sgsm23363.doc.htm",
-        "publication_at": "2026-11-10T20:39:10Z",
-        "title": "Go Beyond Discussing to Organizing, Financing, Delivering Roadmap Away from Fossil Fuels, Secretary-General Urges Conference of Parties to Climate Change Convention",
-        "url": "https://press.un.org/en/2026/sgsm23363.doc.htm"
+        "guid": "https://press.un.org/en/2026/sc16505.doc.htm",
+        "publication_at": "2026-11-11T17:42:15Z",
+        "title": "Security Council 2140 Committee Discusses Final Report Submitted by Panel of Experts on Yemen Pursuant to Paragraph 19 of Resolution 2801 (2025)",
+        "url": "https://press.un.org/en/2026/sc16505.doc.htm"
       },
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/sgsm23364.doc.htm",
-        "publication_at": "2026-11-10T17:55:22Z",
-        "title": "Secretary-General Urges Cooperation ‘Highest Expression of Sovereignty’ to Build Better, Networked World Worthy of World’s Children, at Paris Peace Forum",
-        "url": "https://press.un.org/en/2026/sgsm23364.doc.htm"
-      },
-      {
-        "candidate": false,
-        "guid": "https://press.un.org/en/2026/sgsm23365.doc.htm",
-        "publication_at": "2026-11-10T17:32:04Z",
-        "title": "Inclusive, Reliable Sanitation Key to Achieving Gender Equality, Secretary-General Says in Message for World Toilet Day, Urging Greater Investment",
-        "url": "https://press.un.org/en/2026/sgsm23365.doc.htm"
+        "guid": "https://press.un.org/en/2026/sgs23369.doc.htm",
+        "publication_at": "2026-11-11T20:23:48Z",
+        "title": "Act Now to Halve Global Food Waste by 2030, End Age of Unchecked Methane Pollution, Secretary-General Urges Leaders’ Round Table",
+        "url": "https://press.un.org/en/2026/sgs23369.doc.htm"
       },
       {
         "candidate": false,
@@ -509546,14 +509525,35 @@
         "publication_at": "2026-11-10T22:30:08Z",
         "title": "Secretary-General Observance Message Urges More Resources, Partnerships, Political Will to Expedite Africa’s Industrial Transformation, Build Future of Shared Prosperity",
         "url": "https://press.un.org/en/2026/sgsm23366.doc.htm"
+      },
+      {
+        "candidate": false,
+        "guid": "https://press.un.org/en/2026/sgsm23367.doc.htm",
+        "publication_at": "2026-11-11T19:40:15Z",
+        "title": "At Antalya Summit, Secretary-General Calls for Climate Justice Compact, Faster Shift from Fossil Fuels",
+        "url": "https://press.un.org/en/2026/sgsm23367.doc.htm"
+      },
+      {
+        "candidate": false,
+        "guid": "https://press.un.org/en/2026/sgsm23368.doc.htm",
+        "publication_at": "2026-11-11T19:37:43Z",
+        "title": "Clean Electricity Can Break Fossil Fuel Dependence, Secretary-General Tells Antalya Dialogue",
+        "url": "https://press.un.org/en/2026/sgsm23368.doc.htm"
+      },
+      {
+        "candidate": false,
+        "guid": "https://press.un.org/en/2026/sgsm23370.doc.htm",
+        "publication_at": "2026-11-11T21:06:03Z",
+        "title": "Invest More, Move Faster to Ensure Early Warning Systems Arrive on Time to Protect Everyone on Earth, Secretary-General Urges at High-Level Event",
+        "url": "https://press.un.org/en/2026/sgsm23370.doc.htm"
       }
     ],
-    "last_success_at": "2026-11-11T14:18:05Z",
-    "latest_publication_at": "2026-11-10T23:21:41Z",
+    "last_success_at": "2026-11-11T21:36:45Z",
+    "latest_publication_at": "2026-11-11T21:14:32Z",
     "new_articles": 0,
     "new_candidates": 0,
     "revised_articles": 0,
-    "source_hash": "e95a87ef6866004585af42c7ef311ab4c2bdc76ba57a0a8abf8eb8f1402e7e10",
+    "source_hash": "79bc6d600b3635c4aff9e82f7fa7f8be2070e2e73efcaca923f1be9a1889020e",
     "stale": false,
     "status": "coverage_gap"
   },
@@ -509564,6 +509564,6 @@
   "snapshot_hash": "68c062b4fd6a3e98ffe63499c80da78875acdd817170c4abc198e2a11a214e59",
   "source_updated": "2026-11-11T00:00:03.543Z",
   "updates_status": "error",
-  "xml_last_success_at": "2026-11-11T14:18:05Z",
+  "xml_last_success_at": "2026-11-11T21:36:45Z",
   "xml_status": "review_required"
 }
