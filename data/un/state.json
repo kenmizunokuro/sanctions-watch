@@ -2,6 +2,15 @@
   "coverage_gaps": {},
   "current_event_id": "193e3721a1760258ed20413819abc034c92a01889feac024422162417287bf50",
   "documents": {
+    "press_rss": {
+      "etag": "W/\"1794353672\"",
+      "filename": "rss.xml",
+      "final_url": "https://press.un.org/en/rss.xml",
+      "last_modified": "Tue, 10 Nov 2026 23:34:32 GMT",
+      "raw_path": "data/raw/un/e95a87ef6866004585af42c7ef311ab4c2bdc76ba57a0a8abf8eb8f1402e7e10.xml.gz",
+      "sha256": "e95a87ef6866004585af42c7ef311ab4c2bdc76ba57a0a8abf8eb8f1402e7e10",
+      "url": "https://press.un.org/en/rss.xml"
+    },
     "xml": {
       "etag": "\"0x8DF3F872BD491F2\"",
       "filename": "consolidatedLegacyByNAME.xml",
@@ -509456,8 +509465,92 @@
       "source": "press:2745"
     }
   ],
-  "last_checked_at": "2026-11-11T00:36:09Z",
+  "last_checked_at": "2026-11-11T00:57:55Z",
   "notices": {},
+  "press_rss": {
+    "events": [],
+    "heads": {},
+    "items": [
+      {
+        "candidate": false,
+        "guid": "https://press.un.org/en/2026/db261110.doc.htm",
+        "publication_at": "2026-11-10T20:34:16Z",
+        "title": "Daily Press Briefing by the Office of the Spokesperson for the Secretary-General",
+        "url": "https://press.un.org/en/2026/db261110.doc.htm"
+      },
+      {
+        "candidate": false,
+        "guid": "https://press.un.org/en/2026/ga12807.doc.htm",
+        "publication_at": "2026-11-10T22:03:55Z",
+        "title": "General Assembly Scrutinizes Veto that Ended UN Mission in Western Sahara After 35 Years",
+        "url": "https://press.un.org/en/2026/ga12807.doc.htm"
+      },
+      {
+        "candidate": false,
+        "guid": "https://press.un.org/en/2026/gaab4524.doc.htm",
+        "publication_at": "2026-11-10T22:21:03Z",
+        "title": "Stable Financing of Resident Coordinator System Key to Implement UN80 Reforms at Country, Regional Levels, Deputy Secretary-General Tells Fifth Committee",
+        "url": "https://press.un.org/en/2026/gaab4524.doc.htm"
+      },
+      {
+        "candidate": false,
+        "guid": "https://press.un.org/en/2026/gashc4457.doc.htm",
+        "publication_at": "2026-11-10T23:21:41Z",
+        "title": "Third Committee Approves 13 Resolutions, Amends Anti-Nazism Text to Reject Moscow’s Justification for Ukraine War amid Divisions over Refugee Protection",
+        "url": "https://press.un.org/en/2026/gashc4457.doc.htm"
+      },
+      {
+        "candidate": false,
+        "guid": "https://press.un.org/en/2026/gaspd852.doc.htm",
+        "publication_at": "2026-11-10T22:28:57Z",
+        "title": "Peacekeeping Is Not an Abstraction, Hosting Countries Tell Fourth Committee",
+        "url": "https://press.un.org/en/2026/gaspd852.doc.htm"
+      },
+      {
+        "candidate": false,
+        "guid": "https://press.un.org/en/2026/sc16504.doc.htm",
+        "publication_at": "2026-11-10T22:50:57Z",
+        "title": "South Sudan Still Lacks Conditions for Credible Elections as Planned Vote Nears, Security Council Hears",
+        "url": "https://press.un.org/en/2026/sc16504.doc.htm"
+      },
+      {
+        "candidate": false,
+        "guid": "https://press.un.org/en/2026/sgsm23363.doc.htm",
+        "publication_at": "2026-11-10T20:39:10Z",
+        "title": "Go Beyond Discussing to Organizing, Financing, Delivering Roadmap Away from Fossil Fuels, Secretary-General Urges Conference of Parties to Climate Change Convention",
+        "url": "https://press.un.org/en/2026/sgsm23363.doc.htm"
+      },
+      {
+        "candidate": false,
+        "guid": "https://press.un.org/en/2026/sgsm23364.doc.htm",
+        "publication_at": "2026-11-10T17:55:22Z",
+        "title": "Secretary-General Urges Cooperation ‘Highest Expression of Sovereignty’ to Build Better, Networked World Worthy of World’s Children, at Paris Peace Forum",
+        "url": "https://press.un.org/en/2026/sgsm23364.doc.htm"
+      },
+      {
+        "candidate": false,
+        "guid": "https://press.un.org/en/2026/sgsm23365.doc.htm",
+        "publication_at": "2026-11-10T17:32:04Z",
+        "title": "Inclusive, Reliable Sanitation Key to Achieving Gender Equality, Secretary-General Says in Message for World Toilet Day, Urging Greater Investment",
+        "url": "https://press.un.org/en/2026/sgsm23365.doc.htm"
+      },
+      {
+        "candidate": false,
+        "guid": "https://press.un.org/en/2026/sgsm23366.doc.htm",
+        "publication_at": "2026-11-10T22:30:08Z",
+        "title": "Secretary-General Observance Message Urges More Resources, Partnerships, Political Will to Expedite Africa’s Industrial Transformation, Build Future of Shared Prosperity",
+        "url": "https://press.un.org/en/2026/sgsm23366.doc.htm"
+      }
+    ],
+    "last_success_at": "2026-11-11T00:57:55Z",
+    "latest_publication_at": "2026-11-10T23:21:41Z",
+    "new_articles": 0,
+    "new_candidates": 0,
+    "revised_articles": 0,
+    "source_hash": "e95a87ef6866004585af42c7ef311ab4c2bdc76ba57a0a8abf8eb8f1402e7e10",
+    "stale": false,
+    "status": "observed"
+  },
   "press_status": "error",
   "record_count": 1007,
   "schema_version": 1,
@@ -509465,6 +509558,6 @@
   "snapshot_hash": "68c062b4fd6a3e98ffe63499c80da78875acdd817170c4abc198e2a11a214e59",
   "source_updated": "2026-11-11T00:00:03.543Z",
   "updates_status": "error",
-  "xml_last_success_at": "2026-11-11T00:36:09Z",
+  "xml_last_success_at": "2026-11-11T00:57:55Z",
   "xml_status": "review_required"
 }
