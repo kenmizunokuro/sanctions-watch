@@ -101,11 +101,13 @@ master適用データは作業ブランチから別PRで公開する。OFAC・�
 
 ## Read-only transport diagnosis
 
-`python -m src.un_transport_probe --out dist/un_transport_probe.json` compares the official XML, update-history page, one committee index and the official RSS feed using the same project-identifying collector and redirect policy. The `probe-un-transport` workflow runs the same command in GitHub and retains JSON evidence for30 days. It has read-only repository permissions and a separate CI concurrency group.
+`python -m src.un_transport_probe --out dist/un_transport_probe.json` compares six official endpoints: XML, update-history page, one committee index, the consolidated-list RSS, the press homepage and its separate RSS, using the same project-identifying collector and redirect policy. The `probe-un-transport` workflow runs the same command in GitHub and retains JSON evidence for30 days. It has read-only repository permissions and a separate CI concurrency group.
 
 The report contains bounded public HTTP metadata, byte counts and content hashes. Cookies, authorization, raw document bodies and temporary signature queries are excluded. An explicit challenge header is distinguished from an unexplained empty202. A diagnostic job's success means observation collection completed; `HTTP200_UNVALIDATED` is not sanctions validation or a recovery of production source health.
 
 The official homepage's current RSS URL is `https://main.un.org/securitycouncil/en/feed/1.0/updates_unsc_consolidated_list`. Observed items repeat the same page/GUID with publication labels and do not specify target IDs or actions. The diagnostic reports structural counts only. It cannot approve, delist or modify a master record, and does not clear HTML retrieval errors.
+
+The separate official press homepage `https://press.un.org/en` publishes `https://press.un.org/en/rss.xml`. Its observed ten items have distinct article GUIDs, but include unrelated UN news and only a bounded recent window. Structural RSS success does not establish sanctions coverage, article authenticity, or recovery of the fourteen committee indexes. Both RSS responses use the same safe parser; challenges and malformed/unsafe XML remain explicit observations.
 
 A response entering the UN document reader with explicit `x-amzn-waf-action: challenge` or `captcha` is recorded as `UNAccessChallengeError` before parsing/archiving; HTTP errors rejected earlier by the collector keep their existing HTTP-error handling. HTTP202 alone remains a generic transport failure; a healthy CloudFront response is accepted for the usual schema checks. GitHub evidence and RSS feasibility are recorded in `docs/evidence/un-transport-20261111/findings.md`.
 

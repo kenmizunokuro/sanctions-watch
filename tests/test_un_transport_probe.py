@@ -16,6 +16,8 @@ XML='https://scsanctions.un.org/resources/xml/en/name/consolidated.xml'
 UPDATES='https://main.un.org/securitycouncil/en/content/list-updates-unsc-consolidated-list'
 PRESS='https://main.un.org/securitycouncil/en/sanctions/1267/press-releases'
 RSS_URL='https://main.un.org/securitycouncil/en/feed/1.0/updates_unsc_consolidated_list'
+PRESS_HOME='https://press.un.org/en'
+PRESS_RSS='https://press.un.org/en/rss.xml'
 RSS=b'<rss version="2.0"><channel><title>UN updates</title><item><guid>node/620152</guid><pubDate>28 Oct 2026</pubDate></item><item><guid>node/620152</guid><pubDate>26 Oct 2026</pubDate></item><item><guid>node/620152</guid><pubDate>28 Oct 2026</pubDate></item></channel></rss>'
 NOW=datetime(2026,11,11,0,0,tzinfo=timezone.utc)
 
@@ -29,7 +31,9 @@ class UNTransportProbeTests(unittest.TestCase):
                     for url,body,kind in [(XML,b'<CONSOLIDATED_LIST/>','application/xml'),
                                           (UPDATES,b'<html>updates</html>','text/html'),
                                           (PRESS,b'<html>press</html>','text/html'),
-                                          (RSS_URL,RSS,'application/rss+xml')]}
+                                          (RSS_URL,RSS,'application/rss+xml'),
+                                          (PRESS_HOME,b'<html><a href="/en/rss.xml">RSS</a></html>','text/html'),
+                                          (PRESS_RSS,RSS,'application/rss+xml')]}
 
     def getter(self,url,**kwargs):
         # A stale conditional response cannot be evidence for this fresh probe.
@@ -44,6 +48,34 @@ class UNTransportProbeTests(unittest.TestCase):
     def probe(self):return self.P.probe(fetcher=self.getter,now=NOW)
     def observation(self,result,url):return next(r for r in result['observations'] if r['url']==url)
 
+    def test_official_press_rss_is_observed_independently_of_blocked_committee_host(self):
+        self.items[UPDATES].http_status=202
+        self.items[UPDATES].body=b''
+        self.items[UPDATES].headers={'x-amzn-waf-action':'challenge'}
+        report=self.probe()
+        self.assertEqual({r['url'] for r in report['observations']},set(self.items))
+        self.assertEqual(self.observation(report,UPDATES)['transport_status'],'ACCESS_CHALLENGE')
+        self.assertEqual(self.observation(report,PRESS_HOME)['http_status'],200)
+        item=self.observation(report,PRESS_RSS)
+        self.assertEqual(item['transport_status'],'HTTP200_UNVALIDATED')
+        self.assertEqual(item['rss_shape']['format'],'rss')
+        self.assertNotIn('source_healthy',report)
+
+    def test_press_rss_challenge_is_not_parsed_even_with_valid_rss(self):
+        self.items[PRESS_RSS].headers={'x-amzn-waf-action':'challenge'}
+        item=self.observation(self.probe(),PRESS_RSS)
+        self.assertEqual(item['transport_status'],'ACCESS_CHALLENGE')
+        self.assertNotIn('rss_shape',item)
+
+    def test_press_rss_http_failure_retains_original_and_new_homepage_observations(self):
+        response=requests.Response();response.status_code=503;response.url=PRESS_RSS
+        self.items[PRESS_RSS]=requests.HTTPError('not available',response=response)
+        report=self.probe()
+        self.assertTrue(report['probe_completed'])
+        self.assertEqual(self.observation(report,PRESS_RSS)['transport_status'],'HTTP_ERROR')
+        self.assertEqual(self.observation(report,XML)['http_status'],200)
+        self.assertEqual(self.observation(report,PRESS_HOME)['http_status'],200)
+
     def test_explicit_access_challenge_and_empty_202_are_distinct(self):
         cases=[(202,b'',{'X-Amzn-Waf-Action':'challenge'},'ACCESS_CHALLENGE'),
                (202,b'',{},'EMPTY_202'),(200,b'',{},'EMPTY_200'),
@@ -57,7 +89,7 @@ class UNTransportProbeTests(unittest.TestCase):
                 self.assertEqual(r['http_status'],code)
 
     def test_reports_body_hash_and_duplicate_rss_shape_without_claiming_list_validation(self):
-        r=self.probe();self.assertTrue(r['probe_completed']);self.assertEqual(len(r['observations']),4)
+        r=self.probe();self.assertTrue(r['probe_completed']);self.assertEqual(len(r['observations']),6)
         item=self.observation(r,RSS_URL)
         self.assertEqual(r['checked_at'],'2026-11-11T00:00:00Z')
         self.assertEqual(item['transport_status'],'HTTP200_UNVALIDATED')
@@ -81,7 +113,7 @@ class UNTransportProbeTests(unittest.TestCase):
     def test_timeout_is_reported_without_suppressing_other_targets(self):
         self.items[UPDATES]=requests.Timeout('timeout https://unsolprodfiles.blob.core.windows.net/publiclegacyxmlfiles/EN/x.xml?sig=ERROR_SECRET')
         r=self.probe();failed=self.observation(r,UPDATES)
-        self.assertTrue(r['probe_completed']);self.assertEqual(len(r['observations']),4)
+        self.assertTrue(r['probe_completed']);self.assertEqual(len(r['observations']),6)
         self.assertEqual(failed['transport_status'],'FETCH_ERROR');self.assertIsNone(failed['http_status'])
         self.assertEqual(failed['error_type'],'Timeout');self.assertNotIn('ERROR_SECRET',json.dumps(r))
         self.assertEqual(self.observation(r,RSS_URL)['rss_shape']['item_count'],3)
@@ -117,13 +149,13 @@ class UNTransportProbeTests(unittest.TestCase):
         result = self.probe()
         self.assertNotIn('TEMPORARY_SECRET', json.dumps(result))
         self.assertEqual(self.observation(result, XML)['error_type'], 'ConnectionError')
-        self.assertEqual(len(result['observations']), 4)
+        self.assertEqual(len(result['observations']), 6)
 
     def test_unknown_rss_encoding_retains_all_observations(self):
         self.items[RSS_URL].body = b'<?xml version="1.0" encoding="nonexistent"?><rss><channel/></rss>'
         try:result = self.probe()
         except Exception as error:self.fail('RSS encoding must be an observation, not discard the report: '+type(error).__name__)
-        self.assertTrue(result['probe_completed']);self.assertEqual(len(result['observations']),4)
+        self.assertTrue(result['probe_completed']);self.assertEqual(len(result['observations']),6)
         self.assertEqual(self.observation(result,RSS_URL)['rss_shape']['format'],'unsupported_encoding')
         self.assertEqual(self.observation(result,XML)['http_status'],200)
 
