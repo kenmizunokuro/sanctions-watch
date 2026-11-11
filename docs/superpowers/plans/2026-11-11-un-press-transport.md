@@ -20,11 +20,21 @@ not leak cookies, signed query strings or article bodies.
 
 ### Task 1: Extend the diagnostic comparison
 
-- [ ] Add fixtures and tests for the two observed official press endpoints, independent
+- [x] Add fixtures and tests for the two observed official press endpoints, independent
   failures and challenge handling; run new tests and observe missing-target failures.
-- [ ] Add `PRESS_HOME_URL`, `PRESS_RSS_URL` and two entries in `TARGETS`; use `_rss_shape`
+- [x] Add `PRESS_HOME_URL`, `PRESS_RSS_URL` and two entries in `TARGETS`; use `_rss_shape`
   for both RSS source IDs. Preserve the existing report schema and classifications.
-- [ ] Run transport/source/watch tests, offline checks and `git diff --check`.
-- [ ] Document official discovery, local observations, scope and full validation results.
-- [ ] Review, commit and publish a PR; inspect GitHub checks and the diagnostic artifact.
-- [ ] Record measured GitHub feasibility without declaring blocked sources healthy.
+- [x] Run transport/source/watch tests, offline checks and `git diff --check`.
+- [x] Document official discovery, local observations, scope and full validation results.
+- [x] Review, commit and publish a PR; inspect GitHub checks and the diagnostic artifact.
+- [x] Record measured GitHub feasibility without declaring blocked sources healthy.
+
+## Execution record
+
+Implemented inline in a fresh dedicated checkout on `feat/un-press-transport-20261111`.
+Three tests failed on the absent targets, then all 14 diagnostic tests and 50 related
+tests passed. Full local regression: 831/831; offline: 213/213. Independent reviewer:
+no Critical/Important findings. PR65 GitHub diagnostic42930184150 verified the two
+press endpoints as HTTP200 while the original HTML/RSS remained explicit challenges.
+Downloaded artifact13815563325 and verified its ZIP SHA256 before retaining the JSON.
+No production monitor, financial state, source health or master logic was changed.
