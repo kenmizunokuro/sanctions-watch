@@ -3,10 +3,10 @@
   "current_event_id": "193e3721a1760258ed20413819abc034c92a01889feac024422162417287bf50",
   "documents": {
     "press_rss": {
-      "etag": "W/\"1794353672\"",
+      "etag": "W/\"1794398843\"",
       "filename": "rss.xml",
       "final_url": "https://press.un.org/en/rss.xml",
-      "last_modified": "Tue, 10 Nov 2026 23:34:32 GMT",
+      "last_modified": "Wed, 11 Nov 2026 12:07:23 GMT",
       "raw_path": "data/raw/un/e95a87ef6866004585af42c7ef311ab4c2bdc76ba57a0a8abf8eb8f1402e7e10.xml.gz",
       "sha256": "e95a87ef6866004585af42c7ef311ab4c2bdc76ba57a0a8abf8eb8f1402e7e10",
       "url": "https://press.un.org/en/rss.xml"
@@ -509465,7 +509465,7 @@
       "source": "press:2745"
     }
   ],
-  "last_checked_at": "2026-11-11T06:11:11Z",
+  "last_checked_at": "2026-11-11T14:18:05Z",
   "notices": {},
   "press_rss": {
     "coverage_gap": {
@@ -509548,7 +509548,7 @@
         "url": "https://press.un.org/en/2026/sgsm23366.doc.htm"
       }
     ],
-    "last_success_at": "2026-11-11T06:11:11Z",
+    "last_success_at": "2026-11-11T14:18:05Z",
     "latest_publication_at": "2026-11-10T23:21:41Z",
     "new_articles": 0,
     "new_candidates": 0,
@@ -509564,6 +509564,6 @@
   "snapshot_hash": "68c062b4fd6a3e98ffe63499c80da78875acdd817170c4abc198e2a11a214e59",
   "source_updated": "2026-11-11T00:00:03.543Z",
   "updates_status": "error",
-  "xml_last_success_at": "2026-11-11T06:11:11Z",
+  "xml_last_success_at": "2026-11-11T14:18:05Z",
   "xml_status": "review_required"
 }
