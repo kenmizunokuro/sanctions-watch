@@ -24,12 +24,16 @@ class Feed:
         self.updates = UPDATES
         self.not_modified = False
         self.fail_xml = False
+        from tests.test_un_press_rss import rss
+        self.rss = rss()
 
     def __call__(self, url, *, prev=None, **kwargs):
         if url == U.XML_URL and self.fail_xml:
             raise TimeoutError('network unavailable')
         from src import un_updates as V
+        from src import un_press_rss as P
         body = (self.body if url == U.XML_URL else
+                self.rss if url == P.URL else
                 self.updates if url == V.UPDATES_URL else self.press)
         return Fetched(url, body=None if self.not_modified else body,
                        sha256=(prev or {}).get('sha256', '') if self.not_modified else hashlib.sha256(body).hexdigest(),

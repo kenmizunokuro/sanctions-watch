@@ -5,11 +5,12 @@ import argparse
 import csv
 import hashlib
 import json
+import re
 import tempfile
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-from . import dashboard as D, master as M, un_sources as U, un_watch as W
+from . import dashboard as D, master as M, un_sources as U, un_watch as W, un_press_rss as P
 from .fetch import read_raw
 from .persistence import FileWrite, atomic_replace_many
 from .un_lock import locked
@@ -164,9 +165,54 @@ def review_coverage(root: Path, *, committee: str, reviewer: str, when: datetime
     atomic_replace_many(W.projections(root, state, now=when))
 
 
+def _rss_original(root, source_hash):
+    if not re.fullmatch('[0-9a-f]{64}', source_hash):
+        raise ValueError('RSS source hash must be exact SHA256')
+    raw = root / f'data/raw/un/{source_hash}.xml.gz'
+    if hashlib.sha256(read_raw(raw)).hexdigest() != source_hash:
+        raise ValueError('RSS original hash mismatch')
+
+
+@locked
+def review_rss_notice(root: Path, *, event_id: str, index_hash: str, reviewer: str,
+                      when: datetime, note: str):
+    at = _operator(reviewer, when, note)
+    event_id = event_id.removeprefix('rss:')
+    state = W.load(root)
+    event = next((e for e in state.get('press_rss', {}).get('events', [])
+                  if e['event_id'] == event_id), None)
+    if (not event or event['source_hash'] != index_hash or event['status'] != 'PENDING_REVIEW'
+            or when < P.moment(event['detected_at'])):
+        raise ValueError('RSS event/hash is not pending or review predates detection')
+    _rss_original(root, index_hash)
+    event.update(status='REVIEWED', reviewer=reviewer, reviewed_at=at, review_note=note)
+    atomic_replace_many(W.projections(root, state, now=when))
+    return event
+
+
+@locked
+def review_rss_coverage(root: Path, *, index_hash: str, reviewer: str, when: datetime, note: str):
+    at = _operator(reviewer, when, note)
+    state = W.load(root)
+    sensor = state.get('press_rss', {})
+    if (not sensor.get('coverage_gap') or sensor.get('error') or sensor.get('stale')
+            or state['documents'].get('press_rss', {}).get('sha256') != index_hash
+            or not timedelta(seconds=0) <= when - P.moment(sensor['last_success_at']) <= P.MAX_POLL_GAP
+            or not -timedelta(minutes=10) <= when - P.moment(sensor['latest_publication_at']) <= P.MAX_CONTENT_AGE):
+        raise ValueError('RSS coverage clearance requires current exact nonstale evidence')
+    _rss_original(root, index_hash)
+    gap = sensor.pop('coverage_gap')
+    sensor.setdefault('coverage_reviews', []).append(dict(gap, reviewer=reviewer, reviewed_at=at,
+                                                          review_note=note, reviewed_source_hash=index_hash))
+    P.refresh_status(sensor)
+    atomic_replace_many(W.projections(root, state, now=when))
+    return sensor['coverage_reviews'][-1]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('command', choices=['status', 'approve', 'apply', 'notice-review', 'coverage-review'])
+    parser.add_argument('command', choices=['status', 'approve', 'apply', 'notice-review', 'coverage-review',
+                                          'rss-review', 'rss-coverage-review'])
     parser.add_argument('--root', type=Path, default=Path(__file__).resolve().parent.parent)
     for name in ['event-id', 'source-hash', 'reviewer', 'operator', 'note', 'evidence-url',
                  'expected-master-hash', 'index-hash', 'committee']:
@@ -179,6 +225,12 @@ def main() -> int:
         result = dict(current_event_id=state.get('current_event_id'), snapshot_hash=state.get('snapshot_hash'),
                       master_hash=master_hash(args.root), events=state['events'],
                       review_count=len(W._review_rows(state)))
+        sensor = state.get('press_rss', {})
+        result['press_rss'] = {key: sensor.get(key) for key in
+                               ['status', 'last_success_at', 'latest_publication_at', 'source_hash', 'coverage_gap']}
+        result['press_rss']['pending'] = [dict(event_id='rss:' + e['event_id'], source_hash=e['source_hash'],
+                                              title=e['record']['title'], url=e['record']['url'])
+                                         for e in sensor.get('events', []) if e['status'] == 'PENDING_REVIEW']
     elif args.command == 'approve':
         result = approve(args.root, event_id=args.event_id, source_hash=args.source_hash,
                          reviewer=args.reviewer, when=when, note=args.note, evidence_url=args.evidence_url)
@@ -188,6 +240,12 @@ def main() -> int:
     elif args.command == 'notice-review':
         result = review_notice(args.root, event_id=args.event_id, index_hash=args.index_hash,
                                reviewer=args.reviewer, when=when, note=args.note)
+    elif args.command == 'rss-review':
+        result = review_rss_notice(args.root, event_id=args.event_id, index_hash=args.index_hash,
+                                  reviewer=args.reviewer, when=when, note=args.note)
+    elif args.command == 'rss-coverage-review':
+        result = review_rss_coverage(args.root, index_hash=args.index_hash, reviewer=args.reviewer,
+                                    when=when, note=args.note)
     else:
         result = review_coverage(args.root, committee=args.committee, reviewer=args.reviewer, when=when, note=args.note)
     print(json.dumps(result, ensure_ascii=False, indent=2))

@@ -112,3 +112,41 @@ The separate official press homepage `https://press.un.org/en` publishes `https:
 A response entering the UN document reader with explicit `x-amzn-waf-action: challenge` or `captcha` is recorded as `UNAccessChallengeError` before parsing/archiving; HTTP errors rejected earlier by the collector keep their existing HTTP-error handling. HTTP202 alone remains a generic transport failure; a healthy CloudFront response is accepted for the usual schema checks. GitHub evidence and RSS feasibility are recorded in `docs/evidence/un-transport-20261111/findings.md`.
 
 Diagnostic output must be JSON outside business data/repository metadata directories. Symlinks and unrelated existing JSON are refused; a completed diagnostic report can be refreshed atomically. Exception text is reduced to controlled labels to avoid leaking signed relative request targets. Unsupported RSS encodings and unsafe declarations are reported without dropping the other observations.
+
+## 公式報道RSSの補助監視
+
+`watch-un.yml`の既存定期実行で、別の公式RSS `https://press.un.org/en/rss.xml`も取得する。
+直近の国連全体の記事のみが入るため、14委員会一覧や更新履歴HTMLの代替にはしない。
+RSS成功でも既存HTMLの取得失敗・監視範囲欠落は残る。タイトルによる候補判定には見逃しがあり、
+全件網羅・制裁追加/削除・XML検証・master反映を示すものではない。
+
+初回取得は基準として保存し、新着通知を出さない。以後、安保理の記事URLかつタイトルに
+sanctions、asset freeze、arms embargo、travel ban等を含む新着・改訂を候補化する。
+原本SHA256、URL、記事公表日時、初回検知日時、改訂前後を保持し、再取得で検知日時を変えない。
+記事がRSSから消えても掲載終了とは判定しない。記事タイトルが関連外へ変わった場合も改訂候補を残す。
+
+`data/un/state.json`の`press_rss`と`documents.press_rss`に独立保存する。
+既存`data/dashboard/un_reviews.csv`と「11_国連レビュー」に補助監視概要・候補・取得/解析失敗・
+未確認期間を表示する。CSVの11列構成は維持しているため、この機能のためのGAS差し替えは不要。
+シートが既に国連レビューを同期している場合は通常同期で表示する。RSS候補は08_最新差分への確定名簿差分にはしない。
+
+最新記事が72時間を超えて古い場合はSTALE、前回取得成功から90分超または前回記事との重複なしは
+持続する未確認期間として表示する。これらやRSS取得失敗でも監視CLIは非ゼロ終了し、検証済み旧資料・候補は保持する。
+成功した再取得だけで未確認期間を解除しない。72時間/90分は運用上の保守的な閾値であり、
+その範囲内なら完全な監視だという保証ではない。既存webhookが未設定なら外部通知は配信されない。
+
+状態と候補ID・原本hashの確認:
+
+```bash
+python -m src.un_review status
+python -m src.un_review rss-review --event-id 'rss:EVENT_ID' --index-hash SOURCE_SHA256 \
+  --reviewer '確認者名' --at '2026-11-11T10:00:00+09:00' \
+  --note '公式記事本文とXMLへの反映状況を確認した結果'
+python -m src.un_review rss-coverage-review --index-hash CURRENT_RSS_SHA256 \
+  --reviewer '確認者名' --at '2026-11-11T10:00:00+09:00' \
+  --note '未確認期間に対応する公式アーカイブの確認範囲と結果'
+```
+
+`EVENT_ID`/hash/日時は実際の値に置き換える。候補確認は原本hashに固定し、XML承認・master適用とは別。
+範囲解除は直近90分以内に取得した、解除時点でも最新記事が72時間以内のRSS原本に限定する。
+確認者・理由・元の欠落記録・解除時原本hashを残す。シートのメモだけでは解除されない。

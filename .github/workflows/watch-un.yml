@@ -85,6 +85,7 @@ jobs:
           NEW_XML: ${{ steps.watch.outputs.new_xml_events }}
           NEW_NOTICES: ${{ steps.watch.outputs.new_notices }}
           NEW_UPDATES: ${{ steps.watch.outputs.new_updates }}
+          NEW_PRESS_RSS: ${{ steps.watch.outputs.new_press_rss }}
           MONITOR_OUTCOME: ${{ steps.watch.outcome }}
         run: |
           python - <<'PY'
@@ -104,6 +105,10 @@ jobs:
               event = state['events'][-1]
               kind = '初回収録' if event['baseline'] else '差分候補'
               post('【国連 XML検証済・' + kind + '】追加 ' + str(len(event['added'])) + ' / 掲載終了候補 ' + str(len(event['removed'])) + ' / 変更 ' + str(len(event['changed'])) + '\nSHA256: ' + event['source_hash'] + '\n状態: 要レビュー・master未反映')
+          if int(os.environ.get('NEW_PRESS_RSS') or 0):
+              post('【国連 公式RSS補助検知】新着・改訂候補 ' + os.environ['NEW_PRESS_RSS']
+                   + '件。直近記事のみ・委員会の全件網羅を保証しません。'
+                   + ' 一次発表・XML要照合、master未反映。data/dashboard/un_reviews.csv を参照。')
           PY
       - name: Retain UN evidence on success or failure
         if: always()
