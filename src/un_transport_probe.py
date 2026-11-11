@@ -21,8 +21,11 @@ from . import source_audit as A, un_sources as U, un_updates as V
 from .fetch import NetworkPolicyError, fetch
 
 RSS_URL = 'https://main.un.org/securitycouncil/en/feed/1.0/updates_unsc_consolidated_list'
+PRESS_HOME_URL = 'https://press.un.org/en'
+PRESS_RSS_URL = 'https://press.un.org/en/rss.xml'
 TARGETS = (('xml', U.XML_URL), ('updates', V.UPDATES_URL),
-           ('press_1267', U.press_url('1267')), ('rss', RSS_URL))
+           ('press_1267', U.press_url('1267')), ('rss', RSS_URL),
+           ('press_home', PRESS_HOME_URL), ('press_rss', PRESS_RSS_URL))
 PUBLIC_HEADERS = frozenset({'server', 'content-type', 'content-length',
                             'cache-control', 'retry-after', 'x-amzn-waf-action',
                             'x-cache', 'via', 'etag', 'last-modified'})
@@ -110,7 +113,7 @@ def probe(*, fetcher=fetch, now=None):
         item['etag'] = item['headers'].get('etag', item['etag'])
         item['last_modified'] = item['headers'].get('last-modified', item['last_modified'])
         item['transport_status'] = _transport_status(item['http_status'], body, item['headers'])
-        if source == 'rss' and item['transport_status'] == 'HTTP200_UNVALIDATED':
+        if source in {'rss', 'press_rss'} and item['transport_status'] == 'HTTP200_UNVALIDATED':
             item['rss_shape'] = _rss_shape(body)
         result['observations'].append(item)
     result['probe_completed'] = True
