@@ -1,0 +1,15 @@
+{
+  "checked_at": "2026-11-11T01:09:36Z",
+  "base_commit": "915102de7d87fe10529fba66b8ac21c22dcf8fe2",
+  "source_sha256": "e95a87ef6866004585af42c7ef311ab4c2bdc76ba57a0a8abf8eb8f1402e7e10",
+  "parsed_items": 10,
+  "cached_records_match_original": true,
+  "latest_publication_matches": true,
+  "live_pending_candidates": 0,
+  "read_only_hashes_unchanged": true,
+  "hashes": {
+    "data/un/state.json": "3e3cda625617f22478667d5397b87b1d4a80a466f8fc31dbe8e40ea067a95115",
+    "data/master/master.csv": "acf78ff686bddaad01c1b258f73801af3683e0a9e9e7177fe141e0be773b136a",
+    "data/dashboard/un_reviews.csv": "4dcf53559a7161ff0b360f97d77d06008cb76ad3130330df2e51099408e168e2"
+  }
+}

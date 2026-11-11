@@ -114,8 +114,13 @@ def observe(previous: dict, items: list[dict], *, source_hash: str, now: datetim
             continue
         event_id = U.digest([head, item, source_hash])
         status = 'PENDING_REVIEW' if initialized else 'BASELINE_RECORDED'
+        previous_hash = ''
+        if old:
+            previous_hash = (previous.get('source_hash', '') if item['url'] in old_items
+                             else by_id.get(head, {}).get('source_hash', ''))
         sensor['events'].append(dict(event_id=event_id, parent_event_id=head, record=item,
                                      previous_record=old or {}, source_hash=source_hash,
+                                     previous_source_hash=previous_hash,
                                      detected_at=when, status=status,
                                      change='REVISION' if old else 'NEW'))
         sensor['heads'][item['url']] = event_id
