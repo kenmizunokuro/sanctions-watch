@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-11T00:00:03.543Z",
+  "generated_at": "2026-11-12T00:00:04.690Z",
   "parties": {
     "CDe.001": {
       "committee": "1533",
@@ -1583,7 +1583,7 @@
     },
     "CDe.010": {
       "committee": "1533",
-      "data_id": "6909619",
+      "data_id": "6909743",
       "evidence": [
         "ENTITY",
         [],
@@ -1592,7 +1592,7 @@
           [
             "DATAID",
             [],
-            "6909619",
+            "6909743",
             []
           ],
           [
@@ -1657,6 +1657,19 @@
             ]
           ],
           [
+            "LAST_DAY_UPDATED",
+            [],
+            "",
+            [
+              [
+                "VALUE",
+                [],
+                "2026-11-11",
+                []
+              ]
+            ]
+          ],
+          [
             "ENTITY_ALIAS",
             [],
             "",
@@ -1664,13 +1677,13 @@
               [
                 "QUALITY",
                 [],
-                "",
+                "a.k.a.",
                 []
               ],
               [
                 "ALIAS_NAME",
                 [],
-                "",
+                "Front pour la Refondation de la Nation (FRN)",
                 []
               ]
             ]
@@ -1708,7 +1721,7 @@
           ]
         ]
       ],
-      "fingerprint": "9da6e1ec75190060b6bb9f988ff41cabbd84cadd2e997371ffc453fa2977a47c",
+      "fingerprint": "c8e6f7ec293a3bef4f367bdb95940543a6dcc511696703f0c954cfcdf3941e75",
       "kind": "entity",
       "list_type": "DRC",
       "listed_on": "2026-07-14",
@@ -1716,6 +1729,11 @@
         {
           "kind": "primary",
           "name": "ALLIANCE FLEUVE CONGO (AFC)",
+          "weak": false
+        },
+        {
+          "kind": "alias",
+          "name": "Front pour la Refondation de la Nation (FRN)",
           "weak": false
         }
       ],
@@ -305979,8 +305997,8 @@
       "reference": "YEi.012"
     }
   },
-  "raw_path": "data/raw/un/68c062b4fd6a3e98ffe63499c80da78875acdd817170c4abc198e2a11a214e59.xml.gz",
+  "raw_path": "data/raw/un/4c56e0ca1ef09f9c436f4fcadd29916d1ed577b2b85134ea988d4817fabff5a7.xml.gz",
   "schema_version": 1,
-  "source_hash": "68c062b4fd6a3e98ffe63499c80da78875acdd817170c4abc198e2a11a214e59",
+  "source_hash": "4c56e0ca1ef09f9c436f4fcadd29916d1ed577b2b85134ea988d4817fabff5a7",
   "source_url": "https://scsanctions.un.org/resources/xml/en/name/consolidated.xml"
 }
