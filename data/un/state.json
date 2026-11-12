@@ -541243,7 +541243,7 @@
       "source": "press:2745"
     }
   ],
-  "last_checked_at": "2026-11-12T02:38:04Z",
+  "last_checked_at": "2026-11-12T10:21:18Z",
   "notices": {},
   "press_rss": {
     "coverage_gap": {
@@ -541346,10 +541346,10 @@
         "url": "https://press.un.org/en/2026/sgt3479.doc.htm"
       }
     ],
-    "last_success_at": "2026-11-12T02:38:04Z",
+    "last_success_at": "2026-11-12T10:21:18Z",
     "latest_publication_at": "2026-11-11T23:08:57Z",
-    "new_articles": 1,
-    "new_candidates": 1,
+    "new_articles": 0,
+    "new_candidates": 0,
     "revised_articles": 0,
     "source_hash": "8fb11c404ca0bbe2cee2c1d8b7cfd69d058be42c635d3d97fd510afcb3008867",
     "stale": false,
@@ -541362,6 +541362,6 @@
   "snapshot_hash": "4c56e0ca1ef09f9c436f4fcadd29916d1ed577b2b85134ea988d4817fabff5a7",
   "source_updated": "2026-11-12T00:00:04.690Z",
   "updates_status": "error",
-  "xml_last_success_at": "2026-11-12T02:38:04Z",
+  "xml_last_success_at": "2026-11-12T10:21:18Z",
   "xml_status": "review_required"
 }
