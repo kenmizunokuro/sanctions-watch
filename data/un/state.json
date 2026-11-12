@@ -3,12 +3,12 @@
   "current_event_id": "fecf42e3be41468ad69563dad7c32ce13505f40281a5030f1c575703c5e78125",
   "documents": {
     "press_rss": {
-      "etag": "W/\"1794444147\"",
+      "etag": "W/\"1794504746\"",
       "filename": "rss.xml",
       "final_url": "https://press.un.org/en/rss.xml",
-      "last_modified": "Thu, 12 Nov 2026 00:42:27 GMT",
-      "raw_path": "data/raw/un/8fb11c404ca0bbe2cee2c1d8b7cfd69d058be42c635d3d97fd510afcb3008867.xml.gz",
-      "sha256": "8fb11c404ca0bbe2cee2c1d8b7cfd69d058be42c635d3d97fd510afcb3008867",
+      "last_modified": "Thu, 12 Nov 2026 17:32:26 GMT",
+      "raw_path": "data/raw/un/76559a1893468deecd5cfc33d97a7c8e290cf22b2c256886831bb7ab29122735.xml.gz",
+      "sha256": "76559a1893468deecd5cfc33d97a7c8e290cf22b2c256886831bb7ab29122735",
       "url": "https://press.un.org/en/rss.xml"
     },
     "xml": {
@@ -541243,7 +541243,7 @@
       "source": "press:2745"
     }
   ],
-  "last_checked_at": "2026-11-12T10:21:18Z",
+  "last_checked_at": "2026-11-12T18:33:28Z",
   "notices": {},
   "press_rss": {
     "coverage_gap": {
@@ -541277,10 +541277,10 @@
     "items": [
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/db261111.doc.htm",
-        "publication_at": "2026-11-11T20:02:21Z",
-        "title": "Daily Press Briefing by the Office of the Spokesperson for the Secretary-General",
-        "url": "https://press.un.org/en/2026/db261111.doc.htm"
+        "guid": "https://press.un.org/en/2026/dc3919.doc.htm",
+        "publication_at": "2026-11-11T22:04:18Z",
+        "title": "Seoul to Host Twenty-Fifth Republic of Korea–United Nations Joint Conference on Disarmament and Non-Proliferation Issues, 12–13 November",
+        "url": "https://press.un.org/en/2026/dc3919.doc.htm"
       },
       {
         "candidate": false,
@@ -541312,24 +541312,17 @@
       },
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/sgs23369.doc.htm",
+        "guid": "https://press.un.org/en/2026/sga2450.doc.htm",
+        "publication_at": "2026-11-12T15:57:52Z",
+        "title": "Secretary-General Appoints Michelle Gyles-McDonnough of Jamaica Assistant Secretary-General for Development Coordination",
+        "url": "https://press.un.org/en/2026/sga2450.doc.htm"
+      },
+      {
+        "candidate": false,
+        "guid": "https://press.un.org/en/2026/sgsm23369.doc.htm",
         "publication_at": "2026-11-11T20:23:48Z",
         "title": "Act Now to Halve Global Food Waste by 2030, End Age of Unchecked Methane Pollution, Secretary-General Urges Leaders’ Round Table",
-        "url": "https://press.un.org/en/2026/sgs23369.doc.htm"
-      },
-      {
-        "candidate": false,
-        "guid": "https://press.un.org/en/2026/sgsm23367.doc.htm",
-        "publication_at": "2026-11-11T19:40:15Z",
-        "title": "At Antalya Summit, Secretary-General Calls for Climate Justice Compact, Faster Shift from Fossil Fuels",
-        "url": "https://press.un.org/en/2026/sgsm23367.doc.htm"
-      },
-      {
-        "candidate": false,
-        "guid": "https://press.un.org/en/2026/sgsm23368.doc.htm",
-        "publication_at": "2026-11-11T19:37:43Z",
-        "title": "Clean Electricity Can Break Fossil Fuel Dependence, Secretary-General Tells Antalya Dialogue",
-        "url": "https://press.un.org/en/2026/sgsm23368.doc.htm"
+        "url": "https://press.un.org/en/2026/sgsm23369.doc.htm"
       },
       {
         "candidate": false,
@@ -541340,18 +541333,25 @@
       },
       {
         "candidate": false,
+        "guid": "https://press.un.org/en/2026/sgsm23371.doc.htm",
+        "publication_at": "2026-11-12T16:31:43Z",
+        "title": "Put Grids at Centre of Energy, Development, Increase Investment 50 Per Cent by 2030, Secretary-General Urges at Climate Change Conference High-Level Event",
+        "url": "https://press.un.org/en/2026/sgsm23371.doc.htm"
+      },
+      {
+        "candidate": false,
         "guid": "https://press.un.org/en/2026/sgt3479.doc.htm",
         "publication_at": "2026-11-11T23:08:57Z",
         "title": "Activities of Secretary-General in Spain, 4-6 November",
         "url": "https://press.un.org/en/2026/sgt3479.doc.htm"
       }
     ],
-    "last_success_at": "2026-11-12T10:21:18Z",
-    "latest_publication_at": "2026-11-11T23:08:57Z",
+    "last_success_at": "2026-11-12T18:33:28Z",
+    "latest_publication_at": "2026-11-12T16:31:43Z",
     "new_articles": 0,
     "new_candidates": 0,
     "revised_articles": 0,
-    "source_hash": "8fb11c404ca0bbe2cee2c1d8b7cfd69d058be42c635d3d97fd510afcb3008867",
+    "source_hash": "76559a1893468deecd5cfc33d97a7c8e290cf22b2c256886831bb7ab29122735",
     "stale": false,
     "status": "coverage_gap"
   },
@@ -541362,6 +541362,6 @@
   "snapshot_hash": "4c56e0ca1ef09f9c436f4fcadd29916d1ed577b2b85134ea988d4817fabff5a7",
   "source_updated": "2026-11-12T00:00:04.690Z",
   "updates_status": "error",
-  "xml_last_success_at": "2026-11-12T10:21:18Z",
+  "xml_last_success_at": "2026-11-12T18:33:28Z",
   "xml_status": "review_required"
 }
