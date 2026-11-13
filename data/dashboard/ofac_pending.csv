@@ -1,1 +1,4 @@
 検知日時（JST）,出所,種別,受取人名,変更前,変更後,状態,GitHub実行URL
+2026-11-14 01:45:39,OFAC,追加,Los Mendoza Drug Trafficking Organization,,制裁リスト（OFAC：SDN）,監査停止・master未反映,https://github.com/kenmizunokuro/sanctions-watch/actions/runs/43465046474
+2026-11-14 01:45:39,OFAC,追加,Los Lorenzanas,,制裁リスト（OFAC：SDN）,監査停止・master未反映,https://github.com/kenmizunokuro/sanctions-watch/actions/runs/43465046474
+2026-11-14 01:45:39,OFAC,追加,Lorenzana Drug Trafficking Organization,,制裁リスト（OFAC：SDN）,監査停止・master未反映,https://github.com/kenmizunokuro/sanctions-watch/actions/runs/43465046474
