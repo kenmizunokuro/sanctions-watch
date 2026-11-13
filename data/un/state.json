@@ -573025,7 +573025,7 @@
       "source": "un_press_rss"
     }
   ],
-  "last_checked_at": "2026-11-13T05:02:33Z",
+  "last_checked_at": "2026-11-13T13:09:59Z",
   "notices": {},
   "press_rss": {
     "coverage_gap": {
@@ -573145,6 +573145,6 @@
   "snapshot_hash": "04b659481bd9a6afc558b6258a9e4eaeda2135d6ed650da0a59f6eac5d867dbd",
   "source_updated": "2026-11-13T00:00:03.669Z",
   "updates_status": "error",
-  "xml_last_success_at": "2026-11-13T05:02:33Z",
+  "xml_last_success_at": "2026-11-13T13:09:59Z",
   "xml_status": "review_required"
 }
