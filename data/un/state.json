@@ -604803,7 +604803,7 @@
       "source": "un_press_rss"
     }
   ],
-  "last_checked_at": "2026-11-14T01:07:43Z",
+  "last_checked_at": "2026-11-14T07:41:16Z",
   "notices": {},
   "press_rss": {
     "coverage_gap": {
@@ -604923,6 +604923,6 @@
   "snapshot_hash": "03a9b4414f693bc11a3ab457894e0e861c8d0b412c67dc2b4010a490fe64aa43",
   "source_updated": "2026-11-14T00:00:05.893Z",
   "updates_status": "error",
-  "xml_last_success_at": "2026-11-14T01:07:43Z",
+  "xml_last_success_at": "2026-11-14T07:41:16Z",
   "xml_status": "review_required"
 }

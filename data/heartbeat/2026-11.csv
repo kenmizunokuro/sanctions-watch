@@ -438,3 +438,5 @@ checked_at,source,status,content_hash,source_updated,record_count,raw_path
 2026-11-14T01:07:43Z,un_xml,review_required,03a9b4414f693bc11a3ab457894e0e861c8d0b412c67dc2b4010a490fe64aa43,2026-11-14T00:00:05.893Z,1007,
 2026-11-14T01:07:43Z,un_press,error,,,0,
 2026-11-14T07:08:42Z,mof,unchanged,71eaf728c702c881fb13856043f63d42276094c79cf91bae4ad90eadfa3caadd,令和8年11月5日,15249,
+2026-11-14T07:41:16Z,un_xml,review_required,03a9b4414f693bc11a3ab457894e0e861c8d0b412c67dc2b4010a490fe64aa43,2026-11-14T00:00:05.893Z,1007,
+2026-11-14T07:41:16Z,un_press,error,,,0,
