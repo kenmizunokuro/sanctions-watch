@@ -1,2 +1,2 @@
 監査終了日時（JST）,証跡状態,停止件数,停止理由,監査報告SHA256,GitHub実行URL
-2026-11-16 03:12:12,BLOCKED,1,監査停止1件：EXTRA_REGISTRATION 1件／対象（最大10件）：Los Huistas DTO,50e4b93d331d62a8456d2e385de78f59baf9c478519e1e94419d2535f450bc78,https://github.com/kenmizunokuro/sanctions-watch/actions/runs/43744235485
+2026-11-16 03:49:51,BLOCKED,1,監査停止1件：EXTRA_REGISTRATION 1件／対象（最大10件）：Los Huistas DTO,6f2af312c343221eccef0a202a81332c011c9e533fe78d5477e71d2c9020a635,https://github.com/kenmizunokuro/sanctions-watch/actions/runs/43748049565
