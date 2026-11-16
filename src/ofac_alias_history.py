@@ -1,4 +1,4 @@
-"""One explicitly approved historical alias; never a general alias-loss waiver."""
+"""Exact, source-backed approvals for historical OFAC aliases."""
 from __future__ import annotations
 import argparse,copy,csv,hashlib,json,re,shutil,tempfile
 from datetime import datetime,timedelta,timezone
@@ -8,6 +8,7 @@ from . import integrity_decisions as Q,integrity_legacy as L,master as M,dashboa
 from .vessel_history import _body
 from .mof_legacy_review import _read_rows
 from .approved_legacy_delist import _json,DIFF_COLS
+from .normalize import match_key
 from .persistence import FileWrite,atomic_replace_many
 
 ROOT=Path(__file__).resolve().parent.parent
@@ -19,16 +20,30 @@ LEDGER='data/review/integrity_retention_decisions.json'
 RECEIPT=Path('data/monitoring/approved_volta_alias_history_20261110_applied.json')
 EVIDENCE='data/evidence/ofac_volta_alias_history.csv'
 TARGETS=('data/master/master.csv',LEDGER,'data/dashboard/list.csv','data/dashboard/screening.csv.gz','data/dashboard/changes.csv','data/diff/latest.csv',EVIDENCE)
+HUISTAS_KEY = 'loshuistasdto'
+HUISTAS_APPROVAL = Path('data/review/approved_huistas_alias_history_20261116.json')
+HUISTAS_APPROVAL_SHA256 = '60aec06c349f0722ba1632c351c5ab78d50be83f5da249eb1c91488fa3715df1'
+HUISTAS_RECEIPT = Path('data/monitoring/approved_huistas_alias_history_20261116_applied.json')
+HUISTAS_EVIDENCE = 'data/evidence/ofac_huistas_alias_history.csv'
+DIFF_MARKDOWN = 'data/diff/latest.md'
 URLS={'primary':'https://sanctionslistservice.ofac.treas.gov/api/download/SDN.CSV','alias':'https://sanctionslistservice.ofac.treas.gov/api/download/ALT.CSV','advanced':'https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML'}
+CONS_URLS = {
+    'primary': URLS['primary'].replace('SDN.CSV', 'CONS_PRIM.CSV'),
+    'alias': URLS['alias'].replace('ALT.CSV', 'CONS_ALT.CSV'),
+    'advanced': URLS['advanced'].replace('SDN_ADVANCED.XML', 'CONS_ADVANCED.XML'),
+}
 
 
-def approval(root):
-    root=Path(root).resolve();path=root/APPROVAL
+def approval(root, *, huistas=False):
+    root=Path(root).resolve();path=root/(HUISTAS_APPROVAL if huistas else APPROVAL)
     if not path.resolve().is_relative_to(root/'data/review'):raise ValueError('alias approval path escapes review directory')
     body=path.read_bytes()
-    if hashlib.sha256(body).hexdigest()!=APPROVAL_SHA256:raise ValueError('alias approval hash changed')
+    expected_hash = HUISTAS_APPROVAL_SHA256 if huistas else APPROVAL_SHA256
+    if hashlib.sha256(body).hexdigest()!=expected_hash:raise ValueError('alias approval hash changed')
     b=json.loads(body)
-    if b.get('schema_version')!=1 or b.get('decision')!='APPROVED_RETAIN_HISTORICAL_ALIAS' or b.get('master_key')!=KEY or b.get('party_id')!='58138':
+    expected_scope = (HUISTAS_KEY, '32452') if huistas else (KEY, '58138')
+    if (b.get('schema_version')!=1 or b.get('decision')!='APPROVED_RETAIN_HISTORICAL_ALIAS'
+            or (b.get('master_key'), b.get('party_id')) != expected_scope):
         raise ValueError('alias approval scope changed')
     return b
 
@@ -40,6 +55,22 @@ def _primary(records,b):
     if not re.search(re.escape(b['registration'])+r'(?:\s|;|$)',rows[0]['raw_record'][11]):
         raise ValueError('entity registration changed')
     return rows[0]
+
+
+def _huistas_evidence(root, bundle):
+    historical = bundle['historical']
+    if historical['source_url'] != URLS['advanced']:
+        raise ValueError('historical Huistas source URL changed')
+    body = _body(root, historical, 'docs/evidence/integrity-archives/ofac_sdn_advanced')
+    matches = [row for row in R.read_ofac_xml(body, 'SDN')
+               if row['name'].casefold() == bundle['old_name'].casefold()]
+    if (len(matches) != 1 or matches[0]['source_id'] != bundle['party_id']
+            or matches[0]['locator'] != historical['locator']
+            or not matches[0]['weak'] or matches[0]['primary']):
+        raise ValueError('historical Huistas Weak Alias/Party original missing or ambiguous')
+    return dict(master_key=HUISTAS_KEY, party_id=bundle['party_id'], old_name=bundle['old_name'],
+                primary_name=bundle['primary_name'], notice_url=bundle['notice']['source_url'],
+                historical_source_sha256=historical['source_hash'], name_status='historical_weak_alias')
 
 
 def static_evidence(root,b):
@@ -60,17 +91,48 @@ def static_evidence(root,b):
     return dict(master_key=KEY,party_id=b['party_id'],old_name=b['old_name'],new_name=b['new_name'],notice_url=notice['source_url'],notice_sha256=notice['source_hash'],historical_source_sha256=h['source_hash'],name_status='historical_alias')
 
 
+def _current_records(root, report, *, consolidated=False):
+    source, label, urls = ('ofac_cons', 'Consolidated', CONS_URLS) if consolidated else ('ofac_sdn', 'SDN', URLS)
+    current = {}
+    hashes = {}
+    for role, url in urls.items():
+        docs = [d for d in report.get('documents', []) if d.get('source') == source and d.get('role') == role]
+        if len(docs) != 1 or docs[0]['source_url'] != url:
+            raise ValueError('current official alias source missing')
+        doc = docs[0]
+        folder = f'data/raw/{source}' + ('_advanced' if role == 'advanced' else '')
+        body = _body(root, doc, folder)
+        current[role] = R.read_ofac_xml(body, label) if role == 'advanced' else R.read_classic(body, label, alias=role=='alias')
+        hashes['current_' + ('consolidated_' if consolidated else '') + role + '_sha256'] = doc['sha256']
+    return current, hashes
+
+
 def verify_decision(root,report,decision):
-    b=approval(root)
-    if not isinstance(decision.get('alias_history'),dict) or decision!=b['retention_decision']:raise ValueError('alias decision scope changed')
-    facts=static_evidence(root,b);current={}
-    for role in URLS:
-        docs=[d for d in report.get('documents',[]) if d.get('source')=='ofac_sdn' and d.get('role')==role]
-        if len(docs)!=1 or docs[0]['source_url']!=URLS[role]:raise ValueError('current official alias source missing')
-        doc=docs[0];folder='data/raw/ofac_sdn_advanced' if role=='advanced' else 'data/raw/ofac_sdn'
-        body=_body(root,doc,folder)
-        current[role]=R.read_ofac_xml(body,'SDN') if role=='advanced' else R.read_classic(body,'SDN',alias=role=='alias')
-        facts['current_'+role+'_sha256']=doc['sha256']
+    scope = decision.get('alias_history')
+    if not isinstance(scope, dict):
+        raise ValueError('alias decision scope changed')
+    huistas = scope.get('master_key') == HUISTAS_KEY
+    b=approval(root, huistas=huistas)
+    if decision!=b['retention_decision']:raise ValueError('alias decision scope changed')
+    facts=_huistas_evidence(root,b) if huistas else static_evidence(root,b)
+    current, hashes = _current_records(root, report)
+    facts.update(hashes)
+    if huistas:
+        primary = [r for r in current['primary'] if r['source_id'] == b['party_id']]
+        if (len(primary) != 1 or primary[0]['name'] != b['primary_name']
+                or primary[0]['raw_record'][2].strip() != '-0-'):
+            raise ValueError('current Huistas entity primary name missing or changed')
+        old = b['old_name'].casefold()
+        consolidated, hashes = _current_records(root, report, consolidated=True)
+        facts.update(hashes)
+        if (old in primary[0]['raw_record'][11].casefold()
+                or any(match_key(r['name']) == HUISTAS_KEY
+                       for listing in (current, consolidated) for rows in listing.values() for r in rows)):
+            raise ValueError('old Huistas alias is current again; re-review required')
+        if not any(r['source_id'] == b['party_id'] and r['primary'] and not r['weak']
+                   and r['name'].casefold() == b['primary_name'].casefold() for r in current['advanced']):
+            raise ValueError('Advanced Huistas primary name missing')
+        return facts
     _primary(current['primary'],b)
     for role in ('alias','advanced'):
         names=[r for r in current[role] if r['source_id']==b['party_id']]
@@ -92,39 +154,79 @@ def validate_annotations(root,report,ledger,*,now):
                 marked=[r for r in csv.DictReader(stream,strict=True) if MARKER in r.get('review_flag','')]
         decisions=[e for e in ledger['entries'] if 'alias_history' in e]
         if not marked and not decisions:return report
-        b=approval(root)
-        if marked!=[b['after']] or decisions!=[b['retention_decision']]:raise ValueError('alias annotation or ledger scope changed')
-        if not Q._date(b['reviewed_at'])<=now<Q._date(b['expires_at']):raise ValueError('alias annotation approval future or expired')
-        verified=any(r.get('review_id')==b['retention_decision']['review_id'] and r.get('status')=='APPLIED' and r.get('alias_history') for r in report.get('retention_review',[]))
-        if not verified:verify_decision(root,report,decisions[0])
+        expected_count = 0
+        for huistas, key in ((False, KEY), (True, HUISTAS_KEY)):
+            indexed_rows = [r for r in marked if r['match_key'] == key]
+            case_decisions = [e for e in decisions if isinstance(e['alias_history'], dict)
+                              and e['alias_history'].get('master_key') == key]
+            if not indexed_rows and not case_decisions:
+                continue
+            b = approval(root, huistas=huistas)
+            decision = b['retention_decision']
+            if indexed_rows != [b['after']] or case_decisions != [decision]:
+                raise ValueError('alias annotation or ledger scope changed')
+            if not Q._date(b['reviewed_at']) <= now < Q._date(b['expires_at']):
+                raise ValueError('alias annotation approval future or expired')
+            verified = any(r.get('review_id') == decision['review_id']
+                           and r.get('status') == 'APPLIED' and r.get('alias_history')
+                           for r in report.get('retention_review', []))
+            if not verified:
+                verify_decision(root, report, decision)
+            expected_count += 1
+        if len(marked) != expected_count or len(decisions) != expected_count:
+            raise ValueError('alias annotation or ledger scope changed')
     except (OSError,ValueError,KeyError,TypeError,EOFError,csv.Error) as exc:
         report['findings'].append(dict(kind='ALIAS_HISTORY_EVIDENCE_INVALID',checked_source='OFAC',detail=str(exc),blocking=True))
     from .integrity_audit import _finish
     return _finish(report)
 
 
-def apply(root=ROOT,*,now=None,run_url=''):
+def apply(root=ROOT,*,now=None,run_url='',huistas=False,fresh_diff=True):
     root=Path(root).resolve();now=now or datetime.now(timezone.utc)
     if now.tzinfo is None or (run_url and not re.fullmatch(r'https://github\.com/[\w.-]+/[\w.-]+/actions/runs/[0-9]+',run_url)):raise ValueError('invalid application time or run URL')
-    b=approval(root);rows=_read_rows((root/'data/master/master.csv').read_text(encoding='utf-8'));ledger=json.loads((root/LEDGER).read_bytes())
+    b=approval(root, huistas=huistas);rows=_read_rows((root/'data/master/master.csv').read_text(encoding='utf-8'));ledger=json.loads((root/LEDGER).read_bytes())
+    key = b['master_key']
+    receipt_path = HUISTAS_RECEIPT if huistas else RECEIPT
+    approval_hash = HUISTAS_APPROVAL_SHA256 if huistas else APPROVAL_SHA256
+    evidence_path = HUISTAS_EVIDENCE if huistas else EVIDENCE
+    targets = (*TARGETS[:-1], evidence_path)
+    if huistas:
+        targets = (*targets, DIFF_MARKDOWN)
     Q.apply(dict(findings=[]),dict(items=[]),ledger,now=now)
     entries={e['review_id']:e for e in ledger['entries']};decision=b['retention_decision']
-    if (root/RECEIPT).exists():
-        receipt=json.loads((root/RECEIPT).read_bytes())
-        if receipt.get('status')!='APPLIED' or receipt.get('count')!=1 or receipt.get('approval_sha256')!=APPROVAL_SHA256 or rows.get(KEY)!=b['after'] or entries.get(decision['review_id'])!=decision:
+    if (root/receipt_path).exists():
+        receipt=json.loads((root/receipt_path).read_bytes())
+        if receipt.get('status')!='APPLIED' or receipt.get('count')!=1 or receipt.get('approval_sha256')!=approval_hash or rows.get(key)!=b['after'] or entries.get(decision['review_id'])!=decision:
             raise ValueError('prior alias application changed or incomplete')
         return dict(receipt,status='ALREADY_APPLIED')
     if not Q._date(b['reviewed_at'])<=now<Q._date(b['expires_at']):raise ValueError('alias approval future or expired')
-    if (rows.get(KEY)!=b['before'] or T.digest(b['after'])!=b['after_sha256'] or decision['review_id'] in entries
-            or b['after']['status']!='有効' or any(b['before'][f]!=b['after'][f] for f in M.FIELDS if f not in {'risk_type','review_flag','remark'})):
+    mutable_fields = {'risk_type', 'review_flag', 'remark'}
+    if huistas:
+        mutable_fields.update({'status', 'invalid_reason'})
+    if (rows.get(key)!=b['before'] or T.digest(b['after'])!=b['after_sha256'] or decision['review_id'] in entries
+            or b['after']['status'] != (M.STATUS_INACTIVE if huistas else M.STATUS_ACTIVE)
+            or any(b['before'][f]!=b['after'][f] for f in M.FIELDS if f not in mutable_fields)):
         raise ValueError('approved alias row changed')
-    static_evidence(root,b)
-    _primary([dict(source_id=b['current_verification']['primary_record'][0],name=b['current_verification']['primary_record'][1],raw_record=b['current_verification']['primary_record'])],b)
-    candidate=copy.deepcopy(rows);candidate[KEY]=copy.deepcopy(b['after']);new_ledger=copy.deepcopy(ledger);new_ledger['entries'].append(copy.deepcopy(decision))
+    if huistas:
+        from .integrity_audit import _pinned
+        state = json.loads((root/'data/state.json').read_bytes())
+        documents = []
+        for source in ('ofac_sdn', 'ofac_cons'):
+            for role in URLS:
+                _pinned(root, source, state[source], role, documents)
+        verify_decision(root, {'documents': documents}, decision)
+    else:
+        static_evidence(root,b)
+        _primary([dict(source_id=b['current_verification']['primary_record'][0],name=b['current_verification']['primary_record'][1],raw_record=b['current_verification']['primary_record'])],b)
+    candidate=copy.deepcopy(rows);candidate[key]=copy.deepcopy(b['after']);new_ledger=copy.deepcopy(ledger);new_ledger['entries'].append(copy.deepcopy(decision))
     Q.apply(dict(findings=[]),dict(items=[]),new_ledger,now=now);L.validate_for_export(root,list(candidate.values()),now=now)
     event=['OFAC','変更',b['old_name'],b['before']['remark'],b['after']['remark']]
-    with (root/'data/diff/latest.csv').open(encoding='utf-8',newline='') as stream:previous=list(csv.reader(stream,strict=True))
-    if not previous or previous[0]!=DIFF_COLS or any(len(r)!=len(DIFF_COLS) for r in previous):raise ValueError('latest diff schema changed')
+    previous = [DIFF_COLS]
+    if fresh_diff:
+        with (root/'data/diff/latest.csv').open(encoding='utf-8', newline='') as stream:
+            previous = list(csv.reader(stream, strict=True))
+        if not previous or previous[0]!=DIFF_COLS or any(len(r)!=len(DIFF_COLS) for r in previous):
+            raise ValueError('latest diff schema changed')
     with tempfile.TemporaryDirectory(prefix='approved-alias-history-') as folder:
         stage=Path(folder)
         for rel in ('data/dashboard/changes.csv','data/review/ofac_party_removal_queue.csv'):
@@ -136,16 +238,39 @@ def apply(root=ROOT,*,now=None,run_url=''):
         D.append_changes(stage,[event],when=stamp)
         path=stage/'data/diff/latest.csv';path.parent.mkdir(parents=True,exist_ok=True)
         with path.open('w',encoding='utf-8',newline='') as f:csv.writer(f).writerows([DIFF_COLS,event,*[r for r in previous[1:] if r!=event]])
-        path=stage/EVIDENCE;path.parent.mkdir(parents=True,exist_ok=True)
-        with path.open('w',encoding='utf-8',newline='') as f:csv.writer(f).writerows([['旧別名','現行別名','現行主名称','FixedRef','名称区分','公表日','保持承認記録UTC','再レビュー期限UTC','一次資料URL','一次資料SHA256'],[b['old_name'],b['new_name'],b['primary_name'],b['party_id'],'旧別名（履歴）','2026-11-09',b['reviewed_at'],b['expires_at'],b['notice']['source_url'],b['notice']['source_hash']]])
-        receipt=dict(schema_version=1,status='APPLIED',count=1,approval_sha256=APPROVAL_SHA256,reviewed_at=b['reviewed_at'],expires_at=b['expires_at'],applied_at=now.astimezone(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),run_url=run_url,outputs={rel:hashlib.sha256((stage/rel).read_bytes()).hexdigest() for rel in TARGETS})
-        _json(stage/RECEIPT,receipt);atomic_replace_many([FileWrite(root/rel,lambda temp,rel=rel:shutil.copyfile(stage/rel,temp)) for rel in (*TARGETS,RECEIPT.as_posix())])
+        if huistas:
+            before_md = ((root/DIFF_MARKDOWN).read_text(encoding='utf-8').rstrip()
+                         if fresh_diff else '# 制裁リスト差分レポート')
+            (stage/DIFF_MARKDOWN).write_text(
+                before_md + '\n\n## OFAC 旧別名の照合区分変更 1件\n\n'
+                f"- `{b['old_name']}` — {b['after']['invalid_reason']}（FixedRef {b['party_id']}）\n",
+                encoding='utf-8',
+            )
+        path=stage/evidence_path;path.parent.mkdir(parents=True,exist_ok=True)
+        with path.open('w', encoding='utf-8', newline='') as f:
+            writer = csv.writer(f)
+            if huistas:
+                writer.writerow(['旧別名','現行主名称','FixedRef','名称区分','公表日','保持承認記録UTC','再レビュー期限UTC','公表URL','旧Advanced XML SHA256','旧Advanced XML内の位置'])
+                writer.writerow([b['old_name'], b['primary_name'], b['party_id'], '旧Weak Alias（手動照合用）',
+                                 b['notice']['publication_date'], b['reviewed_at'], b['expires_at'],
+                                 b['notice']['source_url'], b['historical']['source_hash'], b['historical']['locator']])
+            else:
+                writer.writerows([['旧別名','現行別名','現行主名称','FixedRef','名称区分','公表日','保持承認記録UTC','再レビュー期限UTC','一次資料URL','一次資料SHA256'],[b['old_name'],b['new_name'],b['primary_name'],b['party_id'],'旧別名（履歴）','2026-11-09',b['reviewed_at'],b['expires_at'],b['notice']['source_url'],b['notice']['source_hash']]])
+        receipt=dict(schema_version=1,status='APPLIED',count=1,approval_sha256=approval_hash,reviewed_at=b['reviewed_at'],expires_at=b['expires_at'],applied_at=now.astimezone(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),run_url=run_url,outputs={rel:hashlib.sha256((stage/rel).read_bytes()).hexdigest() for rel in targets})
+        _json(stage/receipt_path,receipt);atomic_replace_many([FileWrite(root/rel,lambda temp,rel=rel:shutil.copyfile(stage/rel,temp)) for rel in (*targets,receipt_path.as_posix())])
     return receipt
 
 
 def main(argv=None):
     import os
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--root',type=Path,default=ROOT);p.add_argument('--apply',required=True,action='store_true');args=p.parse_args(argv)
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--root',type=Path,default=ROOT);p.add_argument('--apply',required=True,action='store_true');p.add_argument('--huistas', action='store_true');args=p.parse_args(argv)
     repo,run=os.getenv('GITHUB_REPOSITORY',''),os.getenv('GITHUB_RUN_ID','')
-    print(json.dumps(apply(args.root,run_url=f'https://github.com/{repo}/actions/runs/{run}' if repo and run else ''),ensure_ascii=False));return 0
+    result = apply(args.root, huistas=args.huistas,
+                   fresh_diff=not args.huistas or os.getenv('OFAC_FRESH_DIFF') != 'false',
+                   run_url=f'https://github.com/{repo}/actions/runs/{run}' if repo and run else '')
+    if args.huistas and os.getenv('GITHUB_OUTPUT'):
+        with Path(os.environ['GITHUB_OUTPUT']).open('a', encoding='utf-8') as output:
+            output.write(f"applied={str(result['status'] == 'APPLIED').lower()}\n")
+    print(json.dumps(result, ensure_ascii=False))
+    return 0
 if __name__=='__main__':raise SystemExit(main())
