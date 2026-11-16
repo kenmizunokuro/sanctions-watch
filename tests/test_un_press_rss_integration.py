@@ -1,5 +1,6 @@
 import copy
 import csv
+import gzip
 import hashlib
 import json
 import tempfile
@@ -11,7 +12,7 @@ from datetime import timedelta
 from pathlib import Path
 from unittest.mock import patch
 
-from src import un_watch as W, un_review as R, un_press_rss as P
+from src import un_watch as W, un_review as R, un_press_rss as P, source_audit as A
 from tests.test_un_watch import Feed, NOW
 from tests.test_un_press_rss import rss
 
@@ -30,6 +31,81 @@ class RSSIntegrationTests(unittest.TestCase):
     def changed(self):
         self.feed.rss=rss([('sc16499','Security Council Sanctions Committee Amends Entry'),
                            ('sc16500','Security Council Sanctions Committee Adds Entry')])
+
+    def archive_missing_candidate(self):
+        receipt_time = NOW + timedelta(minutes=5)
+        article_url = 'https://press.un.org/en/2026/sc16508.doc.htm'
+        body = rss([('sc16508', 'Security Council Updates Yemen Sanctions')])
+        digest = hashlib.sha256(body).hexdigest()
+        raw_path = f'data/raw/un/{digest}.xml.gz'
+        (self.root / raw_path).write_bytes(gzip.compress(body))
+        manifest = {
+            'schema_version': 1, 'article_url': article_url, 'source_hash': digest,
+            'source_received_at': P.stamp(receipt_time),
+            'official_reference_url': 'https://main.un.org/securitycouncil/en/content/resolutions-0',
+            'official_reference': 'S/RES/2837 (2026)',
+        }
+        (self.root / 'data/un/rss_archived_candidate.json').write_text(json.dumps(manifest))
+        audit = A.entry('un_press_rss', 'auxiliary_global_news', 'error',
+                        url=P.URL, content_hash=digest, raw_path=raw_path,
+                        schema_changed=True)
+        audit.update(http_status=200, final_url=P.URL, error_type='UNSchemaError')
+        A.append_rows(self.root / 'data/source_audit/2026-10.csv', [audit], now=receipt_time)
+        return manifest
+
+    def test_archive_recovery_publishes_review_candidate_once_with_distinct_times(self):
+        self.run_watch()
+        request = self.archive_missing_candidate()
+        now = NOW + timedelta(minutes=120)
+        self.run_watch(now=now)
+        event, = self.candidates()
+        self.assertEqual(event['detected_at'], P.stamp(now))
+        self.assertEqual(event['source_received_at'], request['source_received_at'])
+        self.assertEqual(event['record']['url'], request['article_url'])
+        self.assertEqual(event['source_hash'], request['source_hash'])
+        self.assertEqual(self.state()['press_rss']['new_candidates'], 0)
+        self.assertEqual(self.state()['press_rss']['status'], 'coverage_gap')
+        row = next(r for r in self.reviews() if r['イベントID'] == 'rss:' + event['event_id'])
+        self.assertEqual(row['区分'], '国連公式RSS・過去取得分の復元候補')
+        self.run_watch(now=now+timedelta(minutes=15))
+        self.assertEqual(self.candidates(), [event])
+        self.assertEqual(self.master.read_bytes(), b'unchanged master')
+        state = self.state()
+        state['press_rss']['events'][-1]['source_received_at'] = P.stamp(NOW)
+        W._write_json(self.root / W.STATE_PATH, state)
+        with self.assertRaisesRegex(ValueError, 'archive recovery provenance'):
+            R.review_rss_notice(self.root, event_id=event['event_id'], index_hash=event['source_hash'],
+                               reviewer='operator', when=now+timedelta(minutes=20), note='official source checked')
+        state['press_rss']['events'][-1] = copy.deepcopy(event)
+        W._write_json(self.root / W.STATE_PATH, state)
+        reviewed = R.review_rss_notice(self.root, event_id=event['event_id'],
+                                        index_hash=event['source_hash'], reviewer='operator',
+                                        when=now+timedelta(minutes=20), note='official source checked')
+        self.assertEqual(reviewed['status'], 'REVIEWED')
+
+    def test_article_reappearing_in_live_feed_keeps_the_archived_recovery_origin(self):
+        self.run_watch()
+        request = self.archive_missing_candidate()
+        self.feed.rss = rss([
+            ('sc16499', 'Security Council Sanctions Committee Amends Entry'),
+            ('sc16508', 'Security Council Updates Yemen Sanctions'),
+        ])
+        self.run_watch(now=NOW+timedelta(minutes=15))
+        event, = self.candidates()
+        self.assertEqual(event['source_hash'], request['source_hash'])
+        self.assertEqual(event['source_received_at'], request['source_received_at'])
+        self.assertEqual(self.state()['press_rss']['new_candidates'], 0)
+
+    def test_archive_recovery_rejects_a_mismatched_historical_poll(self):
+        self.run_watch()
+        request = self.archive_missing_candidate()
+        request['source_received_at'] = P.stamp(NOW+timedelta(minutes=6))
+        (self.root / 'data/un/rss_archived_candidate.json').write_text(json.dumps(request))
+        result = self.run_watch(now=NOW+timedelta(minutes=15))
+        self.assertFalse(result['ok'])
+        self.assertFalse(self.candidates())
+        self.assertEqual(self.state()['press_rss']['status'], 'observed')
+        self.assertTrue(any(r['イベントID'] == 'rss:recovery' for r in self.reviews()))
 
     def test_baseline_summary_304_and_candidates_preserve_master_and_first_detection(self):
         self.assertTrue(self.run_watch()['ok'])
