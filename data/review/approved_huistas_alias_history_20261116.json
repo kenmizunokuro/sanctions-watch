@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "decision": "APPROVED_RETAIN_HISTORICAL_ALIAS",
+  "approved_date": "2026-11-16",
+  "user_response": "続けて",
+  "instruction": "Los Huistas DTOを根拠付き旧別名として保持し、通常OFAC監査で更新を公開する。",
+  "quality_policy": "過去のOFAC XMLはWeak Alias。マスターと履歴証跡に保持し、単独の自動照合から外す。",
+  "reviewed_at": "2026-11-16T04:45:33Z",
+  "expires_at": "2026-12-01T04:45:33Z",
+  "master_key": "loshuistasdto",
+  "party_id": "32452",
+  "old_name": "Los Huistas DTO",
+  "primary_name": "LOS HUISTAS DRUG TRAFFICKING ORGANIZATION",
+  "before": {
+    "categories": "",
+    "display_name": "Los Huistas DTO",
+    "first_seen_ms": "1748573582000",
+    "invalid_reason": "",
+    "last_updated_ms": "1748573582000",
+    "match_key": "loshuistasdto",
+    "remark": "制裁リスト（OFAC）",
+    "review_flag": "",
+    "risk_level": "高",
+    "risk_type": "制裁リスト",
+    "sources": "OFAC",
+    "status": "有効",
+    "variants": "[\"Los Huistas DTO\"]"
+  },
+  "after": {
+    "categories": "",
+    "display_name": "Los Huistas DTO",
+    "first_seen_ms": "1748573582000",
+    "invalid_reason": "OFAC旧Weak Aliasの履歴保持（単独の自動照合対象外）",
+    "last_updated_ms": "1748573582000",
+    "match_key": "loshuistasdto",
+    "remark": "制裁リスト（OFAC）\nOFAC別名履歴: Los Huistas DTO / 旧Weak Alias・手動照合用 / 現行主名称: LOS HUISTAS DRUG TRAFFICKING ORGANIZATION / FixedRef:32452 / 公表日:2026-11-13 / 一次資料:https://ofac.treasury.gov/recent-actions/20261113 / 保持期限UTC:2026-12-01T04:45:33Z",
+    "review_flag": "OFAC_ALIAS_HISTORY_V1:32452:loshuistasdto",
+    "risk_level": "高",
+    "risk_type": "制裁リスト（OFAC旧Weak Alias）",
+    "sources": "OFAC",
+    "status": "無効",
+    "variants": "[\"Los Huistas DTO\"]"
+  },
+  "after_sha256": "88e2d6b2e2d24f25ae49d2f184f9e1580796ef5dc316235f819746017414d3c6",
+  "retention_decision": {
+    "review_id": "ffaa9fceb35b831be7fdfb8743213919128aa7faaf843b0bc16262bafddd17eb",
+    "decision": "APPROVED_RETAIN",
+    "reviewed_by": "ユーザー承認（2026-11-16: 続けて）",
+    "reason": "FixedRef 32452の旧別名を履歴に保持。公式Advanced XML上のWeak Alias品質を保持し、単独の自動照合を無効化。",
+    "reviewed_at": "2026-11-16T04:45:33Z",
+    "expires_at": "2026-12-01T04:45:33Z",
+    "reviewed_evidence_sha256": "657e88b774b73ea2b1f9df4d0cf77c7191351d378cc40c71a7d913e39ad9edf2",
+    "alias_history": {
+      "master_key": "loshuistasdto",
+      "party_id": "32452"
+    }
+  },
+  "reviewed_index_links": [
+    {
+      "alias_current": "0",
+      "first_seen_ms": "1788483946814",
+      "formats": "advanced_xml_v3",
+      "last_changed_ms": "1794803259292",
+      "list": "SDN",
+      "low_quality": "1",
+      "match_key": "loshuistasdto",
+      "name": "Los Huistas DTO",
+      "party_current": "1",
+      "party_id": "32452",
+      "primary": "0"
+    }
+  ],
+  "reviewed_evidence": [
+    {
+      "category": "SDN",
+      "current": false,
+      "field": "name",
+      "locator": "Party:32452/DocumentedName:51896/Script:215",
+      "name": "Los Huistas DTO",
+      "primary": false,
+      "raw_path": "docs/evidence/integrity-archives/ofac_sdn_advanced/20260904T010536Z__sdn_advanced.xml.gz",
+      "source_hash": "657e2ecd8ed722d5640e4076058a24982c6e722aac2a631eea3da1e052861f93",
+      "source_id": "32452",
+      "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+      "transform": "exact",
+      "weak": true
+    }
+  ],
+  "historical": {
+    "raw_path": "docs/evidence/integrity-archives/ofac_sdn_advanced/20260904T010536Z__sdn_advanced.xml.gz",
+    "source_url": "https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML",
+    "source_hash": "657e2ecd8ed722d5640e4076058a24982c6e722aac2a631eea3da1e052861f93",
+    "locator": "Party:32452/DocumentedName:51896/Script:215"
+  },
+  "notice": {
+    "publication_date": "2026-11-13",
+    "source_url": "https://ofac.treasury.gov/recent-actions/20261113"
+  },
+  "baseline_audit": {
+    "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/43803486494",
+    "report_sha256": "30705b07837fb4fcbcb31dae046d1acd976e0d3579a4d6a027018fd3c2f9fa54",
+    "prior_review_id": "d284af28c5bd2da7d7c3814674f318c520a66a4abaa175dd2ab1b5ee584250e0"
+  }
+}

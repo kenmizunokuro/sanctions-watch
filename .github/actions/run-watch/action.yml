@@ -77,6 +77,14 @@ runs:
       shell: bash
       run: python -m src.mof_pending
 
+    - name: 承認済みHuistas旧Weak Aliasを取得済み候補に記録
+      id: huistas
+      if: github.ref == 'refs/heads/main' && steps.watch.outcome == 'success' && (contains(inputs.sources, 'ofac') || inputs.sources == 'all')
+      shell: bash
+      env:
+        OFAC_FRESH_DIFF: ${{ steps.watch.outputs.has_diff == 'true' && 'true' || 'false' }}
+      run: python -m src.ofac_alias_history --apply --huistas --root .
+
     - name: 一次ソース完全性監査（公開前必須）
       id: integrity
       if: always() && steps.watch.outcome != 'skipped'
@@ -163,13 +171,13 @@ runs:
     - name: Excel を再生成
       # push前のrebase・再監査後のmasterから生成する。
       # 古い候補から生成したExcelを配布しない。
-      if: steps.watch.outputs.has_diff == 'true'
+      if: steps.watch.outputs.has_diff == 'true' || steps.huistas.outputs.applied == 'true'
       shell: bash
       run: python -m src.export_excel
 
     - name: 社内取込用差分 Excel を生成
       id: internal_diff
-      if: steps.watch.outputs.has_diff == 'true'
+      if: steps.watch.outputs.has_diff == 'true' || steps.huistas.outputs.applied == 'true'
       shell: bash
       run: |
         TS="$(TZ=Asia/Tokyo date +'%Y%m%d_%H%M%S')"
@@ -187,7 +195,7 @@ runs:
         fi
 
     - name: GitHub Release の最新版を更新
-      if: steps.watch.outputs.has_diff == 'true'
+      if: steps.watch.outputs.has_diff == 'true' || steps.huistas.outputs.applied == 'true'
       shell: bash
       env:
         GH_TOKEN: ${{ github.token }}
