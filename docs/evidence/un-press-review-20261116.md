@@ -19,7 +19,7 @@ XML原本はgzipを展開し、SHA256がファイル名と一致することを�
 
 ## 監視と表示の状態
 
-- 16:10の本番実行は、更新履歴1ページと委員会発表一覧14ページのすべてでHTTP 202および `x-amzn-waf-action: challenge` を記録した。統合XMLと2件の記事原本は保存できた。未確認期間は継続している。[本番実行](https://github.com/kenmizunokuro/sanctions-watch/actions/runs/43821215282)
+- 16:10の本番実行は、更新履歴1ページと委員会発表一覧14ページのすべてでHTTP 202および `x-amzn-waf-action: challenge` を記録した。統合XMLはHTTP 304で保存済み原本を再検証し、2件の記事原本はHTTP 200で新規取得・保存した。RSSの未確認期間は継続している。[本番実行](https://github.com/kenmizunokuro/sanctions-watch/actions/runs/43821215282)
 - 17:35の確認時点で直近のスケジュール起動は10:58。16:10の観測はmainへの変更から起動した実行による。定期起動の遅延と、起動後の公式HTML取得失敗はそれぞれ確認が必要。[定期起動の履歴](https://github.com/kenmizunokuro/sanctions-watch/actions/workflows/watch-un.yml?query=event%3Aschedule)
 - 公開レビューCSVには2件分の `EVIDENCE_READY` 行があり、元のRSS候補は `PENDING_REVIEW`。SC/16506の検知日時は11月12日11:38、SC/16508の復元日時は11月16日15:04。会社のGoogle Sheetsは接続中のアカウントで閲覧できず、同期未確認。この照合でレビュー承認やmaster適用は行っていない。[公開レビューCSV](https://github.com/kenmizunokuro/sanctions-watch/blob/32766e6f81e370a2d240d665fc688b4974f4b081/data/dashboard/un_reviews.csv)
 - 監視範囲を別経路で補う場合は、国連統合制裁リストの公式配信登録フォームを使う。配信本文の保持と既存のRSS・XML照合は別途必要。配信の受信実績や対象範囲はこの調査では検証していない。[国連の配信登録](https://main.un.org/securitycouncil/en/content/un-sc-consolidated-list)
