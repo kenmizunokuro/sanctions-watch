@@ -3,12 +3,12 @@
   "current_event_id": "de5bdbe1dfb843d2bd98e8e82160428aa07691d441e4bff34a4f95455740f67e",
   "documents": {
     "press_rss": {
-      "etag": "W/\"1794504746\"",
+      "etag": "W/\"1794786694\"",
       "filename": "rss.xml",
       "final_url": "https://press.un.org/en/rss.xml",
-      "last_modified": "Thu, 12 Nov 2026 17:32:26 GMT",
-      "raw_path": "data/raw/un/76559a1893468deecd5cfc33d97a7c8e290cf22b2c256886831bb7ab29122735.xml.gz",
-      "sha256": "76559a1893468deecd5cfc33d97a7c8e290cf22b2c256886831bb7ab29122735",
+      "last_modified": "Sun, 15 Nov 2026 23:51:34 GMT",
+      "raw_path": "data/raw/un/88cfa0a815d23ef303988d0f0df5c4b4f010f63a3e5f52f01b14f3a70cfd7e1a.xml.gz",
+      "sha256": "88cfa0a815d23ef303988d0f0df5c4b4f010f63a3e5f52f01b14f3a70cfd7e1a",
       "url": "https://press.un.org/en/rss.xml"
     },
     "xml": {
@@ -636571,15 +636571,9 @@
       "http_status": 202,
       "message": "UN access confirmation required: HTTP 202; x-amzn-waf-action=challenge; official document not delivered",
       "source": "press:2745"
-    },
-    {
-      "error_type": "UNSchemaError",
-      "http_status": 200,
-      "message": "Invalid official press RSS: RSS article URL changed or not official",
-      "source": "un_press_rss"
     }
   ],
-  "last_checked_at": "2026-11-16T02:11:01Z",
+  "last_checked_at": "2026-11-16T03:09:09Z",
   "notices": {},
   "press_rss": {
     "coverage_gap": {
@@ -636588,7 +636582,6 @@
       "reason": "RSS polling interval exceeded 90 minutes",
       "source_hash": "e95a87ef6866004585af42c7ef311ab4c2bdc76ba57a0a8abf8eb8f1402e7e10"
     },
-    "error": "Invalid official press RSS: RSS article URL changed or not official",
     "events": [
       {
         "change": "NEW",
@@ -636614,83 +636607,83 @@
     "items": [
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/dc3919.doc.htm",
-        "publication_at": "2026-11-11T22:04:18Z",
-        "title": "Seoul to Host Twenty-Fifth Republic of Korea–United Nations Joint Conference on Disarmament and Non-Proliferation Issues, 12–13 November",
-        "url": "https://press.un.org/en/2026/dc3919.doc.htm"
+        "guid": "https://press.un.org/en/2026/db261113.doc.htm",
+        "publication_at": "2026-11-13T19:37:49Z",
+        "title": "Daily Press Briefing by the Office of the Spokesperson for the Secretary-General",
+        "url": "https://press.un.org/en/2026/db261113.doc.htm"
       },
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/ga12808.doc.htm",
-        "publication_at": "2026-11-11T21:14:32Z",
-        "title": "General Assembly Elects 19 Members to Committee for Programme and Coordination, Selects Countries to Propose Appointees for Joint Inspection Unit",
-        "url": "https://press.un.org/en/2026/ga12808.doc.htm"
+        "guid": "https://press.un.org/en/2026/gal3766.doc.htm",
+        "publication_at": "2026-11-13T22:13:20Z",
+        "title": "Nearing End of Session, Sixth Committee Discusses Working Methods, Observer-Status Requests",
+        "url": "https://press.un.org/en/2026/gal3766.doc.htm"
       },
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/gaef3630.doc.htm",
-        "publication_at": "2026-11-11T22:57:56Z",
-        "title": "Second Committee Approves Five Texts, Including One Demanding Israel Halt Exploitation of Palestinian Natural Resources",
-        "url": "https://press.un.org/en/2026/gaef3630.doc.htm"
+        "guid": "https://press.un.org/en/2026/gashc4458.doc.htm",
+        "publication_at": "2026-11-13T23:40:17Z",
+        "title": "Third Committee Approves 10 Draft Resolutions, Divides over Death Penalty, Extrajudicial Executions amid Heated Exchanges between Cuba, United States",
+        "url": "https://press.un.org/en/2026/gashc4458.doc.htm"
       },
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/gaspd853.doc.htm",
-        "publication_at": "2026-11-11T21:40:36Z",
-        "title": "With Peace Deals at 70-Year Low, UN Political Missions Keep Diplomacy Alive, Fourth Committee Told as It Approves Annual Text",
-        "url": "https://press.un.org/en/2026/gaspd853.doc.htm"
-      },
-      {
-        "candidate": true,
-        "guid": "https://press.un.org/en/2026/sc16506.doc.htm",
-        "publication_at": "2026-11-11T21:57:00Z",
-        "title": "Security Council 1533 Sanctions Committee Amends One Entity on Its Sanctions List",
-        "url": "https://press.un.org/en/2026/sc16506.doc.htm"
+        "guid": "https://press.un.org/en/2026/gaspd855.doc.htm",
+        "publication_at": "2026-11-13T20:18:23Z",
+        "title": "Spotlighting UNWRA's Role Providing Vital Services in Gaza, Fourth Committee Stresses Agency's Need for Dependable Funding, Refugee Relief",
+        "url": "https://press.un.org/en/2026/gaspd855.doc.htm"
       },
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/sga2450.doc.htm",
-        "publication_at": "2026-11-12T15:57:52Z",
-        "title": "Secretary-General Appoints Michelle Gyles-McDonnough of Jamaica Assistant Secretary-General for Development Coordination",
-        "url": "https://press.un.org/en/2026/sga2450.doc.htm"
+        "guid": "https://press.un.org/en/2026/sc16509.doc.htm",
+        "publication_at": "2026-11-13T23:18:51Z",
+        "title": "Security Council Hears Competing Gulf, Iranian Narratives on Maritime Insecurity",
+        "url": "https://press.un.org/en/2026/sc16509.doc.htm"
       },
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/sgsm23369.doc.htm",
-        "publication_at": "2026-11-11T20:23:48Z",
-        "title": "Act Now to Halve Global Food Waste by 2030, End Age of Unchecked Methane Pollution, Secretary-General Urges Leaders’ Round Table",
-        "url": "https://press.un.org/en/2026/sgsm23369.doc.htm"
+        "guid": "https://press.un.org/en/2026/sc16510.doc.htm",
+        "publication_at": "2026-11-13T23:18:52Z",
+        "title": "Security Council Extends United Nations Interim Security Force for Abyei, Adopting Resolution 2838 (2026)",
+        "url": "https://press.un.org/en/2026/sc16510.doc.htm"
       },
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/sgsm23370.doc.htm",
-        "publication_at": "2026-11-11T21:06:03Z",
-        "title": "Invest More, Move Faster to Ensure Early Warning Systems Arrive on Time to Protect Everyone on Earth, Secretary-General Urges at High-Level Event",
-        "url": "https://press.un.org/en/2026/sgsm23370.doc.htm"
+        "guid": "https://press.un.org/en/2026/sga2451.doc.htm",
+        "publication_at": "2026-11-13T16:42:12Z",
+        "title": "Gwi-Yeop Son of Republic of Korea Appointed Acting Executive Director, UN Institute for Training and Research, to Become Institute for Capability, Learning Innovation",
+        "url": "https://press.un.org/en/2026/sga2451.doc.htm"
       },
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/sgsm23371.doc.htm",
-        "publication_at": "2026-11-12T16:31:43Z",
-        "title": "Put Grids at Centre of Energy, Development, Increase Investment 50 Per Cent by 2030, Secretary-General Urges at Climate Change Conference High-Level Event",
-        "url": "https://press.un.org/en/2026/sgsm23371.doc.htm"
+        "guid": "https://press.un.org/en/2026/sgsm23372.doc.htm",
+        "publication_at": "2026-11-13T22:37:38Z",
+        "title": "Keep Up Fight for Climate Justice, Secretary-General Urges Participants at Engagement with Civil Society Event, Praising Action that Made Breakthroughs Possible",
+        "url": "https://press.un.org/en/2026/sgsm23372.doc.htm"
       },
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/sgt3479.doc.htm",
-        "publication_at": "2026-11-11T23:08:57Z",
-        "title": "Activities of Secretary-General in Spain, 4-6 November",
-        "url": "https://press.un.org/en/2026/sgt3479.doc.htm"
+        "guid": "https://press.un.org/en/2026/sgsm23373.doc.htm",
+        "publication_at": "2026-11-13T22:43:25Z",
+        "title": "Violence against Women Still Frighteningly Prevalent, Secretary-General Observance Message Warns, Urging Justice for Survivors, Renewed Commitment to Prevention",
+        "url": "https://press.un.org/en/2026/sgsm23373.doc.htm"
+      },
+      {
+        "candidate": false,
+        "guid": "https://press.un.org/en/blog/sc16509",
+        "publication_at": "2026-11-13T16:46:19Z",
+        "title": "Security Council, 10271st Meeting (PM) Middle East/Iran",
+        "url": "https://press.un.org/en/blog/sc16509"
       }
     ],
-    "last_success_at": "2026-11-12T18:33:28Z",
-    "latest_publication_at": "2026-11-12T16:31:43Z",
+    "last_success_at": "2026-11-16T03:09:09Z",
+    "latest_publication_at": "2026-11-13T23:40:17Z",
     "new_articles": 0,
     "new_candidates": 0,
     "revised_articles": 0,
-    "source_hash": "76559a1893468deecd5cfc33d97a7c8e290cf22b2c256886831bb7ab29122735",
+    "source_hash": "88cfa0a815d23ef303988d0f0df5c4b4f010f63a3e5f52f01b14f3a70cfd7e1a",
     "stale": false,
-    "status": "error"
+    "status": "coverage_gap"
   },
   "press_status": "error",
   "record_count": 1007,
@@ -636699,6 +636692,6 @@
   "snapshot_hash": "2a0390e99d71ec03f2a065529aa0023ce8934e87e0115b6c755ab372ee1ef245",
   "source_updated": "2026-11-15T00:00:03.738Z",
   "updates_status": "error",
-  "xml_last_success_at": "2026-11-16T02:11:01Z",
+  "xml_last_success_at": "2026-11-16T03:09:09Z",
   "xml_status": "review_required"
 }
