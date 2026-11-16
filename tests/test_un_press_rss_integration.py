@@ -274,6 +274,8 @@ class RSSIntegrationTests(unittest.TestCase):
                 self.assertFalse(result['ok'])
                 self.assertEqual(self.state()['press_rss']['status'], 'observed')
                 self.assertFalse(self.state()['press_rss'].get('article_evidence'))
+                self.assertFalse((self.root / f'data/raw/un/{hashlib.sha256(other).hexdigest()}.html.gz').exists())
+                self.assertFalse((self.root / f'data/raw/un/{hashlib.sha256(BODY).hexdigest()}.html.gz').exists())
                 self.assertTrue(any(row['イベントID'] == 'rss:article:' + event['event_id'] and
                                     row['状態'] == 'EVIDENCE_FAILED' for row in self.reviews()))
         self.run_watch(now=observed + timedelta(minutes=45), fetcher=self.getter())
@@ -295,6 +297,38 @@ class RSSIntegrationTests(unittest.TestCase):
         self.run_watch(now=observed + timedelta(minutes=15), fetcher=self.getter())
         self.assertEqual(self.requests, [URL])
         self.assertTrue(any(row['状態'] == 'EVIDENCE_FAILED' for row in self.reviews()))
+
+
+    def test_fails_explicitly_for_a_mismatched_rss_title_without_fetching(self):
+        self.prepare()
+        self.feed.rss = self.feed.rss.replace(b'Amends One Entity', b'Removes One Entity')
+        result = self.run_watch(now=NOW + timedelta(minutes=15), fetcher=self.getter())
+        self.assertFalse(result['ok'])
+        self.assertEqual(self.requests, [])
+        self.assertTrue(any(row['状態'] == 'EVIDENCE_FAILED' and 'RSS title' in row['対象名／発表']
+                            for row in self.reviews()))
+
+    def test_rechecks_an_archived_original_when_the_rss_head_changes(self):
+        self.prepare()
+        observed = NOW + timedelta(minutes=15)
+        self.run_watch(now=observed, fetcher=self.getter())
+        event, = self.candidates()
+        receipt = self.state()['press_rss']['article_evidence'][event['event_id']]
+        (self.root / receipt['raw_path']).unlink()
+        self.feed.rss = self.feed.rss.replace(b'Amends One Entity', b'Removes One Entity')
+        self.run_watch(now=observed + timedelta(minutes=15), fetcher=self.getter())
+        rows = {row['イベントID']: row for row in self.reviews()}
+        self.assertEqual(rows['rss:article:' + event['event_id']]['状態'], 'EVIDENCE_FAILED')
+        self.assertEqual(self.requests, [URL])
+
+    def test_bounds_the_read_of_an_existing_content_addressed_article(self):
+        self.prepare()
+        raw = self.root / f'data/raw/un/{hashlib.sha256(BODY).hexdigest()}.html.gz'
+        raw.write_bytes(gzip.compress(b'0' * (3 * 1024 * 1024)))
+        result = self.run_watch(now=NOW + timedelta(minutes=15), fetcher=self.getter())
+        self.assertFalse(result['ok'])
+        self.assertTrue(any(row['状態'] == 'EVIDENCE_FAILED' and 'exceeds size limit' in row['対象名／発表']
+                            for row in self.reviews()))
 
 
 if __name__=='__main__':unittest.main()

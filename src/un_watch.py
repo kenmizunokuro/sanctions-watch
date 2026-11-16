@@ -220,6 +220,9 @@ def _read_document(root, key, url, previous, parser, fetched):
         raise U.UNAccessChallengeError(
             f'UN access confirmation required: HTTP {fetched.http_status}; '
             f'x-amzn-waf-action={challenge}; official document not delivered')
+    article = key == 'press_article'
+    if article and (fetched.http_status != 200 or fetched.not_modified or not fetched.body):
+        raise U.UNTransportError('UN press article response not a complete HTTP 200: ' + str(fetched.http_status))
     if fetched.not_modified:
         path = previous.get('raw_path', '')
         if not path:
@@ -240,9 +243,13 @@ def _read_document(root, key, url, previous, parser, fetched):
             raise U.UNSchemaError('UN response hash mismatch')
         suffix = 'xml' if key in {'xml', 'press_rss'} else 'html'
         raw = root / f'data/raw/un/{actual}.{suffix}.gz'
+        if article:
+            parsed = parser(body)
+            _check_article_path(root, raw)
         raw.parent.mkdir(parents=True, exist_ok=True)
         if raw.exists():
-            if hashlib.sha256(read_raw(raw)).hexdigest() != actual:
+            archived_body = _read_article_raw(raw) if article else read_raw(raw)
+            if hashlib.sha256(archived_body).hexdigest() != actual:
                 raise U.UNSchemaError('existing UN content-addressed archive is corrupted')
         else:
             archived = gzip.compress(body, mtime=0)
@@ -253,42 +260,55 @@ def _read_document(root, key, url, previous, parser, fetched):
     if fetched.http_status not in {200, 304}:
         raise U.UNTransportError('UN response not a complete 200/304: HTTP ' + str(fetched.http_status))
     # Even on 304, reparse verified original bytes. No stale parse cache shortcuts.
-    parsed = parser(body)
+    if not article:
+        parsed = parser(body)
     metadata = dict(url=url, final_url=A.safe_audit_url(fetched.final_url),
                     sha256=fetched.sha256, etag=fetched.etag, last_modified=fetched.last_modified,
                     raw_path=fetched.raw_path, filename=fetched.filename)
     return fetched, metadata, parsed
 
 
+def _check_article_path(root, raw):
+    archive = (root / 'data/raw/un').resolve()
+    if not archive.is_relative_to(root.resolve()) or not raw.resolve().is_relative_to(archive):
+        raise U.UNSchemaError('UN press article path outside the archive')
+
+
+def _read_article_raw(raw):
+    with gzip.open(raw, 'rb') as stream:
+        body = stream.read(E.MAX_BYTES + 1)
+    if len(body) > E.MAX_BYTES:
+        raise U.UNSchemaError('Archived UN press article exceeds size limit')
+    return body
+
+
 def _verify_saved_article(root, receipt, *, url, source_hash, symbol):
     sha = receipt.get('sha256', '')
     expected_path = f'data/raw/un/{sha}.html.gz'
-    archive = root / 'data/raw/un'
     raw = root / expected_path
     if (len(sha) != 64 or any(c not in '0123456789abcdef' for c in sha)
             or receipt.get('raw_path') != expected_path
             or receipt.get('url') != url or receipt.get('final_url') != url
             or receipt.get('source_hash') != source_hash or receipt.get('symbol') != symbol
-            or receipt.get('http_status') != 200
-            or not archive.resolve().is_relative_to(root.resolve())
-            or not raw.resolve().is_relative_to(archive.resolve())):
+            or receipt.get('http_status') != 200):
         raise U.UNSchemaError('Archived UN press article metadata mismatch')
-    with gzip.open(raw, 'rb') as stream:
-        body = stream.read(E.MAX_BYTES + 1)
-    if len(body) > E.MAX_BYTES or hashlib.sha256(body).hexdigest() != sha:
-        raise U.UNSchemaError('Archived UN press article hash mismatch or response too large')
+    _check_article_path(root, raw)
+    if hashlib.sha256(_read_article_raw(raw)).hexdigest() != sha:
+        raise U.UNSchemaError('Archived UN press article hash mismatch')
 
 
 def _capture_press_articles(root, sensor, *, now, clock, fetcher, audit, failures):
     for event in sensor.get('events', []):
         record = event['record']
         url = record['url']
-        identity = E.CANDIDATES.get((url, record['title']))
+        identity = E.CANDIDATES.get(url)
         event_id = event['event_id']
-        if (not identity or not record.get('candidate') or event['status'] != 'PENDING_REVIEW'
-                or sensor['heads'].get(url) != event_id):
+        if not identity or not record.get('candidate') or event['status'] != 'PENDING_REVIEW':
             continue
-        symbol, marker = identity
+        evidence = sensor.setdefault('article_evidence', {})
+        if event_id not in evidence and sensor['heads'].get(url) != event_id:
+            continue
+        symbol, marker, title = identity
         source_hash = event['source_hash']
 
         def same_article(target):
@@ -302,10 +322,12 @@ def _capture_press_articles(root, sensor, *, now, clock, fetcher, audit, failure
 
         fetched = None
         try:
+            if record['title'] != title:
+                raise U.UNSchemaError('UN press RSS title differs from the configured official article')
             if (event_id != U.digest([event['parent_event_id'], record, source_hash])
                     or record not in P.read_original(root, source_hash, now=now)):
                 raise U.UNSchemaError('UN press article does not match the archived RSS event')
-            evidence = sensor.setdefault('article_evidence', {})
+            P.verify_recovery_provenance(root, event, now=now)
             if event_id in evidence:
                 _verify_saved_article(root, evidence[event_id], url=url, source_hash=source_hash, symbol=symbol)
                 continue

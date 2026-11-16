@@ -18,7 +18,7 @@ ARTICLES = {
         'Resolution 2837 (2026)',
     ),
 }
-CANDIDATES = {(url, title): (symbol, marker) for url, symbol, marker, title in ARTICLES.values()}
+CANDIDATES = {url: (symbol, marker, title) for url, symbol, marker, title in ARTICLES.values()}
 
 
 class _ArticlePage(HTMLParser):
