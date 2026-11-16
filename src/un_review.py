@@ -195,6 +195,7 @@ def _rss_event_evidence(root, sensor, event, when):
         raise ValueError('RSS new article unexpectedly refers to a previous version')
     if not (record.get('candidate') or previous.get('candidate')):
         raise ValueError('RSS event is not a relevant current or revised candidate')
+    P.verify_recovery_provenance(root, event, now=when)
     return previous_hash
 
 

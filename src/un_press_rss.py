@@ -21,6 +21,7 @@ MAX_CONTENT_AGE = timedelta(hours=72)
 KEYWORDS = re.compile(r'\bsanctions?\b|\bassets?\s+freeze\b|\barms\s+embargo\b|\btravel\s+ban\b', re.I)
 ITEM_URL = re.compile(r'https://press\.un\.org/en/(?:\d{4}/[a-z0-9_-]+\.doc\.htm|blog/sc[0-9]+)')
 RECOVERY_PATH = 'data/un/rss_archived_candidate.json'
+RECOVERY_FIELDS = ('source_received_at', 'official_reference_url', 'official_reference')
 
 
 class _NoDTD(ET.TreeBuilder):
@@ -97,7 +98,8 @@ def read_original(root, source_hash, *, now):
         raise ValueError('RSS source hash must be exact SHA256')
     archive = root / 'data/raw/un'
     raw = archive / (source_hash + '.xml.gz')
-    if not raw.resolve().is_relative_to(archive.resolve()):
+    if (not archive.resolve().is_relative_to(root.resolve())
+            or not raw.resolve().is_relative_to(archive.resolve())):
         raise ValueError('RSS original lies outside the archive')
     try:
         with gzip.open(raw, 'rb') as stream:
@@ -109,13 +111,12 @@ def read_original(root, source_hash, *, now):
     return parse(body, now=now)
 
 
-def recover_archived_candidate(root, sensor, *, now):
+def _recovery_evidence(root, *, now):
     path = root / RECOVERY_PATH
     if not path.exists():
         return None
     request = json.loads(path.read_text(encoding='utf-8'))
-    required = ('article_url', 'source_hash', 'source_received_at',
-                'official_reference_url', 'official_reference')
+    required = ('article_url', 'source_hash', *RECOVERY_FIELDS)
     if (not isinstance(request, dict) or request.get('schema_version') != 1
             or any(not isinstance(request.get(key), str) or not request[key] for key in required)):
         raise ValueError('RSS archive recovery request schema invalid')
@@ -125,22 +126,12 @@ def recover_archived_candidate(root, sensor, *, now):
     received = moment(request['source_received_at'])
     if stamp(received) != request['source_received_at'] or received > now:
         raise ValueError('RSS archive recovery receipt time invalid')
-    if any(e['record']['url'] == article for e in sensor.get('events', [])):
-        return None
-    if article in sensor.get('heads', {}):
-        raise ValueError('RSS archive recovery found an orphan article head')
-    if not sensor.get('last_success_at'):
-        raise ValueError('RSS archive recovery needs an initialized live sensor')
-
     source_hash = request['source_hash']
     items = read_original(root, source_hash, now=received)
     records = [item for item in items if item['url'] == article and item['candidate']]
     if len(records) != 1:
         raise ValueError('Requested article is not a unique sanctions candidate in the archived RSS')
     record = records[0]
-    if any(item['url'] == article and item != record for item in sensor.get('items', [])):
-        raise ValueError('RSS archive recovery would attach an older article to a different live record')
-
     original_row = dict(checked_at=request['source_received_at'], source='un_press_rss',
                         document_role='auxiliary_global_news', status='error', http_status='200',
                         url=URL, final_url=URL, content_hash=source_hash,
@@ -152,13 +143,52 @@ def recover_archived_candidate(root, sensor, *, now):
                 all(row.get(key) == value for key, value in original_row.items()) for row in reader) != 1:
             raise ValueError('RSS archive recovery has no unique audited original receipt')
 
+    return request, record
+
+
+def _validate_recovery_event(event, request, record):
+    if (event['source_hash'] != request['source_hash']
+            or event['record'] != record
+            or event.get('event_id') != U.digest(['', record, request['source_hash']])
+            or any(event.get(key) != request[key] for key in RECOVERY_FIELDS)
+            or moment(event['detected_at']) < moment(request['source_received_at'])):
+        raise ValueError('RSS archive recovery provenance differs from the audited original')
+
+
+def verify_recovery_provenance(root, event, *, now):
+    if not any(key in event for key in RECOVERY_FIELDS):
+        return
+    evidence = _recovery_evidence(root, now=now)
+    if evidence is None:
+        raise ValueError('RSS archive recovery provenance request missing')
+    _validate_recovery_event(event, *evidence)
+
+
+def recover_archived_candidate(root, sensor, *, now):
+    evidence = _recovery_evidence(root, now=now)
+    if evidence is None:
+        return None
+    request, record = evidence
+    article = record['url']
+    source_hash = request['source_hash']
     event_id = U.digest(['', record, source_hash])
+    existing = [event for event in sensor.get('events', []) if event['record']['url'] == article]
+    if existing:
+        recovered = [event for event in existing if event['event_id'] == event_id]
+        if len(recovered) != 1:
+            raise ValueError('RSS archive recovery conflicts with existing article history')
+        _validate_recovery_event(recovered[0], request, record)
+        return None
+    if article in sensor.get('heads', {}):
+        raise ValueError('RSS archive recovery found an orphan article head')
+    if not sensor.get('last_success_at'):
+        raise ValueError('RSS archive recovery needs an initialized live sensor')
+    if any(item['url'] == article and item != record for item in sensor.get('items', [])):
+        raise ValueError('RSS archive recovery would attach an older article to a different live record')
     event = dict(event_id=event_id, parent_event_id='', record=record,
                  previous_record={}, previous_source_hash='', source_hash=source_hash,
                  detected_at=stamp(now), status='PENDING_REVIEW', change='NEW',
-                 source_received_at=request['source_received_at'],
-                 official_reference_url=request['official_reference_url'],
-                 official_reference=request['official_reference'])
+                 **{key: request[key] for key in RECOVERY_FIELDS})
     sensor.setdefault('events', []).append(event)
     sensor.setdefault('heads', {})[article] = event_id
     return event

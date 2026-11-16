@@ -421,6 +421,23 @@ def run(root: Path, *, fetcher=fetch, now=None) -> dict:
             audit.append(A.error_entry('un_press', 'committee_' + committee, error, url=url,
                                        schema_changed=isinstance(error, U.UNSchemaError),
                                        fetch_failed=not isinstance(error, U.UNSchemaError)))
+    sensor = state.setdefault('press_rss', {})
+    sensor.pop('recovery_error', None)
+    try:
+        recovered = P.recover_archived_candidate(root, sensor, now=now)
+        if recovered:
+            source_hash = recovered['source_hash']
+            audit.append(A.entry('un_rss_recovery', 'archived_review_candidate', 'pending_review',
+                                 url=recovered['record']['url'], source_updated=recovered['record']['publication_at'],
+                                 content_hash=source_hash, raw_path=f'data/raw/un/{source_hash}.xml.gz',
+                                 record_count=1, diff_counts={'added': 1}))
+    except (OSError, ValueError, KeyError, TypeError, csv.Error) as error:
+        sensor['recovery_error'] = A._clean_error(error)
+        failures.append(dict(source='un_rss_recovery', error_type=type(error).__name__,
+                             message=sensor['recovery_error'], http_status=''))
+        audit.append(A.error_entry('un_rss_recovery', 'archived_review_candidate', error,
+                                   url=P.URL, fetch_failed=False))
+
     # Independent bounded news sensor. Its success never clears committee failures.
     try:
         fetched, metadata, items = _document(
@@ -442,22 +459,6 @@ def run(root: Path, *, fetcher=fetch, now=None) -> dict:
         audit.append(A.error_entry('un_press_rss', 'auxiliary_global_news', error, url=P.URL,
                                    schema_changed=isinstance(error, U.UNSchemaError),
                                    fetch_failed=not isinstance(error, U.UNSchemaError)))
-    sensor = state['press_rss']
-    sensor.pop('recovery_error', None)
-    try:
-        recovered = P.recover_archived_candidate(root, sensor, now=now)
-        if recovered:
-            source_hash = recovered['source_hash']
-            audit.append(A.entry('un_rss_recovery', 'archived_review_candidate', 'pending_review',
-                                 url=recovered['record']['url'], source_updated=recovered['record']['publication_at'],
-                                 content_hash=source_hash, raw_path=f'data/raw/un/{source_hash}.xml.gz',
-                                 record_count=1, diff_counts={'added': 1}))
-    except (OSError, ValueError, KeyError, TypeError, csv.Error) as error:
-        sensor['recovery_error'] = A._clean_error(error)
-        failures.append(dict(source='un_rss_recovery', error_type=type(error).__name__,
-                             message=sensor['recovery_error'], http_status=''))
-        audit.append(A.error_entry('un_rss_recovery', 'archived_review_candidate', error,
-                                   url=P.URL, fetch_failed=False))
     pending = any(e['status'] in {'PENDING_REVIEW', 'APPROVED'} for e in state['events'])
     state['xml_status'] = 'error' if not xml_ok else 'review_required' if pending else 'unchanged'
     state['press_status'] = ('error' if not press_ok or state['coverage_gaps'] else 'review_required'

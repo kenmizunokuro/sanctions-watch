@@ -70,10 +70,31 @@ class RSSIntegrationTests(unittest.TestCase):
         self.run_watch(now=now+timedelta(minutes=15))
         self.assertEqual(self.candidates(), [event])
         self.assertEqual(self.master.read_bytes(), b'unchanged master')
+        state = self.state()
+        state['press_rss']['events'][-1]['source_received_at'] = P.stamp(NOW)
+        W._write_json(self.root / W.STATE_PATH, state)
+        with self.assertRaisesRegex(ValueError, 'archive recovery provenance'):
+            R.review_rss_notice(self.root, event_id=event['event_id'], index_hash=event['source_hash'],
+                               reviewer='operator', when=now+timedelta(minutes=20), note='official source checked')
+        state['press_rss']['events'][-1] = copy.deepcopy(event)
+        W._write_json(self.root / W.STATE_PATH, state)
         reviewed = R.review_rss_notice(self.root, event_id=event['event_id'],
                                         index_hash=event['source_hash'], reviewer='operator',
                                         when=now+timedelta(minutes=20), note='official source checked')
         self.assertEqual(reviewed['status'], 'REVIEWED')
+
+    def test_article_reappearing_in_live_feed_keeps_the_archived_recovery_origin(self):
+        self.run_watch()
+        request = self.archive_missing_candidate()
+        self.feed.rss = rss([
+            ('sc16499', 'Security Council Sanctions Committee Amends Entry'),
+            ('sc16508', 'Security Council Updates Yemen Sanctions'),
+        ])
+        self.run_watch(now=NOW+timedelta(minutes=15))
+        event, = self.candidates()
+        self.assertEqual(event['source_hash'], request['source_hash'])
+        self.assertEqual(event['source_received_at'], request['source_received_at'])
+        self.assertEqual(self.state()['press_rss']['new_candidates'], 0)
 
     def test_archive_recovery_rejects_a_mismatched_historical_poll(self):
         self.run_watch()
