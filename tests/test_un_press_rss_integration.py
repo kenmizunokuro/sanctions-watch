@@ -315,10 +315,13 @@ class RSSIntegrationTests(unittest.TestCase):
         event, = self.candidates()
         receipt = self.state()['press_rss']['article_evidence'][event['event_id']]
         (self.root / receipt['raw_path']).unlink()
-        self.feed.rss = self.feed.rss.replace(b'Amends One Entity', b'Removes One Entity')
+        self.feed.rss = self.feed.rss.replace(TITLE.encode(), b'Security Council Revises One Entry')
         self.run_watch(now=observed + timedelta(minutes=15), fetcher=self.getter())
         rows = {row['イベントID']: row for row in self.reviews()}
+        _, revision = self.candidates()
+        self.assertFalse(revision['record']['candidate'])
         self.assertEqual(rows['rss:article:' + event['event_id']]['状態'], 'EVIDENCE_FAILED')
+        self.assertEqual(rows['rss:article:' + revision['event_id']]['状態'], 'EVIDENCE_FAILED')
         self.assertEqual(self.requests, [URL])
 
     def test_bounds_the_read_of_an_existing_content_addressed_article(self):

@@ -303,7 +303,7 @@ def _capture_press_articles(root, sensor, *, now, clock, fetcher, audit, failure
         url = record['url']
         identity = E.CANDIDATES.get(url)
         event_id = event['event_id']
-        if not identity or not record.get('candidate') or event['status'] != 'PENDING_REVIEW':
+        if not identity or event['status'] != 'PENDING_REVIEW':
             continue
         evidence = sensor.setdefault('article_evidence', {})
         if event_id not in evidence and sensor['heads'].get(url) != event_id:
@@ -324,7 +324,8 @@ def _capture_press_articles(root, sensor, *, now, clock, fetcher, audit, failure
         try:
             if record['title'] != title:
                 raise U.UNSchemaError('UN press RSS title differs from the configured official article')
-            if (event_id != U.digest([event['parent_event_id'], record, source_hash])
+            if (not record.get('candidate')
+                    or event_id != U.digest([event['parent_event_id'], record, source_hash])
                     or record not in P.read_original(root, source_hash, now=now)):
                 raise U.UNSchemaError('UN press article does not match the archived RSS event')
             P.verify_recovery_provenance(root, event, now=now)
