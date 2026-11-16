@@ -2,12 +2,17 @@
 from __future__ import annotations
 
 import copy
+import csv
+import gzip
+import hashlib
+import json
 import re
 import xml.etree.ElementTree as ET
+import zlib
 from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
 
-from . import un_sources as U
+from . import source_audit as A, un_sources as U
 
 URL = 'https://press.un.org/en/rss.xml'
 MAX_BYTES = 1024 * 1024
@@ -15,6 +20,7 @@ MAX_POLL_GAP = timedelta(minutes=90)
 MAX_CONTENT_AGE = timedelta(hours=72)
 KEYWORDS = re.compile(r'\bsanctions?\b|\bassets?\s+freeze\b|\barms\s+embargo\b|\btravel\s+ban\b', re.I)
 ITEM_URL = re.compile(r'https://press\.un\.org/en/(?:\d{4}/[a-z0-9_-]+\.doc\.htm|blog/sc[0-9]+)')
+RECOVERY_PATH = 'data/un/rss_archived_candidate.json'
 
 
 class _NoDTD(ET.TreeBuilder):
@@ -84,6 +90,78 @@ def parse(body: bytes, *, now: datetime) -> list[dict]:
 def refresh_status(sensor):
     sensor['status'] = ('error' if sensor.get('error') else 'stale' if sensor.get('stale')
                         else 'coverage_gap' if sensor.get('coverage_gap') else 'observed')
+
+
+def read_original(root, source_hash, *, now):
+    if not re.fullmatch('[0-9a-f]{64}', source_hash):
+        raise ValueError('RSS source hash must be exact SHA256')
+    archive = root / 'data/raw/un'
+    raw = archive / (source_hash + '.xml.gz')
+    if not raw.resolve().is_relative_to(archive.resolve()):
+        raise ValueError('RSS original lies outside the archive')
+    try:
+        with gzip.open(raw, 'rb') as stream:
+            body = stream.read(MAX_BYTES + 1)
+    except (OSError, EOFError, zlib.error) as error:
+        raise ValueError('RSS original is unavailable or corrupted') from error
+    if len(body) > MAX_BYTES or hashlib.sha256(body).hexdigest() != source_hash:
+        raise ValueError('RSS original hash mismatch or archived response too large')
+    return parse(body, now=now)
+
+
+def recover_archived_candidate(root, sensor, *, now):
+    path = root / RECOVERY_PATH
+    if not path.exists():
+        return None
+    request = json.loads(path.read_text(encoding='utf-8'))
+    required = ('article_url', 'source_hash', 'source_received_at',
+                'official_reference_url', 'official_reference')
+    if (not isinstance(request, dict) or request.get('schema_version') != 1
+            or any(not isinstance(request.get(key), str) or not request[key] for key in required)):
+        raise ValueError('RSS archive recovery request schema invalid')
+    article = request['article_url']
+    U.validate_un_url(article)
+    U.validate_un_url(request['official_reference_url'])
+    received = moment(request['source_received_at'])
+    if stamp(received) != request['source_received_at'] or received > now:
+        raise ValueError('RSS archive recovery receipt time invalid')
+    if any(e['record']['url'] == article for e in sensor.get('events', [])):
+        return None
+    if article in sensor.get('heads', {}):
+        raise ValueError('RSS archive recovery found an orphan article head')
+    if not sensor.get('last_success_at'):
+        raise ValueError('RSS archive recovery needs an initialized live sensor')
+
+    source_hash = request['source_hash']
+    items = read_original(root, source_hash, now=received)
+    records = [item for item in items if item['url'] == article and item['candidate']]
+    if len(records) != 1:
+        raise ValueError('Requested article is not a unique sanctions candidate in the archived RSS')
+    record = records[0]
+    if any(item['url'] == article and item != record for item in sensor.get('items', [])):
+        raise ValueError('RSS archive recovery would attach an older article to a different live record')
+
+    original_row = dict(checked_at=request['source_received_at'], source='un_press_rss',
+                        document_role='auxiliary_global_news', status='error', http_status='200',
+                        url=URL, final_url=URL, content_hash=source_hash,
+                        raw_path=f'data/raw/un/{source_hash}.xml.gz', fetch_failed='0',
+                        schema_changed='1', error_type='UNSchemaError')
+    with (root / f'data/source_audit/{received:%Y-%m}.csv').open(encoding='utf-8', newline='') as stream:
+        reader = csv.DictReader(stream, strict=True)
+        if reader.fieldnames != A.AUDIT_COLS or sum(
+                all(row.get(key) == value for key, value in original_row.items()) for row in reader) != 1:
+            raise ValueError('RSS archive recovery has no unique audited original receipt')
+
+    event_id = U.digest(['', record, source_hash])
+    event = dict(event_id=event_id, parent_event_id='', record=record,
+                 previous_record={}, previous_source_hash='', source_hash=source_hash,
+                 detected_at=stamp(now), status='PENDING_REVIEW', change='NEW',
+                 source_received_at=request['source_received_at'],
+                 official_reference_url=request['official_reference_url'],
+                 official_reference=request['official_reference'])
+    sensor.setdefault('events', []).append(event)
+    sensor.setdefault('heads', {})[article] = event_id
+    return event
 
 
 def observe(previous: dict, items: list[dict], *, source_hash: str, now: datetime) -> dict:

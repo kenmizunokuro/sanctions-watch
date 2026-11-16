@@ -140,10 +140,15 @@ def _review_rows(state: dict) -> list[list]:
                      sensor['status'].upper(), '', '', '', sensor.get('source_hash', ''), P.URL])
         for event in sensor.get('events', []):
             if event['status'] == 'PENDING_REVIEW':
+                kind = ('国連公式RSS・過去取得分の復元候補' if event.get('source_received_at') else
+                        '国連公式RSS・新着候補' if event['change'] == 'NEW' else '国連公式RSS・改訂候補')
                 rows.append(['rss:' + event['event_id'], event['detected_at'],
-                             '国連公式RSS・新着候補' if event['change'] == 'NEW' else '国連公式RSS・改訂候補',
+                             kind,
                              '', event['record']['title'], 'PENDING_REVIEW', '', '', '',
                              event['source_hash'], event['record']['url']])
+        if sensor.get('recovery_error'):
+            rows.append(['rss:recovery', state['last_checked_at'], '国連公式RSS・過去取得分の復元エラー',
+                         '', sensor['recovery_error'], 'REVIEW_REQUIRED', '', '', '', '', P.URL])
         if sensor.get('error'):
             rows.append(['rss:fetch', state['last_checked_at'], '国連公式RSS取得・解析エラー', '',
                          sensor['error'], 'FETCH_FAILED', '', '', '', '', P.URL])
@@ -437,6 +442,22 @@ def run(root: Path, *, fetcher=fetch, now=None) -> dict:
         audit.append(A.error_entry('un_press_rss', 'auxiliary_global_news', error, url=P.URL,
                                    schema_changed=isinstance(error, U.UNSchemaError),
                                    fetch_failed=not isinstance(error, U.UNSchemaError)))
+    sensor = state['press_rss']
+    sensor.pop('recovery_error', None)
+    try:
+        recovered = P.recover_archived_candidate(root, sensor, now=now)
+        if recovered:
+            source_hash = recovered['source_hash']
+            audit.append(A.entry('un_rss_recovery', 'archived_review_candidate', 'pending_review',
+                                 url=recovered['record']['url'], source_updated=recovered['record']['publication_at'],
+                                 content_hash=source_hash, raw_path=f'data/raw/un/{source_hash}.xml.gz',
+                                 record_count=1, diff_counts={'added': 1}))
+    except (OSError, ValueError, KeyError, TypeError, csv.Error) as error:
+        sensor['recovery_error'] = A._clean_error(error)
+        failures.append(dict(source='un_rss_recovery', error_type=type(error).__name__,
+                             message=sensor['recovery_error'], http_status=''))
+        audit.append(A.error_entry('un_rss_recovery', 'archived_review_candidate', error,
+                                   url=P.URL, fetch_failed=False))
     pending = any(e['status'] in {'PENDING_REVIEW', 'APPROVED'} for e in state['events'])
     state['xml_status'] = 'error' if not xml_ok else 'review_required' if pending else 'unchanged'
     state['press_status'] = ('error' if not press_ok or state['coverage_gaps'] else 'review_required'
@@ -455,7 +476,8 @@ def run(root: Path, *, fetcher=fetch, now=None) -> dict:
                          lambda p: S.append_heartbeat(p, hb, now=now), seed_existing=True)]
     atomic_replace_many(writes)
     return dict(ok=xml_ok and press_ok and updates_ok and not state['coverage_gaps']
-                and not state.get('updates_coverage_gap') and state['press_rss']['status'] == 'observed',
+                and not state.get('updates_coverage_gap') and sensor['status'] == 'observed'
+                and not sensor.get('recovery_error'),
                 snapshot_hash=state.get('snapshot_hash', ''), failures=failures,
                 review_count=len(_review_rows(state)), xml_status=state['xml_status'],
                 press_status=state['press_status'], updates_status=state['updates_status'],
@@ -477,6 +499,7 @@ def main() -> int:
                                 for e in after.get('updates_events', []))
     prior_rss = {e['event_id'] for e in before.get('press_rss', {}).get('events', [])}
     result['new_press_rss'] = sum(e['status'] == 'PENDING_REVIEW' and e['event_id'] not in prior_rss
+                                  and not e.get('source_received_at')
                                   for e in after.get('press_rss', {}).get('events', []))
     output = os.environ.get('GITHUB_OUTPUT')
     if output:

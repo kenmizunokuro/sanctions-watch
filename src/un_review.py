@@ -5,9 +5,7 @@ import argparse
 import csv
 import hashlib
 import json
-import re
 import tempfile
-import zlib
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -166,23 +164,10 @@ def review_coverage(root: Path, *, committee: str, reviewer: str, when: datetime
     atomic_replace_many(W.projections(root, state, now=when))
 
 
-def _rss_original(root, source_hash, when):
-    if not re.fullmatch('[0-9a-f]{64}', source_hash):
-        raise ValueError('RSS source hash must be exact SHA256')
-    raw = root / f'data/raw/un/{source_hash}.xml.gz'
-    try:
-        body = read_raw(raw)
-    except (OSError, EOFError, zlib.error) as error:
-        raise ValueError('RSS original is unavailable or corrupted') from error
-    if hashlib.sha256(body).hexdigest() != source_hash:
-        raise ValueError('RSS original hash mismatch')
-    return P.parse(body, now=when)
-
-
 def _rss_event_evidence(root, sensor, event, when):
     record = event['record']
     if (event['event_id'] != U.digest([event['parent_event_id'], record, event['source_hash']])
-            or record not in _rss_original(root, event['source_hash'], when)):
+            or record not in P.read_original(root, event['source_hash'], now=when)):
         raise ValueError('RSS event identity or current record does not match original')
     previous = event.get('previous_record', {})
     if event.get('change') != ('REVISION' if previous else 'NEW'):
@@ -204,7 +189,7 @@ def _rss_event_evidence(root, sensor, event, when):
         if not previous_hash and parent and parent['record'] == previous:
             previous_hash = parent['source_hash']
         if (previous.get('url') != record['url'] or not previous_hash
-                or previous not in _rss_original(root, previous_hash, when)):
+                or previous not in P.read_original(root, previous_hash, now=when)):
             raise ValueError('RSS previous record has no matching original; review evidence required')
     elif previous_hash or event['parent_event_id']:
         raise ValueError('RSS new article unexpectedly refers to a previous version')
@@ -241,7 +226,7 @@ def review_rss_coverage(root: Path, *, index_hash: str, reviewer: str, when: dat
             or not timedelta(seconds=0) <= when - P.moment(sensor['last_success_at']) <= P.MAX_POLL_GAP
             or not -timedelta(minutes=10) <= when - P.moment(sensor['latest_publication_at']) <= P.MAX_CONTENT_AGE):
         raise ValueError('RSS coverage clearance requires current exact nonstale evidence')
-    items = _rss_original(root, index_hash, when)
+    items = P.read_original(root, index_hash, now=when)
     newest = max(P.moment(item['publication_at']) for item in items)
     if (sensor.get('source_hash') != index_hash or sensor.get('items') != items
             or sensor.get('latest_publication_at') != P.stamp(newest)
