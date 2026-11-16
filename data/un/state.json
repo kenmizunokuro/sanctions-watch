@@ -636573,7 +636573,7 @@
       "source": "press:2745"
     }
   ],
-  "last_checked_at": "2026-11-16T06:04:31Z",
+  "last_checked_at": "2026-11-16T06:45:09Z",
   "notices": {},
   "press_rss": {
     "coverage_gap": {
@@ -636697,7 +636697,7 @@
         "url": "https://press.un.org/en/blog/sc16509"
       }
     ],
-    "last_success_at": "2026-11-16T06:04:31Z",
+    "last_success_at": "2026-11-16T06:45:09Z",
     "latest_publication_at": "2026-11-13T23:40:17Z",
     "new_articles": 0,
     "new_candidates": 0,
@@ -636713,6 +636713,6 @@
   "snapshot_hash": "2a0390e99d71ec03f2a065529aa0023ce8934e87e0115b6c755ab372ee1ef245",
   "source_updated": "2026-11-15T00:00:03.738Z",
   "updates_status": "error",
-  "xml_last_success_at": "2026-11-16T06:04:31Z",
+  "xml_last_success_at": "2026-11-16T06:45:09Z",
   "xml_status": "review_required"
 }
