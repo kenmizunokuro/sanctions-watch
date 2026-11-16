@@ -636573,9 +636573,37 @@
       "source": "press:2745"
     }
   ],
-  "last_checked_at": "2026-11-16T06:45:09Z",
+  "last_checked_at": "2026-11-16T07:10:19Z",
   "notices": {},
   "press_rss": {
+    "article_evidence": {
+      "5f4c3e11ea5a21841831036029f4493ec0d0363ac15d255cf2d829408047e911": {
+        "etag": "W/\"1794790075\"",
+        "filename": "sc16508.doc.htm",
+        "final_url": "https://press.un.org/en/2026/sc16508.doc.htm",
+        "http_status": 200,
+        "last_modified": "Mon, 16 Nov 2026 00:47:55 GMT",
+        "raw_path": "data/raw/un/238ba7d1a0b7eba98a8aa71f9df6d1edfb7807c626b3269b13ea71eb1fc5aa6d.html.gz",
+        "sha256": "238ba7d1a0b7eba98a8aa71f9df6d1edfb7807c626b3269b13ea71eb1fc5aa6d",
+        "source_hash": "abfb8185caea93e23b0cbe809b47189c9cab345f432e97fa856cfaa954aa3664",
+        "symbol": "SC/16508",
+        "url": "https://press.un.org/en/2026/sc16508.doc.htm",
+        "verified_at": "2026-11-16T07:10:22Z"
+      },
+      "fa4bfce62ecb008188fcf19df06caa61204dad6ced041809498542eaa737aaf8": {
+        "etag": "W/\"1794787126\"",
+        "filename": "sc16506.doc.htm",
+        "final_url": "https://press.un.org/en/2026/sc16506.doc.htm",
+        "http_status": 200,
+        "last_modified": "Sun, 15 Nov 2026 23:58:46 GMT",
+        "raw_path": "data/raw/un/e145cf71f9c959b52c0ec398a64276b03b3b37222dfd02abfab1514c2c947429.html.gz",
+        "sha256": "e145cf71f9c959b52c0ec398a64276b03b3b37222dfd02abfab1514c2c947429",
+        "source_hash": "8fb11c404ca0bbe2cee2c1d8b7cfd69d058be42c635d3d97fd510afcb3008867",
+        "symbol": "SC/16506",
+        "url": "https://press.un.org/en/2026/sc16506.doc.htm",
+        "verified_at": "2026-11-16T07:10:22Z"
+      }
+    },
     "coverage_gap": {
       "detected_at": "2026-11-11T06:11:11Z",
       "previous_success_at": "2026-11-11T01:30:06Z",
@@ -636697,7 +636725,7 @@
         "url": "https://press.un.org/en/blog/sc16509"
       }
     ],
-    "last_success_at": "2026-11-16T06:45:09Z",
+    "last_success_at": "2026-11-16T07:10:19Z",
     "latest_publication_at": "2026-11-13T23:40:17Z",
     "new_articles": 0,
     "new_candidates": 0,
@@ -636713,6 +636741,6 @@
   "snapshot_hash": "2a0390e99d71ec03f2a065529aa0023ce8934e87e0115b6c755ab372ee1ef245",
   "source_updated": "2026-11-15T00:00:03.738Z",
   "updates_status": "error",
-  "xml_last_success_at": "2026-11-16T06:45:09Z",
+  "xml_last_success_at": "2026-11-16T07:10:19Z",
   "xml_status": "review_required"
 }
