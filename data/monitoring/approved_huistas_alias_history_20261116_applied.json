@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "status": "APPLIED",
+  "count": 1,
+  "approval_sha256": "60aec06c349f0722ba1632c351c5ab78d50be83f5da249eb1c91488fa3715df1",
+  "reviewed_at": "2026-11-16T04:45:33Z",
+  "expires_at": "2026-12-01T04:45:33Z",
+  "applied_at": "2026-11-16T05:27:45Z",
+  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/43807926009",
+  "outputs": {
+    "data/master/master.csv": "8718b62d7600231de4fbebb192a6c31181b6da5439cc161dab3a616af2c3f13f",
+    "data/review/integrity_retention_decisions.json": "613299679e1f2c3f63f0f1b96927dec6b6fe9fc2c14a4cc2176ceed9f8cafab0",
+    "data/dashboard/list.csv": "ca8f3d662bed29b2908afbb61dd18d13e8deb65d726c6ac20fd5a5a8b9f02625",
+    "data/dashboard/screening.csv.gz": "616502b9458170481f5f17c51d515e67dd3b2afa244a3792e68cb178a2e4735e",
+    "data/dashboard/changes.csv": "9f0ee234daaa446670b989b59428e30d41757c7035d10bf4cf20e8cb3c6dc785",
+    "data/diff/latest.csv": "ef97da4df6d6f6245a0947c963963b0fe511a60998439dbbca7c9a7e6f07974c",
+    "data/evidence/ofac_huistas_alias_history.csv": "0c2a5b2411163ce4a85499341c58b840a6c1991dd874e26d5745f59863eb4bca",
+    "data/diff/latest.md": "cf65aca8ce35958c957193ebf6e2d0f8e170f9cc5fd2080fe14c6cf5193107f4"
+  }
+}

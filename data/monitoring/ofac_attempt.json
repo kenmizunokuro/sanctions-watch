@@ -1,41 +1,12 @@
 {
-  "started_at": "2026-11-16T04:56:20Z",
-  "finished_at": "2026-11-16T04:59:53Z",
-  "outcome": "failure",
-  "exit_code": 1,
+  "started_at": "2026-11-16T05:27:20Z",
+  "finished_at": "2026-11-16T05:27:45Z",
+  "outcome": "success",
+  "exit_code": 0,
   "sources": [
     "ofac"
   ],
-  "run_id": "43806472177",
+  "run_id": "43807926009",
   "run_attempt": "1",
-  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/43806472177",
-  "stage": "integrity_failed",
-  "fetch_finished_at": "2026-11-16T04:56:44Z",
-  "integrity": {
-    "status": "BLOCKED",
-    "report": "data/integrity_audit/20261116T045951892634Z__dbf108fc8b470ea2__49aec2a5.json.gz",
-    "report_sha256": "58033e1ce760455c202831eba6910adbed55eef616741530ee15ee12994581d0",
-    "inputs": {
-      "data/kubun_map.json": "007da2fec65dd0357f5d3f91b2b68927f8dcf1c97b95253cc1c0c51a1d55e3f6",
-      "data/master/master.csv": "4afc7f6ffde69fa54cf03c041ca8b586433a15ee4bb9aa7bfb2c8c148fb24215",
-      "data/master/ofac_alias_history.csv": "8bff0eed3c7f8d3a793e124794cb2d3a67da155384ba5e2828141a3fe9dd245d",
-      "data/monitoring/approved_legacy_delist_20261108_applied.json": "e187b47cc8557e76ed44285d0bea2556afba84b6050c3f5ae43e0dcc37c45a5d",
-      "data/review/approved_legacy_delist_20261108.json": "223a3be4ed97ea2e75c0a059cf8f286a09ae22f76f7267eae851cd57dc093c95",
-      "data/review/integrity_legacy_acceptances.json": "503516847a9979fd3b9bfda89b8d9f0731b3b755871bee3230a3d4e189d8825c",
-      "data/review/integrity_retention_decisions.json": "d6f6876b25a89d5338023d77d738904e8da49cf8dfd053cc7a98048719f18d00",
-      "data/state.json": "32163599b3892daa04b545289d7ce94ab3722e89e0cd4f6d78a5ce6ae6f7b026",
-      "docs/evidence/source-integrity-legacy-retention-policy-proposal-20261026.json": "7d54d514a3c9dfa6708dce5bbec0c6dc595ad6defa5dad4ab0cf26c48c0c4881",
-      "docs/evidence/source-integrity-legacy-scope-20261026.json.gz": "83713003dc24b7efafa4683c703f9f40b31b0721015abe655aff3c88694a0289"
-    },
-    "blocking_counts": {
-      "EXTRA_REGISTRATION": 1
-    },
-    "blockers": [
-      {
-        "kind": "EXTRA_REGISTRATION",
-        "name": "Los Huistas DTO",
-        "detail": "現在原本に根拠の無い出典付き登録（保持行を含む。削除禁止）"
-      }
-    ]
-  }
+  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/43807926009"
 }

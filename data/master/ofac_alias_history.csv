@@ -32831,7 +32831,7 @@ SDN,32451,El Chicharra,elchicharra,1788483946814,1788483946814,1,1,advanced_xml_
 SDN,32451,"SAMAYOA RECINOS, Aler Baldomero",alerbaldomerosamayoarecinos,1788483946814,1788483946814,1,1,classic_csv,0,0
 SDN,32451,Samayoa Recinos Aler Baldomero,samayoarecinosalerbaldomero,1788483946814,1788483946814,1,1,advanced_xml_v3,1,0
 SDN,32452,LOS HUISTAS DRUG TRAFFICKING ORGANIZATION,loshuistasdrugtraffickingorganization,1788483946814,1788483946814,1,1,classic_csv,0,0
-SDN,32452,Los Huistas DTO,loshuistasdto,1788483946814,1788483946814,1,1,advanced_xml_v3,0,1
+SDN,32452,Los Huistas DTO,loshuistasdto,1788483946814,1794806857331,0,1,advanced_xml_v3,0,1
 SDN,32452,Los Huistas Drug Trafficking Organization,loshuistasdrugtraffickingorganization,1788483946814,1788483946814,1,1,advanced_xml_v3,1,0
 SDN,32453,"MONTEJO SAENZ, Axel Bladimir",axelbladimirmontejosaenz,1788483946814,1788483946814,1,1,classic_csv,0,0
 SDN,32453,MOSH,mosh,1788483946814,1788483946814,1,1,advanced_xml_v3,0,1
@@ -77990,6 +77990,8 @@ SDN,58992,شرکت فرزانگان انرژی پارس,شرکتفرزانگان
 SDN,58997,BANCO INTERNACIONAL DE COMERCIO S.A.,bancointernacionaldecomercios.a.,1792085450706,1792085450706,1,1,advanced_xml_v3;classic_csv,1,0
 SDN,58997,BICSA,bicsa,1792085450706,1792085450706,1,1,advanced_xml_v3,0,1
 SDN,590,CUBACANCUN CIGARS AND GIFT SHOPS,cubacancuncigarsandgiftshops,1788483946814,1788483946814,1,1,advanced_xml_v3;classic_csv,1,0
+SDN,59031,LOS MENDOZA DRUG TRAFFICKING ORGANIZATION,losmendozadrugtraffickingorganization,1794806857331,1794806857331,1,1,classic_csv,0,0
+SDN,59031,Los Mendoza Drug Trafficking Organization,losmendozadrugtraffickingorganization,1794806857331,1794806857331,1,1,advanced_xml_v3,1,0
 SDN,59050,FUGO AVIATION,fugoaviation,1793815886530,1793815886530,1,1,classic_csv,0,0
 SDN,59050,FUGO GROUND SERVICES INC,fugogroundservicesinc,1793815886530,1793815886530,1,1,classic_csv,0,0
 SDN,59050,FUGO YER HİZMETLERİ ANONİM ŞİRKETİ,fugoyerhi̇zmetleri̇anoni̇mşi̇rketi̇,1793815886530,1793815886530,1,1,advanced_xml_v3,1,0
@@ -78031,6 +78033,12 @@ SDN,59069,MOD of the Republic of Rwanda,modoftherepublicofrwanda,1793197883257,1
 SDN,59069,Ministry of Defence of the Republic of Rwanda,ministryofdefenceoftherepublicofrwanda,1793197883257,1793197883257,1,1,advanced_xml_v3,1,0
 SDN,59069,RWANDAN MINISTRY OF DEFENCE,rwandanministryofdefence,1793197883257,1793197883257,1,1,classic_csv,0,0
 SDN,59069,Rwandan Ministry of Defence,rwandanministryofdefence,1793197883257,1793197883257,1,1,advanced_xml_v3,0,0
+SDN,59070,LORENZANA DRUG TRAFFICKING ORGANIZATION,lorenzanadrugtraffickingorganization,1794806857331,1794806857331,1,1,classic_csv,0,0
+SDN,59070,LOS LORENZANAS,loslorenzanas,1794806857331,1794806857331,1,1,classic_csv,0,0
+SDN,59070,Lorenzana Drug Trafficking Organization,lorenzanadrugtraffickingorganization,1794806857331,1794806857331,1,1,advanced_xml_v3,0,0
+SDN,59070,Los Lorenzanas,loslorenzanas,1794806857331,1794806857331,1,1,advanced_xml_v3,1,0
+SDN,59070,The Lorenzana Clan,thelorenzanaclan,1794806857331,1794806857331,1,1,advanced_xml_v3,0,1
+SDN,59070,The Lorenzana Family,thelorenzanafamily,1794806857331,1794806857331,1,1,advanced_xml_v3,0,1
 SDN,59090,"DOMULLODZHANOV, Alisher",alisherdomullodzhanov,1793815886530,1793815886530,1,1,classic_csv,0,0
 SDN,59090,"DOMULLODZHANOV, Alisher Hairulloevich",alisherhairulloevichdomullodzhanov,1793815886530,1793815886530,1,1,classic_csv,0,0
 SDN,59090,Domullodzhanov Alisher,domullodzhanovalisher,1793815886530,1793815886530,1,1,advanced_xml_v3,1,0

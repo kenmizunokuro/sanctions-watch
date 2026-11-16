@@ -67302,6 +67302,19 @@
         "master_key": "voltashippingservicesfzco",
         "party_id": "58138"
       }
+    },
+    {
+      "review_id": "ffaa9fceb35b831be7fdfb8743213919128aa7faaf843b0bc16262bafddd17eb",
+      "decision": "APPROVED_RETAIN",
+      "reviewed_by": "ユーザー承認（2026-11-16: 続けて）",
+      "reason": "FixedRef 32452の旧別名を履歴に保持。公式Advanced XML上のWeak Alias品質を保持し、単独の自動照合を無効化。",
+      "reviewed_at": "2026-11-16T04:45:33Z",
+      "expires_at": "2026-12-01T04:45:33Z",
+      "reviewed_evidence_sha256": "657e88b774b73ea2b1f9df4d0cf77c7191351d378cc40c71a7d913e39ad9edf2",
+      "alias_history": {
+        "master_key": "loshuistasdto",
+        "party_id": "32452"
+      }
     }
   ],
   "schema_version": 1
