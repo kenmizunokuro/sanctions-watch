@@ -14,6 +14,7 @@ import re
 import tempfile
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
+from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import urljoin
 
@@ -21,7 +22,6 @@ import requests
 
 from . import source_audit as A, un_sources as U, un_updates as V
 from .fetch import NetworkPolicyError, fetch
-from .mofa_sources import Tree
 
 RSS_URL = 'https://main.un.org/securitycouncil/en/feed/1.0/updates_unsc_consolidated_list'
 PRESS_HOME_URL = 'https://press.un.org/en'
@@ -97,6 +97,47 @@ def _rss_shape(body):
                                                 if (i.findtext('pubDate') or '').strip()})}
 
 
+class _PressPage(HTMLParser):
+    def __init__(self, *, collect_links):
+        super().__init__(convert_charrefs=True)
+        self.collect_links = collect_links
+        self.links = set()
+        self.text = []
+        self.headings = []
+        self.heading_tag = ''
+        self.heading_text = []
+        self.hidden_tag = ''
+
+    def handle_starttag(self, tag, attrs):
+        if tag in {'script', 'style'}:
+            self.hidden_tag = tag
+        if not self.collect_links and tag in {'h1', 'h2', 'h3'} and not self.hidden_tag:
+            self.heading_tag = tag
+            self.heading_text = []
+        if self.collect_links and tag == 'a' and not self.hidden_tag:
+            href = dict(attrs).get('href')
+            if href:
+                try:
+                    url = urljoin(PRESS_INDEX_URL, href)
+                except ValueError:
+                    return
+                if PRESS_LINK.fullmatch(url):
+                    self.links.add(url)
+
+    def handle_endtag(self, tag):
+        if tag == self.hidden_tag:
+            self.hidden_tag = ''
+        if tag == self.heading_tag and not self.hidden_tag:
+            self.headings.append(' '.join(' '.join(self.heading_text).split()).casefold())
+            self.heading_tag = ''
+
+    def handle_data(self, data):
+        if not self.collect_links and not self.hidden_tag:
+            self.text.append(data)
+            if self.heading_tag:
+                self.heading_text.append(data)
+
+
 def _document_shape(source, body):
     if source == 'congo_note_pdf':
         if not re.match(rb'%PDF-[0-9]\.[0-9]', body):
@@ -105,24 +146,17 @@ def _document_shape(source, body):
     if len(body) > 2 * 1024 * 1024:
         return {'format': 'oversized_html'}
     try:
-        root = Tree(body).root
+        page = _PressPage(collect_links=source == 'press_index')
+        page.feed(body.decode('utf-8', errors='replace'))
+        page.close()
         if source == 'press_index':
-            links = set()
-            for node in root.walk():
-                if node.tag != 'a' or not node.attrs.get('href'):
-                    continue
-                try:
-                    url = urljoin(PRESS_INDEX_URL, node.attrs['href'])
-                except ValueError:
-                    continue
-                if PRESS_LINK.fullmatch(url):
-                    links.add(url)
-            return {'format': 'press_index', 'official_article_links': len(links)}
-        text = ' '.join(root.text().split()).casefold()
+            return {'format': 'press_index', 'official_article_links': len(page.links)}
+        text = ' '.join(' '.join(page.text).split()).casefold()
         _, symbol, marker = PRESS_ARTICLES[source]
         return {'format': 'press_article',
-                'expected_markers_found': symbol.casefold() in text and marker.casefold() in text}
-    except (ValueError, RecursionError):
+                'expected_markers_found': (symbol.casefold() in text
+                                         and any(marker.casefold() in h for h in page.headings))}
+    except (AssertionError, ValueError):
         return {'format': 'unreadable_html'}
 
 

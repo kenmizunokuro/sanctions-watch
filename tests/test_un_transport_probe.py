@@ -92,6 +92,20 @@ class UNTransportProbeTests(unittest.TestCase):
         self.items[CONGO_NOTE].headers = {'x-amzn-waf-action': 'challenge'}
         self.assertNotIn('document_shape', self.observation(self.probe(), CONGO_NOTE))
 
+    def test_deep_html_does_not_hide_real_links_or_use_markers_in_scripts(self):
+        self.items[PRESS_INDEX].body = b'<div>' * 1500 + self.items[PRESS_INDEX].body
+        self.items[YEMEN_ARTICLE].body = b'<script>SC/16508 2837 (2026)</script><h1>Access confirmation</h1>'
+        report = self.probe()
+        self.assertEqual(self.observation(report, PRESS_INDEX)['document_shape']['official_article_links'], 1)
+        self.assertFalse(self.observation(report, YEMEN_ARTICLE)['document_shape']['expected_markers_found'])
+
+    def test_http_200_access_page_cannot_confirm_article_markers_from_body_only(self):
+        self.items[YEMEN_ARTICLE].body = (b'<h1>Access confirmation</h1>'
+                                        b'<p>Access to SC/16508 2837 (2026) requires confirmation</p>')
+        self.assertFalse(self.observation(self.probe(), YEMEN_ARTICLE)['document_shape']['expected_markers_found'])
+        self.items[YEMEN_ARTICLE].body = b'<h2>Security Council Updates Yemen Sanctions through Resolution 2837 (2026)</h2><p>SC/16508</p>'
+        self.assertTrue(self.observation(self.probe(), YEMEN_ARTICLE)['document_shape']['expected_markers_found'])
+
     def test_press_rss_http_failure_retains_original_and_new_homepage_observations(self):
         response=requests.Response();response.status_code=503;response.url=PRESS_RSS
         self.items[PRESS_RSS]=requests.HTTPError('not available',response=response)
