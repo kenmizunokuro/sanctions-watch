@@ -636573,7 +636573,7 @@
       "source": "press:2745"
     }
   ],
-  "last_checked_at": "2026-11-16T03:09:09Z",
+  "last_checked_at": "2026-11-16T06:04:31Z",
   "notices": {},
   "press_rss": {
     "coverage_gap": {
@@ -636599,10 +636599,31 @@
         },
         "source_hash": "8fb11c404ca0bbe2cee2c1d8b7cfd69d058be42c635d3d97fd510afcb3008867",
         "status": "PENDING_REVIEW"
+      },
+      {
+        "change": "NEW",
+        "detected_at": "2026-11-16T06:04:31Z",
+        "event_id": "5f4c3e11ea5a21841831036029f4493ec0d0363ac15d255cf2d829408047e911",
+        "official_reference": "S/RES/2837 (2026)",
+        "official_reference_url": "https://main.un.org/securitycouncil/en/content/resolutions-0",
+        "parent_event_id": "",
+        "previous_record": {},
+        "previous_source_hash": "",
+        "record": {
+          "candidate": true,
+          "guid": "https://press.un.org/en/2026/sc16508.doc.htm",
+          "publication_at": "2026-11-12T22:52:25Z",
+          "title": "Security Council Updates Yemen Sanctions Regime to Address Evolving Houthi Threats through Resolution 2837 (2026)",
+          "url": "https://press.un.org/en/2026/sc16508.doc.htm"
+        },
+        "source_hash": "abfb8185caea93e23b0cbe809b47189c9cab345f432e97fa856cfaa954aa3664",
+        "source_received_at": "2026-11-13T05:02:33Z",
+        "status": "PENDING_REVIEW"
       }
     ],
     "heads": {
-      "https://press.un.org/en/2026/sc16506.doc.htm": "fa4bfce62ecb008188fcf19df06caa61204dad6ced041809498542eaa737aaf8"
+      "https://press.un.org/en/2026/sc16506.doc.htm": "fa4bfce62ecb008188fcf19df06caa61204dad6ced041809498542eaa737aaf8",
+      "https://press.un.org/en/2026/sc16508.doc.htm": "5f4c3e11ea5a21841831036029f4493ec0d0363ac15d255cf2d829408047e911"
     },
     "items": [
       {
@@ -636676,7 +636697,7 @@
         "url": "https://press.un.org/en/blog/sc16509"
       }
     ],
-    "last_success_at": "2026-11-16T03:09:09Z",
+    "last_success_at": "2026-11-16T06:04:31Z",
     "latest_publication_at": "2026-11-13T23:40:17Z",
     "new_articles": 0,
     "new_candidates": 0,
@@ -636692,6 +636713,6 @@
   "snapshot_hash": "2a0390e99d71ec03f2a065529aa0023ce8934e87e0115b6c755ab372ee1ef245",
   "source_updated": "2026-11-15T00:00:03.738Z",
   "updates_status": "error",
-  "xml_last_success_at": "2026-11-16T03:09:09Z",
+  "xml_last_success_at": "2026-11-16T06:04:31Z",
   "xml_status": "review_required"
 }
