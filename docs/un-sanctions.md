@@ -13,7 +13,7 @@
 
 ## 定期監視
 
-`watch-un.yml`は毎時08/23/38/53分（UTC）に起動予定。GitHub scheduleの起動時刻・15分以内の検知は保証されない。45分で警告、90分で重大表示する。現行のOFAC専用GAS救済は国連を起動しない。
+`watch-un.yml`は毎時08/23/38/53分（UTC）に起動予定。GitHub scheduleの起動時刻・15分以内の検知は保証されない。45分で警告、90分で重大表示する。外部タイマーによる起動救済は下記の手順で導入する。
 
 ```bash
 python -m src.un_watch
@@ -23,6 +23,22 @@ python -m src.un_review status
 取得・解析のいずれかが失敗するとCLIとworkflowは失敗する。正常に解析した他の国連資料は保存し、失敗した資料の直前有効snapshotは保持する。監視workflowはmasterを変更しない。
 
 XMLの`dateGenerated`はファイル生成日時であり、個別対象者の制裁発効日時ではない。個別の`LISTED_ON`も原文の精度で保持し、推測の日時を作らない。HTTPのETag/Last-Modifiedは実際に返った値だけを記録する。
+
+### 国連の起動遅れをApps Scriptで補う
+
+1. 既存の「OFAC外部監視」Apps Scriptプロジェクトに `UnWatchdog.gs` を追加し、[リポジトリの同ファイル](../apps_script/UnWatchdog.gs)の全文を貼って保存する。GitHub接続には同プロジェクトの既存設定（対象リポジトリのContents読取・Actions読取/書込）を使う。
+2. 関数 `checkUnWatchdog` を実行する。実行ログの `lastCheckedAt`（UTC）、`xmlStatus`、`pressStatus` を確認する。
+3. `installUnWatchdog` を1回実行する。トリガー一覧で `unWatchdogTick` が1個あることを確認する。
+4. `unWatchdogTick` を一度実行する。条件に合えば `accepted` を記録し、GitHubの `watch-un` に `workflow_dispatch` の実行が現れる。最近の確認があれば `recent_check`、待機中または稼働中なら `active_run` と表示する。
+
+救済処理は月次heartbeatのうち、最新の `un_xml` / `un_press` が同じ時刻に記録された観測を使う。
+取得エラーの観測も起動確認に使い、資料のエラー状態はそのまま表示する。最終確認から45分以上経過し、
+同workflowに実行中・待機中のrunがなければ `main` を再起動する。送信試行から60分間は再要求を抑える。
+GitHub APIで資料や実行状態を確認できないときはエラーを記録し、その回の再起動は行わない。
+
+`UN_WATCHDOG_STATE` に観測時刻、資料ごとの状態、再起動要求の試行・受理時刻と実行結果を記録する。
+`accepted` はGitHubが起動要求を受理したことを示す。資料の取得結果は新しいheartbeatと監視ダッシュボードで確認する。
+既存のOFAC外部監視トリガーと会社シートの同期トリガーはそのまま使用する。
 
 ## 保存先
 
