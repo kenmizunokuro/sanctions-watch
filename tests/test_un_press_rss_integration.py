@@ -13,8 +13,14 @@ from pathlib import Path
 from unittest.mock import patch
 
 from src import un_watch as W, un_review as R, un_press_rss as P, source_audit as A
+from src.fetch import Fetched
 from tests.test_un_watch import Feed, NOW
 from tests.test_un_press_rss import rss
+
+
+URL = 'https://press.un.org/en/2026/sc16506.doc.htm'
+TITLE = 'Security Council 1533 Sanctions Committee Amends One Entity on Its Sanctions List'
+BODY = f'<html><h1>{TITLE}</h1><div>SC/16506</div></html>'.encode()
 
 
 class RSSIntegrationTests(unittest.TestCase):
@@ -212,6 +218,83 @@ class RSSIntegrationTests(unittest.TestCase):
         self.assertEqual(result['press_rss']['status'],'observed')
         self.assertEqual(result['press_rss']['pending'][0]['event_id'],'rss:'+self.candidates()[0]['event_id'])
         self.assertEqual(result['press_rss']['pending'][0]['source_hash'],self.candidates()[0]['source_hash'])
+
+
+    def prepare(self):
+        self.run_watch()
+        self.feed.rss = rss([('sc16499', 'Security Council Sanctions Committee Amends Entry'),
+                             ('sc16506', TITLE)])
+        self.requests = []
+
+    def getter(self, body=BODY, *, response_url=URL, status=200, headers=None):
+        def fetch(url, **kwargs):
+            if url != URL:
+                return self.feed(url, **kwargs)
+            kwargs['url_validator'](url)
+            self.assertFalse(kwargs['allow_conditional'])
+            self.requests.append(url)
+            return Fetched(url, body=body, sha256=hashlib.sha256(body).hexdigest(),
+                           http_status=status, final_url=response_url, headers=headers or {},
+                           etag='article-tag', last_modified='Wed, 11 Nov 2026 23:00:00 GMT')
+        return fetch
+
+    def test_archives_article_separately_and_keeps_first_detection_and_review(self):
+        self.prepare()
+        observed = NOW + timedelta(minutes=15)
+        self.run_watch(now=observed, fetcher=self.getter())
+        event, = self.candidates()
+        receipt = self.state()['press_rss']['article_evidence'][event['event_id']]
+        self.assertEqual(receipt['verified_at'], P.stamp(observed))
+        self.assertEqual(receipt['source_hash'], event['source_hash'])
+        self.assertEqual(receipt['http_status'], 200)
+        self.assertEqual(receipt['etag'], 'article-tag')
+        self.assertEqual(receipt['sha256'], hashlib.sha256(BODY).hexdigest())
+        self.assertEqual(gzip.decompress((self.root / receipt['raw_path']).read_bytes()), BODY)
+        rows = {row['イベントID']: row for row in self.reviews()}
+        self.assertEqual(rows['rss:' + event['event_id']]['SHA256'], event['source_hash'])
+        self.assertEqual(rows['rss:' + event['event_id']]['状態'], 'PENDING_REVIEW')
+        self.assertEqual(rows['rss:article:' + event['event_id']]['SHA256'], receipt['sha256'])
+        self.assertEqual(rows['rss:article:' + event['event_id']]['状態'], 'EVIDENCE_READY')
+        self.run_watch(now=observed + timedelta(minutes=15), fetcher=self.getter())
+        self.assertEqual(self.candidates(), [event])
+        self.assertEqual(self.state()['press_rss']['article_evidence'][event['event_id']], receipt)
+        self.assertEqual(self.requests, [URL])
+        self.assertEqual(self.master.read_bytes(), b'unchanged master')
+
+    def test_rejects_wrong_article_or_incomplete_response_and_retries(self):
+        self.prepare()
+        observed = NOW + timedelta(minutes=15)
+        other = BODY.replace(b'SC/16506', b'SC/165060')
+        response = (self.getter(other), self.getter(BODY, status=202, headers={'x-amzn-waf-action': 'challenge'}),
+                    self.getter(BODY, response_url=URL + '?redirected=1'))
+        for retry, getter in enumerate(response):
+            with self.subTest(retry=retry):
+                result = self.run_watch(now=observed + timedelta(minutes=15 * retry), fetcher=getter)
+                event, = self.candidates()
+                self.assertFalse(result['ok'])
+                self.assertEqual(self.state()['press_rss']['status'], 'observed')
+                self.assertFalse(self.state()['press_rss'].get('article_evidence'))
+                self.assertTrue(any(row['イベントID'] == 'rss:article:' + event['event_id'] and
+                                    row['状態'] == 'EVIDENCE_FAILED' for row in self.reviews()))
+        self.run_watch(now=observed + timedelta(minutes=45), fetcher=self.getter())
+        self.assertEqual(len(self.state()['press_rss']['article_evidence']), 1)
+        receipt = next(iter(self.state()['press_rss']['article_evidence'].values()))
+        (self.root / receipt['raw_path']).write_bytes(gzip.compress(b'corrupted'))
+        result = self.run_watch(now=observed + timedelta(minutes=60), fetcher=self.getter())
+        self.assertFalse(result['ok'])
+        self.assertFalse(any(row['状態'] == 'EVIDENCE_READY' for row in self.reviews()))
+        self.assertEqual(self.requests, [URL] * 4)
+
+    def test_no_article_request_without_verified_rss_original(self):
+        self.prepare()
+        observed = NOW + timedelta(minutes=15)
+        self.run_watch(now=observed, fetcher=self.getter(b'<html/>'))
+        event, = self.candidates()
+        (self.root / f'data/raw/un/{event["source_hash"]}.xml.gz').unlink()
+        self.feed.rss = rss()
+        self.run_watch(now=observed + timedelta(minutes=15), fetcher=self.getter())
+        self.assertEqual(self.requests, [URL])
+        self.assertTrue(any(row['状態'] == 'EVIDENCE_FAILED' for row in self.reviews()))
 
 
 if __name__=='__main__':unittest.main()

@@ -22,18 +22,14 @@ import requests
 
 from . import source_audit as A, un_sources as U, un_updates as V
 from .fetch import NetworkPolicyError, fetch
+from . import un_press_article as E
 
 RSS_URL = 'https://main.un.org/securitycouncil/en/feed/1.0/updates_unsc_consolidated_list'
 PRESS_HOME_URL = 'https://press.un.org/en'
 PRESS_RSS_URL = 'https://press.un.org/en/rss.xml'
 PRESS_INDEX_URL = 'https://press.un.org/en/content/security-council/press-release'
 CONGO_NOTE_URL = 'https://main.un.org/securitycouncil/sites/default/files/2026/1533_NV_En_Amd%201.pdf'
-PRESS_ARTICLES = {
-    'press_sc16506': ('https://press.un.org/en/2026/sc16506.doc.htm',
-                      'SC/16506', '1533 Sanctions Committee'),
-    'press_sc16508': ('https://press.un.org/en/2026/sc16508.doc.htm',
-                      'SC/16508', '2837 (2026)'),
-}
+PRESS_ARTICLES = E.ARTICLES
 PRESS_LINK = re.compile(r'https://press\.un\.org/en/[0-9]{4}/sc[0-9]+\.doc\.htm')
 TARGETS = (('xml', U.XML_URL), ('updates', V.UPDATES_URL),
            ('press_1267', U.press_url('1267')), ('rss', RSS_URL),
@@ -97,24 +93,13 @@ def _rss_shape(body):
                                                 if (i.findtext('pubDate') or '').strip()})}
 
 
-class _PressPage(HTMLParser):
-    def __init__(self, *, collect_links):
+class _PressIndex(HTMLParser):
+    def __init__(self):
         super().__init__(convert_charrefs=True)
-        self.collect_links = collect_links
         self.links = set()
-        self.text = []
-        self.headings = []
-        self.heading_tag = ''
-        self.heading_text = []
-        self.hidden_tag = ''
 
     def handle_starttag(self, tag, attrs):
-        if tag in {'script', 'style'}:
-            self.hidden_tag = tag
-        if not self.collect_links and tag in {'h1', 'h2', 'h3'} and not self.hidden_tag:
-            self.heading_tag = tag
-            self.heading_text = []
-        if self.collect_links and tag == 'a' and not self.hidden_tag:
+        if tag == 'a':
             href = dict(attrs).get('href')
             if href:
                 try:
@@ -124,41 +109,24 @@ class _PressPage(HTMLParser):
                 if PRESS_LINK.fullmatch(url):
                     self.links.add(url)
 
-    def handle_endtag(self, tag):
-        if tag == self.hidden_tag:
-            self.hidden_tag = ''
-        if tag == self.heading_tag and not self.hidden_tag:
-            self.headings.append(' '.join(' '.join(self.heading_text).split()).casefold())
-            self.heading_tag = ''
-
-    def handle_data(self, data):
-        if not self.collect_links and not self.hidden_tag:
-            self.text.append(data)
-            if self.heading_tag:
-                self.heading_text.append(data)
-
-
 def _document_shape(source, body):
     if source == 'congo_note_pdf':
         if not re.match(rb'%PDF-[0-9]\.[0-9]', body):
             return {'format': 'unexpected_pdf_body'}
         return {'format': 'pdf', 'eof_present': body[-1024:].rstrip().endswith(b'%%EOF')}
-    if len(body) > 2 * 1024 * 1024:
+    if len(body) > E.MAX_BYTES:
         return {'format': 'oversized_html'}
     try:
-        page = _PressPage(collect_links=source == 'press_index')
-        page.feed(body.decode('utf-8', errors='replace'))
-        page.close()
         if source == 'press_index':
+            page = _PressIndex()
+            page.feed(body.decode('utf-8', errors='replace'))
+            page.close()
             return {'format': 'press_index', 'official_article_links': len(page.links)}
-        text = ' '.join(' '.join(page.text).split()).casefold()
-        _, symbol, marker = PRESS_ARTICLES[source]
+        _, symbol, marker, _ = PRESS_ARTICLES[source]
         return {'format': 'press_article',
-                'expected_markers_found': (symbol.casefold() in text
-                                         and any(marker.casefold() in h for h in page.headings))}
+                'expected_markers_found': E.markers_found(body, symbol, marker)}
     except (AssertionError, ValueError):
         return {'format': 'unreadable_html'}
-
 
 def probe(*, fetcher=fetch, now=None):
     now = now or datetime.now(timezone.utc)

@@ -11,7 +11,8 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from . import dashboard, source_audit as A, state as S, un_sources as U, un_updates as V, un_press_rss as P
-from .fetch import fetch, read_raw
+from . import un_press_article as E
+from .fetch import NetworkPolicyError, fetch, read_raw
 from .persistence import FileWrite, atomic_replace_many
 from .un_lock import locked
 
@@ -138,6 +139,8 @@ def _review_rows(state: dict) -> list[list]:
                      ' / 最新記事: ' + sensor.get('latest_publication_at', '不明') +
                      ' / 全件網羅・名簿反映を示すものではありません',
                      sensor['status'].upper(), '', '', '', sensor.get('source_hash', ''), P.URL])
+        article_failures = {issue['source']: issue for issue in state.get('failures', [])
+                            if issue['source'].startswith('rss:article:')}
         for event in sensor.get('events', []):
             if event['status'] == 'PENDING_REVIEW':
                 kind = ('国連公式RSS・過去取得分の復元候補' if event.get('source_received_at') else
@@ -146,6 +149,15 @@ def _review_rows(state: dict) -> list[list]:
                              kind,
                              '', event['record']['title'], 'PENDING_REVIEW', '', '', '',
                              event['source_hash'], event['record']['url']])
+                article_id = 'rss:article:' + event['event_id']
+                evidence = sensor.get('article_evidence', {}).get(event['event_id'])
+                if issue := article_failures.get(article_id):
+                    rows.append([article_id, state['last_checked_at'], '国連公式発表・原本照合エラー',
+                                 '', issue['message'], 'EVIDENCE_FAILED', '', '', '', '', event['record']['url']])
+                elif evidence:
+                    rows.append([article_id, evidence['verified_at'], '国連公式発表・原本照合',
+                                 evidence['symbol'], event['record']['title'], 'EVIDENCE_READY', '', '', '',
+                                 evidence['sha256'], evidence['url']])
         if sensor.get('recovery_error'):
             rows.append(['rss:recovery', state['last_checked_at'], '国連公式RSS・過去取得分の復元エラー',
                          '', sensor['recovery_error'], 'REVIEW_REQUIRED', '', '', '', '', P.URL])
@@ -248,6 +260,76 @@ def _read_document(root, key, url, previous, parser, fetched):
     return fetched, metadata, parsed
 
 
+def _verify_saved_article(root, receipt, *, url, source_hash, symbol):
+    sha = receipt.get('sha256', '')
+    expected_path = f'data/raw/un/{sha}.html.gz'
+    archive = root / 'data/raw/un'
+    raw = root / expected_path
+    if (len(sha) != 64 or any(c not in '0123456789abcdef' for c in sha)
+            or receipt.get('raw_path') != expected_path
+            or receipt.get('url') != url or receipt.get('final_url') != url
+            or receipt.get('source_hash') != source_hash or receipt.get('symbol') != symbol
+            or receipt.get('http_status') != 200
+            or not archive.resolve().is_relative_to(root.resolve())
+            or not raw.resolve().is_relative_to(archive.resolve())):
+        raise U.UNSchemaError('Archived UN press article metadata mismatch')
+    with gzip.open(raw, 'rb') as stream:
+        body = stream.read(E.MAX_BYTES + 1)
+    if len(body) > E.MAX_BYTES or hashlib.sha256(body).hexdigest() != sha:
+        raise U.UNSchemaError('Archived UN press article hash mismatch or response too large')
+
+
+def _capture_press_articles(root, sensor, *, now, clock, fetcher, audit, failures):
+    for event in sensor.get('events', []):
+        record = event['record']
+        url = record['url']
+        identity = E.CANDIDATES.get((url, record['title']))
+        event_id = event['event_id']
+        if (not identity or not record.get('candidate') or event['status'] != 'PENDING_REVIEW'
+                or sensor['heads'].get(url) != event_id):
+            continue
+        symbol, marker = identity
+        source_hash = event['source_hash']
+
+        def same_article(target):
+            if target != url:
+                raise NetworkPolicyError('UN press article redirect changed the official URL')
+            return U.validate_un_url(target)
+
+        def require_markers(body):
+            if not E.markers_found(body, symbol, marker):
+                raise U.UNSchemaError('UN press article headline or document symbol does not match')
+
+        fetched = None
+        try:
+            if (event_id != U.digest([event['parent_event_id'], record, source_hash])
+                    or record not in P.read_original(root, source_hash, now=now)):
+                raise U.UNSchemaError('UN press article does not match the archived RSS event')
+            evidence = sensor.setdefault('article_evidence', {})
+            if event_id in evidence:
+                _verify_saved_article(root, evidence[event_id], url=url, source_hash=source_hash, symbol=symbol)
+                continue
+            fetched = fetcher(url, allow_conditional=False, url_validator=same_article,
+                              max_bytes=E.MAX_BYTES, timeout=15)
+            same_article(fetched.final_url)
+            if len(fetched.body or b'') > E.MAX_BYTES:
+                raise U.UNSchemaError('UN press article exceeds size limit')
+            _, receipt, _ = _read_document(root, 'press_article', url, {}, require_markers, fetched)
+            evidence[event_id] = dict(receipt, verified_at=P.stamp(clock()), symbol=symbol,
+                                      source_hash=source_hash, http_status=fetched.http_status)
+            audit.append(A.entry('un_press_article', symbol, 'validated_article', fetched=fetched,
+                                 record_count=1, source_updated=record['publication_at']))
+        except Exception as error:
+            if fetched is not None:
+                error.fetched = fetched
+            issue = A.error_entry('un_press_article', symbol, error, url=url,
+                                  schema_changed=isinstance(error, U.UNSchemaError),
+                                  fetch_failed=not isinstance(error, U.UNSchemaError))
+            audit.append(issue)
+            failures.append(dict(source='rss:article:' + event_id, error_type=type(error).__name__,
+                                 message=A._clean_error(error), http_status=issue['http_status']))
+
+
 def _xml_event(root, state, snapshot, source_hash, now):
     previous = snapshot.get('previous_parties', {})
     parties = snapshot['parties']
@@ -290,7 +372,8 @@ def _xml_event(root, state, snapshot, source_hash, now):
 @locked
 def run(root: Path, *, fetcher=fetch, now=None) -> dict:
     root = Path(root)
-    now = now or datetime.now(timezone.utc)
+    clock = (lambda: now) if now is not None else lambda: datetime.now(timezone.utc)
+    now = clock()
     if now.tzinfo is None:
         raise ValueError('now must include timezone')
     now = now.astimezone(timezone.utc)
@@ -459,6 +542,7 @@ def run(root: Path, *, fetcher=fetch, now=None) -> dict:
         audit.append(A.error_entry('un_press_rss', 'auxiliary_global_news', error, url=P.URL,
                                    schema_changed=isinstance(error, U.UNSchemaError),
                                    fetch_failed=not isinstance(error, U.UNSchemaError)))
+    _capture_press_articles(root, sensor, now=now, clock=clock, fetcher=fetcher, audit=audit, failures=failures)
     pending = any(e['status'] in {'PENDING_REVIEW', 'APPROVED'} for e in state['events'])
     state['xml_status'] = 'error' if not xml_ok else 'review_required' if pending else 'unchanged'
     state['press_status'] = ('error' if not press_ok or state['coverage_gaps'] else 'review_required'
@@ -478,7 +562,8 @@ def run(root: Path, *, fetcher=fetch, now=None) -> dict:
     atomic_replace_many(writes)
     return dict(ok=xml_ok and press_ok and updates_ok and not state['coverage_gaps']
                 and not state.get('updates_coverage_gap') and sensor['status'] == 'observed'
-                and not sensor.get('recovery_error'),
+                and not sensor.get('recovery_error')
+                and not any(issue['source'].startswith('rss:article:') for issue in failures),
                 snapshot_hash=state.get('snapshot_hash', ''), failures=failures,
                 review_count=len(_review_rows(state)), xml_status=state['xml_status'],
                 press_status=state['press_status'], updates_status=state['updates_status'],
