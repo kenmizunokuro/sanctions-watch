@@ -8,6 +8,7 @@ from . import integrity_decisions as Q,integrity_legacy as L,master as M,dashboa
 from .vessel_history import _body
 from .mof_legacy_review import _read_rows
 from .approved_legacy_delist import _json,DIFF_COLS
+from .normalize import match_key
 from .persistence import FileWrite,atomic_replace_many
 
 ROOT=Path(__file__).resolve().parent.parent
@@ -24,7 +25,13 @@ HUISTAS_APPROVAL = Path('data/review/approved_huistas_alias_history_20261116.jso
 HUISTAS_APPROVAL_SHA256 = '60aec06c349f0722ba1632c351c5ab78d50be83f5da249eb1c91488fa3715df1'
 HUISTAS_RECEIPT = Path('data/monitoring/approved_huistas_alias_history_20261116_applied.json')
 HUISTAS_EVIDENCE = 'data/evidence/ofac_huistas_alias_history.csv'
+DIFF_MARKDOWN = 'data/diff/latest.md'
 URLS={'primary':'https://sanctionslistservice.ofac.treas.gov/api/download/SDN.CSV','alias':'https://sanctionslistservice.ofac.treas.gov/api/download/ALT.CSV','advanced':'https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN_ADVANCED.XML'}
+CONS_URLS = {
+    'primary': URLS['primary'].replace('SDN.CSV', 'CONS_PRIM.CSV'),
+    'alias': URLS['alias'].replace('ALT.CSV', 'CONS_ALT.CSV'),
+    'advanced': URLS['advanced'].replace('SDN_ADVANCED.XML', 'CONS_ADVANCED.XML'),
+}
 
 
 def approval(root, *, huistas=False):
@@ -84,6 +91,22 @@ def static_evidence(root,b):
     return dict(master_key=KEY,party_id=b['party_id'],old_name=b['old_name'],new_name=b['new_name'],notice_url=notice['source_url'],notice_sha256=notice['source_hash'],historical_source_sha256=h['source_hash'],name_status='historical_alias')
 
 
+def _current_records(root, report, *, consolidated=False):
+    source, label, urls = ('ofac_cons', 'Consolidated', CONS_URLS) if consolidated else ('ofac_sdn', 'SDN', URLS)
+    current = {}
+    hashes = {}
+    for role, url in urls.items():
+        docs = [d for d in report.get('documents', []) if d.get('source') == source and d.get('role') == role]
+        if len(docs) != 1 or docs[0]['source_url'] != url:
+            raise ValueError('current official alias source missing')
+        doc = docs[0]
+        folder = f'data/raw/{source}' + ('_advanced' if role == 'advanced' else '')
+        body = _body(root, doc, folder)
+        current[role] = R.read_ofac_xml(body, label) if role == 'advanced' else R.read_classic(body, label, alias=role=='alias')
+        hashes['current_' + ('consolidated_' if consolidated else '') + role + '_sha256'] = doc['sha256']
+    return current, hashes
+
+
 def verify_decision(root,report,decision):
     scope = decision.get('alias_history')
     if not isinstance(scope, dict):
@@ -92,22 +115,19 @@ def verify_decision(root,report,decision):
     b=approval(root, huistas=huistas)
     if decision!=b['retention_decision']:raise ValueError('alias decision scope changed')
     facts=_huistas_evidence(root,b) if huistas else static_evidence(root,b)
-    current={}
-    for role in URLS:
-        docs=[d for d in report.get('documents',[]) if d.get('source')=='ofac_sdn' and d.get('role')==role]
-        if len(docs)!=1 or docs[0]['source_url']!=URLS[role]:raise ValueError('current official alias source missing')
-        doc=docs[0];folder='data/raw/ofac_sdn_advanced' if role=='advanced' else 'data/raw/ofac_sdn'
-        body=_body(root,doc,folder)
-        current[role]=R.read_ofac_xml(body,'SDN') if role=='advanced' else R.read_classic(body,'SDN',alias=role=='alias')
-        facts['current_'+role+'_sha256']=doc['sha256']
+    current, hashes = _current_records(root, report)
+    facts.update(hashes)
     if huistas:
         primary = [r for r in current['primary'] if r['source_id'] == b['party_id']]
         if (len(primary) != 1 or primary[0]['name'] != b['primary_name']
                 or primary[0]['raw_record'][2].strip() != '-0-'):
             raise ValueError('current Huistas entity primary name missing or changed')
         old = b['old_name'].casefold()
+        consolidated, hashes = _current_records(root, report, consolidated=True)
+        facts.update(hashes)
         if (old in primary[0]['raw_record'][11].casefold()
-                or any(r['name'].casefold() == old for rows in current.values() for r in rows)):
+                or any(match_key(r['name']) == HUISTAS_KEY
+                       for listing in (current, consolidated) for rows in listing.values() for r in rows)):
             raise ValueError('old Huistas alias is current again; re-review required')
         if not any(r['source_id'] == b['party_id'] and r['primary'] and not r['weak']
                    and r['name'].casefold() == b['primary_name'].casefold() for r in current['advanced']):
@@ -170,6 +190,8 @@ def apply(root=ROOT,*,now=None,run_url='',huistas=False,fresh_diff=True):
     approval_hash = HUISTAS_APPROVAL_SHA256 if huistas else APPROVAL_SHA256
     evidence_path = HUISTAS_EVIDENCE if huistas else EVIDENCE
     targets = (*TARGETS[:-1], evidence_path)
+    if huistas:
+        targets = (*targets, DIFF_MARKDOWN)
     Q.apply(dict(findings=[]),dict(items=[]),ledger,now=now)
     entries={e['review_id']:e for e in ledger['entries']};decision=b['retention_decision']
     if (root/receipt_path).exists():
@@ -187,10 +209,11 @@ def apply(root=ROOT,*,now=None,run_url='',huistas=False,fresh_diff=True):
         raise ValueError('approved alias row changed')
     if huistas:
         from .integrity_audit import _pinned
-        state = json.loads((root/'data/state.json').read_bytes())['ofac_sdn']
+        state = json.loads((root/'data/state.json').read_bytes())
         documents = []
-        for role in URLS:
-            _pinned(root, 'ofac_sdn', state, role, documents)
+        for source in ('ofac_sdn', 'ofac_cons'):
+            for role in URLS:
+                _pinned(root, source, state[source], role, documents)
         verify_decision(root, {'documents': documents}, decision)
     else:
         static_evidence(root,b)
@@ -215,6 +238,14 @@ def apply(root=ROOT,*,now=None,run_url='',huistas=False,fresh_diff=True):
         D.append_changes(stage,[event],when=stamp)
         path=stage/'data/diff/latest.csv';path.parent.mkdir(parents=True,exist_ok=True)
         with path.open('w',encoding='utf-8',newline='') as f:csv.writer(f).writerows([DIFF_COLS,event,*[r for r in previous[1:] if r!=event]])
+        if huistas:
+            before_md = ((root/DIFF_MARKDOWN).read_text(encoding='utf-8').rstrip()
+                         if fresh_diff else '# 制裁リスト差分レポート')
+            (stage/DIFF_MARKDOWN).write_text(
+                before_md + '\n\n## OFAC 旧別名の照合区分変更 1件\n\n'
+                f"- `{b['old_name']}` — {b['after']['invalid_reason']}（FixedRef {b['party_id']}）\n",
+                encoding='utf-8',
+            )
         path=stage/evidence_path;path.parent.mkdir(parents=True,exist_ok=True)
         with path.open('w', encoding='utf-8', newline='') as f:
             writer = csv.writer(f)

@@ -83,14 +83,18 @@ runs:
       shell: bash
       env:
         OFAC_FRESH_DIFF: ${{ steps.watch.outputs.has_diff == 'true' && 'true' || 'false' }}
-      run: python -m src.ofac_alias_history --apply --huistas --root .
+      run: |
+        if [[ "$OFAC_FRESH_DIFF" == true ]]; then
+          cp data/diff/latest.csv "$RUNNER_TEMP/ofac-watch-diff-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT.csv"
+        fi
+        python -m src.ofac_alias_history --apply --huistas --root .
 
     - name: 一次ソース完全性監査（公開前必須）
       id: integrity
       if: always() && steps.watch.outcome != 'skipped'
       shell: bash
       env:
-        UPSTREAM_OUTCOME: ${{ steps.watch.outcome }}
+        UPSTREAM_OUTCOME: ${{ steps.huistas.outcome == 'failure' && 'failure' || steps.watch.outcome }}
         AUDIT_SOURCES: ${{ inputs.sources }}
       run: bash .github/scripts/integrity-gate.sh "$AUDIT_SOURCES" "$UPSTREAM_OUTCOME"
 
@@ -227,15 +231,21 @@ runs:
 
     - name: 差分を通知
       id: notify_diff
-      if: steps.watch.outputs.has_diff == 'true'
+      if: steps.watch.outputs.has_diff == 'true' || steps.huistas.outputs.applied == 'true'
       shell: bash
       env:
         SLACK_WEBHOOK_URL: ${{ inputs.slack-webhook }}
+        HUISTAS_APPLIED: ${{ steps.huistas.outputs.applied }}
+        WATCH_CHANGED: ${{ steps.watch.outputs.changed || '0' }}
       run: |
+        CHANGED="$WATCH_CHANGED"
+        if [[ "$HUISTAS_APPLIED" == true ]]; then
+          CHANGED=$((CHANGED + 1))
+        fi
         python -m src.notify --kind diff \
           --added   "${{ steps.watch.outputs.added }}" \
           --removed "${{ steps.watch.outputs.removed }}" \
-          --changed "${{ steps.watch.outputs.changed }}" \
+          --changed "$CHANGED" \
           --backfilled "${{ steps.watch.outputs.backfilled }}"
 
     - name: OFAC 取得後の監査停止を記録
@@ -340,7 +350,12 @@ runs:
       env:
         OFAC_CANDIDATE_SHA256: ${{ steps.watch.outputs.ofac_candidate_sha256 }}
         OFAC_BASE_SHA256: ${{ steps.watch.outputs.ofac_base_sha256 }}
-      run: python -m src.persist_monitor_failure
+      run: |
+        original="$RUNNER_TEMP/ofac-watch-diff-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT.csv"
+        if [[ -f "$original" ]]; then
+          cp "$original" data/diff/latest.csv
+        fi
+        python -m src.persist_monitor_failure
 
     - name: 完全性監査証跡を保存（成功・失敗共通）
       if: always() && steps.watch.outcome != 'skipped'

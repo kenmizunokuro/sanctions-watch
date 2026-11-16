@@ -43,6 +43,7 @@ class HuistasHistoryTests(unittest.TestCase):
         self.enterContext(patch.object(history, 'HUISTAS_APPROVAL_SHA256', hashlib.sha256(body).hexdigest(), create=True))
         self.write(history.LEDGER, b'{"schema_version":1,"entries":[]}')
         self.write('data/diff/latest.csv', '出所,種別,受取人名,変更前,変更後\n'.encode())
+        self.write('data/diff/latest.md', b'# Previous report\n')
         self.other = dict(self.bundle['before'], match_key='other', display_name='OTHER', sources='UK')
         master.save({KEY: self.bundle['before'], 'other': self.other}, self.root / 'data/master/master.csv')
         self.current()
@@ -64,7 +65,7 @@ class HuistasHistoryTests(unittest.TestCase):
             f'</DocumentedName></Alias>{weak}</Identity></Profile></DistinctParty></DistinctParties></Sanctions>'
         ).encode()
 
-    def current(self, *, include_weak=False, party='32452'):
+    def current(self, *, include_weak=False, party='32452', cons_weak_name=''):
         state = {}
         self.docs = []
         rows = io.StringIO(newline='')
@@ -81,7 +82,27 @@ class HuistasHistoryTests(unittest.TestCase):
                        sha256=hashlib.sha256(content).hexdigest(), source_url=history.URLS[role])
             self.docs.append(doc)
             state.update(zip(state_fields, (rel, doc['sha256'], doc['source_url'])))
-        self.write('data/state.json', json.dumps({'ofac_sdn': state}).encode())
+        cons = {}
+        for role, state_fields, filename in (
+            ('primary', ('raw_prim', 'sha256', 'url'), 'CONS_PRIM.CSV'),
+            ('alias', ('raw_alt', 'alt_sha256', 'alt_url'), 'CONS_ALT.CSV'),
+            ('advanced', ('raw_advanced', 'advanced_sha256', 'advanced_url'), 'CONS_ADVANCED.XML'),
+        ):
+            folder = 'ofac_cons_advanced' if role == 'advanced' else 'ofac_cons'
+            rel = f'data/raw/{folder}/test-{role}'
+            prefix = ('https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/'
+                      if role == 'advanced' else 'https://sanctionslistservice.ofac.treas.gov/api/download/')
+            if role == 'advanced':
+                content = self.xml(include_weak=bool(cons_weak_name), party='55555').replace(
+                    b'Los Huistas DTO', cons_weak_name.encode()).replace(PRIMARY.encode(), b'Other party')
+            else:
+                content = (b'55555,Other party,-0-,TEST,-0-,-0-,-0-,-0-,-0-,-0-,-0-,-0-\n'
+                           if role == 'primary' else b'55555,10,aka,Other alias,-0-\n')
+            self.write(rel, content)
+            sha = hashlib.sha256(content).hexdigest()
+            self.docs.append(dict(source='ofac_cons', role=role, raw_path=rel, sha256=sha, source_url=prefix + filename))
+            cons.update(zip(state_fields, (rel, sha, prefix + filename)))
+        self.write('data/state.json', json.dumps({'ofac_sdn': state, 'ofac_cons': cons}).encode())
 
     def test_application_retains_manual_history_and_excludes_single_name_screening(self):
         receipt = history.apply(self.root, now=NOW, huistas=True)
@@ -102,9 +123,13 @@ class HuistasHistoryTests(unittest.TestCase):
         history.apply(self.root, now=NOW, huistas=True, fresh_diff=False)
         changes = list(csv.DictReader(io.StringIO((self.root / 'data/diff/latest.csv').read_text())))
         self.assertEqual([row['受取人名'] for row in changes], ['Los Huistas DTO'])
+        markdown = (self.root / 'data/diff/latest.md').read_text()
+        self.assertIn('Los Huistas DTO', markdown)
+        self.assertNotIn('Previous report', markdown)
 
     def test_changed_live_party_or_reappearing_alias_blocks_before_any_writes(self):
-        for kwargs in ({'party': '55555'}, {'include_weak': True}):
+        for kwargs in ({'party': '55555'}, {'include_weak': True},
+                       {'cons_weak_name': 'Ｌｏｓ　Ｈｕｉｓｔａｓ　ＤＴＯ'}):
             with self.subTest(kwargs=kwargs):
                 self.current(**kwargs)
                 snapshot = {path: path.read_bytes() for path in self.root.rglob('*') if path.is_file()}
