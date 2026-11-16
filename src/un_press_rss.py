@@ -14,6 +14,7 @@ MAX_BYTES = 1024 * 1024
 MAX_POLL_GAP = timedelta(minutes=90)
 MAX_CONTENT_AGE = timedelta(hours=72)
 KEYWORDS = re.compile(r'\bsanctions?\b|\bassets?\s+freeze\b|\barms\s+embargo\b|\btravel\s+ban\b', re.I)
+ITEM_URL = re.compile(r'https://press\.un\.org/en/(?:\d{4}/[a-z0-9_-]+\.doc\.htm|blog/sc[0-9]+)')
 
 
 class _NoDTD(ET.TreeBuilder):
@@ -64,7 +65,7 @@ def parse(body: bytes, *, now: datetime) -> list[dict]:
         for node in nodes:
             title, url, guid = (_field(node, k) for k in ['title', 'link', 'guid'])
             U.validate_un_url(url)
-            if not re.fullmatch(r'https://press\.un\.org/en/\d{4}/[a-z0-9_-]+\.doc\.htm', url):
+            if not ITEM_URL.fullmatch(url):
                 raise ValueError('RSS article URL changed or not official')
             if url in urls or guid in guids:
                 raise ValueError('RSS duplicate article URL or GUID')

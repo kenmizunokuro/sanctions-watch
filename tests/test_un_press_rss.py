@@ -50,6 +50,20 @@ class PressRSSTests(unittest.TestCase):
         self.assertFalse(any(x['candidate'] for x in items))
         self.assertEqual(self.observe(items=items)['events'],[])
 
+    def test_official_council_blog_does_not_hide_a_press_release(self):
+        body = rss([
+            ('sc16506', 'Security Council Sanctions Committee Amends Entry'),
+            ('sc16509', 'Security Council Meeting: Sanctions'),
+        ]).replace(b'/en/2026/sc16509.doc.htm', b'/en/blog/sc16509')
+        items = self.parse(body)
+        self.assertEqual(
+            {item['url']: item['candidate'] for item in items},
+            {
+                'https://press.un.org/en/2026/sc16506.doc.htm': True,
+                'https://press.un.org/en/blog/sc16509': False,
+            },
+        )
+
     def test_added_and_revised_counts_are_separate_from_raw_feed_hash(self):
         first=self.observe()
         changed=self.observe(first,self.parse(rss([('sc16499','Revised sanctions announcement'),
@@ -76,6 +90,8 @@ class PressRSSTests(unittest.TestCase):
     def test_unsafe_malformed_duplicate_and_external_inputs_fail_closed(self):
         cases=[b'<html/>',b'<rss/>',rss([]),rss([('sc1','sanctions'),('sc1','sanctions again')]),
                rss().replace(b'https://press.un.org/en/2026/',b'https://example.com/en/2026/'),
+               rss().replace(b'/en/2026/sc16499.doc.htm',b'/en/blog/unexpected'),
+               rss().replace(b'/en/2026/sc16499.doc.htm',b'/en/blog/sc16499?redirect=1'),
                rss().replace(b'</guid>',b'</guid><guid>other</guid>'),
                rss().replace(b'+0000',b''),
                rss().replace(b'<link>https://press.un.org/en</link>',b'<link>https://example.com</link>')]
