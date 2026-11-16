@@ -3,12 +3,12 @@
   "current_event_id": "de5bdbe1dfb843d2bd98e8e82160428aa07691d441e4bff34a4f95455740f67e",
   "documents": {
     "press_rss": {
-      "etag": "W/\"1794786694\"",
+      "etag": "W/\"1794848879\"",
       "filename": "rss.xml",
       "final_url": "https://press.un.org/en/rss.xml",
-      "last_modified": "Sun, 15 Nov 2026 23:51:34 GMT",
-      "raw_path": "data/raw/un/88cfa0a815d23ef303988d0f0df5c4b4f010f63a3e5f52f01b14f3a70cfd7e1a.xml.gz",
-      "sha256": "88cfa0a815d23ef303988d0f0df5c4b4f010f63a3e5f52f01b14f3a70cfd7e1a",
+      "last_modified": "Mon, 16 Nov 2026 17:07:59 GMT",
+      "raw_path": "data/raw/un/6e36db86073b34b95fd6a65fc49da5cf7aeac06595a8bb834cf7d21fb97838a7.xml.gz",
+      "sha256": "6e36db86073b34b95fd6a65fc49da5cf7aeac06595a8bb834cf7d21fb97838a7",
       "url": "https://press.un.org/en/rss.xml"
     },
     "xml": {
@@ -636573,7 +636573,7 @@
       "source": "press:2745"
     }
   ],
-  "last_checked_at": "2026-11-16T09:39:53Z",
+  "last_checked_at": "2026-11-16T19:57:53Z",
   "notices": {},
   "press_rss": {
     "article_evidence": {
@@ -636647,20 +636647,31 @@
         "source_hash": "abfb8185caea93e23b0cbe809b47189c9cab345f432e97fa856cfaa954aa3664",
         "source_received_at": "2026-11-13T05:02:33Z",
         "status": "PENDING_REVIEW"
+      },
+      {
+        "change": "NEW",
+        "detected_at": "2026-11-16T19:57:53Z",
+        "event_id": "30bb246933fc55253f5115d13094e5e1d4a9f0f89f2ac7b15432bc8b61931234",
+        "parent_event_id": "",
+        "previous_record": {},
+        "previous_source_hash": "",
+        "record": {
+          "candidate": true,
+          "guid": "https://press.un.org/en/2026/sc16512.doc.htm",
+          "publication_at": "2026-11-16T16:36:45Z",
+          "title": "Security Council 1718 Sanctions Committee Updates One Entry on Its Sanctions List",
+          "url": "https://press.un.org/en/2026/sc16512.doc.htm"
+        },
+        "source_hash": "6e36db86073b34b95fd6a65fc49da5cf7aeac06595a8bb834cf7d21fb97838a7",
+        "status": "PENDING_REVIEW"
       }
     ],
     "heads": {
       "https://press.un.org/en/2026/sc16506.doc.htm": "fa4bfce62ecb008188fcf19df06caa61204dad6ced041809498542eaa737aaf8",
-      "https://press.un.org/en/2026/sc16508.doc.htm": "5f4c3e11ea5a21841831036029f4493ec0d0363ac15d255cf2d829408047e911"
+      "https://press.un.org/en/2026/sc16508.doc.htm": "5f4c3e11ea5a21841831036029f4493ec0d0363ac15d255cf2d829408047e911",
+      "https://press.un.org/en/2026/sc16512.doc.htm": "30bb246933fc55253f5115d13094e5e1d4a9f0f89f2ac7b15432bc8b61931234"
     },
     "items": [
-      {
-        "candidate": false,
-        "guid": "https://press.un.org/en/2026/db261113.doc.htm",
-        "publication_at": "2026-11-13T19:37:49Z",
-        "title": "Daily Press Briefing by the Office of the Spokesperson for the Secretary-General",
-        "url": "https://press.un.org/en/2026/db261113.doc.htm"
-      },
       {
         "candidate": false,
         "guid": "https://press.un.org/en/2026/gal3766.doc.htm",
@@ -636677,13 +636688,6 @@
       },
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/gaspd855.doc.htm",
-        "publication_at": "2026-11-13T20:18:23Z",
-        "title": "Spotlighting UNWRA's Role Providing Vital Services in Gaza, Fourth Committee Stresses Agency's Need for Dependable Funding, Refugee Relief",
-        "url": "https://press.un.org/en/2026/gaspd855.doc.htm"
-      },
-      {
-        "candidate": false,
         "guid": "https://press.un.org/en/2026/sc16509.doc.htm",
         "publication_at": "2026-11-13T23:18:51Z",
         "title": "Security Council Hears Competing Gulf, Iranian Narratives on Maritime Insecurity",
@@ -636697,11 +636701,11 @@
         "url": "https://press.un.org/en/2026/sc16510.doc.htm"
       },
       {
-        "candidate": false,
-        "guid": "https://press.un.org/en/2026/sga2451.doc.htm",
-        "publication_at": "2026-11-13T16:42:12Z",
-        "title": "Gwi-Yeop Son of Republic of Korea Appointed Acting Executive Director, UN Institute for Training and Research, to Become Institute for Capability, Learning Innovation",
-        "url": "https://press.un.org/en/2026/sga2451.doc.htm"
+        "candidate": true,
+        "guid": "https://press.un.org/en/2026/sc16512.doc.htm",
+        "publication_at": "2026-11-16T16:36:45Z",
+        "title": "Security Council 1718 Sanctions Committee Updates One Entry on Its Sanctions List",
+        "url": "https://press.un.org/en/2026/sc16512.doc.htm"
       },
       {
         "candidate": false,
@@ -636719,18 +636723,32 @@
       },
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/blog/sc16509",
-        "publication_at": "2026-11-13T16:46:19Z",
-        "title": "Security Council, 10271st Meeting (PM) Middle East/Iran",
-        "url": "https://press.un.org/en/blog/sc16509"
+        "guid": "https://press.un.org/en/2026/sgsm23374.doc.htm",
+        "publication_at": "2026-11-16T16:34:28Z",
+        "title": "Secretary-General Encourages Francophonie to Build Peace Through a Shared Language",
+        "url": "https://press.un.org/en/2026/sgsm23374.doc.htm"
+      },
+      {
+        "candidate": false,
+        "guid": "https://press.un.org/en/2026/sgsm23375.doc.htm",
+        "publication_at": "2026-11-16T17:06:20Z",
+        "title": "At ASEAN-UN Summit, Secretary-General Reaffirms Support for Five-Point Consensus on Myanmar",
+        "url": "https://press.un.org/en/2026/sgsm23375.doc.htm"
+      },
+      {
+        "candidate": false,
+        "guid": "https://press.un.org/en/blog/sc16511",
+        "publication_at": "2026-11-16T11:58:40Z",
+        "title": "Security Council, 10273rd Meeting (AM) Syria",
+        "url": "https://press.un.org/en/blog/sc16511"
       }
     ],
-    "last_success_at": "2026-11-16T09:39:53Z",
-    "latest_publication_at": "2026-11-13T23:40:17Z",
-    "new_articles": 0,
-    "new_candidates": 0,
+    "last_success_at": "2026-11-16T19:57:53Z",
+    "latest_publication_at": "2026-11-16T17:06:20Z",
+    "new_articles": 1,
+    "new_candidates": 1,
     "revised_articles": 0,
-    "source_hash": "88cfa0a815d23ef303988d0f0df5c4b4f010f63a3e5f52f01b14f3a70cfd7e1a",
+    "source_hash": "6e36db86073b34b95fd6a65fc49da5cf7aeac06595a8bb834cf7d21fb97838a7",
     "stale": false,
     "status": "coverage_gap"
   },
@@ -636741,6 +636759,6 @@
   "snapshot_hash": "2a0390e99d71ec03f2a065529aa0023ce8934e87e0115b6c755ab372ee1ef245",
   "source_updated": "2026-11-15T00:00:03.738Z",
   "updates_status": "error",
-  "xml_last_success_at": "2026-11-16T09:39:53Z",
+  "xml_last_success_at": "2026-11-16T19:57:53Z",
   "xml_status": "review_required"
 }
