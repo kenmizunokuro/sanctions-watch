@@ -10,10 +10,13 @@ const row = (age, source, status) => `${iso(age)},${source},${status},hash,,1,\n
 const pair = (age, press = 'error') => row(age, 'un_xml', 'review_required') + row(age, 'un_press', press);
 
 function setup({recentAge = 5, csv, previous, active, status = 204, lookup = 200,
-                prior = {}, initialTriggers = [], lock = true, refuseStateWrite = false} = {}) {
+                prior = {}, initialTriggers = [], lock = true, refuseStateWrite = false,
+                finishDuringLookup = false} = {}) {
   const values = {OFAC_WATCHDOG_TOKEN: 'example-token', OFAC_WATCHDOG_EMAIL: 'operator@example.com',
     OFAC_WATCHDOG_STATE: '{"example":true}', ...prior};
   const calls = [];
+  let held = false, finished = false;
+  const checks = [];
   const triggers = initialTriggers.map(handler => ({getHandlerFunction: () => handler}));
   const response = (code, body) => ({getResponseCode: () => code, getContentText: () => JSON.stringify(body)});
   const c = vm.createContext({
@@ -26,19 +29,26 @@ function setup({recentAge = 5, csv, previous, active, status = 204, lookup = 200
         values[key] = value;
       },
     })},
-    LockService: {getScriptLock: () => ({tryLock: () => lock, releaseLock() {}})},
+    LockService: {getScriptLock: () => ({
+      tryLock() {if (!lock || held) return false; held = true; return true;},
+      releaseLock() {held = false;},
+    })},
     Utilities: {parseCsv: text => text.trim().split('\n').map(r => r.split(',')),
       base64Decode: text => Buffer.from(text, 'base64'), newBlob: data => ({getDataAsString: () => data.toString('utf8')})},
     UrlFetchApp: {fetch: (url, config) => {
       const path = new URL(url).pathname;
-      calls.push({path, ...config});
+      calls.push({path, held, ...config});
       if (path.includes('/heartbeat/')) {
-        const text = path.endsWith('2026-10.csv') ? previous : (csv ?? HEADER + pair(recentAge));
+        const text = path.endsWith('2026-10.csv') ? previous : (finished ? HEADER + pair(2) : (csv ?? HEADER + pair(recentAge)));
         return text ? response(200, {encoding: 'base64', content: Buffer.from(text).toString('base64')}) : response(404);
       }
       assert.match(path, /\/actions\/workflows\/watch-un\.yml\//);
       if (path.endsWith('/dispatches')) return response(status);
       assert.match(path, /\/runs$/);
+      if (finishDuringLookup && !finished) {
+        finished = true;
+        checks.push(c.unWatchdogTick().decision);
+      }
       return response(lookup, {workflow_runs: new URL(url).searchParams.get('status') === active ? [{id: 123}] : []});
     }},
     ScriptApp: {
@@ -50,7 +60,7 @@ function setup({recentAge = 5, csv, previous, active, status = 204, lookup = 200
   });
   vm.runInContext(['OfacWatchdog.gs', 'UnWatchdog.gs'].filter(name => fs.existsSync('apps_script/' + name))
     .map(name => fs.readFileSync('apps_script/' + name, 'utf8')).join('\n'), c);
-  return {c, values, calls, triggers, dispatches: () => calls.filter(call => call.method === 'post'),
+  return {c, values, calls, triggers, checks, dispatches: () => calls.filter(call => call.method === 'post'),
     state: () => JSON.parse(values.UN_WATCHDOG_STATE || '{}')};
 }
 
@@ -119,4 +129,14 @@ test('a future heartbeat cannot hide an older valid paired check', () => {
   const e = setup({csv: HEADER + pair(-10), previous: HEADER + pair(45)});
   assert.equal(e.c.unWatchdogTick().decision, 'accepted');
   assert.equal(e.state().lastCheckedAt, iso(45));
+});
+
+
+test('leaves the shared OFAC lock free during network calls and rechecks freshness before dispatch', () => {
+  const e = setup({csv: HEADER, previous: HEADER + pair(50), finishDuringLookup: true});
+  assert.equal(e.c.unWatchdogTick().decision, 'recent_check');
+  assert.deepEqual(e.checks, ['tick_in_progress']);
+  assert.equal(e.state().lastCheckedAt, iso(2));
+  assert.equal(e.dispatches().length, 0);
+  assert.equal(e.calls.some(call => call.held), false);
 });

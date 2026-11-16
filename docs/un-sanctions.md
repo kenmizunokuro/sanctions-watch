@@ -28,7 +28,7 @@ XMLの`dateGenerated`はファイル生成日時であり、個別対象者の�
 
 1. 既存の「OFAC外部監視」Apps Scriptプロジェクトに `UnWatchdog.gs` を追加し、[リポジトリの同ファイル](../apps_script/UnWatchdog.gs)の全文を貼って保存する。GitHub接続には同プロジェクトの既存設定（対象リポジトリのContents読取・Actions読取/書込）を使う。
 2. 関数 `checkUnWatchdog` を実行する。実行ログの `lastCheckedAt`（UTC）、`xmlStatus`、`pressStatus` を確認する。
-3. `installUnWatchdog` を1回実行する。トリガー一覧で `unWatchdogTick` が1個あることを確認する。
+3. OFAC救済を管理している同じ運用アカウントで `installUnWatchdog` を1回実行する。トリガー一覧で `unWatchdogTick` が1個あることを確認する。
 4. `unWatchdogTick` を一度実行する。条件に合えば `accepted` を記録し、GitHubの `watch-un` に `workflow_dispatch` の実行が現れる。最近の確認があれば `recent_check`、待機中または稼働中なら `active_run` と表示する。
 
 救済処理は月次heartbeatのうち、最新の `un_xml` / `un_press` が同じ時刻に記録された観測を使う。

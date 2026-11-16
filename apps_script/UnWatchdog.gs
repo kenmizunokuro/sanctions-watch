@@ -8,12 +8,14 @@ const UN_WATCHDOG = Object.freeze({
   handler: 'unWatchdogTick',
   rescueMinutes: 45,
   cooldownMinutes: 60,
+  // Apps Script limits each execution to six minutes.
+  leaseMinutes: 10,
 });
 
 function unWatchdogState_(props, now) {
   const state = JSON.parse(props.getProperty(UN_WATCHDOG.stateKey) || '{}');
   if (!state || Array.isArray(state) || typeof state !== 'object' ||
-      ['lastDispatchAttemptAt', 'lastDispatchAt'].some(key => {
+      ['lastDispatchAttemptAt', 'lastDispatchAt', 'runningSince'].some(key => {
         if (state[key] === undefined) return false;
         const stamp = ofacWatchdogTime_(state[key]);
         return !Number.isFinite(stamp) || stamp > now;
@@ -90,13 +92,13 @@ function checkUnWatchdog() {
 
 function installUnWatchdog() {
   const cfg = ofacWatchdogConfig_();
+  const now = Date.now();
+  unWatchdogHeartbeat_(cfg, now);
+  unWatchdogActive_(cfg);
   const lock = LockService.getScriptLock();
   if (!lock.tryLock(1000)) throw new Error('外部監視の実行が終わってから再実行してください');
   try {
-    const now = Date.now();
-    unWatchdogState_(cfg.props, now);
-    unWatchdogHeartbeat_(cfg, now);
-    unWatchdogActive_(cfg);
+    unWatchdogState_(cfg.props, Date.now());
     const triggers = unWatchdogTriggers_();
     if (!triggers.length) ScriptApp.newTrigger(UN_WATCHDOG.handler).timeBased().everyMinutes(10).create();
     triggers.slice(1).forEach(trigger => ScriptApp.deleteTrigger(trigger));
@@ -106,26 +108,46 @@ function installUnWatchdog() {
   }
 }
 
-function unWatchdogTick() {
-  const props = PropertiesService.getScriptProperties();
+function unWatchdogClaim_(props, now) {
   const lock = LockService.getScriptLock();
   if (!lock.tryLock(1000)) return {decision: 'lock_busy'};
   try {
-    const now = Date.now();
     const state = unWatchdogState_(props, now);
-    const save = () => props.setProperty(UN_WATCHDOG.stateKey, JSON.stringify(state));
-    state.lastTickAt = ofacWatchdogIso_(now);
+    if (now - ofacWatchdogTime_(state.runningSince) < UN_WATCHDOG.leaseMinutes * 60000) {
+      return {decision: 'tick_in_progress'};
+    }
+    state.runningSince = ofacWatchdogIso_(now);
+    state.lastTickAt = state.runningSince;
     state.decision = 'checking';
-    try {
-      const cfg = ofacWatchdogConfig_();
-      Object.assign(state, unWatchdogHeartbeat_(cfg, now));
-      const attempt = ofacWatchdogTime_(state.lastDispatchAttemptAt);
+    props.setProperty(UN_WATCHDOG.stateKey, JSON.stringify(state));
+    return {state};
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function unWatchdogTick() {
+  const props = PropertiesService.getScriptProperties();
+  const now = Date.now();
+  const claim = unWatchdogClaim_(props, now);
+  if (!claim.state) return claim;
+  const state = claim.state;
+  const save = () => props.setProperty(UN_WATCHDOG.stateKey, JSON.stringify(state));
+  try {
+    const cfg = ofacWatchdogConfig_();
+    Object.assign(state, unWatchdogHeartbeat_(cfg, now));
+    const attempt = ofacWatchdogTime_(state.lastDispatchAttemptAt);
+    if (state.ageMinutes < UN_WATCHDOG.rescueMinutes) {
+      state.decision = 'recent_check';
+    } else if (unWatchdogActive_(cfg)) {
+      state.decision = 'active_run';
+    } else if (now - attempt < UN_WATCHDOG.cooldownMinutes * 60000) {
+      state.decision = 'cooldown';
+    } else {
+      // A scheduled run may have published since our first read.
+      Object.assign(state, unWatchdogHeartbeat_(cfg, Date.now()));
       if (state.ageMinutes < UN_WATCHDOG.rescueMinutes) {
         state.decision = 'recent_check';
-      } else if (unWatchdogActive_(cfg)) {
-        state.decision = 'active_run';
-      } else if (now - attempt < UN_WATCHDOG.cooldownMinutes * 60000) {
-        state.decision = 'cooldown';
       } else {
         state.decision = 'dispatching';
         state.lastDispatchAttemptAt = ofacWatchdogIso_(Date.now());
@@ -135,17 +157,16 @@ function unWatchdogTick() {
         state.lastDispatchAt = ofacWatchdogIso_(Date.now());
         state.decision = 'accepted';
       }
-      state.lastError = '';
-      save();
-      console.log(JSON.stringify(state));
-      return state;
-    } catch (error) {
-      state.decision = state.decision === 'dispatching' ? 'dispatch_error' : 'check_error';
-      state.lastError = ofacWatchdogError_(error, props);
-      save();
-      throw new Error(state.lastError);
     }
+    state.lastError = '';
+  } catch (error) {
+    state.decision = state.decision === 'dispatching' ? 'dispatch_error' : 'check_error';
+    state.lastError = ofacWatchdogError_(error, props);
+    throw new Error(state.lastError);
   } finally {
-    lock.releaseLock();
+    delete state.runningSince;
+    save();
   }
+  console.log(JSON.stringify(state));
+  return state;
 }
