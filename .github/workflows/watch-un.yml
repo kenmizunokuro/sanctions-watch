@@ -61,8 +61,16 @@ jobs:
           python-version: '3.12'
           cache: pip
       - run: pip install -r requirements.txt
+      - name: Check whether the external monitor recently published
+        id: route
+        run: |
+          if python -m src.un_external_poll recent; then
+            echo 'external=true' >> "$GITHUB_OUTPUT"
+            echo 'A complete external observation was already published within 35 minutes.'
+          fi
       - name: UN XML and all committee indexes
         id: watch
+        if: steps.route.outputs.external != 'true'
         run: python -m src.un_watch
       - name: Publish validated observations including explicit failures
         id: publish
@@ -111,7 +119,7 @@ jobs:
                    + ' 一次発表・XML要照合、master未反映。data/dashboard/un_reviews.csv を参照。')
           PY
       - name: Retain UN evidence on success or failure
-        if: always()
+        if: always() && steps.route.outputs.external != 'true'
         uses: actions/upload-artifact@v4
         with:
           name: un-evidence-${{ github.run_id }}-${{ github.run_attempt }}
