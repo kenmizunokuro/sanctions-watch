@@ -1,0 +1,29 @@
+name: notify-un-external
+on:
+  push:
+    branches: [main]
+    paths: ['data/un/external_observation.json']
+
+permissions:
+  contents: read
+
+jobs:
+  notify:
+    if: github.event.deleted == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Notify from the exact published observation
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          PREVIOUS_SHA: ${{ github.event.before }}
+        run: python -m src.un_external_poll notify --previous "$PREVIOUS_SHA"
