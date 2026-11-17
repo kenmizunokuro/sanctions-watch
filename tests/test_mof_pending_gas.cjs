@@ -11,6 +11,11 @@ function ctx() {
     'apps_script/Un.gs',
     'apps_script/MofPending.gs',
   ].map(p => fs.readFileSync(p, 'utf8')).join('\n'), c);
+  c.Utilities = {formatDate: (date, timeZone) => {
+    assert.equal(timeZone, 'Asia/Tokyo');
+    return new Date(date.getTime() + 9 * 60 * 60 * 1000)
+      .toISOString().slice(0, 19).replace('T', ' ');
+  }};
   return c;
 }
 const candidate = id => [
@@ -137,28 +142,40 @@ test('invalid source feed stops before Sheets service gets opened', () => {
 });
 
 function fakeSheet(name, columns, existing=[]) {
-  const sheet={name, cols:columns, data:existing.map(r=>r.slice()), frozen:0,
+  const sheet={name, cols:columns, data:existing.map(r=>r.slice()), frozen:0, header:[], hidden:[], labels:{},
     getName(){return this.name;},
     getMaxRows(){return 1000;},
     getMaxColumns(){return this.cols;},
     getLastRow(){return this.data.length ? this.data.length+4 : 4;},
     setFrozenRows(n){this.frozen=n;},
+    setColumnWidth(){},
+    showColumns(){},
+    hideColumns(start,count){this.hidden=[start,count];},
     insertColumnsAfter(){throw Error('unsafe insertColumnsAfter called');},
     getRange(row,col,height,width){
       if(typeof row==='string') return {
-        setValue(){return this;}, setValues(){return this;},
+        setValue(value){sheet.labels[row]=value;return this;},
       };
       const target=this;
       return {
         setValues(rows){
-          if(row>=5) rows.forEach((cells,i)=>sheet.data[row-5+i]=cells.slice());
+          rows.forEach((cells,i)=>{
+            if(row+i===4) sheet.header=cells.slice();
+            else if(row+i>=5) sheet.data[row+i-5]=cells.slice();
+          });
           return this;
         },
         setNumberFormat(){return this;},
+        setBackground(){return this;},
+        setBackgrounds(){return this;},
+        setFontColor(){return this;},
+        setFontWeight(){return this;},
+        setVerticalAlignment(){return this;},
+        setWrap(){return this;},
         getValues(){
           return Array.from({length:height},(_,i) => {
-            const item=sheet.data[row-5+i] || [];
-            return Array.from({length:width},(_,j)=>item[j]||'');
+            const item=(row+i===4 ? sheet.header : sheet.data[row-5+i]) || [];
+            return Array.from({length:width},(_,j)=>item[col-1+j]||'');
           });
         },
       };
@@ -198,7 +215,7 @@ test('undersized old MOF tabs are never resized: create fresh recovery tabs',()=
   c.syncMofCandidateSheet_(ss,'13_財務省出典変更',
     [legacy('MOF-LEGACY-1')],vm.runInContext('EXPECTED.mofLegacy',c),
     'MOF-LEGACY-','REVIEW_REQUIRED');
-  assert.equal(byName.get('12_財務省差分候補_復旧').data[0][0],'MOF-PENDING-1');
+  assert.equal(byName.get('12_財務省差分候補_復旧').data[0][9],'MOF-PENDING-1');
   assert.equal(byName.get('13_財務省出典変更_復旧').data[0][0],'MOF-LEGACY-1');
   c.ensureMofCandidateStructure_(ss);
   assert.equal(created.length,2,'reuse same recovery tabs on repeated runs');
@@ -215,17 +232,58 @@ test('undersized legacy sheets retain confirmation text during recovery',()=>{
     [candidate('MOF-PENDING-1')],vm.runInContext('EXPECTED.mofPending',c),
     'MOF-PENDING-','要レビュー・master未反映');
   const replacement=byName.get('12_財務省差分候補_復旧');
-  assert.equal(replacement.data[0][17],'確認中');
-  replacement.data[0][17]='確認済（メモのみ）';
-  replacement.data[0][18]='要法務照会';
+  assert.equal(replacement.data[0][7],'確認中');
+  replacement.data[0][7]='確認済（メモのみ）';
+  replacement.data[0][8]='要法務照会';
   c.syncMofCandidateSheet_(ss,'12_財務省差分候補',
     [candidate('MOF-PENDING-1')],vm.runInContext('EXPECTED.mofPending',c),
     'MOF-PENDING-','要レビュー・master未反映');
-  assert.equal(replacement.data[0][17],'確認済（メモのみ）');
-  assert.equal(replacement.data[0][18],'要法務照会');
+  assert.equal(replacement.data[0][7],'確認済（メモのみ）');
+  assert.equal(replacement.data[0][8],'要法務照会');
   assert.equal(old.data[0][17],'確認中','original remains intact');
 });
 
+test('pending sheet puts comparison and review first, with evidence retained', () => {
+  const c=ctx();
+  const existing=Array(19).fill('');
+  existing[0]='MOF-PENDING-change';
+  existing[17]='確認中';
+  existing[18]='差分を精査中';
+  const pending=fakeSheet('12_財務省差分候補',26,[existing]);
+  const {ss}=fakeSpreadsheet([pending]);
+  const change=candidate('MOF-PENDING-change');
+  change.splice(3,2,'情報改訂','変更対象');
+  change.splice(7,3,'別名','BEFORE','AFTER');
+  const addition=candidate('MOF-PENDING-add');
+  addition.splice(3,2,'原本レコード追加','追加対象');
+  const deletion=candidate('MOF-PENDING-delete');
+  const sync=rows=>{
+    c.ensureMofCandidateStructure_(ss);
+    c.syncMofCandidateSheet_(ss,'12_財務省差分候補',
+      rows,vm.runInContext('EXPECTED.mofPending',c),
+      'MOF-PENDING-','要レビュー・master未反映');
+  };
+  sync([change,addition,deletion]);
+  assert.deepEqual(Array.from(pending.header.slice(0,9)),[
+    '検知日時（JST）','出所','種別','対象者','変更項目','変更前','変更後','確認状況','メモ']);
+  assert.deepEqual(pending.hidden,[10,10]);
+  assert.deepEqual(Array.from(pending.data, row=>row[2]),['追加候補','変更候補','削除候補']);
+  assert.deepEqual(Array.from(pending.data[1].slice(0,9)),[
+    '2026-10-30 12:00:00','財務省','変更候補','変更対象','別名','BEFORE','AFTER','確認中','差分を精査中']);
+  assert.equal(pending.data[2][3], "'" + deletion[4]);
+  assert.equal(pending.data[1][9],'MOF-PENDING-change');
+  assert.equal(pending.data[1][13],change[11]);
+  assert.equal(pending.data[1][16],change[14]);
+  assert.equal(pending.data[1][17],change[15]);
+  assert.match(pending.labels.A3,/追加候補 1行.*変更候補 1行.*削除候補 1行/);
+  pending.data[1][8]='再同期しても残す';
+  sync([change]);
+  assert.equal(pending.data[0][8],'再同期しても残す');
+  assert.equal(pending.data[1].every(value=>value===''),true);
+  sync([]);
+  assert.match(pending.labels.A3,/0行/);
+  assert.equal(pending.data[0].every(value=>value===''),true);
+});
 test('MOF audit hold is explicit and cannot become healthy or a fetch error', () => {
   const c=ctx();
   const checked=new Date(Date.now()+9*60*60*1000-60*1000).toISOString().slice(0,19).replace('T',' ');

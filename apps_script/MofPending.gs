@@ -1,4 +1,12 @@
 /* MOF source-diff previews are not approvals and cannot update master. */
+// Map the CSV + review columns to the review view. Columns J:S hold evidence.
+const MOF_PENDING_COLUMN_ORDER = [1, 2, 3, 4, 7, 8, 9, 17, 18, 0, 5, 6, 10, 11, 12, 13, 14, 15, 16];
+const MOF_PENDING_KINDS = new Map([
+  ['原本レコード追加', {label: '追加候補', color: '#d9ead3', order: 0}],
+  ['情報改訂', {label: '変更候補', color: '#fff2cc', order: 1}],
+  ['原本レコード削除', {label: '削除候補', color: '#f4cccc', order: 2}],
+]);
+
 function mofReviewTextCell_(value) {
   const text = String(value == null ? '' : value);
   return /^\s*[=+@-]/.test(text) ? "'" + text : text;
@@ -62,7 +70,7 @@ function mofReviewTargetSheet_(ss, tab, width) {
 }
 
 /* Read only populated rows. Never discard pre-existing reviewer notes. */
-function mofExistingRows_(sheet, width) {
+function mofExistingRows_(sheet, width, pending) {
   if (!sheet) return [];
   const count = Math.max(0, sheet.getLastRow() - 4);
   if (!count) return [];
@@ -72,14 +80,24 @@ function mofExistingRows_(sheet, width) {
   }
   const cols = Math.min(width + 2, sheet.getMaxColumns());
   if (cols < 1) throw new Error('財務省レビュータブの列数が0です');
-  return sheet.getRange(5, 1, count, cols).getValues()
-    .map(row => row.concat(Array(width + 2 - cols).fill('')));
+  const rows = sheet.getRange(4, 1, count + 1, cols).getValues();
+  const headers = rows.shift();
+  const reordered = pending && headers[MOF_PENDING_COLUMN_ORDER.indexOf(0)] === '候補ID';
+  return rows.map(row => {
+    const padded = row.concat(Array(width + 2 - cols).fill(''));
+    if (!reordered) return padded;
+    const original = Array(width + 2);
+    MOF_PENDING_COLUMN_ORDER.forEach((csvIndex, viewIndex) => {
+      original[csvIndex] = padded[viewIndex];
+    });
+    return original;
+  });
 }
 
 function ensureMofCandidateStructure_(ss) {
   [
     [TAB.MOF_PENDING, EXPECTED.mofPending, '財務省：原本差分候補',
-     '取得済み原本の追加・削除・情報改訂候補です。「削除」は指定解除の確定ではありません。手動確認後もこのシートからmasterへの自動反映はしません。'],
+     'master未反映のレビュー用。「削除候補」は財務省原本からの削除で、指定解除の確定ではありません。J列以降を再表示すると原本URLなどの証跡を確認できます。'],
     [TAB.MOF_LEGACY, EXPECTED.mofLegacy, '財務省：旧登録の出典変更',
      '既存の旧登録と更新候補の出典差分です。財務省側の掲載終了と、OFAC等での指定継続を区別してください。'],
   ].forEach(item => {
@@ -90,8 +108,12 @@ function ensureMofCandidateStructure_(ss) {
       // wide enough and only a few header cells need to be written.
       sheet.getRange('A1').setValue(title);
       sheet.getRange('A2').setValue(warning);
-      sheet.getRange(4, 1, 1, headers.length + 2)
-        .setValues([headers.concat('確認状況', 'メモ')]);
+      // The pending view writes its header together with its reordered rows,
+      // so the next retry can always locate existing notes by candidate ID.
+      if (tab !== TAB.MOF_PENDING) {
+        sheet.getRange(4, 1, 1, headers.length + 2)
+          .setValues([headers.concat('確認状況', 'メモ')]);
+      }
       sheet.setFrozenRows(4);
     } catch (err) {
       throw new Error('財務省レビュー構造確認 [' + tab + ']: ' +
@@ -107,12 +129,17 @@ function syncMofCandidateSheet_(ss, tab, incoming, fields, prefix, state) {
   const original = ss.getSheetByName(tab);
   // Existing notes in the old undersized sheet are considered first;
   // notes already written to the recovery tab take precedence.
+  const pending = tab === TAB.MOF_PENDING;
   const old = original && original !== sheet
-    ? mofExistingRows_(original, width) : [];
-  const existing = old.concat(mofExistingRows_(sheet, width));
+    ? mofExistingRows_(original, width, pending) : [];
+  const existing = old.concat(mofExistingRows_(sheet, width, pending));
   const result = mofCandidateCells_(incoming, existing, width, prefix, state);
   const oldCount = Math.max(0, sheet.getLastRow() - 4);
   const count = Math.max(oldCount, result.length);
+  if (pending) {
+    writeMofPendingView_(sheet, fields, result, count);
+    return;
+  }
   if (!count) return;
   ensureRows_(sheet, 4 + count);
   const padded = result.concat(
@@ -120,6 +147,53 @@ function syncMofCandidateSheet_(ss, tab, incoming, fields, prefix, state) {
       () => Array(width + 2).fill('')));
   sheet.getRange(5, 1, count, width + 2)
     .setNumberFormat('@').setValues(padded);
+}
+
+function writeMofPendingView_(sheet, fields, rows, count) {
+  const columns = MOF_PENDING_COLUMN_ORDER;
+  const visible = columns.indexOf(0);
+  const headers = fields.concat('確認状況', 'メモ');
+  headers[1] = '検知日時（JST）';
+  const counts = new Map();
+  const ordered = rows.map(row => {
+    const kind = MOF_PENDING_KINDS.get(row[3]);
+    counts.set(row[3], (counts.get(row[3]) || 0) + 1);
+    return {row, kind, timestamp: Date.parse(row[1])};
+  });
+  ordered.sort((a, b) => b.timestamp - a.timestamp
+    || (a.kind?.order ?? 3) - (b.kind?.order ?? 3)
+    || a.row[4].localeCompare(b.row[4], 'ja'));
+
+  const values = [columns.map(index => headers[index])];
+  const colors = [];
+  ordered.forEach(({row, kind, timestamp}) => {
+    const viewRow = columns.map(index => row[index]);
+    if (Number.isFinite(timestamp)) viewRow[0] = formatJst_(new Date(timestamp));
+    if (kind) viewRow[2] = kind.label;
+    values.push(viewRow);
+    colors.push([kind?.color || '#ffffff']);
+  });
+  for (let i = rows.length; i < count; i++) {
+    values.push(Array(columns.length).fill(''));
+    colors.push(['#ffffff']);
+  }
+
+  ensureRows_(sheet, 4 + count);
+  sheet.getRange(4, 1, values.length, columns.length)
+    .setNumberFormat('@').setValues(values);
+  const summary = Array.from(MOF_PENDING_KINDS, ([key, kind]) =>
+    kind.label + ' ' + (counts.get(key) || 0) + '行');
+  sheet.getRange('A3').setValue('候補 ' + rows.length + '行（' + summary.join(' / ') + '）');
+  sheet.getRange(4, 1, 1, visible)
+    .setBackground('#1f4e78').setFontColor('#ffffff').setFontWeight('bold');
+  if (count) {
+    sheet.getRange(5, 4, count, visible - 3).setWrap(true).setVerticalAlignment('top');
+    sheet.getRange(5, 3, count, 1).setBackgrounds(colors);
+  }
+  [155, 70, 105, 220, 125, 245, 245, 105, 175].forEach((pixels, i) =>
+    sheet.setColumnWidth(i + 1, pixels));
+  sheet.showColumns(1, visible);
+  sheet.hideColumns(visible + 1, columns.length - visible);
 }
 
 /*
