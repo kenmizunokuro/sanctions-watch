@@ -107,6 +107,18 @@ python -m src.un_watch --root "$un_trial"
 
 結果は `$un_trial/data/dashboard/un_reviews.csv` と `$un_trial/data/source_audit/` で確認する。取得・解析が一部だけ成功しても結果は保存される。ベースとして使った本番観測以後の検知日時は、このコマンドを実際に実行した時点で記録する。この手順の結果は実行環境側の証跡であり、mainや会社のシートへ自動配布しない。
 
+### 別環境で取得した更新履歴を本番レビューに取り込む
+
+別環境で公式URLからHTTP 200の応答を取得した場合、`data/raw/un/<SHA256>.html.gz` に原本を保存し、
+`data/un/updates_archive_receipt.json` と合わせてコミットする。受領票には公式URL・到達URL、元の観測時刻（UTC）、
+HTTP状態、ETag、Last-Modified、展開後のSHA256、通常行・参照番号不一致行の件数を記録する。
+原本と受領票をまとめてレビューし、mainに入れる。受領票の更新でも `watch-un` が起動する。
+
+`watch-un` は原本のSHA256・取得先・件数を再検証し、既存候補と重複しないレビュー行を追加する。
+候補の検知日時は元の観測時刻、取込日時は実際に取り込んだ時刻となる。再実行で日時を書き換えない。
+監査台帳の `un_updates_archive` は保存原本からの復元、`un_updates` はライブ取得の記録を示す。
+この経路で復元されるのは更新履歴のみ。委員会一覧、ライブ取得の成否、監視範囲やmasterは別に扱う。
+
 ## XMLの承認とmaster反映
 
 statusに出る現在の`event_id`、`source_hash`、`master_hash`を実値に置き換える。初回は1,000対象程度とその別名を含むため、対象者数と名称数を区別して確認する。掲載終了・別名減少も同じsnapshotの承認範囲に含まれる。
