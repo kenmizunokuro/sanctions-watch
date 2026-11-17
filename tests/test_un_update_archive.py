@@ -1,6 +1,8 @@
+import contextlib
 import csv
 import gzip
 import hashlib
+import io
 import json
 import tempfile
 import unittest
@@ -85,6 +87,23 @@ class UNUpdateArchiveTests(unittest.TestCase):
         self.poll(75)
         self.assertFalse(W.load(self.root).get('updates_events'))
 
+    def test_pending_candidate_evidence_is_checked_after_receipt_removal(self):
+        self.poll()
+        body = self.raw.read_bytes()
+        self.path.unlink()
+        self.raw.unlink()
+        result = self.poll(75)
+        self.assertTrue(any(issue['source']=='un_updates_archive' for issue in result['failures']))
+        state = W.load(self.root)
+        conflict, = [row for row in W._review_rows(state) if row[0].startswith('updates:conflict:')]
+        self.assertEqual(conflict[5], 'EVIDENCE_FAILED')
+        self.assertTrue(any(row[0]=='updates:archive' for row in W._review_rows(state)))
+        self.raw.write_bytes(body)
+        self.poll(90)
+        current, = [row for row in W._review_rows(W.load(self.root)) if row[0].startswith('updates:conflict:')]
+        self.assertEqual(current[5], 'REVIEW_REQUIRED')
+        self.assertEqual(current[1], conflict[1])
+
     def test_existing_live_candidate_is_not_overwritten_or_announced_again(self):
         self.path.unlink()
         self.feed.updates = UPDATES_WITH_CONFLICT
@@ -98,7 +117,7 @@ class UNUpdateArchiveTests(unittest.TestCase):
         output = self.root / 'outputs.txt'
         argv = ['un_watch', '--root', str(self.root)]
         run = W.run
-        with patch('sys.argv', argv), patch.dict('os.environ', {'GITHUB_OUTPUT': str(output)}), \
+        with contextlib.redirect_stdout(io.StringIO()), patch('sys.argv', argv), patch.dict('os.environ', {'GITHUB_OUTPUT': str(output)}), \
                 patch.object(W, 'run', side_effect=lambda root: run(root, fetcher=self.fetcher,
                                                               now=NOW + timedelta(minutes=60))):
             self.assertEqual(W.main(), 1)

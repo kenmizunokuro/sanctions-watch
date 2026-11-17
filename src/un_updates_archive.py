@@ -36,6 +36,15 @@ def load(root, now):
     if P.stamp(observed) != receipt['observed_at'] or observed > now:
         raise ValueError('UN update archive observation time invalid')
     sha = receipt['source_hash']
+    body = read_original(root, sha)
+    items, conflicts = V.parse_update_history(body, now=observed)
+    if len(items) != receipt['record_count'] or len(conflicts) != receipt['conflict_count']:
+        raise ValueError('UN update archive receipt counts do not match the original')
+    return receipt, observed, items, conflicts
+
+
+
+def read_original(root, sha):
     if not re.fullmatch('[0-9a-f]{64}', sha):
         raise ValueError('UN update archive requires an exact SHA256')
     archive = root / 'data/raw/un'
@@ -50,7 +59,4 @@ def load(root, now):
         raise ValueError('UN update archive original is unreadable') from error
     if len(body) > U.MAX_BYTES or hashlib.sha256(body).hexdigest() != sha:
         raise ValueError('UN update archive original hash mismatch or response too large')
-    items, conflicts = V.parse_update_history(body, now=observed)
-    if len(items) != receipt['record_count'] or len(conflicts) != receipt['conflict_count']:
-        raise ValueError('UN update archive receipt counts do not match the original')
-    return receipt, observed, items, conflicts
+    return body

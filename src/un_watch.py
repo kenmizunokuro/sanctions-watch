@@ -106,21 +106,26 @@ def _review_rows(state: dict) -> list[list]:
     # Fetch failures must be visible in the operational review queue, not
     # just buried inside a large JSON ledger or a generic dashboard alert.
     # Stable keys preserve reviewer notes between repeated failed polls.
+    bad_archive_hashes = set(state.get('updates_archive_evidence_errors', {}))
     for item in state.get('updates_events', []):
         if item['status'] != 'PENDING_REVIEW':
             continue
         record = item['record']
+        status = ('EVIDENCE_FAILED' if item.get('observed_via') == 'archived_https'
+                  and item['source_hash'] in bad_archive_hashes else 'PENDING_REVIEW')
         rows.append(['updates:' + item['event_id'], item['detected_at'],
                      '国連公式更新履歴・XML要照合',
                      ', '.join(record['references']),
                      record['change'] + ' / ' + record['publication_date'],
-                     'PENDING_REVIEW', '', '', '', item['source_hash'],
+                     status, '', '', '', item['source_hash'],
                      record['notice_url'] or record['source_url']])
     active_conflicts = set(state.get('updates_active_conflicts', []))
     for event_id, event in sorted(state.get('updates_conflicts', {}).items()):
         status = event.get('status', 'REVIEW_REQUIRED')
         if status == 'REVIEWED' and event_id not in active_conflicts:
             continue
+        if event.get('observed_via') == 'archived_https' and event['source_hash'] in bad_archive_hashes:
+            status = 'EVIDENCE_FAILED'
         record = event['record']
         mismatch = ', '.join(f'{ref}（{expected}）'
                              for ref, expected in sorted(record['conflicting_references'].items()))
@@ -404,6 +409,35 @@ def _record_update_candidates(state, items, conflicts, *, source_hash, observed,
                                                        status='REVIEW_REQUIRED', record=record, **origin))
 
 
+def _verify_update_archives(root, state, audit, failures):
+    pending = [event for event in state.get('updates_events', []) if event['status'] == 'PENDING_REVIEW']
+    pending.extend(event for event in state.get('updates_conflicts', {}).values()
+                   if event['status'] == 'REVIEW_REQUIRED')
+    timestamps = {}
+    for event in pending:
+        if event.get('observed_via') == 'archived_https':
+            timestamps.setdefault(event['source_hash'], set()).add(event['detected_at'])
+    recovered = state.get('updates_archive_recoveries', {})
+    errors = {}
+    for sha, detected in sorted(timestamps.items()):
+        try:
+            receipt = recovered.get(sha, {}).get('receipt', {})
+            if receipt.get('source_hash') != sha or detected != {receipt.get('observed_at')}:
+                raise ValueError('UN update archive candidate is missing its original receipt')
+            H.read_original(root, sha)
+        except (OSError, ValueError, TypeError) as error:
+            errors[sha] = A._clean_error(error)
+            failures.append(dict(source='un_updates_archive', error_type=type(error).__name__,
+                                 message=errors[sha], http_status=''))
+            audit.append(A.entry('un_updates_archive', 'archived_change_log', 'evidence_error',
+                                 url=V.UPDATES_URL, content_hash=sha, error=error))
+    if errors:
+        state['updates_archive_evidence_errors'] = errors
+    else:
+        state.pop('updates_archive_evidence_errors', None)
+    return not errors
+
+
 def _recover_update_archive(root, state, now, audit, failures):
     try:
         observation = H.load(root, now)
@@ -525,6 +559,7 @@ def run(root: Path, *, fetcher=fetch, now=None) -> dict:
 
     # Second independent sensor: the UN's consolidated-list update chronology.
     # Detect and record announcements without modifying the XML snapshot or master.
+    archive_evidence_ok = _verify_update_archives(root, state, audit, failures)
     archive_ok = _recover_update_archive(root, state, now, audit, failures)
     updates_ok = True
     try:
@@ -657,7 +692,7 @@ def run(root: Path, *, fetcher=fetch, now=None) -> dict:
                FileWrite(root / f'data/heartbeat/{now:%Y-%m}.csv',
                          lambda p: S.append_heartbeat(p, hb, now=now), seed_existing=True)]
     atomic_replace_many(writes)
-    return dict(ok=xml_ok and press_ok and updates_ok and archive_ok and not state['coverage_gaps']
+    return dict(ok=xml_ok and press_ok and updates_ok and archive_ok and archive_evidence_ok and not state['coverage_gaps']
                 and not state.get('updates_coverage_gap') and sensor['status'] == 'observed'
                 and not sensor.get('recovery_error')
                 and not any(issue['source'].startswith('rss:article:') for issue in failures),
