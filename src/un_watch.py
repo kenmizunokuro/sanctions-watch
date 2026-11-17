@@ -702,13 +702,8 @@ def run(root: Path, *, fetcher=fetch, now=None) -> dict:
                 press_rss_status=state['press_rss']['status'])
 
 
-def main() -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--root', type=Path, default=Path(__file__).resolve().parent.parent)
-    args = parser.parse_args()
-    before = load(args.root)
-    result = run(args.root)
-    after = load(args.root)
+def change_counts(before, after):
+    result = {}
     result['new_xml_events'] = len(after['events']) - len(before['events'])
     result['new_notices'] = sum(n['status'] == 'PENDING_REVIEW' and key not in before['notices']
                                 for key, n in after['notices'].items())
@@ -720,6 +715,17 @@ def main() -> int:
     result['new_press_rss'] = sum(e['status'] == 'PENDING_REVIEW' and e['event_id'] not in prior_rss
                                   and not e.get('source_received_at')
                                   for e in after.get('press_rss', {}).get('events', []))
+    return result
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--root', type=Path, default=Path(__file__).resolve().parent.parent)
+    args = parser.parse_args()
+    before = load(args.root)
+    result = run(args.root)
+    after = load(args.root)
+    result.update(change_counts(before, after))
     output = os.environ.get('GITHUB_OUTPUT')
     if output:
         with open(output, 'a', encoding='utf-8') as file:
