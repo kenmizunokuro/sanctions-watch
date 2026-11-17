@@ -81,6 +81,32 @@ python -m src.un_review notice-review --event-id EVENT_ID --index-hash INDEX_SHA
 
 委員会一覧から一般の発表本文・決議本文は自動取得しない。補助RSSの個別取得対象と原本照合は、下記の「公式報道RSSの補助監視」を参照。
 
+## 統合リスト更新履歴の参照番号レビュー
+
+[国連の更新履歴](https://main.un.org/securitycouncil/en/content/list-updates-unsc-consolidated-list)は、照合候補を作る独立した資料として扱う。公式ページの見出しが `th` / `td` の場合に対応し、列名・列順・直近の行構造を検証する。委員会と参照番号の所属が食い違う場合は、その行全体を「国連更新履歴・参照番号不一致」として `11_国連レビュー` に出す。整合する行は従来どおりの候補になり、不一致行は通常の差分に入れない。不一致を含む取得は監査台帳に `reference_conflict` で記録し、直前に完全検証できた原本とその確認日時を保持する。
+
+行の原本SHA256とイベントIDは、最初に確認した時点の値を使う。根拠を確認した担当者は、次のコマンドで確認記録を残せる。
+
+```bash
+python -m src.un_review updates-conflict-review --event-id 'updates:conflict:EVENT_ID' \
+  --source-hash SOURCE_SHA256 --reviewer '確認者名' --at '確認したJST日時（ISO 8601）' \
+  --note '照合した一次資料と確認結果'
+```
+
+コマンドは保存済み原本のSHA256と該当行を再検証する。確認記録の保存後も、最新の公式ページで不一致が続く間は取得結果がエラーのまま残り、当該行も確認済みと分かる状態で表示する。参照番号の置換やmasterへの適用は行わない。
+
+### GitHub Actionsで公式HTMLが取得できない場合の再現手順
+
+公式URLを取得できる別環境で、直近の本番観測と同じ状態から再検証できる。対象は `watch-un` の成功・失敗いずれかの実行から取得した `un-evidence-…` ZIPと、最新版のリポジトリ。解凍先は独立した一時ディレクトリにする。
+
+```bash
+un_trial="$(mktemp -d)"
+unzip "/path/to/un-evidence.zip" -d "$un_trial/data"
+python -m src.un_watch --root "$un_trial"
+```
+
+結果は `$un_trial/data/dashboard/un_reviews.csv` と `$un_trial/data/source_audit/` で確認する。取得・解析が一部だけ成功しても結果は保存される。ベースとして使った本番観測以後の検知日時は、このコマンドを実際に実行した時点で記録する。この手順の結果は実行環境側の証跡であり、mainや会社のシートへ自動配布しない。
+
 ## XMLの承認とmaster反映
 
 statusに出る現在の`event_id`、`source_hash`、`master_hash`を実値に置き換える。初回は1,000対象程度とその別名を含むため、対象者数と名称数を区別して確認する。掲載終了・別名減少も同じsnapshotの承認範囲に含まれる。

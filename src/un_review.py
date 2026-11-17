@@ -3,13 +3,17 @@ from __future__ import annotations
 
 import argparse
 import csv
+import gzip
 import hashlib
 import json
+import re
 import tempfile
+import zlib
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from . import dashboard as D, master as M, un_sources as U, un_watch as W, un_press_rss as P
+from . import un_updates as V
 from .fetch import read_raw
 from .persistence import FileWrite, atomic_replace_many
 from .un_lock import locked
@@ -164,6 +168,40 @@ def review_coverage(root: Path, *, committee: str, reviewer: str, when: datetime
     atomic_replace_many(W.projections(root, state, now=when))
 
 
+@locked
+def review_update_conflict(root: Path, *, event_id: str, source_hash: str, reviewer: str,
+                           when: datetime, note: str) -> dict:
+    at = _operator(reviewer, when, note)
+    event_id = event_id.removeprefix('updates:conflict:')
+    state = W.load(root)
+    event = state.get('updates_conflicts', {}).get(event_id)
+    if (not event or event.get('status') != 'REVIEW_REQUIRED' or event['source_hash'] != source_hash
+            or not re.fullmatch('[0-9a-f]{64}', source_hash)):
+        raise ValueError('UN update conflict event/hash is not pending')
+    detected = P.moment(event['detected_at'])
+    if when < detected:
+        raise ValueError('UN update conflict review cannot predate detection')
+    archive = root / 'data/raw/un'
+    raw = archive / (source_hash + '.html.gz')
+    if (not archive.resolve().is_relative_to(root.resolve())
+            or not raw.resolve().is_relative_to(archive.resolve())):
+        raise ValueError('UN update history original lies outside the archive')
+    try:
+        with gzip.open(raw, 'rb') as stream:
+            body = stream.read(U.MAX_BYTES + 1)
+    except (OSError, EOFError, zlib.error) as error:
+        raise ValueError('UN update history original is unavailable or corrupted') from error
+    if len(body) > U.MAX_BYTES or hashlib.sha256(body).hexdigest() != source_hash:
+        raise ValueError('UN update history original hash mismatch or response too large')
+    _, conflicts = V.parse_update_history(body, now=detected)
+    if event['record']['event_id'] != event_id or event['record'] not in conflicts:
+        raise ValueError('UN update conflict does not match the archived original')
+    event.update(status='REVIEWED', reviewer=reviewer, reviewed_at=at, review_note=note)
+    state['updates_status'] = W._updates_status(state, state.get('failures', []))
+    atomic_replace_many(W.projections(root, state, now=when))
+    return event
+
+
 def _rss_event_evidence(root, sensor, event, when):
     record = event['record']
     if (event['event_id'] != U.digest([event['parent_event_id'], record, event['source_hash']])
@@ -244,7 +282,7 @@ def review_rss_coverage(root: Path, *, index_hash: str, reviewer: str, when: dat
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('command', choices=['status', 'approve', 'apply', 'notice-review', 'coverage-review',
-                                          'rss-review', 'rss-coverage-review'])
+                                          'rss-review', 'rss-coverage-review', 'updates-conflict-review'])
     parser.add_argument('--root', type=Path, default=Path(__file__).resolve().parent.parent)
     for name in ['event-id', 'source-hash', 'reviewer', 'operator', 'note', 'evidence-url',
                  'expected-master-hash', 'index-hash', 'committee']:
@@ -275,6 +313,9 @@ def main() -> int:
     elif args.command == 'rss-review':
         result = review_rss_notice(args.root, event_id=args.event_id, index_hash=args.index_hash,
                                   reviewer=args.reviewer, when=when, note=args.note)
+    elif args.command == 'updates-conflict-review':
+        result = review_update_conflict(args.root, event_id=args.event_id, source_hash=args.source_hash,
+                                        reviewer=args.reviewer, when=when, note=args.note)
     elif args.command == 'rss-coverage-review':
         result = review_rss_coverage(args.root, index_hash=args.index_hash, reviewer=args.reviewer,
                                     when=when, note=args.note)

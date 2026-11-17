@@ -4,7 +4,7 @@ import hashlib
 import json
 import tempfile
 import unittest
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from unittest.mock import patch
 
@@ -12,7 +12,7 @@ from src import un_sources as U, un_watch as W
 from src.fetch import Fetched
 from src.dashboard import build_status_rows
 from src.dashboard import write_status_rows
-from tests.test_un_sources import xml, PRESS, UPDATES
+from tests.test_un_sources import xml, PRESS, UPDATES, UPDATES_WITH_CONFLICT
 
 NOW = datetime(2026, 10, 27, 1, tzinfo=timezone.utc)
 
@@ -77,6 +77,59 @@ class UNWatchTests(unittest.TestCase):
         self.assertEqual(len(self.state()['events']), 1)
         self.assertEqual(len(self.state()['updates_events']), 5)
         self.assertFalse((self.root / 'data/master/master.csv').exists())
+
+    def test_updates_conflict_retains_first_observation_and_last_fully_valid_source(self):
+        self.run_watch()
+        initial = self.state()
+        self.feed.updates = UPDATES_WITH_CONFLICT
+        first = NOW + timedelta(minutes=15)
+        result = W.run(self.root, fetcher=self.feed, now=first)
+        partial = self.state()
+        self.assertFalse(result['ok'])
+        self.assertEqual(partial['documents']['updates'], initial['documents']['updates'])
+        self.assertEqual(partial['updates_last_success_at'], initial['updates_last_success_at'])
+        self.assertEqual(partial['updates_status'], 'error')
+        conflict, = partial['updates_conflicts'].values()
+        self.assertEqual(conflict['source_hash'], hashlib.sha256(UPDATES_WITH_CONFLICT).hexdigest())
+        self.assertEqual(conflict['detected_at'], '2026-10-27T01:15:00Z')
+        self.assertEqual(partial['updates_events'], initial['updates_events'])
+        self.assertEqual(partial['documents']['updates_partial']['sha256'], conflict['source_hash'])
+        with (self.root / 'data/dashboard/un_reviews.csv').open() as stream:
+            conflicts = [r for r in csv.DictReader(stream) if r['イベントID'].startswith('updates:conflict:')]
+        projected, = conflicts
+        self.assertEqual(projected['国連参照番号'], 'QDe.010')
+        self.assertEqual(projected['状態'], 'REVIEW_REQUIRED')
+        self.assertEqual(projected['SHA256'], conflict['source_hash'])
+        self.assertNotIn('CDe.010', projected['対象名／発表'])
+
+        self.feed.not_modified = True
+        W.run(self.root, fetcher=self.feed, now=first + timedelta(minutes=15))
+        self.assertEqual(self.state()['updates_conflicts'], partial['updates_conflicts'])
+        self.feed.not_modified = False
+        self.feed.updates = UPDATES
+        W.run(self.root, fetcher=self.feed, now=first + timedelta(minutes=30))
+        self.assertEqual(self.state()['updates_conflicts'], partial['updates_conflicts'])
+        self.assertEqual(self.state()['updates_status'], 'review_required')
+        self.assertNotIn('updates_partial', self.state()['documents'])
+        self.assertFalse((self.root / 'data/master/master.csv').exists())
+
+    def test_mixed_conflicted_page_records_the_other_valid_rows_as_review_candidates(self):
+        self.feed.updates = UPDATES_WITH_CONFLICT
+        self.assertFalse(self.run_watch()['ok'])
+        state = self.state()
+        self.assertEqual(len(state['updates_events']), 4)
+        self.assertNotIn('updates_last_success_at', state)
+        self.assertNotIn('updates', state['documents'])
+        self.assertEqual(len(state['updates_conflicts']), 1)
+        self.assertFalse(any('QDe.010' in e['record']['references'] for e in state['updates_events']))
+
+    def test_later_partial_poll_detects_new_older_events_after_first_partial_baseline(self):
+        self.feed.updates = UPDATES_WITH_CONFLICT
+        self.run_watch()
+        self.feed.updates = UPDATES_WITH_CONFLICT.replace(b'05/10/2026', b'01/09/2026')
+        W.run(self.root, fetcher=self.feed, now=NOW + timedelta(minutes=15))
+        event, = [e for e in self.state()['updates_events'] if e['record']['publication_date'] == '2026-09-01']
+        self.assertEqual(event['status'], 'PENDING_REVIEW')
 
     def test_updates_empty_response_is_explicit_failure_not_zero_changes(self):
         from src import un_updates as V
