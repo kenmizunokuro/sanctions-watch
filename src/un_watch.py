@@ -11,7 +11,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from . import dashboard, source_audit as A, state as S, un_sources as U, un_updates as V, un_press_rss as P
-from . import un_press_article as E
+from . import un_press_article as E, un_updates_archive as H
 from .fetch import NetworkPolicyError, fetch, read_raw
 from .persistence import FileWrite, atomic_replace_many
 from .un_lock import locked
@@ -74,7 +74,7 @@ def _write_names(path, rows):
 
 def _updates_status(state, failures):
     if (state.get('updates_coverage_gap') or state.get('updates_active_conflicts')
-            or any(issue['source'] == 'un_updates' for issue in failures)):
+            or any(issue['source'] in {'un_updates', 'un_updates_archive'} for issue in failures)):
         return 'error'
     if (any(event.get('status') != 'REVIEWED' for event in state.get('updates_conflicts', {}).values())
             or any(event['status'] == 'PENDING_REVIEW' for event in state.get('updates_events', []))):
@@ -138,6 +138,11 @@ def _review_rows(state: dict) -> list[list]:
             rows.append(['updates:fetch', state['last_checked_at'],
                          '国連更新履歴取得エラー', '', issue['message'],
                          'FETCH_FAILED', '', '', '', '', V.UPDATES_URL])
+    archive_error = next((issue for issue in state.get('failures', [])
+                          if issue['source'] == 'un_updates_archive'), None)
+    if archive_error:
+        rows.append(['updates:archive', state['last_checked_at'], '国連更新履歴・原本取込エラー',
+                     '', archive_error['message'], 'REVIEW_REQUIRED', '', '', '', '', V.UPDATES_URL])
     if state.get('updates_coverage_gap'):
         gap = state['updates_coverage_gap']
         rows.append(['updates:coverage', gap['detected_at'], '国連更新履歴・未確認期間あり',
@@ -378,6 +383,53 @@ def _capture_press_articles(root, sensor, *, now, clock, fetcher, audit, failure
                                  message=A._clean_error(error), http_status=issue['http_status']))
 
 
+def _record_update_candidates(state, items, conflicts, *, source_hash, observed, archived=False):
+    events = state.setdefault('updates_events', [])
+    known = {item['event_id'] for item in events}
+    initialized = bool(known or state['documents'].get('updates', {}).get('items'))
+    recent = (observed.date() - timedelta(days=30)).isoformat()
+    origin = {'observed_via': 'archived_https'} if archived else {}
+    when = P.stamp(observed)
+    for record in items:
+        if record['event_id'] in known:
+            continue
+        pending = initialized or record['publication_date'] >= recent
+        events.append(dict(event_id=record['event_id'], detected_at=when, source_hash=source_hash,
+                           record=record, status='PENDING_REVIEW' if pending else 'BASELINE_RECORDED',
+                           **origin))
+    if conflicts:
+        ledger = state.setdefault('updates_conflicts', {})
+        for record in conflicts:
+            ledger.setdefault(record['event_id'], dict(detected_at=when, source_hash=source_hash,
+                                                       status='REVIEW_REQUIRED', record=record, **origin))
+
+
+def _recover_update_archive(root, state, now, audit, failures):
+    try:
+        observation = H.load(root, now)
+        if observation is None:
+            return True
+        receipt, observed, items, conflicts = observation
+        sha = receipt['source_hash']
+        recoveries = state.setdefault('updates_archive_recoveries', {})
+        if sha in recoveries:
+            if recoveries[sha]['receipt'] != receipt:
+                raise ValueError('UN update archive receipt changed after import')
+            return True
+        _record_update_candidates(state, items, conflicts, source_hash=sha, observed=observed, archived=True)
+        recoveries[sha] = dict(receipt=receipt, imported_at=P.stamp(now))
+        audit.append(A.entry('un_updates_archive', 'archived_change_log', 'recovered_for_review',
+                             content_hash=sha, url=V.UPDATES_URL, raw_path=f'data/raw/un/{sha}.html.gz',
+                             record_count=len(items)))
+        return True
+    except (OSError, ValueError, KeyError, TypeError, U.UNSchemaError) as error:
+        failures.append(dict(source='un_updates_archive', error_type=type(error).__name__,
+                             message=A._clean_error(error), http_status=''))
+        audit.append(A.error_entry('un_updates_archive', 'archived_change_log', error,
+                                   url=V.UPDATES_URL, fetch_failed=False))
+        return False
+
+
 def _xml_event(root, state, snapshot, source_hash, now):
     previous = snapshot.get('previous_parties', {})
     parties = snapshot['parties']
@@ -473,6 +525,7 @@ def run(root: Path, *, fetcher=fetch, now=None) -> dict:
 
     # Second independent sensor: the UN's consolidated-list update chronology.
     # Detect and record announcements without modifying the XML snapshot or master.
+    archive_ok = _recover_update_archive(root, state, now, audit, failures)
     updates_ok = True
     try:
         previous_updates = state['documents'].get('updates', {})
@@ -488,28 +541,12 @@ def run(root: Path, *, fetcher=fetch, now=None) -> dict:
         if not conflicts and recent_old and not old_ids.intersection(current_ids):
             state.setdefault('updates_coverage_gap', dict(
                 detected_at=when, reason='no overlapping recent UN updates chronology entries'))
-        accepted = {item['event_id'] for item in state.get('updates_events', [])}
-        initialized = bool(old_items or accepted)
-        for item in updates:
-            if item['event_id'] in accepted:
-                continue
-            # On first activation, historical events outside the current
-            # 30-day investigation window are evidence, not new alerts.
-            pending = initialized or item['publication_date'] >= (
-                now.date() - timedelta(days=30)).isoformat()
-            state.setdefault('updates_events', []).append(dict(
-                event_id=item['event_id'], detected_at=when,
-                source_hash=metadata['sha256'], record=item,
-                status='PENDING_REVIEW' if pending else 'BASELINE_RECORDED'))
+        _record_update_candidates(state, updates, conflicts, source_hash=metadata['sha256'], observed=now)
         metadata['items'] = updates
         state['updates_active_conflicts'] = sorted(record['event_id'] for record in conflicts)
         if conflicts:
             updates_ok = False
             state['documents']['updates_partial'] = metadata
-            ledger = state.setdefault('updates_conflicts', {})
-            for record in conflicts:
-                ledger.setdefault(record['event_id'], dict(detected_at=when, source_hash=metadata['sha256'],
-                                                           status='REVIEW_REQUIRED', record=record))
             error = V.UNReferenceConflict(f'UN update history contains {len(conflicts)} conflicting row(s)')
             failures.append(dict(source='un_updates', error_type=type(error).__name__,
                                  message=str(error), http_status=fetched.http_status))
@@ -620,7 +657,7 @@ def run(root: Path, *, fetcher=fetch, now=None) -> dict:
                FileWrite(root / f'data/heartbeat/{now:%Y-%m}.csv',
                          lambda p: S.append_heartbeat(p, hb, now=now), seed_existing=True)]
     atomic_replace_many(writes)
-    return dict(ok=xml_ok and press_ok and updates_ok and not state['coverage_gaps']
+    return dict(ok=xml_ok and press_ok and updates_ok and archive_ok and not state['coverage_gaps']
                 and not state.get('updates_coverage_gap') and sensor['status'] == 'observed'
                 and not sensor.get('recovery_error')
                 and not any(issue['source'].startswith('rss:article:') for issue in failures),
@@ -642,6 +679,7 @@ def main() -> int:
                                 for key, n in after['notices'].items())
     previous_updates = {e['event_id'] for e in before.get('updates_events', [])}
     result['new_updates'] = sum(e['status'] == 'PENDING_REVIEW' and e['event_id'] not in previous_updates
+                                and e.get('observed_via') != 'archived_https'
                                 for e in after.get('updates_events', []))
     prior_rss = {e['event_id'] for e in before.get('press_rss', {}).get('events', [])}
     result['new_press_rss'] = sum(e['status'] == 'PENDING_REVIEW' and e['event_id'] not in prior_rss

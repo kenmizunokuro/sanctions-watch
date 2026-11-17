@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "capture_method": "alternate_https",
+  "http_status": 200,
+  "url": "https://main.un.org/securitycouncil/en/content/list-updates-unsc-consolidated-list",
+  "final_url": "https://main.un.org/securitycouncil/en/content/list-updates-unsc-consolidated-list",
+  "observed_at": "2026-11-17T03:39:01Z",
+  "source_hash": "a19e54383113bf62858716c905f9545bf5230376d1dbf5258d99af2a8fe490db",
+  "etag": "W/\"1794528004\"",
+  "last_modified": "Fri, 13 Nov 2026 00:00:04 GMT",
+  "record_count": 12,
+  "conflict_count": 1
+}
