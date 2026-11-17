@@ -668349,7 +668349,7 @@
       "source": "press:2745"
     }
   ],
-  "last_checked_at": "2026-11-17T04:00:41Z",
+  "last_checked_at": "2026-11-17T06:28:35Z",
   "notices": {},
   "press_rss": {
     "article_evidence": {
@@ -668519,7 +668519,7 @@
         "url": "https://press.un.org/en/2026/sgsm23377.doc.htm"
       }
     ],
-    "last_success_at": "2026-11-17T04:00:41Z",
+    "last_success_at": "2026-11-17T06:28:35Z",
     "latest_publication_at": "2026-11-17T00:50:02Z",
     "new_articles": 0,
     "new_candidates": 0,
@@ -668534,7 +668534,315 @@
   "snapshot_digest": "c0b8a0702be4dce14235fd02ba518e873a8ae213e1ef61248eb230193308ca44",
   "snapshot_hash": "eff4aaa0238c256749d9ac4b7233fb22b943b1281e29a43efd74d41247df0c38",
   "source_updated": "2026-11-17T00:00:02.485Z",
+  "updates_archive_recoveries": {
+    "a19e54383113bf62858716c905f9545bf5230376d1dbf5258d99af2a8fe490db": {
+      "imported_at": "2026-11-17T06:28:35Z",
+      "receipt": {
+        "capture_method": "alternate_https",
+        "conflict_count": 1,
+        "etag": "W/\"1794528004\"",
+        "final_url": "https://main.un.org/securitycouncil/en/content/list-updates-unsc-consolidated-list",
+        "http_status": 200,
+        "last_modified": "Fri, 13 Nov 2026 00:00:04 GMT",
+        "observed_at": "2026-11-17T03:39:01Z",
+        "record_count": 12,
+        "schema_version": 1,
+        "source_hash": "a19e54383113bf62858716c905f9545bf5230376d1dbf5258d99af2a8fe490db",
+        "url": "https://main.un.org/securitycouncil/en/content/list-updates-unsc-consolidated-list"
+      }
+    }
+  },
+  "updates_conflicts": {
+    "747a770a6b3eb88f8a09545941fefdf65f0a4a0542ac38b127dfaedac9772620": {
+      "detected_at": "2026-11-17T03:39:01Z",
+      "observed_via": "archived_https",
+      "record": {
+        "change": "AMENDMENT",
+        "conflicting_references": {
+          "QDe.010": "1267"
+        },
+        "event_id": "747a770a6b3eb88f8a09545941fefdf65f0a4a0542ac38b127dfaedac9772620",
+        "notice_url": "https://main.un.org/securitycouncil/en/content/sc16506",
+        "publication_date": "2026-11-11",
+        "record_count": 1,
+        "references": [
+          "QDe.010"
+        ],
+        "regime": "1533",
+        "source_url": "https://main.un.org/securitycouncil/en/content/list-updates-unsc-consolidated-list"
+      },
+      "source_hash": "a19e54383113bf62858716c905f9545bf5230376d1dbf5258d99af2a8fe490db",
+      "status": "REVIEW_REQUIRED"
+    }
+  },
+  "updates_events": [
+    {
+      "detected_at": "2026-11-17T03:39:01Z",
+      "event_id": "b2a1b954c519fdd0a2cd4736f9fcc4852fd2ee4d765f6427c9ec534893482908",
+      "observed_via": "archived_https",
+      "record": {
+        "change": "AMENDMENT",
+        "event_id": "b2a1b954c519fdd0a2cd4736f9fcc4852fd2ee4d765f6427c9ec534893482908",
+        "notice_url": "https://press.un.org/en/2026/sc16490.doc.htm",
+        "publication_date": "2026-10-26",
+        "record_count": 3,
+        "references": [
+          "QDi.340",
+          "QDi.342",
+          "QDi.376"
+        ],
+        "regime": "1267",
+        "source_url": "https://main.un.org/securitycouncil/en/content/list-updates-unsc-consolidated-list"
+      },
+      "source_hash": "a19e54383113bf62858716c905f9545bf5230376d1dbf5258d99af2a8fe490db",
+      "status": "PENDING_REVIEW"
+    },
+    {
+      "detected_at": "2026-11-17T03:39:01Z",
+      "event_id": "cc39b19f491da181b2473ac0e2120672cc00af49cc29b9a4ba3b2619b1afe1db",
+      "observed_via": "archived_https",
+      "record": {
+        "change": "DELISTING",
+        "event_id": "cc39b19f491da181b2473ac0e2120672cc00af49cc29b9a4ba3b2619b1afe1db",
+        "notice_url": "https://press.un.org/en/2026/sc16488.doc.htm",
+        "publication_date": "2026-10-24",
+        "record_count": 3,
+        "references": [
+          "QDi.338",
+          "QDi.399",
+          "QDi.400"
+        ],
+        "regime": "1267",
+        "source_url": "https://main.un.org/securitycouncil/en/content/list-updates-unsc-consolidated-list"
+      },
+      "source_hash": "a19e54383113bf62858716c905f9545bf5230376d1dbf5258d99af2a8fe490db",
+      "status": "PENDING_REVIEW"
+    },
+    {
+      "detected_at": "2026-11-17T03:39:01Z",
+      "event_id": "e6d4df02e6406cdf1387b9cef8e653c37125a4cc82e5206f00568e7217171d2a",
+      "observed_via": "archived_https",
+      "record": {
+        "change": "AMENDMENT",
+        "event_id": "e6d4df02e6406cdf1387b9cef8e653c37125a4cc82e5206f00568e7217171d2a",
+        "notice_url": "https://press.un.org/en/2026/sc16480.doc.htm",
+        "publication_date": "2026-10-15",
+        "record_count": 3,
+        "references": [
+          "QDe.132",
+          "QDi.082",
+          "QDi.427"
+        ],
+        "regime": "1267",
+        "source_url": "https://main.un.org/securitycouncil/en/content/list-updates-unsc-consolidated-list"
+      },
+      "source_hash": "a19e54383113bf62858716c905f9545bf5230376d1dbf5258d99af2a8fe490db",
+      "status": "BASELINE_RECORDED"
+    },
+    {
+      "detected_at": "2026-11-17T03:39:01Z",
+      "event_id": "e61cfb152949767010875ad64258d8f4a18a9d17b24425825f9016c0cdce1873",
+      "observed_via": "archived_https",
+      "record": {
+        "change": "DELISTING",
+        "event_id": "e61cfb152949767010875ad64258d8f4a18a9d17b24425825f9016c0cdce1873",
+        "notice_url": "https://press.un.org/en/2026/sc16468.doc.htm",
+        "publication_date": "2026-10-05",
+        "record_count": 1,
+        "references": [
+          "IQe.200"
+        ],
+        "regime": "1518",
+        "source_url": "https://main.un.org/securitycouncil/en/content/list-updates-unsc-consolidated-list"
+      },
+      "source_hash": "a19e54383113bf62858716c905f9545bf5230376d1dbf5258d99af2a8fe490db",
+      "status": "BASELINE_RECORDED"
+    },
+    {
+      "detected_at": "2026-11-17T03:39:01Z",
+      "event_id": "0da781707b89a104c755967f16afe17b9307be7f47d9865443aba72126a9d881",
+      "observed_via": "archived_https",
+      "record": {
+        "change": "AMENDMENT",
+        "event_id": "0da781707b89a104c755967f16afe17b9307be7f47d9865443aba72126a9d881",
+        "notice_url": "https://press.un.org/en/2026/sc16465.doc.htm",
+        "publication_date": "2026-09-28",
+        "record_count": 1,
+        "references": [
+          "QDe.168"
+        ],
+        "regime": "1267",
+        "source_url": "https://main.un.org/securitycouncil/en/content/list-updates-unsc-consolidated-list"
+      },
+      "source_hash": "a19e54383113bf62858716c905f9545bf5230376d1dbf5258d99af2a8fe490db",
+      "status": "BASELINE_RECORDED"
+    },
+    {
+      "detected_at": "2026-11-17T03:39:01Z",
+      "event_id": "e46a36d9d81582a86fadbc252e0ce54de3570f95d7b910ed763739585e781b01",
+      "observed_via": "archived_https",
+      "record": {
+        "change": "AMENDMENT",
+        "event_id": "e46a36d9d81582a86fadbc252e0ce54de3570f95d7b910ed763739585e781b01",
+        "notice_url": "https://press.un.org/en/2026/sc16446.doc.htm",
+        "publication_date": "2026-09-04",
+        "record_count": 2,
+        "references": [
+          "QDi.431",
+          "QDi.436"
+        ],
+        "regime": "1267",
+        "source_url": "https://main.un.org/securitycouncil/en/content/list-updates-unsc-consolidated-list"
+      },
+      "source_hash": "a19e54383113bf62858716c905f9545bf5230376d1dbf5258d99af2a8fe490db",
+      "status": "BASELINE_RECORDED"
+    },
+    {
+      "detected_at": "2026-11-17T03:39:01Z",
+      "event_id": "87a23ec48fd3c9cb623ce95b597edcc4f15fa8e6ad3e55e67dfd60ba60e455b8",
+      "observed_via": "archived_https",
+      "record": {
+        "change": "AMENDMENT",
+        "event_id": "87a23ec48fd3c9cb623ce95b597edcc4f15fa8e6ad3e55e67dfd60ba60e455b8",
+        "notice_url": "https://press.un.org/en/2026/sc16443.doc.htm",
+        "publication_date": "2026-08-27",
+        "record_count": 1,
+        "references": [
+          "TAi.027"
+        ],
+        "regime": "1988",
+        "source_url": "https://main.un.org/securitycouncil/en/content/list-updates-unsc-consolidated-list"
+      },
+      "source_hash": "a19e54383113bf62858716c905f9545bf5230376d1dbf5258d99af2a8fe490db",
+      "status": "BASELINE_RECORDED"
+    },
+    {
+      "detected_at": "2026-11-17T03:39:01Z",
+      "event_id": "b16cc8bc17ed115a8f26cb9f474f44b439e1aec576b6b28d32d307830534f613",
+      "observed_via": "archived_https",
+      "record": {
+        "change": "AMENDMENT",
+        "event_id": "b16cc8bc17ed115a8f26cb9f474f44b439e1aec576b6b28d32d307830534f613",
+        "notice_url": "https://press.un.org/en/2026/sc16435.doc.htm",
+        "publication_date": "2026-08-18",
+        "record_count": 21,
+        "references": [
+          "QDe.015",
+          "QDe.068",
+          "QDe.069",
+          "QDe.096",
+          "QDe.104",
+          "QDe.119",
+          "QDe.129",
+          "QDe.134",
+          "QDi.087",
+          "QDi.114",
+          "QDi.204",
+          "QDi.249",
+          "QDi.252",
+          "QDi.291",
+          "QDi.294",
+          "QDi.295",
+          "QDi.300",
+          "QDi.304",
+          "QDi.375",
+          "QDi.376",
+          "QDi.389"
+        ],
+        "regime": "1267",
+        "source_url": "https://main.un.org/securitycouncil/en/content/list-updates-unsc-consolidated-list"
+      },
+      "source_hash": "a19e54383113bf62858716c905f9545bf5230376d1dbf5258d99af2a8fe490db",
+      "status": "BASELINE_RECORDED"
+    },
+    {
+      "detected_at": "2026-11-17T03:39:01Z",
+      "event_id": "b26ce82115f0f3c380c6b3631d63c35c63af6e75a7c88c14180be20cc3bc2f0b",
+      "observed_via": "archived_https",
+      "record": {
+        "change": "AMENDMENT",
+        "event_id": "b26ce82115f0f3c380c6b3631d63c35c63af6e75a7c88c14180be20cc3bc2f0b",
+        "notice_url": "https://press.un.org/en/2026/sc16433.doc.htm",
+        "publication_date": "2026-08-14",
+        "record_count": 4,
+        "references": [
+          "QDe.161",
+          "QDi.002",
+          "QDi.436",
+          "QDi.439"
+        ],
+        "regime": "1267",
+        "source_url": "https://main.un.org/securitycouncil/en/content/list-updates-unsc-consolidated-list"
+      },
+      "source_hash": "a19e54383113bf62858716c905f9545bf5230376d1dbf5258d99af2a8fe490db",
+      "status": "BASELINE_RECORDED"
+    },
+    {
+      "detected_at": "2026-11-17T03:39:01Z",
+      "event_id": "9c278f4f14e63248f190b4a70dcbfa726f8ce2956ce33b17c1970941bc76cf7e",
+      "observed_via": "archived_https",
+      "record": {
+        "change": "AMENDMENT",
+        "event_id": "9c278f4f14e63248f190b4a70dcbfa726f8ce2956ce33b17c1970941bc76cf7e",
+        "notice_url": "https://press.un.org/en/2026/sc16432.doc.htm",
+        "publication_date": "2026-08-13",
+        "record_count": 4,
+        "references": [
+          "QDe.068",
+          "QDi.001",
+          "QDi.261",
+          "QDi.338"
+        ],
+        "regime": "1267",
+        "source_url": "https://main.un.org/securitycouncil/en/content/list-updates-unsc-consolidated-list"
+      },
+      "source_hash": "a19e54383113bf62858716c905f9545bf5230376d1dbf5258d99af2a8fe490db",
+      "status": "BASELINE_RECORDED"
+    },
+    {
+      "detected_at": "2026-11-17T03:39:01Z",
+      "event_id": "7c03f75c78421acff9f3ba9a765986af3177523b30deda75d7839f041376795d",
+      "observed_via": "archived_https",
+      "record": {
+        "change": "AMENDMENT",
+        "event_id": "7c03f75c78421acff9f3ba9a765986af3177523b30deda75d7839f041376795d",
+        "notice_url": "https://press.un.org/en/2026/sc16425.doc.htm",
+        "publication_date": "2026-07-30",
+        "record_count": 5,
+        "references": [
+          "TAi.044",
+          "TAi.082",
+          "TAi.110",
+          "TAi.144",
+          "TAi.147"
+        ],
+        "regime": "1988",
+        "source_url": "https://main.un.org/securitycouncil/en/content/list-updates-unsc-consolidated-list"
+      },
+      "source_hash": "a19e54383113bf62858716c905f9545bf5230376d1dbf5258d99af2a8fe490db",
+      "status": "BASELINE_RECORDED"
+    },
+    {
+      "detected_at": "2026-11-17T03:39:01Z",
+      "event_id": "2f30d5f069a4be0bfb29b8d3fdeabe8dabb2638c99886d5f9965f71adc7d856a",
+      "observed_via": "archived_https",
+      "record": {
+        "change": "LISTING",
+        "event_id": "2f30d5f069a4be0bfb29b8d3fdeabe8dabb2638c99886d5f9965f71adc7d856a",
+        "notice_url": "https://press.un.org/en/2026/sc16421.doc.htm",
+        "publication_date": "2026-07-22",
+        "record_count": 1,
+        "references": [
+          "LYe.006"
+        ],
+        "regime": "1970",
+        "source_url": "https://main.un.org/securitycouncil/en/content/list-updates-unsc-consolidated-list"
+      },
+      "source_hash": "a19e54383113bf62858716c905f9545bf5230376d1dbf5258d99af2a8fe490db",
+      "status": "BASELINE_RECORDED"
+    }
+  ],
   "updates_status": "error",
-  "xml_last_success_at": "2026-11-17T04:00:41Z",
+  "xml_last_success_at": "2026-11-17T06:28:35Z",
   "xml_status": "review_required"
 }
