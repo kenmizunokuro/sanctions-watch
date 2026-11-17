@@ -82,12 +82,24 @@ class UNSourceTests(unittest.TestCase):
         with self.assertRaisesRegex(U.UNSchemaError, 'headings'):
             V.parse_update_history(UPDATES_WITH_CONFLICT.replace(b'Date</td>', b'Name</td>', 1), now=now)
 
+    def test_update_history_rejects_a_recent_row_hidden_below_the_date_cutoff(self):
+        from datetime import datetime, timezone
+        from src import un_updates as V
+        now = datetime(2026, 10, 30, tzinfo=timezone.utc)
+        body = UPDATES_WITH_CONFLICT.replace(b'<tr><td>26/10/2026</td><td>1267</td>',
+                                           b'<tr><td>26/10/2025</td><td>1267</td>', 1)
+        with self.assertRaisesRegex(U.UNSchemaError, 'ordering'):
+            V.parse_update_history(body, now=now)
+
     def test_updates_history_rejects_schema_loss_false_counts_and_untrusted_links(self):
         from datetime import datetime, timezone
         from src import un_updates as V
         now = datetime(2026,10,30,tzinfo=timezone.utc)
         variants = [
             b'<html>No update table</html>',
+            b'<div>' * 140 + UPDATES,
+            UPDATES.replace(b'<td>SC/16480</td>', b''),
+            UPDATES.replace(b'<td>SC/16480</td>', b'<td>SC/16480</td><td>Unexpected</td>'),
             UPDATES.replace(b'Permanent reference number', b'Reference removed'),
             UPDATES.replace(b'<td>3</td>', b'<td>2</td>', 1),
             UPDATES.replace(b'QDi.338', b'QDi.399'),

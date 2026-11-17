@@ -489,12 +489,13 @@ def run(root: Path, *, fetcher=fetch, now=None) -> dict:
             state.setdefault('updates_coverage_gap', dict(
                 detected_at=when, reason='no overlapping recent UN updates chronology entries'))
         accepted = {item['event_id'] for item in state.get('updates_events', [])}
+        initialized = bool(old_items or accepted)
         for item in updates:
             if item['event_id'] in accepted:
                 continue
             # On first activation, historical events outside the current
             # 30-day investigation window are evidence, not new alerts.
-            pending = bool(old_items) or item['publication_date'] >= (
+            pending = initialized or item['publication_date'] >= (
                 now.date() - timedelta(days=30)).isoformat()
             state.setdefault('updates_events', []).append(dict(
                 event_id=item['event_id'], detected_at=when,

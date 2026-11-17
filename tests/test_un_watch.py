@@ -123,6 +123,14 @@ class UNWatchTests(unittest.TestCase):
         self.assertEqual(len(state['updates_conflicts']), 1)
         self.assertFalse(any('QDe.010' in e['record']['references'] for e in state['updates_events']))
 
+    def test_later_partial_poll_detects_new_older_events_after_first_partial_baseline(self):
+        self.feed.updates = UPDATES_WITH_CONFLICT
+        self.run_watch()
+        self.feed.updates = UPDATES_WITH_CONFLICT.replace(b'05/10/2026', b'01/09/2026')
+        W.run(self.root, fetcher=self.feed, now=NOW + timedelta(minutes=15))
+        event, = [e for e in self.state()['updates_events'] if e['record']['publication_date'] == '2026-09-01']
+        self.assertEqual(event['status'], 'PENDING_REVIEW')
+
     def test_updates_empty_response_is_explicit_failure_not_zero_changes(self):
         from src import un_updates as V
         baseline = self.run_watch()

@@ -42,6 +42,15 @@ class UNReferenceConflict(U.UNSchemaError):
     """The official chronology places a known reference in a different regime."""
 
 
+class _HistoryTree(Tree):
+    def handle_starttag(self, tag, attrs):
+        # Tree searches its open elements on each closing tag and walks
+        # recursively. Bound depth before building an untrusted HTML tree.
+        if len(self.stack) >= 128:
+            raise U.UNSchemaError("UN update history HTML nesting exceeds limit")
+        super().handle_starttag(tag, attrs)
+
+
 def _table_rows(table):
     for node in table.children:
         if isinstance(node, str):
@@ -68,7 +77,7 @@ def parse_update_history(body: bytes, *, now: datetime) -> tuple[list[dict], lis
     if not body or len(body) > U.MAX_BYTES:
         raise U.UNSchemaError("UN update history is empty or oversized")
     matches = []
-    for candidate in Tree(body).root.walk():
+    for candidate in _HistoryTree(body).root.walk():
         if candidate.tag != "table":
             continue
         rows = list(_table_rows(candidate))
@@ -76,30 +85,42 @@ def parse_update_history(body: bytes, *, now: datetime) -> tuple[list[dict], lis
             continue
         headings = tuple(_norm(cell.text()).casefold() for cell in _cells(rows[0]))
         if headings in (HEADINGS, HEADINGS + ("links to notification in french",)):
-            matches.append(rows[1:])
+            matches.append((len(headings), rows[1:]))
     if len(matches) != 1:
         raise U.UNSchemaError("UN updates table headings missing, changed or ambiguous")
     cutoff = (now.astimezone(timezone.utc).date() -
               timedelta(days=LOOKBACK_DAYS))
     seen, result, conflicts, previous_date = set(), [], [], None
-    for row in matches[0]:
+    width, rows = matches[0]
+    for row in rows:
         cells = _cells(row)
         if not cells:
             continue
-        fields = [_norm(c.text()) for c in cells]
-        if len(fields) < 5 or not re.fullmatch(r"\d{1,2}/\d{1,2}/\d{4}", fields[0]):
+        reported_date = _norm(cells[0].text())
+        in_archive = previous_date is not None and previous_date < cutoff
+        if not re.fullmatch(r"\d{1,2}/\d{1,2}/\d{4}", reported_date):
+            if in_archive:
+                continue
             raise U.UNSchemaError("UN updates recent row format changed")
         try:
-            day = datetime.strptime(fields[0], "%d/%m/%Y").date()
+            day = datetime.strptime(reported_date, "%d/%m/%Y").date()
         except ValueError as exc:
+            if in_archive:
+                continue
             raise U.UNSchemaError("invalid UN update date") from exc
-        if day < cutoff:
-            break
         if previous_date is not None and day > previous_date:
             raise U.UNSchemaError("UN updates ordering changed")
+        previous_date = day
+        # Old rows are scanned for dates so a misplaced old entry cannot hide
+        # later in-window data. Only recent rows are parsed as list events.
+        if day < cutoff:
+            continue
         if day > now.astimezone(timezone.utc).date() + timedelta(days=1):
             raise U.UNSchemaError("UN update future-dated row")
-        previous_date = day
+        if len(cells) != width or any(cell.attrs.get(attr, '1') != '1'
+                                      for cell in cells for attr in ('rowspan', 'colspan')):
+            raise U.UNSchemaError("UN updates recent row columns changed")
+        fields = [_norm(cell.text()) for cell in cells]
         regime = fields[1]
         if regime not in U.COMMITTEES.values():
             raise U.UNSchemaError("unknown UN update regime: " + regime)
