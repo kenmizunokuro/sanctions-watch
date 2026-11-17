@@ -72,6 +72,16 @@ def _write_names(path, rows):
         writer.writerows(rows)
 
 
+def _updates_status(state, failures):
+    if (state.get('updates_coverage_gap') or state.get('updates_active_conflicts')
+            or any(issue['source'] == 'un_updates' for issue in failures)):
+        return 'error'
+    if (any(event.get('status') != 'REVIEWED' for event in state.get('updates_conflicts', {}).values())
+            or any(event['status'] == 'PENDING_REVIEW' for event in state.get('updates_events', []))):
+        return 'review_required'
+    return 'unchanged'
+
+
 def _review_rows(state: dict) -> list[list]:
     rows = []
     for event in state['events']:
@@ -106,9 +116,24 @@ def _review_rows(state: dict) -> list[list]:
                      record['change'] + ' / ' + record['publication_date'],
                      'PENDING_REVIEW', '', '', '', item['source_hash'],
                      record['notice_url'] or record['source_url']])
+    active_conflicts = set(state.get('updates_active_conflicts', []))
+    for event_id, event in sorted(state.get('updates_conflicts', {}).items()):
+        status = event.get('status', 'REVIEW_REQUIRED')
+        if status == 'REVIEWED' and event_id not in active_conflicts:
+            continue
+        record = event['record']
+        mismatch = ', '.join(f'{ref}（{expected}）'
+                             for ref, expected in sorted(record['conflicting_references'].items()))
+        detail = (record['publication_date'] + ' / 更新履歴の委員会 ' + record['regime']
+                  + ' / 参照番号の所属 ' + mismatch)
+        rows.append(['updates:conflict:' + record['event_id'], event['detected_at'],
+                     '国連更新履歴・参照番号不一致', ', '.join(record['references']),
+                     detail, status, '', '', '', event['source_hash'],
+                     record['notice_url'] or record['source_url']])
     if state.get('updates_status') == 'error':
         issue = next((f for f in state.get('failures', [])
-                      if f.get('source') == 'un_updates'), None)
+                      if f.get('source') == 'un_updates'
+                      and f.get('error_type') != 'UNReferenceConflict'), None)
         if issue:
             rows.append(['updates:fetch', state['last_checked_at'],
                          '国連更新履歴取得エラー', '', issue['message'],
@@ -451,16 +476,16 @@ def run(root: Path, *, fetcher=fetch, now=None) -> dict:
     updates_ok = True
     try:
         previous_updates = state['documents'].get('updates', {})
-        fetched, metadata, updates = _document(
-            root, 'updates', V.UPDATES_URL, previous_updates,
-            lambda body: V.parse_updates(body, now=now), fetcher)
+        fetched, metadata, (updates, conflicts) = _document(
+            root, 'updates', V.UPDATES_URL, state['documents'].get('updates_partial', previous_updates),
+            lambda body: V.parse_update_history(body, now=now), fetcher)
         old_items = previous_updates.get('items', [])
         old_ids = {item['event_id'] for item in old_items}
         current_ids = {item['event_id'] for item in updates}
         recent_old = [item for item in old_items
                       if item['publication_date'] >=
                       (now.date() - timedelta(days=V.LOOKBACK_DAYS)).isoformat()]
-        if recent_old and not old_ids.intersection(current_ids):
+        if not conflicts and recent_old and not old_ids.intersection(current_ids):
             state.setdefault('updates_coverage_gap', dict(
                 detected_at=when, reason='no overlapping recent UN updates chronology entries'))
         accepted = {item['event_id'] for item in state.get('updates_events', [])}
@@ -476,10 +501,25 @@ def run(root: Path, *, fetcher=fetch, now=None) -> dict:
                 source_hash=metadata['sha256'], record=item,
                 status='PENDING_REVIEW' if pending else 'BASELINE_RECORDED'))
         metadata['items'] = updates
-        state['documents']['updates'] = metadata
-        state['updates_last_success_at'] = when
-        audit.append(A.entry('un_updates', 'consolidated_change_log', 'validated',
-                             fetched=fetched, record_count=len(updates)))
+        state['updates_active_conflicts'] = sorted(record['event_id'] for record in conflicts)
+        if conflicts:
+            updates_ok = False
+            state['documents']['updates_partial'] = metadata
+            ledger = state.setdefault('updates_conflicts', {})
+            for record in conflicts:
+                ledger.setdefault(record['event_id'], dict(detected_at=when, source_hash=metadata['sha256'],
+                                                           status='REVIEW_REQUIRED', record=record))
+            error = V.UNReferenceConflict(f'UN update history contains {len(conflicts)} conflicting row(s)')
+            failures.append(dict(source='un_updates', error_type=type(error).__name__,
+                                 message=str(error), http_status=fetched.http_status))
+            audit.append(A.entry('un_updates', 'consolidated_change_log', 'reference_conflict',
+                                 fetched=fetched, record_count=len(updates), error=error))
+        else:
+            state['documents'].pop('updates_partial', None)
+            state['documents']['updates'] = metadata
+            state['updates_last_success_at'] = when
+            audit.append(A.entry('un_updates', 'consolidated_change_log', 'validated',
+                                 fetched=fetched, record_count=len(updates)))
     except Exception as error:
         updates_ok = False
         failures.append(dict(source='un_updates', error_type=type(error).__name__,
@@ -489,11 +529,7 @@ def run(root: Path, *, fetcher=fetch, now=None) -> dict:
                                    url=V.UPDATES_URL,
                                    schema_changed=isinstance(error, U.UNSchemaError),
                                    fetch_failed=not isinstance(error, U.UNSchemaError)))
-    state['updates_status'] = ('error' if not updates_ok or state.get('updates_coverage_gap')
-                               else 'review_required' if any(
-                                   item['status'] == 'PENDING_REVIEW'
-                                   for item in state.get('updates_events', []))
-                               else 'unchanged')
+    state['updates_status'] = _updates_status(state, failures)
 
     press_ok = True
     for committee in sorted(set(U.COMMITTEES.values())):

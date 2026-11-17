@@ -7,7 +7,7 @@ snapshot, and every reported change still needs record-ID review.
 from __future__ import annotations
 
 import re
-from datetime import date, datetime, timedelta, timezone
+from datetime import datetime, timedelta, timezone
 from urllib.parse import urljoin
 
 from . import un_sources as U
@@ -16,6 +16,10 @@ from .mofa_sources import Tree
 UPDATES_URL = "https://main.un.org/securitycouncil/en/content/list-updates-unsc-consolidated-list"
 LOOKBACK_DAYS = 120
 REFERENCE = re.compile(r"\b([A-Za-z]{2})([iIeE])\.(\d{2,4})\b")
+HEADINGS = (
+    "date", "sanctions list", "permanent reference number", "type of update",
+    "number of entries affected", "links to notification in english",
+)
 KINDS = {
     "amendment": "AMENDMENT",
     "listing": "LISTING",
@@ -34,53 +38,63 @@ def _cells(row) -> list:
             if not isinstance(node, str) and node.tag in {"td", "th"}]
 
 
-def parse_updates(body: bytes, *, now: datetime) -> list[dict]:
-    """Require real table headings, recent dated rows, explicit refs and counts.
+class UNReferenceConflict(U.UNSchemaError):
+    """The official chronology places a known reference in a different regime."""
 
-    Old UN archive rows have inconsistent layout, so only the bounded recent
-    window is interpreted. A missing or changed current row fails closed.
-    """
+
+def _table_rows(table):
+    for node in table.children:
+        if isinstance(node, str):
+            continue
+        if node.tag == "tr":
+            yield node
+        elif node.tag in {"thead", "tbody", "tfoot"}:
+            yield from (row for row in node.children if not isinstance(row, str) and row.tag == "tr")
+
+
+def parse_updates(body: bytes, *, now: datetime) -> list[dict]:
+    """Return a list only when the entire observed chronology passes validation."""
+    items, conflicts = parse_update_history(body, now=now)
+    if conflicts:
+        references = ', '.join(sorted(conflicts[0]['conflicting_references']))
+        raise UNReferenceConflict("UN update regime/reference mismatch: " + references)
+    return items
+
+
+def parse_update_history(body: bytes, *, now: datetime) -> tuple[list[dict], list[dict]]:
+    """Parse recent official rows and isolate known regime/reference conflicts."""
     if now.tzinfo is None:
         raise ValueError("UN update lookup timestamp must include timezone")
     if not body or len(body) > U.MAX_BYTES:
         raise U.UNSchemaError("UN update history is empty or oversized")
-    root = Tree(body).root
-    table = None
-    for candidate in root.walk():
+    matches = []
+    for candidate in Tree(body).root.walk():
         if candidate.tag != "table":
             continue
-        headers = " ".join(_norm(c.text()).lower() for row in candidate.walk()
-                           if row.tag == "tr" for c in _cells(row) if c.tag == "th")
-        if all(label in headers for label in
-               ("date", "permanent reference number", "type of update")):
-            table = candidate
-            break
-    if table is None:
-        raise U.UNSchemaError("UN updates table headings missing or changed")
+        rows = list(_table_rows(candidate))
+        if not rows:
+            continue
+        headings = tuple(_norm(cell.text()).casefold() for cell in _cells(rows[0]))
+        if headings in (HEADINGS, HEADINGS + ("links to notification in french",)):
+            matches.append(rows[1:])
+    if len(matches) != 1:
+        raise U.UNSchemaError("UN updates table headings missing, changed or ambiguous")
     cutoff = (now.astimezone(timezone.utc).date() -
               timedelta(days=LOOKBACK_DAYS))
-    seen, result, previous_date = set(), [], None
-    started = False
-    for row in table.walk():
-        if row.tag != "tr":
-            continue
+    seen, result, conflicts, previous_date = set(), [], [], None
+    for row in matches[0]:
         cells = _cells(row)
-        if not cells or all(c.tag == "th" for c in cells):
+        if not cells:
             continue
         fields = [_norm(c.text()) for c in cells]
         if len(fields) < 5 or not re.fullmatch(r"\d{1,2}/\d{1,2}/\d{4}", fields[0]):
-            # A historical multiline legacy row is permitted only after
-            # the bounded recent window is already fully traversed.
-            if started:
-                raise U.UNSchemaError("UN updates recent row format changed")
-            continue
+            raise U.UNSchemaError("UN updates recent row format changed")
         try:
             day = datetime.strptime(fields[0], "%d/%m/%Y").date()
         except ValueError as exc:
             raise U.UNSchemaError("invalid UN update date") from exc
         if day < cutoff:
             break
-        started = True
         if previous_date is not None and day > previous_date:
             raise U.UNSchemaError("UN updates ordering changed")
         if day > now.astimezone(timezone.utc).date() + timedelta(days=1):
@@ -98,9 +112,11 @@ def parse_updates(body: bytes, *, now: datetime) -> list[dict]:
             raise U.UNSchemaError("unknown UN update type: " + fields[3])
         if not fields[4].isdigit() or int(fields[4]) != len(refs):
             raise U.UNSchemaError("UN updates reference/count mismatch: " + day.isoformat())
-        for ref in refs:
-            if U.COMMITTEES.get(ref[:2]) != regime:
-                raise U.UNSchemaError("UN update regime/reference mismatch: " + ref)
+        associated_regimes = {ref: U.COMMITTEES.get(ref[:2]) for ref in refs}
+        if None in associated_regimes.values():
+            raise U.UNSchemaError("UN updates reference prefix unknown")
+        conflicts_in_row = {ref: expected for ref, expected in associated_regimes.items()
+                            if expected != regime}
         # The history page is the guaranteed evidence URL. Notification links
         # are accepted only if they appear in its original table cells.
         notice_url = ""
@@ -131,7 +147,10 @@ def parse_updates(body: bytes, *, now: datetime) -> list[dict]:
         if item["event_id"] in seen:
             raise U.UNSchemaError("duplicate UN updates history event")
         seen.add(item["event_id"])
-        result.append(item)
-    if not result:
+        if conflicts_in_row:
+            conflicts.append(dict(item, conflicting_references=conflicts_in_row))
+        else:
+            result.append(item)
+    if not result and not conflicts:
         raise U.UNSchemaError("no recent dated UN update history rows")
-    return result
+    return result, conflicts

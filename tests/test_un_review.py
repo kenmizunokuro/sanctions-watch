@@ -8,7 +8,7 @@ from unittest.mock import patch
 
 from src import master as M, un_watch as W, un_review as R
 from src.normalize import match_key
-from tests.test_un_sources import xml, PRESS
+from tests.test_un_sources import xml, PRESS, UPDATES, UPDATES_WITH_CONFLICT
 from tests.test_un_watch import Feed, NOW
 
 
@@ -34,6 +34,35 @@ class UNReviewTests(unittest.TestCase):
         return R.apply(self.root, event_id=event['event_id'], source_hash=event['source_hash'],
                        expected_master_hash=kwargs.get('expected_master_hash', R.master_hash(self.root)),
                        operator='Operator', when=NOW, note='承認した差分を反映')
+
+    def test_update_conflict_review_is_bound_to_original_and_keeps_active_error(self):
+        self.feed.updates = UPDATES_WITH_CONFLICT
+        detection = NOW + timedelta(minutes=3)
+        W.run(self.root, fetcher=self.feed, now=detection)
+        state = W.load(self.root)
+        event_id, = state['updates_conflicts']
+        event = state['updates_conflicts'][event_id]
+        args = dict(event_id='updates:conflict:' + event_id, source_hash=event['source_hash'],
+                    reviewer='Operator', when=detection + timedelta(minutes=1), note='公式番号を確認')
+        raw = self.root / f'data/raw/un/{event["source_hash"]}.html.gz'
+        original = raw.read_bytes()
+        raw.write_bytes(b'corrupted')
+        with self.assertRaisesRegex(ValueError, 'original'):
+            R.review_update_conflict(self.root, **args)
+        self.assertEqual(W.load(self.root), state)
+        raw.write_bytes(original)
+        reviewed = R.review_update_conflict(self.root, **args)
+        self.assertEqual(reviewed['status'], 'REVIEWED')
+        self.assertEqual(reviewed['detected_at'], event['detected_at'])
+        current = W.load(self.root)
+        self.assertEqual(current['updates_status'], 'error')
+        self.assertIn('updates:conflict:' + event_id, {row[0] for row in W._review_rows(current)})
+        self.feed.updates = UPDATES
+        W.run(self.root, fetcher=self.feed, now=detection + timedelta(minutes=2))
+        resolved = W.load(self.root)
+        self.assertEqual(resolved['updates_conflicts'][event_id], reviewed)
+        self.assertNotIn('updates:conflict:' + event_id, {row[0] for row in W._review_rows(resolved)})
+        self.assertFalse((self.root / 'data/master/master.csv').exists())
 
     def test_unapproved_or_wrong_master_hash_cannot_change_master(self):
         with self.assertRaises(ValueError):

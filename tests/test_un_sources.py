@@ -43,6 +43,15 @@ UPDATES = b'''<html><h1>List of updates to the UNSC Consolidated List</h1>
 </tbody></table></html>'''
 
 
+UPDATES_WITH_CONFLICT = (
+    UPDATES.replace(b'<th>', b'<td>').replace(b'</th>', b'</td>')
+    .replace(b'<thead>', b'').replace(b'</thead>', b'')
+    .replace(b'<tbody>', b"""<tbody>
+    <tr><td>26/10/2026</td><td>1533</td><td>QDe.010</td>
+    <td>Amendment</td><td>1</td><td><a href="https://press.un.org/en/2026/sc16506.doc.htm">SC/16506</a></td></tr>""")
+)
+
+
 class UNSourceTests(unittest.TestCase):
     def test_official_update_history_is_record_aware(self):
         from datetime import datetime, timezone
@@ -56,6 +65,22 @@ class UNSourceTests(unittest.TestCase):
         self.assertEqual(items[1]['notice_url'], 'https://press.un.org/en/2026/sc16488.doc.htm')
         self.assertNotEqual(items[0]['event_id'], items[1]['event_id'])
         self.assertEqual(items, V.parse_updates(UPDATES, now=datetime(2026,10,30,tzinfo=timezone.utc)))
+
+    def test_update_history_accepts_exact_td_headings_and_quarantines_only_matching_row(self):
+        from datetime import datetime, timezone
+        from src import un_updates as V
+        now = datetime(2026, 10, 30, tzinfo=timezone.utc)
+        updates, conflicts = V.parse_update_history(UPDATES_WITH_CONFLICT, now=now)
+        self.assertEqual(updates, V.parse_updates(UPDATES, now=now))
+        conflict, = conflicts
+        self.assertEqual(conflict['regime'], '1533')
+        self.assertEqual(conflict['references'], ['QDe.010'])
+        self.assertEqual(conflict['conflicting_references'], {'QDe.010': '1267'})
+        self.assertIn('sc16506', conflict['notice_url'])
+        with self.assertRaisesRegex(U.UNSchemaError, 'regime/reference mismatch: QDe.010'):
+            V.parse_updates(UPDATES_WITH_CONFLICT, now=now)
+        with self.assertRaisesRegex(U.UNSchemaError, 'headings'):
+            V.parse_update_history(UPDATES_WITH_CONFLICT.replace(b'Date</td>', b'Name</td>', 1), now=now)
 
     def test_updates_history_rejects_schema_loss_false_counts_and_untrusted_links(self):
         from datetime import datetime, timezone
