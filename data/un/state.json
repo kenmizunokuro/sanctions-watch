@@ -668349,7 +668349,7 @@
       "source": "press:2745"
     }
   ],
-  "last_checked_at": "2026-11-17T02:51:59Z",
+  "last_checked_at": "2026-11-17T04:00:41Z",
   "notices": {},
   "press_rss": {
     "article_evidence": {
@@ -668519,7 +668519,7 @@
         "url": "https://press.un.org/en/2026/sgsm23377.doc.htm"
       }
     ],
-    "last_success_at": "2026-11-17T02:51:59Z",
+    "last_success_at": "2026-11-17T04:00:41Z",
     "latest_publication_at": "2026-11-17T00:50:02Z",
     "new_articles": 0,
     "new_candidates": 0,
@@ -668535,6 +668535,6 @@
   "snapshot_hash": "eff4aaa0238c256749d9ac4b7233fb22b943b1281e29a43efd74d41247df0c38",
   "source_updated": "2026-11-17T00:00:02.485Z",
   "updates_status": "error",
-  "xml_last_success_at": "2026-11-17T02:51:59Z",
+  "xml_last_success_at": "2026-11-17T04:00:41Z",
   "xml_status": "review_required"
 }
