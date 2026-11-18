@@ -3,12 +3,12 @@
   "current_event_id": "b5c50bc8f6833e89f83d9a2640d6dc4c4c99d048765a627c8dc3353584580eb7",
   "documents": {
     "press_rss": {
-      "etag": "W/\"1794952730\"",
+      "etag": "W/\"1795003627\"",
       "filename": "rss.xml",
       "final_url": "https://press.un.org/en/rss.xml",
-      "last_modified": "Tue, 17 Nov 2026 21:58:50 GMT",
-      "raw_path": "data/raw/un/506fa688e18d05d87a918f55dc6227cc5da3f0c0568ef4c16fb2592cef384066.xml.gz",
-      "sha256": "506fa688e18d05d87a918f55dc6227cc5da3f0c0568ef4c16fb2592cef384066",
+      "last_modified": "Wed, 18 Nov 2026 12:07:07 GMT",
+      "raw_path": "data/raw/un/6b11756ca34e5bb84c426b0b94da71a97bc8846348347e3f57df34ac58f28934.xml.gz",
+      "sha256": "6b11756ca34e5bb84c426b0b94da71a97bc8846348347e3f57df34ac58f28934",
       "url": "https://press.un.org/en/rss.xml"
     },
     "xml": {
@@ -700125,7 +700125,7 @@
       "source": "press:2745"
     }
   ],
-  "last_checked_at": "2026-11-18T10:48:39Z",
+  "last_checked_at": "2026-11-18T19:17:50Z",
   "notices": {},
   "press_rss": {
     "article_evidence": {
@@ -700226,13 +700226,6 @@
     "items": [
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/db261116.doc.htm",
-        "publication_at": "2026-11-16T21:08:50Z",
-        "title": "Daily Press Briefing by the Office of the Spokesperson for the Secretary-General",
-        "url": "https://press.un.org/en/2026/db261116.doc.htm"
-      },
-      {
-        "candidate": false,
         "guid": "https://press.un.org/en/2026/db261117.doc.htm",
         "publication_at": "2026-11-17T21:11:26Z",
         "title": "Daily Press Briefing by the Office of the Spokesperson for the Secretary-General",
@@ -700293,14 +700286,21 @@
         "publication_at": "2026-11-16T22:02:50Z",
         "title": "Nearly Two Years after Assad’s Fall, Deputy Special Envoy Warns Security Council on Syria’s Political Gains, Persistent Violence",
         "url": "https://press.un.org/en/2026/sc16511.doc.htm"
+      },
+      {
+        "candidate": false,
+        "guid": "https://press.un.org/en/blog/sc16513",
+        "publication_at": "2026-11-18T12:04:33Z",
+        "title": "Security Council, 10275th Meeting (AM) Libya/ICC",
+        "url": "https://press.un.org/en/blog/sc16513"
       }
     ],
-    "last_success_at": "2026-11-18T10:48:39Z",
-    "latest_publication_at": "2026-11-17T21:56:16Z",
+    "last_success_at": "2026-11-18T19:17:50Z",
+    "latest_publication_at": "2026-11-18T12:04:33Z",
     "new_articles": 0,
     "new_candidates": 0,
     "revised_articles": 0,
-    "source_hash": "506fa688e18d05d87a918f55dc6227cc5da3f0c0568ef4c16fb2592cef384066",
+    "source_hash": "6b11756ca34e5bb84c426b0b94da71a97bc8846348347e3f57df34ac58f28934",
     "stale": false,
     "status": "coverage_gap"
   },
@@ -700619,6 +700619,6 @@
     }
   ],
   "updates_status": "error",
-  "xml_last_success_at": "2026-11-18T10:48:39Z",
+  "xml_last_success_at": "2026-11-18T19:17:50Z",
   "xml_status": "review_required"
 }
