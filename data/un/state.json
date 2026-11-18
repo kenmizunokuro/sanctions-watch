@@ -700125,7 +700125,7 @@
       "source": "press:2745"
     }
   ],
-  "last_checked_at": "2026-11-18T02:28:41Z",
+  "last_checked_at": "2026-11-18T10:48:39Z",
   "notices": {},
   "press_rss": {
     "article_evidence": {
@@ -700295,7 +700295,7 @@
         "url": "https://press.un.org/en/2026/sc16511.doc.htm"
       }
     ],
-    "last_success_at": "2026-11-18T02:28:41Z",
+    "last_success_at": "2026-11-18T10:48:39Z",
     "latest_publication_at": "2026-11-17T21:56:16Z",
     "new_articles": 0,
     "new_candidates": 0,
@@ -700619,6 +700619,6 @@
     }
   ],
   "updates_status": "error",
-  "xml_last_success_at": "2026-11-18T02:28:41Z",
+  "xml_last_success_at": "2026-11-18T10:48:39Z",
   "xml_status": "review_required"
 }
