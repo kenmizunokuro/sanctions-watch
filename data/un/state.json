@@ -3,12 +3,12 @@
   "current_event_id": "709b55816871365b832267d43e55007551f84edb5c66144ebb85ff7f2977b9c0",
   "documents": {
     "press_rss": {
-      "etag": "W/\"1795046322\"",
+      "etag": "W/\"1795097966\"",
       "filename": "rss.xml",
       "final_url": "https://press.un.org/en/rss.xml",
-      "last_modified": "Wed, 18 Nov 2026 23:58:42 GMT",
-      "raw_path": "data/raw/un/927ae68965c2e7b9deb8ebc7fac74ba942f644a02738a806b0b39da3e21a2e63.xml.gz",
-      "sha256": "927ae68965c2e7b9deb8ebc7fac74ba942f644a02738a806b0b39da3e21a2e63",
+      "last_modified": "Thu, 19 Nov 2026 14:19:26 GMT",
+      "raw_path": "data/raw/un/59d1bbf98b134568dc99edba80c327d90fca78f239d778b908ad6190c6de188f.xml.gz",
+      "sha256": "59d1bbf98b134568dc99edba80c327d90fca78f239d778b908ad6190c6de188f",
       "url": "https://press.un.org/en/rss.xml"
     },
     "xml": {
@@ -731901,7 +731901,7 @@
       "source": "press:2745"
     }
   ],
-  "last_checked_at": "2026-11-19T09:01:36Z",
+  "last_checked_at": "2026-11-19T18:20:47Z",
   "notices": {},
   "press_rss": {
     "article_evidence": {
@@ -732044,13 +732044,6 @@
       },
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/pal2255.doc.htm",
-        "publication_at": "2026-11-17T16:54:27Z",
-        "title": "Middle East Peace Media Seminar Concludes with Focus on Trauma, Psychological Toll of War Reporting",
-        "url": "https://press.un.org/en/2026/pal2255.doc.htm"
-      },
-      {
-        "candidate": false,
         "guid": "https://press.un.org/en/2026/sc16513.doc.htm",
         "publication_at": "2026-11-18T19:50:39Z",
         "title": "Briefed by International Criminal Court on Proceedings concerning Libya, Security Council Divided over Judicial Body’s Role",
@@ -732069,14 +732062,21 @@
         "publication_at": "2026-11-18T12:04:33Z",
         "title": "Security Council, 10275th Meeting (AM) Libya/International Criminal Court",
         "url": "https://press.un.org/en/blog/sc16513"
+      },
+      {
+        "candidate": false,
+        "guid": "https://press.un.org/en/blog/sc16514",
+        "publication_at": "2026-11-19T11:49:10Z",
+        "title": "Security Council, 10276th Meeting (PM) Subsidiary Bodies",
+        "url": "https://press.un.org/en/blog/sc16514"
       }
     ],
-    "last_success_at": "2026-11-19T09:01:36Z",
-    "latest_publication_at": "2026-11-18T23:42:00Z",
+    "last_success_at": "2026-11-19T18:20:47Z",
+    "latest_publication_at": "2026-11-19T11:49:10Z",
     "new_articles": 0,
     "new_candidates": 0,
     "revised_articles": 0,
-    "source_hash": "927ae68965c2e7b9deb8ebc7fac74ba942f644a02738a806b0b39da3e21a2e63",
+    "source_hash": "59d1bbf98b134568dc99edba80c327d90fca78f239d778b908ad6190c6de188f",
     "stale": false,
     "status": "coverage_gap"
   },
@@ -732395,6 +732395,6 @@
     }
   ],
   "updates_status": "error",
-  "xml_last_success_at": "2026-11-19T09:01:36Z",
+  "xml_last_success_at": "2026-11-19T18:20:47Z",
   "xml_status": "review_required"
 }
