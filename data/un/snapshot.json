@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-20T07:50:34.182Z",
+  "generated_at": "2026-11-20T21:56:38.845Z",
   "parties": {
     "CDe.001": {
       "committee": "1533",
@@ -166080,7 +166080,7 @@
           [
             "COMMENTS1",
             [],
-            "Father's name is Mohamed Elsayed Elsebai INTERPOL-UN Security Council Special Notice:https://www.interpol.int/en/How-we-work/Notices/View-UN-Notices-Individuals",
+            "Father's name is Mohamed Elsayed Elsebai. Photo available for inclusion in the INTERPOL-UN Security Council Special Notice. INTERPOL-UN Security Council Special Notice:https://www.interpol.int/en/How-we-work/Notices/View-UN-Notices-Individuals",
             []
           ],
           [
@@ -166154,6 +166154,12 @@
                 "VALUE",
                 [],
                 "2023-10-30",
+                []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-20",
                 []
               ]
             ]
@@ -166551,7 +166557,7 @@
           ]
         ]
       ],
-      "fingerprint": "e1cdadcf00bb11593aa8914c544eb1bf220cb7e30170e10afd500d9743ca13d5",
+      "fingerprint": "f2010d88d300c9fef8ce28c82e0c102a657c959b334f31329e0e5328d0b98c04",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2005-09-29",
@@ -306524,8 +306530,8 @@
       "reference": "YEi.012"
     }
   },
-  "raw_path": "data/raw/un/d4bf2b28c69d2dae1458c96c3d2def25087b064e9c58488c3ad37aca282cbd93.xml.gz",
+  "raw_path": "data/raw/un/d4949912ef0bd04a79d42cdfec05e31cf2e96f9b717b8a07150c2d6c97f8277c.xml.gz",
   "schema_version": 1,
-  "source_hash": "d4bf2b28c69d2dae1458c96c3d2def25087b064e9c58488c3ad37aca282cbd93",
+  "source_hash": "d4949912ef0bd04a79d42cdfec05e31cf2e96f9b717b8a07150c2d6c97f8277c",
   "source_url": "https://scsanctions.un.org/resources/xml/en/name/consolidated.xml"
 }
