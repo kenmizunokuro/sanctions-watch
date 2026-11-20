@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-19T00:00:03.388Z",
+  "generated_at": "2026-11-20T00:00:05.835Z",
   "parties": {
     "CDe.001": {
       "committee": "1533",
@@ -306003,8 +306003,8 @@
       "reference": "YEi.012"
     }
   },
-  "raw_path": "data/raw/un/d63b0ea14b5f25d0c4bfa907f1889184224a44780290b180f27d552bb81347f8.xml.gz",
+  "raw_path": "data/raw/un/b2c67099a06847dac96bba7ec03d5fc954ca176a498d9c1543967cb00c730fbf.xml.gz",
   "schema_version": 1,
-  "source_hash": "d63b0ea14b5f25d0c4bfa907f1889184224a44780290b180f27d552bb81347f8",
+  "source_hash": "b2c67099a06847dac96bba7ec03d5fc954ca176a498d9c1543967cb00c730fbf",
   "source_url": "https://scsanctions.un.org/resources/xml/en/name/consolidated.xml"
 }
