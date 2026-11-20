@@ -1,2 +1,2 @@
 監査終了日時（JST）,証跡状態,停止件数,停止理由,監査報告SHA256,GitHub実行URL
-2026-11-21 03:12:34,BLOCKED,2,監査停止2件：EXTRA_REGISTRATION 2件／対象（最大10件）：Abu al-Fadl、'NDRANGHETA ORGANIZATION,0035ebba7c0ac328fed99dea463589b8b76e693d3c77220eb225a8e1211f99ad,https://github.com/kenmizunokuro/sanctions-watch/actions/runs/44788639341
+2026-11-21 03:50:23,BLOCKED,2,監査停止2件：EXTRA_REGISTRATION 2件／対象（最大10件）：Abu al-Fadl、'NDRANGHETA ORGANIZATION,ee621f3d29012f23c82dc6a8b213c4193cee1625d8606c1ef369b80bf0f66dcd,https://github.com/kenmizunokuro/sanctions-watch/actions/runs/44794968689
