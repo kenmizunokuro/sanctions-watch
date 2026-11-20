@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-20T00:00:05.835Z",
+  "generated_at": "2026-11-20T07:50:34.182Z",
   "parties": {
     "CDe.001": {
       "committee": "1533",
@@ -112429,6 +112429,12 @@
                 [],
                 "2024-11-07",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -112516,7 +112522,7 @@
           ]
         ]
       ],
-      "fingerprint": "07869df5260fdc2df0cf05043f8e7a42e19ef5a3c69d914903f870a8e836da16",
+      "fingerprint": "cfdfe8516e2a67a64755f8540584745012655b68f1a46186286493fe523b79ca",
       "kind": "entity",
       "list_type": "Al-Qaida",
       "listed_on": "2001-10-06",
@@ -117217,6 +117223,12 @@
                 [],
                 "2021-11-15",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -117361,7 +117373,7 @@
           ]
         ]
       ],
-      "fingerprint": "ab8a86e7e05dc58517f9da705c018947e3f8a8f719e027bcdfa7d1dfcac8a23b",
+      "fingerprint": "812776e9d6c16bd0d551896b7bb6e03eb7bfc88defbdad17e97ecd62b59d1b71",
       "kind": "entity",
       "list_type": "Al-Qaida",
       "listed_on": "2003-03-04",
@@ -117817,6 +117829,12 @@
                 [],
                 "2020-11-24",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -117904,7 +117922,7 @@
           ]
         ]
       ],
-      "fingerprint": "2954721a2bcbb175ad0374a2b45c942515588f76efbb00ed70ea028f39f3da17",
+      "fingerprint": "2bd5f3156a6a2a5bd5d6a720a30a5da6c6bbfac70528dd498ede6e55a525e5e2",
       "kind": "entity",
       "list_type": "Al-Qaida",
       "listed_on": "2003-03-04",
@@ -118790,6 +118808,12 @@
                 [],
                 "2023-10-30",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -119141,7 +119165,7 @@
           ]
         ]
       ],
-      "fingerprint": "afac929185cb94a282fcf2a5f8e2e25cb1a2494f646ae3c62ad2b8ae67ed03b8",
+      "fingerprint": "9aea04bdda88ca59f56c756f59e769e28cd9ed019f2ad8df1c4315af70bc8816",
       "kind": "entity",
       "list_type": "Al-Qaida",
       "listed_on": "2004-05-11",
@@ -125465,6 +125489,12 @@
                 [],
                 "2022-11-08",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -125514,7 +125544,7 @@
           ]
         ]
       ],
-      "fingerprint": "e9ef2642c8febce3d918106f5eb39c3c2aeb84dabe24755d455fdc7bd6a995b0",
+      "fingerprint": "8058922cecdd71097dc195659e0efa75fecdcfc819b2df3f6289fe9ac59e9ab6",
       "kind": "entity",
       "list_type": "Al-Qaida",
       "listed_on": "2013-03-20",
@@ -125653,6 +125683,12 @@
                 [],
                 "2022-11-08",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -125759,7 +125795,7 @@
           ]
         ]
       ],
-      "fingerprint": "ccd1eea9fa37c025d621cd534a521ad19cee2aabd19f358dad38f88ab5bdfc4e",
+      "fingerprint": "fabca7d6b3b9b3135bdb3d1d86fa398ee856214b4cffbbf35f266f02feb5375d",
       "kind": "entity",
       "list_type": "Al-Qaida",
       "listed_on": "2013-10-21",
@@ -129854,6 +129890,12 @@
                 [],
                 "2022-11-08",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -130004,7 +130046,7 @@
           ]
         ]
       ],
-      "fingerprint": "30e7e7bf1aa41019f9d7bc24aa2a5e679ea154dd5ec952388bc0d53d31fa2be8",
+      "fingerprint": "55f37bc3977a901ecd507375bd346501baaaa1bd5cf581aaf43a92f365d04182",
       "kind": "entity",
       "list_type": "Al-Qaida",
       "listed_on": "2017-07-20",
@@ -130155,6 +130197,12 @@
                 "VALUE",
                 [],
                 "2022-11-08",
+                []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
                 []
               ]
             ]
@@ -130337,7 +130385,7 @@
           ]
         ]
       ],
-      "fingerprint": "48e02aa170a3a348f24937c136217a6a5433a3610d59e8ce015f763eedfbdad1",
+      "fingerprint": "9350f5d4b6bc163dc1c8c8dfcacb5a58ac73d3c9ce02df75e081fb8ae7171f01",
       "kind": "entity",
       "list_type": "Al-Qaida",
       "listed_on": "2017-07-20",
@@ -130483,6 +130531,12 @@
                 [],
                 "2022-11-08",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -130570,7 +130624,7 @@
           ]
         ]
       ],
-      "fingerprint": "e911148313142b7db02a676f31c3b7749d75488bd7e72a2619f78d806ce2502f",
+      "fingerprint": "adf76a285b807c7d62a2bf670f0289e8bca72feb5999998424e8ac672ce5de7a",
       "kind": "entity",
       "list_type": "Al-Qaida",
       "listed_on": "2017-07-20",
@@ -133623,6 +133677,19 @@
             ]
           ],
           [
+            "LAST_REVIEWED_ON",
+            [],
+            "",
+            [
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
+              ]
+            ]
+          ],
+          [
             "ENTITY_ALIAS",
             [],
             "",
@@ -133858,7 +133925,7 @@
           ]
         ]
       ],
-      "fingerprint": "4c4e4b5c3b257468a28f7f1b35867304529abd1ea4d771fd677689315630df6a",
+      "fingerprint": "3adcda976ee1ab6977a34f7e7e221c12b9611bfd9ba535e0d0f0631de028489e",
       "kind": "entity",
       "list_type": "Al-Qaida",
       "listed_on": "2021-12-29",
@@ -134495,6 +134562,12 @@
                 [],
                 "2022-11-08",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -134796,7 +134869,7 @@
           ]
         ]
       ],
-      "fingerprint": "14f0739abe88b612a862535852e8cbb73b15eb75e3a179a46779beb7509831cd",
+      "fingerprint": "571eac210947ea00c42f5eba2b73606517a56ea483a174923df85bbd8e7f3503",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2001-01-25",
@@ -136420,6 +136493,12 @@
                 [],
                 "2022-11-08",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -136507,7 +136586,7 @@
           ]
         ]
       ],
-      "fingerprint": "08ddb7dfed9a7a2c1c311476bef838183ee4354b6ca2ad9374b22a700636d920",
+      "fingerprint": "96c72af107113ab5206a010a6c773d566ca43d04be394f2c3d5856ce149a00ee",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2001-01-25",
@@ -137505,6 +137584,12 @@
                 [],
                 "2020-11-24",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -137630,7 +137715,7 @@
           ]
         ]
       ],
-      "fingerprint": "22d4242ba585ea2a483061fedf79b7fab96c700ab16ade6f1994b44456ced2a4",
+      "fingerprint": "3e9debabb96dfaf2822f461fb0543aa30f16f5ab6ff85c7af52673a6d6e2e006",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2001-10-06",
@@ -144366,6 +144451,12 @@
                 [],
                 "2023-10-30",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -144639,7 +144730,7 @@
           ]
         ]
       ],
-      "fingerprint": "41f25acd80036bc1a612f9b27dc7d664aede5683e093bae4bd394dbdb5cc4b26",
+      "fingerprint": "bec970e2abfbb86be4cbe5f8a6d8accd725726c0c8c2bcea9d12145d118054bc",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2002-04-24",
@@ -145639,6 +145730,12 @@
                 [],
                 "2023-10-30",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -145865,7 +145962,7 @@
           ]
         ]
       ],
-      "fingerprint": "03a7d7fa78d2cb1432f9959c9847337b5e3e711aea34de4a9bf9fa90e20444a1",
+      "fingerprint": "acc1b261512ee576854db4cccb489b0654fa1666912436d4bbd104e4a7456c8d",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2002-04-24",
@@ -147571,6 +147668,12 @@
                 [],
                 "2023-10-30",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -147701,7 +147804,7 @@
           ]
         ]
       ],
-      "fingerprint": "4e20fa224e430e7cdf43e5497ac522da6b33789842a1fe61d04d69ed4e92a114",
+      "fingerprint": "dfa32b7e017a545821ab07aac8f2a6c119c0348149d617d57b19946bfa43d856",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2002-09-03",
@@ -152416,6 +152519,12 @@
                 [],
                 "2023-10-30",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -152666,7 +152775,7 @@
           ]
         ]
       ],
-      "fingerprint": "63c9daef0fd17e2a06f31c54d7dba3c747b4553f54c253d646703ccbbd8b53c2",
+      "fingerprint": "9caf3c81aa0bfafc2b72b593ff6e8285fddd7c30c44d774e561fd973d921f033",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2003-09-09",
@@ -153150,6 +153259,12 @@
                 [],
                 "2022-11-08",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -153420,7 +153535,7 @@
           ]
         ]
       ],
-      "fingerprint": "edb6398be260ab2f00f0c3341be6d4f6a7c209a3bead6bff244d64e888b8b969",
+      "fingerprint": "654d3be1e7d3ef9a244df14c045560c286cd5502d6bb2c08bbba695c1e604fd4",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2003-09-09",
@@ -153666,6 +153781,12 @@
                 [],
                 "2022-11-08",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -153847,7 +153968,7 @@
           ]
         ]
       ],
-      "fingerprint": "48238c5bc7f7a4e12141dd023b7a0ca8cffb951aefff7c977a84da2a4eda30e3",
+      "fingerprint": "45592cf62ca679a09de6e56c31a9aabb101fe87a5e48ef4d7f8fad4605e0dc81",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2003-09-09",
@@ -154418,6 +154539,12 @@
                 "VALUE",
                 [],
                 "2022-11-08",
+                []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
                 []
               ]
             ]
@@ -155118,7 +155245,7 @@
           ]
         ]
       ],
-      "fingerprint": "5bad228f03bf054baba7caaf7f6f92ce3b7fb275331561ee4080f14a09fc29ab",
+      "fingerprint": "eec2f01ae30dffcbca0b002a329c8f8f6b15906670af5f803a9dd8da5a47071f",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2003-09-23",
@@ -158631,6 +158758,12 @@
                 [],
                 "2022-11-08",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -158742,7 +158875,7 @@
           ]
         ]
       ],
-      "fingerprint": "431d148f4ada6c4e7d8f9296f4e7784e6158b1330255d9b6ea4099e9fab98c1d",
+      "fingerprint": "6756d8d20d22e13a5fd09eb41dfd7f57ce7f79e598ef5996546db91b98edbbcb",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2003-11-12",
@@ -159357,6 +159490,12 @@
                 [],
                 "2022-11-08",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -159456,7 +159595,7 @@
           ]
         ]
       ],
-      "fingerprint": "3c2d80bdd097d9bffaaa701da327437f2df190f6eeaa14a4475b842448764e40",
+      "fingerprint": "0bb82e9433b291deeccf188cb65f9b3c1fb580e4ca1d97cb56751b1854849906",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2003-11-12",
@@ -159656,6 +159795,12 @@
                 [],
                 "2022-11-08",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -159767,7 +159912,7 @@
           ]
         ]
       ],
-      "fingerprint": "0353f2d4c29d39c5399b535dcd19c8fdc7356ac44f2dfc20be173a55f2da83f4",
+      "fingerprint": "3dc0cff758cbd6183ed4a8f665eb51bb4937aedf0dcde32ff8003b34dae122f8",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2003-11-12",
@@ -160700,6 +160845,12 @@
                 [],
                 "2023-10-30",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -160938,7 +161089,7 @@
           ]
         ]
       ],
-      "fingerprint": "ba6fb8ef7972051df2be60250d74bb6c44196ff8d291926a8367ecb32811efab",
+      "fingerprint": "dc8318c1f8056c6cb29019483fd046f1b6d1dff7d41fb5c6b818b8b74f42c8c8",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2003-12-04",
@@ -162116,6 +162267,12 @@
                 [],
                 "2023-10-30",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -162272,7 +162429,7 @@
           ]
         ]
       ],
-      "fingerprint": "e7d915651b0da59da85962f02e8e1011cb45365b548237a15a38fe8bf29d9d4c",
+      "fingerprint": "b1747af3c5ed6569b407eca42b3bac3ab240e941912c457d4ebc7f8c1a1598b5",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2004-05-03",
@@ -166023,6 +166180,12 @@
                 [],
                 "2023-10-30",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -166388,7 +166551,7 @@
           ]
         ]
       ],
-      "fingerprint": "1a1ff845894e4933da7368a107ea8949623f7568abb67cd8bcad901a4ec432b5",
+      "fingerprint": "e1cdadcf00bb11593aa8914c544eb1bf220cb7e30170e10afd500d9743ca13d5",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2005-09-29",
@@ -166653,6 +166816,12 @@
                 [],
                 "2022-11-08",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -166815,7 +166984,7 @@
           ]
         ]
       ],
-      "fingerprint": "85e4bd61f848f120a693025ebeb97b8b09a247618494fdabb84b39cda53ae41a",
+      "fingerprint": "4df76a1130a8ee0f5c6d5b10907840a513fcdbc749b173df7a22f3e8b68e1f73",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2005-12-06",
@@ -170834,6 +171003,12 @@
                 [],
                 "2022-11-08",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -170965,7 +171140,7 @@
           ]
         ]
       ],
-      "fingerprint": "e9e0a192f0db660e06672f930f534237132bf36405d89a820b1fcd8a4b34c436",
+      "fingerprint": "9f44976c7a6f78f33ebd3d073d48e5efa98df2620bf92c58d969b73cff1d9461",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2006-12-12",
@@ -171141,6 +171316,12 @@
                 [],
                 "2022-11-08",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -171309,7 +171490,7 @@
           ]
         ]
       ],
-      "fingerprint": "67e541951b1c6a7d8b28967dab4f798e03009f98973f8c6d41c9372b508187b8",
+      "fingerprint": "76842d7bf3ae78508bb9d8b366752b6a0f668ddcb1be1c280f626ec30b075bb3",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2007-06-08",
@@ -171495,6 +171676,12 @@
                 "VALUE",
                 [],
                 "2022-11-08",
+                []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
                 []
               ]
             ]
@@ -171739,7 +171926,7 @@
           ]
         ]
       ],
-      "fingerprint": "dd385ca1ef54dd2a02341c5bb837742f7e385696e0cc061fb4f6991198790f21",
+      "fingerprint": "2ab2d74dab9a0b6f9aabd3828cfe5761d3c7c8a9127a1ed265b50f3ca1da376e",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2007-06-08",
@@ -172235,6 +172422,12 @@
                 [],
                 "2022-11-08",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -172529,7 +172722,7 @@
           ]
         ]
       ],
-      "fingerprint": "e05936fa1e2804523d5447dccb2420b5d36505e4b526d098f95039516e7fb9ef",
+      "fingerprint": "4388b6c63f530c3db5eb9c6684e37f38c330a36b61c2f12f8acf211f505c229d",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2008-01-16",
@@ -173259,6 +173452,12 @@
                 [],
                 "2022-11-08",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -173553,7 +173752,7 @@
           ]
         ]
       ],
-      "fingerprint": "cc49787e76fc08af8a95bd0dd146ffa629cfcfb690abbe3a5229329a839f5dce",
+      "fingerprint": "cb13deead499eb87b4f8f2e269dea572b694d10d3ba66f942f58010929ebb31b",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2008-01-16",
@@ -173752,6 +173951,12 @@
                 "VALUE",
                 [],
                 "2023-10-30",
+                []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
                 []
               ]
             ]
@@ -173959,7 +174164,7 @@
           ]
         ]
       ],
-      "fingerprint": "a8754470ab67d4dd73dfcac5152c8db3dec3bc85e4cb433c845ce978c6ef2277",
+      "fingerprint": "ef70a9caef2eed251ab88b17eeaa707e656f99b6b24dc8d38daf9e0a912c9a99",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2008-06-04",
@@ -174154,6 +174359,12 @@
                 "VALUE",
                 [],
                 "2023-10-30",
+                []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
                 []
               ]
             ]
@@ -174355,7 +174566,7 @@
           ]
         ]
       ],
-      "fingerprint": "0a967a5bbdaef0ff9a7c44da5467c198a31e58e065a8cfbd2548db523751714c",
+      "fingerprint": "5732d6d96a8288be07b5658d52eaae6610176c4c671aa8f9ec3d1cde0431a20e",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2008-06-04",
@@ -174570,6 +174781,12 @@
                 [],
                 "2023-10-30",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -174688,7 +174905,7 @@
           ]
         ]
       ],
-      "fingerprint": "5d18ac1f671dbe687473182adb5d6684e214eec6a715df33c0b8e717f1673e60",
+      "fingerprint": "70b870cfbb70cc04034a981d5018abf23c8e44e1be2060c153a4e838ff00daa4",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2008-06-04",
@@ -175417,6 +175634,12 @@
                 [],
                 "2023-10-30",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -175667,7 +175890,7 @@
           ]
         ]
       ],
-      "fingerprint": "48db5d43b26f040a093e188f521bef0913ce1ef775d368af51bc38e3d725d9e8",
+      "fingerprint": "9223f1cd4e9cbf84466c053596f04b602d4b00e71397445bd35e66faf3ecce56",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2008-06-04",
@@ -175872,6 +176095,12 @@
                 "VALUE",
                 [],
                 "2023-10-30",
+                []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
                 []
               ]
             ]
@@ -176111,7 +176340,7 @@
           ]
         ]
       ],
-      "fingerprint": "d15634e72bb53b72626d61a0eb9e9e2e856c7c9348d9437f4c305d2672608d22",
+      "fingerprint": "3d3e29941e9cbade8c48840567b77f1e5b716db187c8bcccbd31f7b41358b7db",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2008-06-04",
@@ -176987,6 +177216,12 @@
                 [],
                 "2023-10-30",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -177224,7 +177459,7 @@
           ]
         ]
       ],
-      "fingerprint": "e7d676947ab49944194b8a509c9855d2133939b33bc473537dcc5ba165a7815e",
+      "fingerprint": "3527bdc47f580a799b61c5294df6fd7c8d7b4af4b02ea2a0c051ea49a653a62b",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2008-06-04",
@@ -178114,6 +178349,12 @@
                 [],
                 "2023-10-30",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -178276,7 +178517,7 @@
           ]
         ]
       ],
-      "fingerprint": "8df4644b7a85b327022ab70294dce9d9410ae8b41088f44241e2d0114614ea36",
+      "fingerprint": "4de2c71aeba01bd12421c87a75755651e1ee052871f0fd7663039e54be831d06",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2008-07-03",
@@ -180062,6 +180303,12 @@
                 [],
                 "2022-11-08",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -180324,7 +180571,7 @@
           ]
         ]
       ],
-      "fingerprint": "7e87830caee3846a9dfa72aff75e40caede294ee01769e702bbbbb5400f3c16d",
+      "fingerprint": "14a11d67d2a97e5e113a07975594fa4c612da3b233c8fccfd5a8fdbe0505cb0a",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2008-12-10",
@@ -180513,6 +180760,12 @@
                 "VALUE",
                 [],
                 "2022-11-08",
+                []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
                 []
               ]
             ]
@@ -180770,7 +181023,7 @@
           ]
         ]
       ],
-      "fingerprint": "074bce98dd158b6662290fa169d91f813fdb8e80490e3ef2946981638b7a5276",
+      "fingerprint": "7bf2b01f86bfec654fa57267966e3ee61be02f9df3d1e5a76edd3dcdead40731",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2008-12-10",
@@ -180944,6 +181197,12 @@
                 "VALUE",
                 [],
                 "2022-11-08",
+                []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
                 []
               ]
             ]
@@ -181146,7 +181405,7 @@
           ]
         ]
       ],
-      "fingerprint": "9b77f8be295ee99d3a3301da4bf2d34fe4ba999cf2742cc535b5041996723ca3",
+      "fingerprint": "84ff536286173b5af3e221488cbd015a83a6f7ce4f178d25ebd73d33cde94c6f",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2008-12-10",
@@ -181946,6 +182205,12 @@
                 [],
                 "2022-11-08",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -182159,7 +182424,7 @@
           ]
         ]
       ],
-      "fingerprint": "dad12060cad15b8f868aef1330a0faa3b5d5300300b003ed099e9c41f5dc203f",
+      "fingerprint": "64b4e2daf50461b01b53ea5813117c3139eccd85d2e43d6853df2c98135a38a2",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2009-06-29",
@@ -182342,6 +182607,12 @@
                 [],
                 "2022-11-08",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -182460,7 +182731,7 @@
           ]
         ]
       ],
-      "fingerprint": "076e04078a29e1b8d94be26267febc9d64d41a480b7610259d17cfc2781a8fd8",
+      "fingerprint": "7c920c420b08f2f6ad7cdd34244be8b3f4c9743071cdd1e15422cd28ae57dfc4",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2009-06-29",
@@ -182624,6 +182895,12 @@
                 "VALUE",
                 [],
                 "2022-11-08",
+                []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
                 []
               ]
             ]
@@ -182882,7 +183159,7 @@
           ]
         ]
       ],
-      "fingerprint": "fb891e2661d656f40671c3959e6505d435385a771c6292265c9a0db600af7d53",
+      "fingerprint": "b7ecc41479ba7ca2bb0f3690594c40152d746513fb0509f5abb74bedb4d04719",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2009-06-29",
@@ -183076,6 +183353,12 @@
                 [],
                 "2022-11-08",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -183239,7 +183522,7 @@
           ]
         ]
       ],
-      "fingerprint": "fc829fedab3d216368132a1d554d2d3d8da9b78fe5abef925dd575a83d99415b",
+      "fingerprint": "a71b8fb56600619f2ab6704cbbf53f81b77d4004192e284b136770c503f8e2ad",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2010-03-11",
@@ -183411,6 +183694,12 @@
                 "VALUE",
                 [],
                 "2022-11-08",
+                []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
                 []
               ]
             ]
@@ -183588,7 +183877,7 @@
           ]
         ]
       ],
-      "fingerprint": "4e99d4f79f4b7caa44356d4ab54ac39a3e3278afd46dc89f5c3fa94319af9569",
+      "fingerprint": "4811f8d91b8fd12ad414352be0b13182e8e606124c0602c2c0144f51dadc75e4",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2010-03-11",
@@ -184443,6 +184732,12 @@
                 [],
                 "2023-10-30",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -184580,7 +184875,7 @@
           ]
         ]
       ],
-      "fingerprint": "527fb72027714c58d086f94bd707702f879bceb6e574e281c550d97c993b698e",
+      "fingerprint": "981892de70728dc73c57245e0f6feabe00d93911b49c17b2db6b451e1b482fcb",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2010-04-22",
@@ -184755,6 +185050,12 @@
                 [],
                 "2023-10-30",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -184917,7 +185218,7 @@
           ]
         ]
       ],
-      "fingerprint": "f7709bb7e6399715ac1a8cd78b674bbde06d2ea24cdd24f727e30e1cfbaf4b5c",
+      "fingerprint": "4a89e8b923c48e4e1ea97a745479002adaf6329a7f5e9ee740b120112a7b26a1",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2010-04-22",
@@ -186076,6 +186377,12 @@
                 [],
                 "2022-11-08",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -186464,7 +186771,7 @@
           ]
         ]
       ],
-      "fingerprint": "5b5f5ca7e9a1968b4e60f1c7ff1c20d612fd0f119fb686dd22e97d06d8866165",
+      "fingerprint": "f22e67ec4e19d67f03669fba09041c30da8af874c847228be0c219fe5c50cd5c",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2011-02-09",
@@ -190533,6 +190840,12 @@
                 [],
                 "2023-10-30",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -190778,7 +191091,7 @@
           ]
         ]
       ],
-      "fingerprint": "5fc2d2f9a14c5bc2b11159a841e29f877b7f3871e9a90d6fa12f538e5d8e37d0",
+      "fingerprint": "f5a3f8436292326151da74ca171dd6ac7e036af8f3733eace558331111b1ce5b",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2011-09-15",
@@ -193345,6 +193658,12 @@
                 [],
                 "2022-11-08",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -193608,7 +193927,7 @@
           ]
         ]
       ],
-      "fingerprint": "29e70608f74de959781818a173ecba6b345a50bd8c83506f24c829d3ad18b7ea",
+      "fingerprint": "90cb1d5f679b242509166e65aeaf0492e8353715ba2518949ac8364472b49b3e",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2012-03-14",
@@ -193779,6 +194098,12 @@
                 "VALUE",
                 [],
                 "2022-11-08",
+                []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
                 []
               ]
             ]
@@ -193998,7 +194323,7 @@
           ]
         ]
       ],
-      "fingerprint": "5f078ab5bb2f26971fbee6d58c7ac9423856a9e1023089a6d81da0ee11edd6f6",
+      "fingerprint": "ed435aa82114aacf81e6b1f58b85721b4c942ca4c6fb050599d06e7063347eb5",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2012-03-14",
@@ -194564,6 +194889,12 @@
                 [],
                 "2022-11-08",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -194682,7 +195013,7 @@
           ]
         ]
       ],
-      "fingerprint": "4b76157c699300098d2e3a0c2f19b5238dfc1dc78fac53d57b4393abfe691bae",
+      "fingerprint": "ada4de03ef3151aa8fa167d554560f6c4181c53c156819f09cbf863535d0e44b",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2013-02-05",
@@ -194850,6 +195181,12 @@
                 "VALUE",
                 [],
                 "2022-11-08",
+                []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
                 []
               ]
             ]
@@ -195051,7 +195388,7 @@
           ]
         ]
       ],
-      "fingerprint": "68654c357bb017dd25016fd9b5eeecca6d08f8a4b7f26963f32930410ecae276",
+      "fingerprint": "c493f4952434d8dd251e21ec8c8ec831aacc692ae11c46596e7213177029db7e",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2013-02-22",
@@ -195224,6 +195561,12 @@
                 "VALUE",
                 [],
                 "2022-11-08",
+                []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
                 []
               ]
             ]
@@ -195406,7 +195749,7 @@
           ]
         ]
       ],
-      "fingerprint": "1fd0888c46030cb2f1a391309a5a4d2d2ad2daec252eb1e18d2b2657d21235ba",
+      "fingerprint": "46d310531dedb76e0deab7ae647c268fcec8154a72cf8130d944fd53d3f3b0bd",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2013-02-22",
@@ -195946,6 +196289,12 @@
                 [],
                 "2022-11-08",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -196434,7 +196783,7 @@
           ]
         ]
       ],
-      "fingerprint": "11163b40bfa0939e2f14281ab6123b7e1dcdabdbf12324ca31c34dced299444a",
+      "fingerprint": "9aaa8d0e6b032c23c3729a65f73fcdc54abc503125ce7774c6f04c72da36b7f8",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2013-10-21",
@@ -196663,6 +197012,12 @@
                 [],
                 "2022-11-08",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -196788,7 +197143,7 @@
           ]
         ]
       ],
-      "fingerprint": "b98d730ed11de2a347bd9d89d890069def6e90aaaf8013e58229d12e16809f39",
+      "fingerprint": "97787889819f0952802a4d6a12c4d9c800bfe38434fd2724d1c26163744338cb",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2013-10-24",
@@ -196955,6 +197310,12 @@
                 "VALUE",
                 [],
                 "2022-11-08",
+                []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
                 []
               ]
             ]
@@ -197277,7 +197638,7 @@
           ]
         ]
       ],
-      "fingerprint": "cd1d35e470710ce065b60adae8a9ed6f06a78624352659acbca697dc6e286393",
+      "fingerprint": "7ad5b008174b6d682c6118e019ba62c8c3d7dea172fc695fdaa22ba76ce0abce",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2013-11-26",
@@ -200685,6 +201046,12 @@
                 [],
                 "2023-10-30",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -200936,7 +201303,7 @@
           ]
         ]
       ],
-      "fingerprint": "a17f154011c57687a5fddef9382dfd64e12334be2121677c6128f73ff865b8ee",
+      "fingerprint": "355354ecd7ac10df454695e5687b5dcd7e0c6f2dc13f2ff115c7981092d00734",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2014-09-23",
@@ -201383,6 +201750,12 @@
                 [],
                 "2023-10-30",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -201552,7 +201925,7 @@
           ]
         ]
       ],
-      "fingerprint": "2c171b81d79a89ce0e2ebf0d040051498a82a60c2026285a8e3162f86bb51556",
+      "fingerprint": "1d7650d5fc385439e81ddbdfebfefd864e3d805a9f058e6ac0427224d2f8c453",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2014-09-23",
@@ -202878,6 +203251,12 @@
                 [],
                 "2022-11-08",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -203104,7 +203483,7 @@
           ]
         ]
       ],
-      "fingerprint": "18a4b8045505f093a19940950bb8547461358350f61549b444e29f8424fb3366",
+      "fingerprint": "7472aa059f49875f4fd3eeee5e92f246114b3f8fd35ba305d2b2e538cb6b8809",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2014-09-23",
@@ -203776,6 +204155,12 @@
                 [],
                 "2023-10-30",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -204103,7 +204488,7 @@
           ]
         ]
       ],
-      "fingerprint": "10ba75e1e27bc14959e54e39779f4ad6740d08904395b50fbc50a3a2836d837d",
+      "fingerprint": "28f23d099ae450710dabcf2b455ba5714d13ffe7fd1097a745f9e3c902664574",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2014-09-23",
@@ -210497,6 +210882,12 @@
                 [],
                 "2022-11-08",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -210729,7 +211120,7 @@
           ]
         ]
       ],
-      "fingerprint": "400234d6cf05d4601eae5dcf9f4db31a43a515782c27e25b09498ab8d210e0fc",
+      "fingerprint": "1c62e563eb9ccd563a2a680842a7deccd1aedede2bd3b20d2269dc1f6bdf4cfb",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2015-09-29",
@@ -213597,6 +213988,12 @@
                 [],
                 "2023-10-30",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -213797,7 +214194,7 @@
           ]
         ]
       ],
-      "fingerprint": "8ca242f3a2e8b96893cb7fb19ab540c1c701502411f374501782752a40c19309",
+      "fingerprint": "81607f55607e44ba5fea315974ef70a0ebcc02b9b3cfc2d186e73a5904f7e8a2",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2015-09-29",
@@ -213977,6 +214374,12 @@
                 [],
                 "2023-10-30",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -214127,7 +214530,7 @@
           ]
         ]
       ],
-      "fingerprint": "23f876431384bd4f1e27442692832b8b095f8dd09962e5c7ae03ee92cf756708",
+      "fingerprint": "6ffcff71caff612f75eb76f9c485c8a23c9996eba749c61cf6e3b215849b50f8",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2015-09-29",
@@ -216400,6 +216803,12 @@
                 [],
                 "2022-11-08",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -216706,7 +217115,7 @@
           ]
         ]
       ],
-      "fingerprint": "842b32983096e8bdf78c36635aabc9b03486c1c654259c930abb6bf47462ec3e",
+      "fingerprint": "fcb82fb43d9a9215e809a757832019802bf0002cdf6cd0112baa35dc7413601e",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2015-09-21",
@@ -217644,6 +218053,12 @@
                 [],
                 "2023-10-30",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -217971,7 +218386,7 @@
           ]
         ]
       ],
-      "fingerprint": "90bf7736e466f1072acc40f14989c20b5964f9a4ae1f5dca10e2a899bd7805cf",
+      "fingerprint": "e676bb6eb6dff09bb58c37c3904c8983d8594a9a36e23833ceeec8ca9d701c4b",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2016-02-29",
@@ -219905,6 +220320,12 @@
                 [],
                 "2022-11-08",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -220092,7 +220513,7 @@
           ]
         ]
       ],
-      "fingerprint": "8c824f77f086dbb29e3dc2ea8ed3e02dece652536217dd65402a5cffeb1e6483",
+      "fingerprint": "6487c18e35243c555905b6268e46d20f450084059e3ab81bbf3ee98bf614de17",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2016-04-20",
@@ -221980,6 +222401,12 @@
                 [],
                 "2023-10-30",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -222136,7 +222563,7 @@
           ]
         ]
       ],
-      "fingerprint": "63792f16f027ef430b05fa94af01d711194843037133e063d4693978d36a7432",
+      "fingerprint": "59edebaf5eb54bb578013881bbd12a1ea5d50c88bfbd08592c3f783b7d15154e",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2017-02-22",
@@ -222293,6 +222720,12 @@
                 [],
                 "2022-11-08",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -222442,7 +222875,7 @@
           ]
         ]
       ],
-      "fingerprint": "2034a45dfaa46d1afbe449e9e2b8effbb253a4119a545ab03af90bf5b2ebb2a1",
+      "fingerprint": "6ddbdb01b05c90358c541e78050ada1be1dec699923e7bb7d4f1987b238e18f1",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2017-06-16",
@@ -222599,6 +223032,12 @@
                 "VALUE",
                 [],
                 "2022-11-08",
+                []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
                 []
               ]
             ]
@@ -222794,7 +223233,7 @@
           ]
         ]
       ],
-      "fingerprint": "28bf47b5e172cdeb76dfe2bdc5ba095b40bf877c81c3e6b189f7cd1ad7489f02",
+      "fingerprint": "a3711ab1b6d2f24d9e808f678147d517420eaa56be232d1280ebd826942c1b0f",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2017-07-20",
@@ -222955,6 +223394,12 @@
                 [],
                 "2022-11-08",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -223098,7 +223543,7 @@
           ]
         ]
       ],
-      "fingerprint": "28d3eb31e5247372c9817c04bb09545818d03a8bb633c91d19ad1eabd6a8bf83",
+      "fingerprint": "b34e0ae2dd3fdcc3a0dd6001f291f4ac1cf5a41724e39a62b3c814a5ec732bb4",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2017-07-20",
@@ -224156,6 +224601,12 @@
                 [],
                 "2022-11-08",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -224293,7 +224744,7 @@
           ]
         ]
       ],
-      "fingerprint": "f994117ac3ed8f56d84871a6d6d3560baf71a6a9e3375029f22c7baa07fd52f7",
+      "fingerprint": "3f54316f8566b938076ca2ef4a4365a0dc68c1b49e9ec5253176e7dd84e70d05",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2017-07-20",
@@ -224439,6 +224890,12 @@
                 [],
                 "2022-11-08",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -224582,7 +225039,7 @@
           ]
         ]
       ],
-      "fingerprint": "5dcbd043087c9c71234dda0c21c7aadb0e05519d378a308375d4d37980aa5b3b",
+      "fingerprint": "f6f308b412a5f729e6e22c47bdb66a282db6bc99f0ab59faff604cc8f84a8aed",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2017-07-20",
@@ -224733,6 +225190,12 @@
                 "VALUE",
                 [],
                 "2022-11-08",
+                []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
                 []
               ]
             ]
@@ -225155,7 +225618,7 @@
           ]
         ]
       ],
-      "fingerprint": "15e0458485b20e2a58902e0d2cdfb53ca05ec8541d94e60ed45c38f68f5aa5cf",
+      "fingerprint": "829eb568f016a6b0ba62eea1e3e9879189b48375619762a1858aad2ddfb98183",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2017-08-18",
@@ -227732,6 +228195,12 @@
                 [],
                 "2023-10-30",
                 []
+              ],
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
               ]
             ]
           ],
@@ -228053,7 +228522,7 @@
           ]
         ]
       ],
-      "fingerprint": "dc40976cb4d28a9d598eb638806c963702f7babb02ebebbc2a12a455bbbbd080",
+      "fingerprint": "3284d540b9fb3811082b95a64a81eb7f6b61c4919aabd7a450905fa983831c52",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2018-08-23",
@@ -232949,6 +233418,19 @@
             ]
           ],
           [
+            "LAST_REVIEWED_ON",
+            [],
+            "",
+            [
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
+              ]
+            ]
+          ],
+          [
             "INDIVIDUAL_ALIAS",
             [],
             "",
@@ -233334,7 +233816,7 @@
           ]
         ]
       ],
-      "fingerprint": "9acb974e44cf977400f4f6bc032eba623579ed7ebf7bb620cf9c88bea9ca1d21",
+      "fingerprint": "a7c0e9eef3c8efc8dbe0c778f0d43b5c476a09bb532bb66342462cf9a21e32fd",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2021-06-17",
@@ -233501,6 +233983,19 @@
                 "VALUE",
                 [],
                 "2022-04-01",
+                []
+              ]
+            ]
+          ],
+          [
+            "LAST_REVIEWED_ON",
+            [],
+            "",
+            [
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
                 []
               ]
             ]
@@ -233751,7 +234246,7 @@
           ]
         ]
       ],
-      "fingerprint": "3879d7bf7b9875a1d64c7dd02132d42ed350c46823d641ff9a7350cdac59256b",
+      "fingerprint": "3ef20651423923fbd804653a98a24be801cfc5bd0df20008f91d31488aa54b32",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2021-11-23",
@@ -233903,6 +234398,19 @@
                 "VALUE",
                 [],
                 "2026-09-04",
+                []
+              ]
+            ]
+          ],
+          [
+            "LAST_REVIEWED_ON",
+            [],
+            "",
+            [
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
                 []
               ]
             ]
@@ -234229,7 +234737,7 @@
           ]
         ]
       ],
-      "fingerprint": "af2eef67c64f92ae0e60af8034cd042df847533972c90ae2aa94a890ea1b248a",
+      "fingerprint": "90cb926e69c786e792822a36eb2570389971f7f9c6c5277edc11206cee270a59",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2021-12-21",
@@ -234401,6 +234909,19 @@
             ]
           ],
           [
+            "LAST_REVIEWED_ON",
+            [],
+            "",
+            [
+              [
+                "VALUE",
+                [],
+                "2026-11-02",
+                []
+              ]
+            ]
+          ],
+          [
             "INDIVIDUAL_ALIAS",
             [],
             "",
@@ -234566,7 +235087,7 @@
           ]
         ]
       ],
-      "fingerprint": "822ea6d25526c6766eefa12a8e23cf2e49a4bd9cfbea782f643f15eb1f247f85",
+      "fingerprint": "fb642df98101073bc6da8f2fc6a4c7edfb183cdb411a32e512540c007dd0db36",
       "kind": "individual",
       "list_type": "Al-Qaida",
       "listed_on": "2021-12-29",
@@ -306003,8 +306524,8 @@
       "reference": "YEi.012"
     }
   },
-  "raw_path": "data/raw/un/b2c67099a06847dac96bba7ec03d5fc954ca176a498d9c1543967cb00c730fbf.xml.gz",
+  "raw_path": "data/raw/un/d4bf2b28c69d2dae1458c96c3d2def25087b064e9c58488c3ad37aca282cbd93.xml.gz",
   "schema_version": 1,
-  "source_hash": "b2c67099a06847dac96bba7ec03d5fc954ca176a498d9c1543967cb00c730fbf",
+  "source_hash": "d4bf2b28c69d2dae1458c96c3d2def25087b064e9c58488c3ad37aca282cbd93",
   "source_url": "https://scsanctions.un.org/resources/xml/en/name/consolidated.xml"
 }
