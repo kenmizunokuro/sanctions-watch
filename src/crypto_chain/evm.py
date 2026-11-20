@@ -16,7 +16,8 @@ def token_logs(logs,contract,address,start,end):
             or not start<=int(quantity(log.get('blockNumber')))<=end):
             raise ValueError('unrelated/unconfirmed token log')
         if not re.fullmatch(r'0x[0-9a-fA-F]{64}',log.get('data','')): raise ValueError('invalid token amount')
-        found.add(hash32(log.get('transactionHash')))
+        if int(log['data'],16)>0:
+            found.add(hash32(log.get('transactionHash')))
     return sorted(found)
 
 def observe(t,base,address,http):

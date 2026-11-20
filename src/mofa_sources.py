@@ -75,7 +75,7 @@ class Tree(HTMLParser):
         self.feed(Fetched('',body=body).text)
     def handle_starttag(self, tag, attrs):
         n=Node(tag,dict(attrs)); self.stack[-1].children.append(n)
-        if tag not in {'img','br','hr','input','meta','link','source','wbr','area','base'}:
+        if tag not in {'area','base','br','col','embed','hr','img','input','link','meta','param','source','track','wbr'}:
             self.stack.append(n)
     def handle_endtag(self, tag):
         for i in range(len(self.stack)-1,0,-1):
@@ -161,7 +161,8 @@ def parse_release_listing(body: bytes, *, url: str, month: str) -> ReleaseListin
                 continue  # rolling index may include preceding-month entries
             raise MofaSchemaError('listing dates contradict requested month')
         notices[u]=DocumentLink(_key('notice',u),'notice',u,n.text().strip(),u,current_date,'date')
-    explicit=(f'{year}年{mon}月' in main.text() or f'令和{year-2018}年{mon}月' in main.text())
+    reiwa_label = '元年' if year == 2019 else f'{year-2018}年'
+    explicit=(f'{year}年{mon}月' in main.text() or f'令和{reiwa_label}{mon}月' in main.text() or f'令和{year-2018}年{mon}月' in main.text())
     archive_match=re.search(r'/release/(\d+)_(\d+)_index\.html',url)
     if archive_match:
         if int(archive_match[1])+2018!=year or int(archive_match[2])!=mon:
@@ -170,8 +171,9 @@ def parse_release_listing(body: bytes, *, url: str, month: str) -> ReleaseListin
     declared_months = []
     for n in main.walk():
         if n.tag in {'h1','h2','h3'}:
-            for m in re.finditer(r'(令和)?(\d+)年\s*(\d+)月',n.text()):
-                y=int(m[2]) + (2018 if m[1] else 0)
+            for m in re.finditer(r'(令和)?(元|\d+)年\s*(\d+)月',n.text()):
+                num = 1 if m[2] == '元' else int(m[2])
+                y = num + (2018 if m[1] else 0)
                 declared_months.append((y,int(m[3])))
     if declared_months and (year,mon) not in declared_months:
         raise MofaSchemaError('archive heading contradicts requested month')

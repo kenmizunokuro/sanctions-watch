@@ -15,7 +15,8 @@ def context(http,base):
 
 def prove(t,address,tx,http,base):
     final,stamp=context(http,base)
-    r=http.rpc(base,'eth_getTransactionReceipt',[tx])
+    r=(http.rpc_nullable(base,'eth_getTransactionReceipt',[tx])
+       if hasattr(http,'rpc_nullable') else http.rpc(base,'eth_getTransactionReceipt',[tx]))
     if not isinstance(r,dict) or any(k not in r for k in ('transactionHash','status','blockNumber','blockHash','logs')):
         raise ValueError('receipt unavailable/incomplete')
     if r['transactionHash'].lower()!=tx or r['status']!='0x1':raise Rejected('receipt not successful')

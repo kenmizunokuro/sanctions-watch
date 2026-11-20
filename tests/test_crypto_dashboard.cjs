@@ -145,6 +145,7 @@ test('chain overlay validates precise integers, identity, states and counts',()=
  assert.equal(typeof context.caValidateChain_,'function');
  assert.equal(context.caValidateChain_(chain,snap).rows.length,1);
  for(const bad of [
+  {...chain,source_hash:'b'.repeat(64)},
   {...chain,rows:[{...chain.rows[0],address:'changed'}]},
   {...chain,rows:[chain.rows[0],chain.rows[0]]},
   {...chain,counts:{...chain.counts,target_relations:0}},
@@ -152,6 +153,8 @@ test('chain overlay validates precise integers, identity, states and counts',()=
   {...chain,rows:[{...chain.rows[0],state:'POSITIVE'}]},
   {...chain,rows:[{...chain.rows[0],probes:[{...chain.rows[0].probes[0],status:'SUCCESS',last_success:null}]}]}
  ]) assert.throws(()=>context.caValidateChain_(bad,snap),/チェーン/);
+ const upstreamErr=context.caBuildTables_({...snap,upstream:{...snap.upstream,outcome:'unknown',status:'error'}},{warningMinutes:120,criticalMinutes:360},new Date('2026-10-07T00:05:00Z'));
+ assert.ok(upstreamErr['監視ダッシュボード'].some(r=>r.includes('異常：上流OFAC取得失敗')));
 });
 test('chain fetch uses published immutable commit and preserves secondary failures',()=>{
  const sha='b'.repeat(40),urls=[],ptr={schema_version:1,commit_sha:sha};

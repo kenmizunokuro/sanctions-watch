@@ -160,7 +160,7 @@ class TestMetiNetworkPolicy(unittest.TestCase):
 
         self.assertIn(
             "    if: github.event_name != 'pull_request' "
-            "&& startsWith(github.ref, 'refs/heads/')",
+            "&& github.ref == 'refs/heads/main'",
             enforce,
         )
         self.assertIn("    needs: verify", enforce)
@@ -193,6 +193,12 @@ class TestMetiNetworkPolicy(unittest.TestCase):
             "        if: steps.sla.outcome != 'success'",
             enforce[failure_index:],
         )
+
+    def test_apps_script_has_no_direct_meti_network_probes(self):
+        for path in sorted((ROOT / "apps_script").rglob("*.gs")):
+            text = path.read_text(encoding="utf-8")
+            with self.subTest(path=path.name):
+                self.assertNotIn("meti.go.jp", text)
 
     def test_manual_lifecycle_modules_have_no_network_imports(self):
         forbidden = {

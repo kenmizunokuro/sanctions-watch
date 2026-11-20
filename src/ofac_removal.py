@@ -104,7 +104,13 @@ def _validate_official_url(value: str, row_number: int) -> None:
         or hostname == "sanctionslistservice.ofac.treas.gov"
     )
 
-    if parsed.scheme != "https" or not official_host:
+    if (
+        parsed.scheme != "https"
+        or not official_host
+        or parsed.username
+        or parsed.password
+        or parsed.port is not None
+    ):
         raise ApprovalError(
             f"承認台帳 {row_number}行目 Treasury公式URLが不正: {value!r}"
         )
@@ -532,6 +538,7 @@ def apply_to_master(
             })
             continue
 
+        was_active = row.get("status") == M.STATUS_ACTIVE
         remaining_sources = [source for source in sources if source != "OFAC"]
         remaining_categories = [
             category
@@ -545,6 +552,11 @@ def apply_to_master(
         if not remaining_sources:
             row["status"] = M.STATUS_INACTIVE
             row["invalid_reason"] = M.DELISTED
+            row["review_flag"] = _join(
+                flag
+                for flag in _split(row.get("review_flag", ""))
+                if flag not in M.OFAC_WEAK_ALIAS_FLAGS
+            )
             action = "deactivated"
         else:
             action = "removed_ofac_source"
@@ -553,13 +565,21 @@ def apply_to_master(
         row["last_updated_ms"] = str(ts)
         after = _master_audit_values(row)
 
-        diff.removed.append({
-            "key": key,
-            "name": display_name,
-            "before": before,
-            "after": after,
-            "delisted": True,
-        })
+        if was_active:
+            diff.removed.append({
+                "key": key,
+                "name": display_name,
+                "before": before,
+                "after": after,
+                "delisted": True,
+            })
+        elif before != after:
+            diff.changed.append({
+                "key": key,
+                "name": display_name,
+                "before": before,
+                "after": after,
+            })
         effects.append({
             "match_key": key,
             "display_name": display_name,

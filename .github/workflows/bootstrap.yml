@@ -14,9 +14,15 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: sanctions-watch-commit
+  cancel-in-progress: false
+  queue: max
+
 jobs:
   bootstrap:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
@@ -25,7 +31,10 @@ jobs:
           cache: pip
       - run: pip install -r requirements.txt
       - run: python -m tests.test_offline
-      - run: python -m src.import_legacy --src "${{ inputs.xlsx_path }}"
+      - name: 初回マスター取込
+        env:
+          XLSX_PATH: ${{ inputs.xlsx_path }}
+        run: python -m src.import_legacy --src "$XLSX_PATH"
       - run: bash .github/scripts/integrity-gate.sh all success
       - name: 完全性監査証跡
         if: always()
@@ -41,5 +50,13 @@ jobs:
           git config user.name  "sanctions-watch[bot]"
           git config user.email "sanctions-watch@users.noreply.github.com"
           git add -A data/ dist/
-          git diff --cached --quiet || git commit -m "feat(master): 初回マスターを作成"
-          git push
+          git diff --cached --quiet && exit 0
+          git commit -m "feat(master): 初回マスターを作成"
+          for i in 1 2 3; do
+            if git pull --rebase --autostash; then
+              git push && exit 0
+            fi
+            git rebase --abort 2>/dev/null || true
+            sleep $((i * 5))
+          done
+          exit 1

@@ -69,8 +69,13 @@ def build(src_xlsx: str, ts: int) -> tuple[list[dict], list[dict]]:
             elif review:
                 log.append(dict(行=excel_row, 種別="要確認", 元の値=name,
                                 変更後="（有効のまま）", 理由=review))
+            k = match_key(name)
+            if not k:
+                log.append(dict(行=excel_row, 種別="削除", 元の値=name, 変更後="（削除）",
+                                理由="正規化キーが空となるため照合対象外"))
+                continue
             rows.append(dict(
-                key=match_key(name), name=name, orig=raw, pairs=pairs,
+                key=k, name=name, orig=raw, pairs=pairs,
                 first=str(r["登録時間"]).strip(), last=str(r["更新時間"]).strip(),
                 invalid=bool(reason) or was_invalid,
                 reason=reason or ("既存データで無効指定" if was_invalid else ""),
@@ -83,11 +88,11 @@ def build(src_xlsx: str, ts: int) -> tuple[list[dict], list[dict]]:
     out: list[dict] = []
     for key, mem in groups.items():
         mem.sort(key=lambda m: (int(m["first"] or 0), m["order"]))
-        head = mem[0]
+        head = next((m for m in mem if not m["invalid"]), mem[0])
         first = min(int(m["first"] or 0) for m in mem)
         variants = sorted({m["name"] for m in mem})
-        invalid = any(m["invalid"] for m in mem)
-        reason = next((m["reason"] for m in mem if m["reason"]), "")
+        invalid = all(m["invalid"] for m in mem)
+        reason = next((m["reason"] for m in mem if m["reason"]), "") if invalid else ""
         changed = (len(mem) > 1 or invalid or any(m["split"] for m in mem)
                    or head["name"] != head["orig"])
 

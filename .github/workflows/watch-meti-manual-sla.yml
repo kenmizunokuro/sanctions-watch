@@ -17,6 +17,7 @@ jobs:
       - uses: actions/checkout@v6
         with:
           ref: ${{ github.sha }}
+          persist-credentials: false
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
@@ -28,7 +29,7 @@ jobs:
             tests.test_meti_manual_event
 
   enforce:
-    if: github.event_name != 'pull_request' && startsWith(github.ref, 'refs/heads/')
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     needs: verify
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -60,7 +61,10 @@ jobs:
           fi
           git commit -m "chore(meti): manual SLA状態を更新"
           for i in 1 2 3; do
-            git pull --rebase --autostash && git push && exit 0
+            if git pull --rebase --autostash; then
+              git push && exit 0
+            fi
+            git rebase --abort 2>/dev/null || true
             sleep $((i * 5))
           done
           exit 1

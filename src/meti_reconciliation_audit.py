@@ -247,9 +247,25 @@ def _verify_source_and_evidence(
             "apply source_hashと一致しない"
         )
 
-    evidence_rows = _load_csv(
+    all_evidence_rows = _load_csv(
         evidence_path
     )
+    current_evidence_rows = [
+        row for row in all_evidence_rows
+        if str(row.get("current") or "") == "1"
+    ]
+    evidence_rows = [
+        row for row in all_evidence_rows
+        if row.get("source_hash") == source_hash
+    ]
+    if (
+        current_evidence_rows
+        and {row.get("source_hash") for row in current_evidence_rows} == {source_hash}
+        and evidence_rows != current_evidence_rows
+    ):
+        raise ReconciliationError(
+            "現在版Evidenceにcurrent != 1の行が混在"
+        )
     parsed_rows = _load_csv(
         records_path
     )

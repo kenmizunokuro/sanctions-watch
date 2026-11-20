@@ -11,6 +11,7 @@ from pathlib import Path
 
 from . import un_press_rss as P, un_sources as U, un_watch as W
 from .persistence import FileWrite, atomic_replace_many
+from .un_lock import delegated_lock
 
 RECEIPT = 'data/un/external_observation.json'
 MAX_AGE = timedelta(minutes=35)
@@ -41,16 +42,17 @@ def _complete(state):
 
 
 def collect(root: Path) -> bool:
-    result = W.run(root)
-    state = W.load(root)
-    complete = _complete(state)
-    print(json.dumps(dict(result, external_sources_complete=complete), ensure_ascii=False))
-    if not complete:
-        return False
-    receipt = dict(schema_version=1, checked_at=state['last_checked_at'], passed=result['ok'],
-                   state_sha256=hashlib.sha256((root / W.STATE_PATH).read_bytes()).hexdigest())
-    atomic_replace_many([FileWrite(root / RECEIPT, lambda path: W._write_json(path, receipt))])
-    return True
+    with delegated_lock(root):
+        result = W.run(root)
+        state = W.load(root)
+        complete = _complete(state)
+        print(json.dumps(dict(result, external_sources_complete=complete), ensure_ascii=False))
+        if not complete:
+            return False
+        receipt = dict(schema_version=1, checked_at=state['last_checked_at'], passed=result['ok'],
+                       state_sha256=hashlib.sha256((root / W.STATE_PATH).read_bytes()).hexdigest())
+        atomic_replace_many([FileWrite(root / RECEIPT, lambda path: W._write_json(path, receipt))])
+        return True
 
 
 def _read_published(root, now=None):

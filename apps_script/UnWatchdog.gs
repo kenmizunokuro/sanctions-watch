@@ -18,7 +18,7 @@ function unWatchdogState_(props, now) {
       ['lastDispatchAttemptAt', 'lastDispatchAt', 'runningSince'].some(key => {
         if (state[key] === undefined) return false;
         const stamp = ofacWatchdogTime_(state[key]);
-        return !Number.isFinite(stamp) || stamp > now;
+        return !Number.isFinite(stamp) || stamp > now + 30000;
       })) {
     throw new Error('UN_WATCHDOG_STATEの救済時刻が不正です');
   }
@@ -46,7 +46,7 @@ function unWatchdogHeartbeat_(cfg, now) {
       if (!Number.isFinite(checked) || row.length !== 7 || !statuses.includes(status)) {
         throw new Error('UN heartbeatの記録が不正: ' + month);
       }
-      if (checked > now || checked < latest) continue;
+      if (checked > now + 30000 || checked < latest) continue;
       if (checked > latest) {
         latest = checked;
         sources = {};
@@ -59,7 +59,7 @@ function unWatchdogHeartbeat_(cfg, now) {
 
   if (!sources.un_xml || !sources.un_press) throw new Error('UN heartbeatの最新記録が2系統揃っていません');
   return {
-    lastCheckedAt: ofacWatchdogIso_(latest), ageMinutes: (now - latest) / 60000,
+    lastCheckedAt: ofacWatchdogIso_(latest), ageMinutes: Math.max(0, now - latest) / 60000,
     xmlStatus: sources.un_xml, pressStatus: sources.un_press,
   };
 }

@@ -277,19 +277,22 @@ def collect_witnesses(root, report, target_keys):
 
 class _NoticeBody(HTMLParser):
     def __init__(self):
-        super().__init__();self.depth=0;self.text=[];self.found=False
+        super().__init__();self.depth=0;self.skip=0;self.text=[];self.found=False
 
     def handle_starttag(self,tag,attrs):
         if tag=='div':
             if self.depth:self.depth+=1
             elif 'field--name-field-body' in dict(attrs).get('class','').split():
                 self.depth=1;self.found=True
+        elif self.depth and tag in {'script','style'}:
+            self.skip+=1
 
     def handle_endtag(self,tag):
         if tag=='div' and self.depth:self.depth-=1
+        elif self.skip and tag in {'script','style'}:self.skip-=1
 
     def handle_data(self,data):
-        if self.depth:self.text.append(data)
+        if self.depth and not self.skip:self.text.append(data)
 
 
 def notice_mentions(body,names):
@@ -336,8 +339,8 @@ def add_notice_witnesses(root,masters,witnesses,manifest):
             for key in sorted(byname[name]):witnesses.setdefault(key,[]).append(proof)
 
 
-def triage(root,report):
-    root=root.resolve()
+def validate_inputs(root,report):
+    root=Path(root).resolve()
     for rel,expected in report.get('inputs',{}).items():
         path=(root/rel).resolve()
         fixed_scope_paths={'docs/evidence/source-integrity-legacy-retention-policy-proposal-20261026.json',
@@ -345,6 +348,11 @@ def triage(root,report):
         allowed=path.is_relative_to(root/'data') or (rel in fixed_scope_paths and path.is_relative_to(root/'docs/evidence'))
         if not allowed or not path.exists() or hashlib.sha256(path.read_bytes()).hexdigest()!=expected:
             raise TriageError(f'監査入力が一致しない: {rel}')
+    return root
+
+
+def triage_context(root,report):
+    root=validate_inputs(root,report)
     masters=_csv(root/'data/master/master.csv')
     index_path=root/'data/master/ofac_alias_history.csv'
     index=_csv(index_path) if index_path.exists() else []
@@ -352,9 +360,19 @@ def triage(root,report):
     targets.update(match_key(f['master']['display_name']) for f in report['findings'] if isinstance(f.get('master'),dict))
     witnesses,manifest,errors=collect_witnesses(root,report,targets)
     add_notice_witnesses(root,[r for r in masters if r['match_key'] in targets],witnesses,manifest)
+    return root,masters,index,witnesses,manifest,errors
+
+
+def triage_from_context(report,ctx):
+    root,masters,index,witnesses,manifest,errors=ctx
+    validate_inputs(root,report)
     result=classify(report,masters,index,witnesses)
     result.update(archive_manifest=manifest,archive_errors=errors)
     return result
+
+
+def triage(root,report):
+    return triage_from_context(report,triage_context(root,report))
 
 
 def write_outputs(directory,result,stem=None):

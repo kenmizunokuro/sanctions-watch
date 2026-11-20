@@ -14,7 +14,7 @@ function wdStatusJst_(value) {
 function wdStatusEvaluate_(f,now,expectedRepo) {
   const checks=[];
   const add=(name,ok,detail,severity=3)=>checks.push({name,ok,detail,severity:ok?0:severity});
-  const age=value=>{const t=wdStatusTime_(value);return Number.isFinite(t)&&t<=now?(now-t)/60000:null;};
+  const age=value=>{const t=wdStatusTime_(value);return Number.isFinite(t)&&t<=now+30000?Math.max(0,now-t)/60000:null;};
   const timeCheck=(name,value)=>{const n=age(value);add(name,n!==null,n===null?'記録なし・日時異常':wdStatusJst_(value)+' JST / 約'+Math.floor(n)+'分前');return n;};
   add('稼働記録接続',f.schemaVersion==='1','記録形式: '+(f.schemaVersion||'未接続'));
   add('監視リポジトリ',f.repo===expectedRepo,f.repo||'未接続');
@@ -40,7 +40,7 @@ function wdStatusEvaluate_(f,now,expectedRepo) {
   const dispatchTime=wdStatusTime_(f.lastDispatchAt);
   let dispatchDetail='記録なし（救済不要なら正常です）';
   if(f.lastDispatchAt) {
-    const valid=Number.isFinite(dispatchTime)&&dispatchTime<=now;
+    const valid=Number.isFinite(dispatchTime)&&dispatchTime<=now+30000;
     add('救済受理日時',valid,valid?wdStatusJst_(f.lastDispatchAt)+' JST':'日時異常');
     dispatchDetail=valid&&wdStatusTime_(f.lastSuccessAt)>=dispatchTime?'受理後の取得成功を確認（因果関係は未確定）':'要求受理済み・その後の取得成功は未確認';
   }
@@ -71,7 +71,7 @@ function wdStatusHealth_(ss,now) {
 function wdStatusRender_(ss,h,now) {
   const sheet=ss.getSheetByName(WD_STATUS.dashboard);
   if(!sheet)throw new Error('01_監視ダッシュボードがありません');
-  if(sheet.getMaxRows()<26)sheet.insertRowsAfter(sheet.getMaxRows(),26-sheet.getMaxRows());
+  if(sheet.getMaxRows()<32)sheet.insertRowsAfter(sheet.getMaxRows(),32-sheet.getMaxRows());
   const f=h.fields;
   const decisions={not_needed:'救済不要',active_run:'実行・待機中のため見送り',cooldown:'再試行待ち（30分）',accepted:'再実行要求を受理',dispatching:'再実行要求中',error:'再実行要求失敗',observation_error:'監視状況の取得失敗'};
   const rows=[
@@ -81,9 +81,9 @@ function wdStatusRender_(ss,h,now) {
     ['連続エラー',f.consecutiveErrors||'未確認','直近エラー履歴',f.lastError||'なし','通知エラー',f.lastNotificationError||'なし','判定理由',h.note||'救済側の稼働記録は許容時間内'],
   ];
   const safe=v=>/^[\s]*[=+@-]/.test(String(v))?"'"+v:String(v);
-  sheet.getRange('A21').setValue('OFAC救済監視（詳細・救済履歴は11_OFAC救済監視。表示時刻はJST）');
-  sheet.getRange(22,1,4,8).setValues(rows.map(r=>r.map(safe))).setWrap(true).setVerticalAlignment('middle');
-  sheet.getRange('B22').setBackground(h.severity===3?'#FEE2E2':h.severity?'#FEF3C7':'#DCFCE7').setFontWeight('bold');
+  sheet.getRange('A27').setValue('OFAC救済監視（詳細・救済履歴は11_OFAC救済監視。表示時刻はJST）');
+  sheet.getRange(28,1,4,8).setValues(rows.map(r=>r.map(safe))).setWrap(true).setVerticalAlignment('middle');
+  sheet.getRange('B28').setBackground(h.severity===3?'#FEE2E2':h.severity?'#FEF3C7':'#DCFCE7').setFontWeight('bold');
   const overall=sheet.getRange('A5');
   if(h.severity===3)overall.setValue('異常');
   else if(h.severity>0&&overall.getDisplayValue()==='正常')overall.setValue('要確認');

@@ -18,9 +18,10 @@ def context(http,base):
 def prove(t,address,tx,http,base):
     solid,stamp=context(http,base)
     r=http.request(base,'/walletsolidity/gettransactioninfobyid',{'value':tx})
-    if (not isinstance(r,dict) or any(k not in r for k in ('id','receipt','blockNumber','blockTimeStamp','log'))
+    if (not isinstance(r,dict) or any(k not in r for k in ('id','receipt','blockNumber','blockTimeStamp'))
         or not isinstance(r['receipt'],dict) or 'result' not in r['receipt']):raise ValueError('receipt unavailable/incomplete')
     if r['id']!=tx or r['receipt']['result']!='SUCCESS':raise Rejected('receipt not successful')
+    if 'log' not in r:raise ValueError('receipt unavailable/incomplete')
     height=integer(r['blockNumber']);timestamp=integer(r['blockTimeStamp'])
     if int(height)>solid or int(timestamp)>stamp:raise Rejected('receipt not solidified')
     b=http.request(base,'/walletsolidity/getblockbynum',{'num':int(height)})

@@ -484,6 +484,7 @@ function syncAll_(executionType) {
         heartbeat
       );
     }
+    (payload.heartbeatItems || []).forEach(item => commitItemHttpMeta_(item, props));
 
     /*
      * changes.csvが200の場合だけ
@@ -501,6 +502,7 @@ function syncAll_(executionType) {
           changes,
           settings
         );
+      commitItemHttpMeta_(payload.changes, props);
 
       metrics.newChanges =
         changeStats.newChanges;
@@ -533,6 +535,7 @@ function syncAll_(executionType) {
         ss,
         payload.reReview.rows
       );
+      commitItemHttpMeta_(payload.reReview, props);
     } else {
       syncStage = '再審査キューの表示状態を更新';
       refreshReReviewVisibility_(
@@ -1131,9 +1134,24 @@ function ensureStructure_(ss) {
     ss
   );
 
+  ensureOfacCandidateStructure_(
+    ss
+  );
+
   syncVersionSetting_(
     ss
   );
+}
+
+function ensureOfacCandidateStructure_(ss) {
+  const width = EXPECTED.ofacPending.length;
+  const sheet = ss.getSheetByName(TAB.OFAC_PENDING) || ss.insertSheet(TAB.OFAC_PENDING);
+  ensureColumns_(sheet, width);
+  ensureRows_(sheet, 10);
+  sheet.getRange('A1').setValue('OFAC：監査停止時の差分候補');
+  sheet.getRange('A2').setValue('確認専用。表示日時の監査で止まった差分です。GitHub実行URLで取得時点を確認できます。');
+  sheet.getRange(4, 1, 1, width).setValues([EXPECTED.ofacPending]);
+  sheet.setFrozenRows(4);
 }
 
 
@@ -1636,6 +1654,8 @@ function fetchSyncPayload_(
 
   let heartbeat =
     [];
+  const heartbeatItems =
+    [];
 
   months.forEach(
     month => {
@@ -1643,6 +1663,10 @@ function fetchSyncPayload_(
         result[
           `heartbeat_${month}`
         ];
+
+      if (item) {
+        heartbeatItems.push(item);
+      }
 
       if (
         item &&
@@ -1673,6 +1697,7 @@ function fetchSyncPayload_(
       result.re_review,
 
     heartbeat,
+    heartbeatItems,
   };
 }
 
@@ -1981,6 +2006,16 @@ function validateFetchSpec_(
       `HTTPS以外のURLは許可しません: ${spec.url}`
     );
   }
+
+  if (
+    !/^https:\/\/raw\.githubusercontent\.com\/[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+\//.test(
+      spec.url
+    )
+  ) {
+    throw new Error(
+      `許可されていない取得先ホストです: ${spec.url}`
+    );
+  }
 }
 
 
@@ -2027,7 +2062,7 @@ function buildFetchOptions_(
       true,
 
     followRedirects:
-      true,
+      false,
 
     headers,
   };
@@ -2225,12 +2260,12 @@ function parseCsvResponse_(
     spec.url
   );
 
-  if (spec.key !== 'mofa_documents') {
-    saveHttpMeta_(spec, response, props);
-  }
+  const responseHeaders =
+    spec.conditional ? response.getAllHeaders() : null;
 
   return {
-    mofaHttpMeta: spec.key === 'mofa_documents' ? response.getAllHeaders() : null,
+    mofaHttpMeta: spec.key === 'mofa_documents' ? responseHeaders : null,
+    pendingHttpMeta: spec.conditional && spec.key !== 'mofa_documents' ? {spec, headers: responseHeaders} : null,
     header,
 
     rows:
@@ -2251,6 +2286,13 @@ function parseCsvResponse_(
 
     code,
   };
+}
+
+function commitItemHttpMeta_(item, props) {
+  if (!item || item.notModified || !item.pendingHttpMeta) return;
+  const {spec, headers} = item.pendingHttpMeta;
+  saveHttpMeta_(spec, {getAllHeaders: () => headers}, props);
+  item.pendingHttpMeta = null;
 }
 
 
@@ -2697,7 +2739,8 @@ function freshness_(
       note: 'OFAC原本の取得・差分処理は成功。完全性監査で反映停止。最終更新・件数・ハッシュは反映済みデータ。',
     };
   }
-  if (['エラー', '構造異常', '未確認期間あり', '手動取込エラー'].includes(state)) {
+  if (['エラー', '構造異常', '未確認期間あり', '手動取込エラー'].includes(state) ||
+      state.indexOf('取得エラー') === 0 || state.indexOf('重大：') === 0 || state.indexOf('未確認期間あり') >= 0) {
     return {
       label:
         '重大',
@@ -2721,6 +2764,25 @@ function freshness_(
       anomalyType: '手動監視',
       note: checked ? '最終手動確認: ' + lastCheckText : state + '。公式サイトをブラウザで確認',
     };
+  }
+
+  if (source === '経済産業省') {
+    if (state === '手動監視（正常）') {
+      return {
+        label: '正常',
+        severity: 0,
+        anomalyType: '',
+        note: lastCheckText ? '最終手動取込: ' + lastCheckText : '',
+      };
+    }
+    if (state === '要レビュー' || state === '更新あり（要手動確認）' || state.indexOf('要確認：') === 0) {
+      return {
+        label: '要確認',
+        severity: 2,
+        anomalyType: '手動監視',
+        note: state + '。手動取込・レビュー状況を確認',
+      };
+    }
   }
 
   if (
@@ -6431,17 +6493,6 @@ function normalizeName_(value) {
       )
       .trim();
 
-  s =
-    swapSurnameFirst_(
-      s
-    );
-
-  s =
-    s.replace(
-      /\s+/g,
-      ''
-    );
-
   const quotePairs = {
     '「': '」',
     '『': '』',
@@ -6453,6 +6504,44 @@ function normalizeName_(value) {
     '＂': '＂',
     '`': '`',
   };
+
+  while (
+    s.length >=
+      2 &&
+    quotePairs[
+      s[0]
+    ] ===
+      s[
+        s.length -
+        1
+      ]
+  ) {
+    const inner =
+      s
+        .slice(
+          1,
+          -1
+        )
+        .trim();
+
+    if (!inner) {
+      break;
+    }
+
+    s =
+      inner;
+  }
+
+  s =
+    swapSurnameFirst_(
+      s
+    );
+
+  s =
+    s.replace(
+      /\s+/g,
+      ''
+    );
 
   while (
     s.length >=
@@ -6512,7 +6601,7 @@ function swapSurnameFirst_(name) {
    * 姓名反転しない。
    */
   const orgSuffix =
-    /^(?:LTD|LTD\.|INC|INC\.|LLC|L\.L\.C\.|CORP|CORP\.|CO|CO\.|PLC|GMBH|S\.A\.|S\.A\.S\.|S\.R\.L\.|SA|SARL|AG|NV|BV|AB|AS|OY|PTE|PTY|S\. DE R\.L\.|DE C\.V\.|LLP|LP|JSC|OAO|OOO|PAO|ZAO|A\.S\.|D\.O\.O\.)/i;
+    /^(?:LTD\.?|INC\.?|L\.L\.C\.|LLC|CORP\.?|CO\.?|PLC|GMBH|S\.A\.S\.|S\.R\.L\.|S\.A\.|SARL|SA|AG|NV|BV|AB|A\.S\.|AS|OY|PTE|PTY|S\. DE R\.L\.|DE C\.V\.|LLP|LP|JSC|OAO|OOO|PAO|ZAO|D\.O\.O\.|CONCERN)(?=$|[\s.,;)])/i;
 
   if (
     orgSuffix.test(
@@ -6627,80 +6716,4 @@ function formatJst_(date) {
     DEFAULT_TZ,
     'yyyy-MM-dd HH:mm:ss'
   );
-}
-
-function testMetiAccess() {
-  const targets = [
-    {
-      name: '安全保障貿易管理トップ',
-      url: 'https://www.meti.go.jp/policy/anpo/law09.html'
-    },
-    {
-      name: 'METIニュースリリースRSS',
-      url: 'https://www.meti.go.jp/ml_index_release_atom.xml'
-    }
-  ];
-
-  targets.forEach(target => {
-    console.log('================================');
-    console.log('TEST: ' + target.name);
-    console.log('URL: ' + target.url);
-
-    try {
-      const response = UrlFetchApp.fetch(target.url, {
-        muteHttpExceptions: true,
-        followRedirects: true,
-        headers: {
-          'Cache-Control': 'no-cache'
-        }
-      });
-
-      const code = response.getResponseCode();
-      const body = response.getContentText('UTF-8');
-
-      console.log('HTTP: ' + code);
-      console.log('Bytes: ' + body.length);
-
-      if (code === 200) {
-        console.log('ACCESS: OK');
-
-        if (target.name === '安全保障貿易管理トップ') {
-          console.log(
-            '外国ユーザーリスト文言: ' +
-            (body.includes('外国ユーザーリスト') ? 'FOUND' : 'NOT FOUND')
-          );
-
-          console.log(
-            '新着情報文言: ' +
-            (body.includes('新着情報') ? 'FOUND' : 'NOT FOUND')
-          );
-        }
-
-        if (target.name === 'METIニュースリリースRSS') {
-          const xmlDetected =
-            body.includes('<feed') ||
-            body.includes('<rss');
-
-          console.log(
-            'RSS/XML構造: ' +
-            (xmlDetected ? 'FOUND' : 'NOT FOUND')
-          );
-        }
-
-        console.log(
-          'HEAD: ' +
-          body.substring(0, 300).replace(/\s+/g, ' ')
-        );
-
-      } else {
-        console.log('ACCESS: FAILED');
-      }
-
-    } catch (e) {
-      console.log('ERROR: ' + e);
-    }
-  });
-
-  console.log('================================');
-  console.log('METI ACCESS TEST FINISHED');
 }

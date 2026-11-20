@@ -58,6 +58,16 @@ function ofacWatchdogApi_(cfg, path, method, payload, optional) {
 function ofacWatchdogFile_(cfg, path) {
   const body = ofacWatchdogApi_(cfg, '/contents/' + path + '?ref=main', 'get', undefined, true);
   if (body === null) return null;
+  if (!body.content && typeof body.download_url === 'string' && /^https:\/\/raw\.githubusercontent\.com\//.test(body.download_url)) {
+    const raw = UrlFetchApp.fetch(body.download_url, {
+      method: 'get',
+      headers: {Authorization: 'Bearer ' + cfg.token},
+      followRedirects: false,
+      muteHttpExceptions: true,
+    });
+    if (raw.getResponseCode() !== 200) throw new Error('GitHub raw HTTP ' + raw.getResponseCode() + ': ' + path);
+    return raw.getContentText('UTF-8');
+  }
   if (body.encoding !== 'base64' || typeof body.content !== 'string') throw new Error('GitHub Contents応答が不正: ' + path);
   return Utilities.newBlob(Utilities.base64Decode(body.content.replace(/\s/g, ''))).getDataAsString('UTF-8');
 }
@@ -74,7 +84,7 @@ function ofacWatchdogObserve_(cfg, now) {
   const previous = new Date(Date.UTC(current.getUTCFullYear(), current.getUTCMonth() - 1, 1));
   const month = date => date.toISOString().slice(0, 7);
   const groups = {};
-  const successful = ['unchanged', 'changed', 'no_effective_change', 'backfill', 'review_required'];
+  const successful = ['unchanged', 'changed', 'no_effective_change', 'backfill', 'review_required', 'fetched'];
   [month(previous), month(current)].forEach(key => {
     const text = ofacWatchdogFile_(cfg, 'data/heartbeat/' + key + '.csv');
     if (text === null) return;
@@ -85,7 +95,7 @@ function ofacWatchdogObserve_(cfg, now) {
       const source = row[1];
       if (source !== 'ofac_sdn' && source !== 'ofac_cons') return;
       const stamp = ofacWatchdogTime_(row[0]);
-      if (!Number.isFinite(stamp) || stamp > now) return;
+      if (!Number.isFinite(stamp) || stamp > now + 30000) return;
       if (!groups[stamp]) groups[stamp] = {};
       const good = successful.indexOf(row[2]) !== -1;
       groups[stamp][source] = groups[stamp][source] === false ? false : good;
@@ -107,7 +117,7 @@ function ofacWatchdogObserve_(cfg, now) {
   if (attempt && attempt.outcome === 'failure' && ofacWatchdogTime_(attempt.finished_at) >= success) {
     failedRunUrl = attempt.run_url || failedRunUrl || ('https://github.com/' + cfg.repo + '/actions');
   }
-  return {lastSuccessAt: new Date(success).toISOString().replace('.000Z', 'Z'), ageMinutes: (now - success) / 60000, failedRunUrl: failedRunUrl};
+  return {lastSuccessAt: new Date(success).toISOString().replace('.000Z', 'Z'), ageMinutes: Math.max(0, now - success) / 60000, failedRunUrl: failedRunUrl};
 }
 
 function ofacWatchdogActive_(cfg) {

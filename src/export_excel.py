@@ -58,6 +58,15 @@ def _read(path: Path) -> list[dict]:
         return list(csv.DictReader(f))
 
 
+def _append_literal_row(ws, values) -> None:
+    row_no = ws.max_row + 1
+    for col_no, value in enumerate(values, start=1):
+        cell = ws.cell(row_no, col_no)
+        cell.value = "" if value is None else str(value)
+        cell.data_type = "s"
+        cell.font = BODY_FONT
+
+
 def build_workbook(master: list[dict], log: list[dict]) -> Workbook:
     cleaned = []
     for row in master:
@@ -74,13 +83,10 @@ def build_workbook(master: list[dict], log: list[dict]) -> Workbook:
     ws.title = SHEET_MAIN
     _style_header(ws, HEADERS, WIDTHS)
     for r in master:
-        ws.append([
+        _append_literal_row(ws, [
             r["display_name"], r["risk_type"], r["status"], r["risk_level"],
             _jst(r["first_seen_ms"]), _jst(r["last_updated_ms"]), r["remark"],
         ])
-    for row in ws.iter_rows(min_row=2, max_row=ws.max_row):
-        for c in row:
-            c.font = BODY_FONT
     # 登録時間/更新時間は JST の日時文字列として保持する
     for col in ("E", "F"):
         for c in ws[col][1:]:
@@ -91,23 +97,24 @@ def build_workbook(master: list[dict], log: list[dict]) -> Workbook:
     lh = ["元Excel行", "種別", "元の値", "変更後", "理由"]
     _style_header(wl, lh, [11, 12, 58, 58, 62])
     for e in log:
-        wl.append([e.get("行", ""), e.get("種別", ""),
-                   e.get("元の値", ""), e.get("変更後", ""), e.get("理由", "")])
-    for row in wl.iter_rows(min_row=2, max_row=wl.max_row):
-        for c in row:
-            c.font = BODY_FONT
+        _append_literal_row(wl, [
+            e.get("行", ""), e.get("種別", ""),
+            e.get("元の値", ""), e.get("変更後", ""), e.get("理由", ""),
+        ])
 
     # ---- ビルド情報 -------------------------------------------------
     wi = wb.create_sheet(SHEET_INFO)
     _style_header(wi, ["項目", "値"], [30, 74])
+    first_ts = [int(r["first_seen_ms"]) for r in master if str(r.get("first_seen_ms", "")).isdigit() and int(r["first_seen_ms"]) > 0]
+    last_ts = [int(r["last_updated_ms"]) for r in master if str(r.get("last_updated_ms", "")).isdigit() and int(r["last_updated_ms"]) > 0]
     stats = {
         "生成日時 (JST)": datetime.now(JST).strftime("%Y-%m-%d %H:%M:%S"),
         "総行数": len(master),
         "うち有効": sum(1 for r in master if r["status"] == "有効"),
         "うち無効": sum(1 for r in master if r["status"] == "無効"),
         "クリーンアップ件数": len(log),
-        "最古の登録": _jst(min((r["first_seen_ms"] for r in master), default=0)),
-        "最新の更新": _jst(max((r["last_updated_ms"] for r in master), default=0)),
+        "最古の登録": _jst(min(first_ts, default=0)),
+        "最新の更新": _jst(max(last_ts, default=0)),
     }
     for src in sorted({s for r in master for s in r["sources"].split(";")
                        if s and s != SRC_UNKNOWN}):

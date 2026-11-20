@@ -133,97 +133,108 @@ def fetch(url: str, *, prev: dict | None = None, session: requests.Session | Non
     user_agent: 提供元ごとに要求が食い違うため切り替えられるようにしてある。
     OFAC は User-Agent 必須（無いと403）、経産省は逆に自動アクセスを拒否する。
     """
+    own_session = session is None
     s = session or requests.Session()
-    headers = {"User-Agent": user_agent or UA, "Accept": "*/*"}
-    prev = prev or {}
-    if allow_conditional:
-        if prev.get("etag"):
-            headers["If-None-Match"] = prev["etag"]
-        if prev.get("last_modified"):
-            headers["If-Modified-Since"] = prev["last_modified"]
+    try:
+        headers = {"User-Agent": user_agent or UA, "Accept": "*/*"}
+        prev = prev or {}
+        if allow_conditional:
+            if prev.get("etag"):
+                headers["If-None-Match"] = prev["etag"]
+            if prev.get("last_modified"):
+                headers["If-Modified-Since"] = prev["last_modified"]
 
-    request_url = url
-    for redirect_count in range(MAX_REDIRECTS + 1):
-        _assert_network_url_allowed(request_url)
-        if url_validator is not None:
-            url_validator(request_url)
-        options = {"stream": True} if max_bytes is not None else {}
-        r = _get_with_retries(
-            s,
-            request_url,
-            headers=headers,
-            timeout=timeout,
-            allow_redirects=False,
-            **options,
-        )
-        location = r.headers.get("Location", "")
-        if r.status_code not in _REDIRECT_STATUSES or not location:
-            break
-        if redirect_count >= MAX_REDIRECTS:
-            raise NetworkPolicyError("too many redirects")
-        if hasattr(r, "close"):
-            r.close()
-        request_url = urljoin(request_url, location)
-        _assert_network_url_allowed(request_url)
+        request_url = url
+        for redirect_count in range(MAX_REDIRECTS + 1):
+            _assert_network_url_allowed(request_url)
+            if url_validator is not None:
+                url_validator(request_url)
+            options = {"stream": True} if max_bytes is not None else {}
+            r = _get_with_retries(
+                s,
+                request_url,
+                headers=headers,
+                timeout=timeout,
+                allow_redirects=False,
+                **options,
+            )
+            location = r.headers.get("Location", "")
+            if r.status_code not in _REDIRECT_STATUSES or not location:
+                break
+            if redirect_count >= MAX_REDIRECTS:
+                if hasattr(r, "close"):
+                    r.close()
+                raise NetworkPolicyError("too many redirects")
+            if hasattr(r, "close"):
+                r.close()
+            next_url = urljoin(request_url, location)
+            if urlparse(request_url).scheme == "https" and urlparse(next_url).scheme != "https":
+                raise NetworkPolicyError("HTTPS downgrade redirect is prohibited")
+            request_url = next_url
+            _assert_network_url_allowed(request_url)
 
-    if r.status_code == 304:
+        if r.status_code == 304:
+            return Fetched(
+                url=url,
+                not_modified=True,
+                etag=prev.get("etag", ""),
+                sha256=prev.get("sha256", ""),
+                last_modified=prev.get("last_modified", ""),
+                filename=prev.get("filename", ""),
+                http_status=304,
+                final_url=str(r.url or request_url),
+                headers=dict(r.headers),
+            )
+
+        try:
+            r.raise_for_status()
+            if max_bytes is None:
+                body = r.content
+            else:
+                if max_bytes <= 0:
+                    raise ValueError("max_bytes must be positive")
+                length = r.headers.get("Content-Length", "")
+                if length and int(length) > max_bytes:
+                    raise ValueError("response exceeds size limit")
+                chunks, size = [], 0
+                for chunk in r.iter_content(chunk_size=65536):
+                    size += len(chunk)
+                    if size > max_bytes:
+                        raise ValueError("response exceeds size limit")
+                    chunks.append(chunk)
+                body = b"".join(chunks)
+        finally:
+            if max_bytes is not None and hasattr(r, "close"):
+                r.close()
         return Fetched(
             url=url,
-            not_modified=True,
-            etag=prev.get("etag", ""),
-            sha256=prev.get("sha256", ""),
-            last_modified=prev.get("last_modified", ""),
-            filename=prev.get("filename", ""),
-            http_status=304,
+            body=body,
+            sha256=sha256(body),
+            etag=r.headers.get("ETag", ""),
+            last_modified=r.headers.get("Last-Modified", ""),
+            filename=_filename_from(url, r.headers),
+            http_status=r.status_code,
             final_url=str(r.url or request_url),
             headers=dict(r.headers),
         )
-
-    try:
-        r.raise_for_status()
-        if max_bytes is None:
-            body = r.content
-        else:
-            if max_bytes <= 0:
-                raise ValueError("max_bytes must be positive")
-            length = r.headers.get("Content-Length", "")
-            if length and int(length) > max_bytes:
-                raise ValueError("response exceeds size limit")
-            chunks, size = [], 0
-            for chunk in r.iter_content(chunk_size=65536):
-                size += len(chunk)
-                if size > max_bytes:
-                    raise ValueError("response exceeds size limit")
-                chunks.append(chunk)
-            body = b"".join(chunks)
     finally:
-        if max_bytes is not None:
-            r.close()
-    return Fetched(
-        url=url,
-        body=body,
-        sha256=sha256(body),
-        etag=r.headers.get("ETag", ""),
-        last_modified=r.headers.get("Last-Modified", ""),
-        filename=_filename_from(url, r.headers),
-        http_status=r.status_code,
-        final_url=str(r.url or request_url),
-        headers=dict(r.headers),
-    )
+        if own_session and hasattr(s, "close"):
+            s.close()
 
 
 def _filename_from(url: str, headers) -> str:
     cd = headers.get("Content-Disposition", "")
-    m = re.search(r'filename\*?=(?:UTF-8\'\')?"?([^";]+)"?', cd)
-    if m:
-        return m.group(1)
-    return url.rstrip("/").split("/")[-1].split("?")[0] or "download"
+    m = re.search(r'filename\*?=(?:UTF-8\'\')?"?([^";\r\n]+)"?', cd)
+    raw = m.group(1) if m else (url.rstrip("/").split("/")[-1].split("?")[0] or "download")
+    cleaned = re.sub(r'[\x00-\x1f\x7f/\\]+', "_", Path(raw.replace("\\", "/")).name).strip(". ")
+    return cleaned or "download"
 
 
 GZIP_LEVEL = 6
 
 
-def archive(f: Fetched, source: str, root: Path, *, compress: bool = True) -> str:
+def archive(f: Fetched, source: str, root: Path, *, compress: bool = True,
+            stamp: str | None = None) -> str:
     """生ファイルを日時付きで保存する。
 
     外為法の検査で「いつ時点のリストで照合したか」を聞かれたときに
@@ -238,7 +249,7 @@ def archive(f: Fetched, source: str, root: Path, *, compress: bool = True) -> st
         return ""
     d = root / "data" / "raw" / source
     d.mkdir(parents=True, exist_ok=True)
-    name = f"{utc_stamp()}__{f.filename}"
+    name = f"{stamp or utc_stamp()}__{f.filename}"
     if compress:
         p = d / f"{name}.gz"
         p.write_bytes(gzip.compress(f.body, GZIP_LEVEL, mtime=0))
@@ -285,7 +296,8 @@ MAX_RAW_BYTES = 16 * 1024 * 1024
 
 
 def prune_raw(source: str, root: Path, keep: int = 30,
-              max_bytes: int = MAX_RAW_BYTES) -> list[str]:
+              max_bytes: int = MAX_RAW_BYTES,
+              protected: set[str] | None = None) -> list[str]:
     """生ファイルの保管量を制限する。世代数と合計容量の厳しい方で切る。
 
     ファイル数ではなく世代数で数える。OFAC は1回の取得で prim と alt の
@@ -311,6 +323,11 @@ def prune_raw(source: str, root: Path, keep: int = 30,
     if not d.exists():
         return []
 
+    protected_resolved = {
+        (root / rel).resolve()
+        for rel in (protected or set())
+        if rel
+    }
     gens = raw_generations(d)
     total = 0
     cut = len(gens)
@@ -322,6 +339,8 @@ def prune_raw(source: str, root: Path, keep: int = 30,
 
     removed = []
     for _, paths in gens[cut:]:
+        if any(p.resolve() in protected_resolved for p in paths):
+            continue
         for p in paths:
             removed.append(p.name)
             p.unlink()

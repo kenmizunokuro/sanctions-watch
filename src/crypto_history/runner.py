@@ -12,7 +12,7 @@ def collect(snapshot,previous,now=None,*,http=None,observe=None):
     http=http or HistoryTransport();real=observe is None
     if observe is None:
         def observe(t,address,h):return (tron if t.chain=='tron' else evm).observe(t,address,h)
-    old={r['relation_id']:r for r in previous.get('rows',[])} if previous.get('registry_version')==VERSION else {}
+    old={(r['relation_id'],r.get('chain',''),r.get('contract','')):r for r in previous.get('rows',[])} if previous.get('registry_version')==VERSION else {}
     rows=[]
     for official in snapshot['rows']:
         for t in targets(official):
@@ -20,7 +20,7 @@ def collect(snapshot,previous,now=None,*,http=None,observe=None):
             fields=dict(relation_id=official['relation_id'],address=official['address'],symbol=official['symbol'],
                         chain=t.chain,contract=t.contract,issuer_source=t.issuer_source,
                         index_provider=provider,index_endpoint=endpoint)
-            prev=old.get(official['relation_id'],{})
+            prev=old.get((official['relation_id'],t.chain,t.contract),{})
             if any(prev.get(k)!=v for k,v in fields.items()):prev={}
             value=prev.get('last_success',{})
             partial=value.get('state')=='PARTIAL'

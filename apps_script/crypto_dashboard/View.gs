@@ -8,7 +8,7 @@ function caTime_(value) {
 function caBuildTables_(s,cfg,now) {
   now=now||new Date();
   var last=Date.parse(s.upstream.last_checked||''),age=isFinite(last)?(now.getTime()-last)/60000:null;
-  var health=s.upstream.outcome==='failure'?
+  var health=(s.upstream.outcome==='failure'||s.upstream.status==='error')?
     (s.upstream.stage==='integrity_failed'?'異常：上流OFAC監査停止':'異常：上流OFAC取得失敗'):
     age===null?'未確認：上流確認日時なし':age>cfg.criticalMinutes?'重大：上流確認が遅延':
     age>cfg.warningMinutes?'警告：上流確認が遅延':'確認間隔内';

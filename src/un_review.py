@@ -116,6 +116,7 @@ def apply(root: Path, *, event_id: str, source_hash: str, expected_master_hash: 
             counts.update(追加=0, 初回同期=len(diff.added))
         event.update(status='APPLIED', applied_at=at, operator=operator, apply_note=note,
                      master_before_sha256=before, master_after_sha256=after, master_counts=counts)
+        event.pop('application_diff', None)
         state['applied_event_id'] = event_id
         _refresh(state)
         writes = W.projections(root, state, now=when)
@@ -140,6 +141,7 @@ def apply(root: Path, *, event_id: str, source_hash: str, expected_master_hash: 
         if hashlib.sha256((root / W.STATE_PATH).read_bytes()).hexdigest() != generation:
             raise ValueError('UN generation changed during application')
         atomic_replace_many(writes)
+        W.prune_snapshots(root, state)
     return dict(applied_event_id=event_id, master_before_sha256=before, master_after_sha256=after, counts=counts)
 
 
@@ -161,11 +163,78 @@ def review_notice(root: Path, *, event_id: str, index_hash: str, reviewer: str,
 def review_coverage(root: Path, *, committee: str, reviewer: str, when: datetime, note: str):
     at = _operator(reviewer, when, note)
     state = W.load(root)
+    if committee not in state.get('coverage_gaps', {}):
+        raise ValueError(f'no pending UN press coverage gap for committee: {committee}')
     gap = state['coverage_gaps'].pop(committee)
     state.setdefault('coverage_reviews', []).append(dict(gap, committee=committee, reviewer=reviewer,
                                                          reviewed_at=at, review_note=note))
     _refresh(state)
     atomic_replace_many(W.projections(root, state, now=when))
+    return state['coverage_reviews'][-1]
+
+
+def _read_archived_updates_html(root: Path, source_hash: str) -> bytes:
+    if not re.fullmatch('[0-9a-f]{64}', source_hash):
+        raise ValueError('UN update source_hash is invalid')
+    archive = root / 'data/raw/un'
+    raw = archive / (source_hash + '.html.gz')
+    if (not archive.resolve().is_relative_to(root.resolve())
+            or not raw.resolve().is_relative_to(archive.resolve())):
+        raise ValueError('UN update history original lies outside the archive')
+    try:
+        with gzip.open(raw, 'rb') as stream:
+            body = stream.read(U.MAX_BYTES + 1)
+    except (OSError, EOFError, zlib.error) as error:
+        raise ValueError('UN update history original is unavailable or corrupted') from error
+    if len(body) > U.MAX_BYTES or hashlib.sha256(body).hexdigest() != source_hash:
+        raise ValueError('UN update history original hash mismatch or response too large')
+    return body
+
+
+@locked
+def review_update_event(root: Path, *, event_id: str, source_hash: str, reviewer: str,
+                        when: datetime, note: str) -> dict:
+    at = _operator(reviewer, when, note)
+    event_id = event_id.removeprefix('updates:')
+    state = W.load(root)
+    event = next((e for e in state.get('updates_events', []) if e.get('event_id') == event_id), None)
+    if not event or event.get('status') != 'PENDING_REVIEW' or event.get('source_hash') != source_hash:
+        raise ValueError('UN update event/hash is not pending')
+    detected = P.moment(event['detected_at'])
+    if when < detected:
+        raise ValueError('UN update event review cannot predate detection')
+    body = _read_archived_updates_html(root, source_hash)
+    items, _ = V.parse_update_history(body, now=detected)
+    if event['record']['event_id'] != event_id or event['record'] not in items:
+        raise ValueError('UN update event does not match the archived original')
+    event.update(status='REVIEWED', reviewer=reviewer, reviewed_at=at, review_note=note)
+    state['updates_status'] = W._updates_status(state, state.get('failures', []))
+    atomic_replace_many(W.projections(root, state, now=when))
+    return event
+
+
+@locked
+def review_updates_coverage(root: Path, *, source_hash: str, reviewer: str,
+                            when: datetime, note: str) -> dict:
+    at = _operator(reviewer, when, note)
+    state = W.load(root)
+    gap = state.get('updates_coverage_gap')
+    if not gap:
+        raise ValueError('no pending UN updates coverage gap')
+    if any(f.get('source') == 'un_updates' and f.get('error_type') != 'UNReferenceConflict'
+           for f in state.get('failures', [])):
+        raise ValueError('UN updates transport is currently failing')
+    current_doc = state.get('documents', {}).get('updates') or state.get('documents', {}).get('updates_partial') or {}
+    if current_doc.get('sha256') != source_hash:
+        raise ValueError('UN updates coverage clearance requires current source_hash')
+    _read_archived_updates_html(root, source_hash)
+    state.pop('updates_coverage_gap')
+    state.setdefault('updates_coverage_reviews', []).append(
+        dict(gap, reviewer=reviewer, reviewed_at=at, review_note=note, reviewed_source_hash=source_hash)
+    )
+    state['updates_status'] = W._updates_status(state, state.get('failures', []))
+    atomic_replace_many(W.projections(root, state, now=when))
+    return state['updates_coverage_reviews'][-1]
 
 
 @locked
@@ -181,18 +250,7 @@ def review_update_conflict(root: Path, *, event_id: str, source_hash: str, revie
     detected = P.moment(event['detected_at'])
     if when < detected:
         raise ValueError('UN update conflict review cannot predate detection')
-    archive = root / 'data/raw/un'
-    raw = archive / (source_hash + '.html.gz')
-    if (not archive.resolve().is_relative_to(root.resolve())
-            or not raw.resolve().is_relative_to(archive.resolve())):
-        raise ValueError('UN update history original lies outside the archive')
-    try:
-        with gzip.open(raw, 'rb') as stream:
-            body = stream.read(U.MAX_BYTES + 1)
-    except (OSError, EOFError, zlib.error) as error:
-        raise ValueError('UN update history original is unavailable or corrupted') from error
-    if len(body) > U.MAX_BYTES or hashlib.sha256(body).hexdigest() != source_hash:
-        raise ValueError('UN update history original hash mismatch or response too large')
+    body = _read_archived_updates_html(root, source_hash)
     _, conflicts = V.parse_update_history(body, now=detected)
     if event['record']['event_id'] != event_id or event['record'] not in conflicts:
         raise ValueError('UN update conflict does not match the archived original')
@@ -282,7 +340,8 @@ def review_rss_coverage(root: Path, *, index_hash: str, reviewer: str, when: dat
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('command', choices=['status', 'approve', 'apply', 'notice-review', 'coverage-review',
-                                          'rss-review', 'rss-coverage-review', 'updates-conflict-review'])
+                                          'rss-review', 'rss-coverage-review', 'updates-review',
+                                          'updates-coverage-review', 'updates-conflict-review'])
     parser.add_argument('--root', type=Path, default=Path(__file__).resolve().parent.parent)
     for name in ['event-id', 'source-hash', 'reviewer', 'operator', 'note', 'evidence-url',
                  'expected-master-hash', 'index-hash', 'committee']:
@@ -313,6 +372,12 @@ def main() -> int:
     elif args.command == 'rss-review':
         result = review_rss_notice(args.root, event_id=args.event_id, index_hash=args.index_hash,
                                   reviewer=args.reviewer, when=when, note=args.note)
+    elif args.command == 'updates-review':
+        result = review_update_event(args.root, event_id=args.event_id, source_hash=args.source_hash,
+                                     reviewer=args.reviewer, when=when, note=args.note)
+    elif args.command == 'updates-coverage-review':
+        result = review_updates_coverage(args.root, source_hash=args.source_hash,
+                                         reviewer=args.reviewer, when=when, note=args.note)
     elif args.command == 'updates-conflict-review':
         result = review_update_conflict(args.root, event_id=args.event_id, source_hash=args.source_hash,
                                         reviewer=args.reviewer, when=when, note=args.note)

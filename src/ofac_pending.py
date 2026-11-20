@@ -117,7 +117,12 @@ def promotion_evidence(
     history = []
     for row in diff_rows:
         key = tuple(row)
-        saved = prior.get(key)
+        lookup_key = (
+            (row[0], "掲載終了候補", *row[2:])
+            if len(row) == len(DIFF_HEADER) and row[1].startswith("掲載終了")
+            else key
+        )
+        saved = prior.get(lookup_key)
         if saved is None:
             continue
         if key in detected_at:

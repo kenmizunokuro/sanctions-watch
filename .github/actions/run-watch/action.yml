@@ -64,11 +64,14 @@ runs:
     - name: 取得と差分抽出
       id: watch
       shell: bash
+      env:
+        INPUT_SOURCES: ${{ inputs.sources }}
       run: |
-        if [[ "${{ inputs.sources }}" == *ofac* || "${{ inputs.sources }}" == "all" ]]; then
-          python -m src.monitor_attempt --sources ${{ inputs.sources }}
+        read -r -a SOURCE_ARGS <<< "$INPUT_SOURCES"
+        if [[ "$INPUT_SOURCES" == *ofac* || "$INPUT_SOURCES" == "all" ]]; then
+          python -m src.monitor_attempt --sources "${SOURCE_ARGS[@]}"
         else
-          python -m src.watch --sources ${{ inputs.sources }}
+          python -m src.watch --sources "${SOURCE_ARGS[@]}"
         fi
 
     - name: 財務省 原本差分を未承認候補として生成
@@ -121,8 +124,15 @@ runs:
       env:
         AUDIT_SOURCES: ${{ inputs.sources }}
         HAS_DIFF: ${{ steps.watch.outputs.has_diff }}
+        WATCH_ADDED: ${{ steps.watch.outputs.added || '0' }}
+        WATCH_REMOVED: ${{ steps.watch.outputs.removed || '0' }}
+        WATCH_CHANGED: ${{ steps.watch.outputs.changed || '0' }}
+        WATCH_BACKFILLED: ${{ steps.watch.outputs.backfilled || '0' }}
         MOF_SOURCE_CHANGED: ${{ steps.mof_record_diff.outputs.source_changed }}
         MOF_MATERIAL_CHANGED: ${{ steps.mof_record_diff.outputs.material_changed }}
+        MOF_ADDED: ${{ steps.mof_record_diff.outputs.added || '0' }}
+        MOF_REMOVED: ${{ steps.mof_record_diff.outputs.removed || '0' }}
+        MOF_AMENDED: ${{ steps.mof_record_diff.outputs.amended || '0' }}
       run: |
         git config user.name  "sanctions-watch[bot]"
         git config user.email "sanctions-watch@users.noreply.github.com"
@@ -136,12 +146,12 @@ runs:
         fi
         # 意味のある履歴だけ後から追えるよう、メッセージを用途別に分ける
         if [ "$HAS_DIFF" = "true" ]; then
-          MSG="feat(diff): 制裁リスト差分 追加${{ steps.watch.outputs.added }} 削除${{ steps.watch.outputs.removed }} 変更${{ steps.watch.outputs.changed }}"
-          if [ "${{ steps.watch.outputs.backfilled }}" != "0" ]; then
-            MSG="$MSG 初回同期${{ steps.watch.outputs.backfilled }}"
+          MSG="feat(diff): 制裁リスト差分 追加${WATCH_ADDED} 削除${WATCH_REMOVED} 変更${WATCH_CHANGED}"
+          if [ "$WATCH_BACKFILLED" != "0" ]; then
+            MSG="$MSG 初回同期${WATCH_BACKFILLED}"
           fi
         elif [ "$MOF_MATERIAL_CHANGED" = "true" ]; then
-          MSG="feat(mof): 原本差分 追加${{ steps.mof_record_diff.outputs.added }} 削除${{ steps.mof_record_diff.outputs.removed }} 情報改訂${{ steps.mof_record_diff.outputs.amended }}"
+          MSG="feat(mof): 原本差分 追加${MOF_ADDED} 削除${MOF_REMOVED} 情報改訂${MOF_AMENDED}"
         elif [ "$MOF_SOURCE_CHANGED" = "true" ]; then
           MSG="chore(mof): 原本更新・実質変更なし"
         elif git diff --cached --name-only | grep -qv '^data/heartbeat/'; then
@@ -168,6 +178,7 @@ runs:
             fi
             git push && exit 0
           fi
+          git rebase --abort 2>/dev/null || true
           sleep $((i * 5))
         done
         exit 1
@@ -236,17 +247,20 @@ runs:
       env:
         SLACK_WEBHOOK_URL: ${{ inputs.slack-webhook }}
         HUISTAS_APPLIED: ${{ steps.huistas.outputs.applied }}
+        WATCH_ADDED: ${{ steps.watch.outputs.added || '0' }}
+        WATCH_REMOVED: ${{ steps.watch.outputs.removed || '0' }}
         WATCH_CHANGED: ${{ steps.watch.outputs.changed || '0' }}
+        WATCH_BACKFILLED: ${{ steps.watch.outputs.backfilled || '0' }}
       run: |
         CHANGED="$WATCH_CHANGED"
         if [[ "$HUISTAS_APPLIED" == true ]]; then
           CHANGED=$((CHANGED + 1))
         fi
         python -m src.notify --kind diff \
-          --added   "${{ steps.watch.outputs.added }}" \
-          --removed "${{ steps.watch.outputs.removed }}" \
+          --added   "$WATCH_ADDED" \
+          --removed "$WATCH_REMOVED" \
           --changed "$CHANGED" \
-          --backfilled "${{ steps.watch.outputs.backfilled }}"
+          --backfilled "$WATCH_BACKFILLED"
 
     - name: OFAC 取得後の監査停止を記録
       if: failure() && steps.watch.outcome == 'success' && (steps.integrity.outcome == 'failure' || steps.commit_candidate.outputs.integrity_failed == 'true') && (contains(inputs.sources, 'ofac') || inputs.sources == 'all')
@@ -259,6 +273,8 @@ runs:
     - name: OFAC 失敗証跡を準備
       if: failure() && (contains(inputs.sources, 'ofac') || inputs.sources == 'all')
       shell: bash
+      env:
+        INPUT_SOURCES: ${{ inputs.sources }}
       run: |
         set -u
 
@@ -272,7 +288,7 @@ runs:
           echo "GITHUB_RUN_ID=${GITHUB_RUN_ID:-}"
           echo "GITHUB_RUN_ATTEMPT=${GITHUB_RUN_ATTEMPT:-}"
           echo "GITHUB_SHA=${GITHUB_SHA:-}"
-          echo "sources=${{ inputs.sources }}"
+          echo "sources=${INPUT_SOURCES}"
           echo ""
           echo "===== git status --short ====="
           git status --short --untracked-files=all || true

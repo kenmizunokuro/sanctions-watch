@@ -4,10 +4,6 @@ __pycache__/
 seed/
 .DS_Store
 dist/internal_import_*.xlsx
-.DS_Store
-*.patch
-migrate-raw.py
-.DS_Store
 *.patch
 migrate-raw.py
 

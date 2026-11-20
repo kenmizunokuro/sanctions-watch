@@ -22,32 +22,46 @@ CANDIDATES = {url: (symbol, marker, title) for url, symbol, marker, title in ART
 
 
 class _ArticlePage(HTMLParser):
+    _HIDDEN = {'script', 'style', 'template', 'noscript'}
+    _HEADINGS = {'h1', 'h2', 'h3'}
+
     def __init__(self):
         super().__init__(convert_charrefs=True)
         self.text = []
         self.headings = []
-        self.heading_tag = ''
+        self.heading_stack = []
         self.heading_text = []
-        self.hidden_tag = ''
+        self.hidden_stack = []
 
     def handle_starttag(self, tag, attrs):
-        if tag in {'script', 'style', 'template', 'noscript'} and not self.hidden_tag:
-            self.hidden_tag = tag
-        if tag in {'h1', 'h2', 'h3'} and not self.hidden_tag:
-            self.heading_tag = tag
-            self.heading_text = []
+        if tag in self._HIDDEN:
+            self.hidden_stack.append(tag)
+            return
+        if tag in self._HEADINGS and not self.hidden_stack:
+            if not self.heading_stack:
+                self.heading_text = []
+            self.heading_stack.append(tag)
 
     def handle_endtag(self, tag):
-        if tag == self.hidden_tag:
-            self.hidden_tag = ''
-        if tag == self.heading_tag and not self.hidden_tag:
-            self.headings.append(' '.join(self.heading_text))
-            self.heading_tag = ''
+        if tag in self._HIDDEN and tag in self.hidden_stack:
+            for idx in range(len(self.hidden_stack) - 1, -1, -1):
+                if self.hidden_stack[idx] == tag:
+                    del self.hidden_stack[idx:]
+                    break
+            return
+        if tag in self._HEADINGS and tag in self.heading_stack and not self.hidden_stack:
+            for idx in range(len(self.heading_stack) - 1, -1, -1):
+                if self.heading_stack[idx] == tag:
+                    del self.heading_stack[idx:]
+                    break
+            if not self.heading_stack:
+                self.headings.append(' '.join(self.heading_text))
+                self.heading_text = []
 
     def handle_data(self, data):
-        if not self.hidden_tag:
+        if not self.hidden_stack:
             self.text.append(data)
-            if self.heading_tag:
+            if self.heading_stack:
                 self.heading_text.append(data)
 
 

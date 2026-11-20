@@ -36,6 +36,7 @@ concurrency:
 
 jobs:
   crypto:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -45,6 +46,8 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements-crypto.txt
       - name: アドレス監視の自己テスト
         run: |
           python -m pip install -r requirements-crypto.txt

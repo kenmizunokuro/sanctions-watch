@@ -2,10 +2,12 @@
 from __future__ import annotations
 
 import argparse
+import http.client
 import json
 import os
 import sys
 import urllib.error
+import urllib.parse
 import urllib.request
 from pathlib import Path
 
@@ -18,6 +20,9 @@ def post(text: str, blocks=None) -> bool:
         prefix = "::warning::" if os.environ.get("GITHUB_ACTIONS") == "true" else ""
         print(prefix + "SLACK_WEBHOOK_URL 未設定のため通知をスキップ（配信されていません）")
         return False
+    parsed = urllib.parse.urlsplit(url)
+    if parsed.scheme != "https" or not parsed.hostname:
+        raise ValueError("SLACK_WEBHOOK_URL must be an https URL")
     payload = {"text": text}
     if blocks:
         payload["blocks"] = blocks
@@ -65,7 +70,7 @@ def main() -> int:
         body = ""
         p = ROOT / "data" / "diff" / "latest.md"
         if p.exists():
-            body = p.read_text(encoding="utf-8")[:2500]
+            body = p.read_text(encoding="utf-8")[:2500].replace("```", "`\u200b``")
         text = head + ("\n\n```\n" + body + "\n```" if body else "")
     else:
         text = ":x: 制裁リスト監視が失敗した。取得元の書式変更かネットワーク障害の可能性"
@@ -75,7 +80,7 @@ def main() -> int:
     configured = bool(os.environ.get("SLACK_WEBHOOK_URL", "").strip())
     try:
         delivered = post(text)
-    except (urllib.error.URLError, OSError) as error:
+    except (urllib.error.URLError, OSError, ValueError, http.client.HTTPException) as error:
         # Exception messages can contain the webhook secret; record only the type.
         print(f"Slack通知の送信に失敗: {type(error).__name__}", file=sys.stderr)
         delivered = False

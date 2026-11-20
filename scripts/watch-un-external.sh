@@ -15,18 +15,26 @@ if [[ "$python_bin" != /* || ! -x "$python_bin" ]]; then
   exit 2
 fi
 export GIT_TERMINAL_PROMPT=0
+mkdir -p "$repo/.runtime"
+if command -v flock >/dev/null 2>&1; then
+  exec 9>"$repo/.runtime/watch-un-external.lock"
+  if ! flock -n 9; then
+    echo "Another watch-un-external run is already in progress." >&2
+    exit 0
+  fi
+fi
 scratch=$(mktemp -d)
 worktree="$scratch/checkout"
 cleanup() {
   if [[ -d "$worktree" ]]; then
-    git -C "$repo" worktree remove --force "$worktree" || return
+    git -C "$repo" worktree remove --force "$worktree" 2>/dev/null || true
   fi
-  rmdir "$scratch"
+  rm -rf "$scratch"
 }
 trap cleanup EXIT
 
 for attempt in 1 2; do
-  git -C "$repo" fetch --no-tags origin refs/heads/main:refs/remotes/origin/main
+  git -C "$repo" fetch --no-tags origin +refs/heads/main:refs/remotes/origin/main
   base=$(git -C "$repo" rev-parse refs/remotes/origin/main)
   git -C "$repo" worktree add --detach "$worktree" "$base"
   (
@@ -40,6 +48,9 @@ for attempt in 1 2; do
 
   git -C "$worktree" add -- data/un/ data/raw/un/ data/source_audit/ data/heartbeat/ \
     data/dashboard/status.csv data/dashboard/un_reviews.csv
+  if [[ -f "$worktree/data/dashboard/status_detail.csv" ]]; then
+    git -C "$worktree" add -- data/dashboard/status_detail.csv
+  fi
   git -C "$worktree" diff --cached --check
   if git -C "$worktree" diff --cached --quiet; then
     exit 0

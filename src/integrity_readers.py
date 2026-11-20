@@ -5,7 +5,9 @@ Unrecognized/ambiguous structures raise instead of becoming an empty snapshot.
 """
 from __future__ import annotations
 
+from collections import OrderedDict
 import csv
+import hashlib
 import io
 import re
 import xml.sax
@@ -14,6 +16,11 @@ from xml.sax.handler import ContentHandler, feature_namespaces
 
 class ReadError(ValueError):
     pass
+
+
+_CLASSIC_CACHE: OrderedDict[tuple[str, str, bool], tuple[dict, ...]] = OrderedDict()
+_XML_CACHE: OrderedDict[tuple[str, str], tuple[dict, ...]] = OrderedDict()
+_DTD_OR_ENTITY_RE = re.compile(rb'<!(?:DOCTYPE|ENTITY)', re.IGNORECASE)
 
 
 MOF_COLUMNS = [
@@ -50,6 +57,11 @@ def _row(source, label, ident, name, primary, weak=False, **evidence):
 
 
 def read_classic(body: bytes, label: str, alias: bool = False) -> list[dict]:
+    cache_key = (hashlib.sha256(body).hexdigest(), label, bool(alias))
+    cached = _CLASSIC_CACHE.get(cache_key)
+    if cached is not None:
+        _CLASSIC_CACHE.move_to_end(cache_key)
+        return [dict(r) for r in cached]
     out, ids = [], set()
     try:
         for line, row in enumerate(csv.reader(io.StringIO(decode(body)), strict=True), 1):
@@ -75,7 +87,10 @@ def read_classic(body: bytes, label: str, alias: bool = False) -> list[dict]:
         raise ReadError(f'Classic CSV解析不能: {exc}') from exc
     if not out:
         raise ReadError('Classic CSV名称0件')
-    return out
+    _CLASSIC_CACHE[cache_key] = tuple(out)
+    while len(_CLASSIC_CACHE) > 24:
+        _CLASSIC_CACHE.popitem(last=False)
+    return [dict(r) for r in out]
 
 
 def _boolean(attrs, field):
@@ -177,8 +192,13 @@ class _Witness(ContentHandler):
 
 
 def read_ofac_xml(body: bytes, label: str) -> list[dict]:
-    if b'<!DOCTYPE' in body.upper() or b'<!ENTITY' in body.upper():
+    if _DTD_OR_ENTITY_RE.search(body):
         raise ReadError('XML DTD/ENTITYは禁止')
+    cache_key = (hashlib.sha256(body).hexdigest(), label)
+    cached = _XML_CACHE.get(cache_key)
+    if cached is not None:
+        _XML_CACHE.move_to_end(cache_key)
+        return [dict(r) for r in cached]
     handler = _Witness(label)
     parser = xml.sax.make_parser()
     parser.setFeature(feature_namespaces, True)
@@ -189,7 +209,10 @@ def read_ofac_xml(body: bytes, label: str) -> list[dict]:
         raise ReadError(f'XML解析不能: {exc}') from exc
     if not handler.out:
         raise ReadError('XML Party/名称0件')
-    return handler.out
+    _XML_CACHE[cache_key] = tuple(handler.out)
+    while len(_XML_CACHE) > 6:
+        _XML_CACHE.popitem(last=False)
+    return [dict(r) for r in handler.out]
 
 
 _DESCRIPTOR = re.compile(r'生年月日|出生地|国籍|旅券|passport|original\s*script|\bDOB\b|\bPOB\b|Nationality|\d{4}\s*年\s*\d+\s*月\s*\d+\s*日\s*生', re.I)
