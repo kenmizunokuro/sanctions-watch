@@ -3,10 +3,10 @@
   "current_event_id": "c18b15c84bd12242dc94b509ee066a239d058d569e031c252be9f81293e95071",
   "documents": {
     "press_rss": {
-      "etag": "W/\"1795138451\"",
+      "etag": "W/\"1795187752\"",
       "filename": "rss.xml",
       "final_url": "https://press.un.org/en/rss.xml",
-      "last_modified": "Fri, 20 Nov 2026 01:34:11 GMT",
+      "last_modified": "Fri, 20 Nov 2026 15:15:52 GMT",
       "raw_path": "data/raw/un/3e439848bc264989c15ac432696ad140376ee89edf137c1b6ebe7afc7254a316.xml.gz",
       "sha256": "3e439848bc264989c15ac432696ad140376ee89edf137c1b6ebe7afc7254a316",
       "url": "https://press.un.org/en/rss.xml"
@@ -795535,7 +795535,7 @@
       "source": "press:2745"
     }
   ],
-  "last_checked_at": "2026-11-20T07:58:08Z",
+  "last_checked_at": "2026-11-20T16:53:17Z",
   "notices": {},
   "press_rss": {
     "article_evidence": {
@@ -795705,7 +795705,7 @@
         "url": "https://press.un.org/en/blog/sc16514"
       }
     ],
-    "last_success_at": "2026-11-20T07:58:08Z",
+    "last_success_at": "2026-11-20T16:53:17Z",
     "latest_publication_at": "2026-11-20T01:27:30Z",
     "new_articles": 0,
     "new_candidates": 0,
@@ -796029,6 +796029,6 @@
     }
   ],
   "updates_status": "error",
-  "xml_last_success_at": "2026-11-20T07:58:08Z",
+  "xml_last_success_at": "2026-11-20T16:53:17Z",
   "xml_status": "review_required"
 }
