@@ -205,6 +205,10 @@ def review_document(root: Path,*,event_id: str,source_hash: str,reviewer: str,wh
         path=(root/row['raw_path']).resolve()
         if not path.is_relative_to((root/'data/raw/mofa').resolve()) or sha256(read_raw(path))!=source_hash: raise DocumentStateError('review evidence missing or corrupt')
     row.update(review_status='CANCELLED_DOCUMENT' if cancel else 'REVIEWED_DOCUMENT',reviewer=reviewer,reviewed_at=t,note=note)
+    if cancel and s.get('mode') == 'manual':
+        doc_key = row['document_key']
+        s['manual']['import_errors'].pop(doc_key, None)
+        s['manual']['linked_documents'].pop(doc_key, None)
     review=dict(row); review['event_id']=sha256(json.dumps({'parent':event_id,'status':row['review_status'],'at':t,'reviewer':reviewer,'note':note},sort_keys=True).encode()); review['event_type']='DOCUMENT_REVIEW'; review['checked_at']=t
     if not any(x['event_id']==review['event_id'] for x in e): e.append(review)
     save_bundle(root,s,e,q,_projection_writes(root,s,q))

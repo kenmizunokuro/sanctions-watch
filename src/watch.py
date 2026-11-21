@@ -25,6 +25,7 @@ import requests
 
 from . import dashboard as D
 from . import master as M
+from . import ofac_alias_removal_queue as OARQ
 from . import ofac_index as OI
 from . import ofac_pending as OP
 from . import ofac_removal as OR
@@ -32,7 +33,7 @@ from . import ofac_removal_queue as ORQ
 from . import persistence as P
 from . import state as S
 from . import source_audit as A
-from .fetch import archive, fetch, prune_raw, read_raw, sha256
+from .fetch import archive, fetch, prune_raw, read_raw, sha256, utc_stamp
 from .sources import mof, ofac
 
 LOGGER = logging.getLogger(__name__)
@@ -51,12 +52,17 @@ OFAC_REMOVAL_AUDIT_REL = Path(
 OFAC_REMOVAL_QUEUE_REL = Path(
     "data/review/ofac_party_removal_queue.csv"
 )
+OFAC_ALIAS_REMOVAL_APPROVALS_REL = OARQ.APPROVALS_REL
+OFAC_ALIAS_REMOVAL_AUDIT_REL = OARQ.AUDIT_REL
+OFAC_ALIAS_REMOVAL_QUEUE_REL = OARQ.QUEUE_REL
 MASTER = ROOT / MASTER_REL
 DIFF_MD = ROOT / DIFF_MD_REL
 DIFF_CSV = ROOT / DIFF_CSV_REL
 OFAC_INDEX = ROOT / OFAC_INDEX_REL
 OFAC_REMOVAL_APPROVALS = ROOT / OFAC_REMOVAL_APPROVALS_REL
 OFAC_REMOVAL_QUEUE = ROOT / OFAC_REMOVAL_QUEUE_REL
+OFAC_ALIAS_REMOVAL_APPROVALS = ROOT / OFAC_ALIAS_REMOVAL_APPROVALS_REL
+OFAC_ALIAS_REMOVAL_QUEUE = ROOT / OFAC_ALIAS_REMOVAL_QUEUE_REL
 
 # Advanced XML / Party indexをmainへ導入しても、
 # 明示的に解禁するまでmaster/社内取込には反映しない。
@@ -74,6 +80,8 @@ def _persist_outputs_atomically(
     ofac_index_rows=None,
     ofac_removal_queue_rows=None,
     ofac_removal_audit_rows=None,
+    ofac_alias_removal_queue_rows=None,
+    ofac_alias_removal_audit_rows=None,
     now: datetime | None = None,
 ) -> None:
     """watchの正式成果物とdashboard投影を1世代として保存する。
@@ -138,6 +146,30 @@ def _persist_outputs_atomically(
                 writer=lambda path: OR.append_audit(
                     path,
                     ofac_removal_audit_rows,
+                    applied_at=now,
+                ),
+                seed_existing=True,
+            )
+        )
+
+    if ofac_alias_removal_queue_rows is not None:
+        writes.append(
+            P.FileWrite(
+                target=root / OFAC_ALIAS_REMOVAL_QUEUE_REL,
+                writer=lambda path: OARQ.save(
+                    ofac_alias_removal_queue_rows,
+                    path,
+                ),
+            )
+        )
+
+    if ofac_alias_removal_audit_rows:
+        writes.append(
+            P.FileWrite(
+                target=root / OFAC_ALIAS_REMOVAL_AUDIT_REL,
+                writer=lambda path: OARQ.append_audit(
+                    path,
+                    ofac_alias_removal_audit_rows,
                     applied_at=now,
                 ),
                 seed_existing=True,
@@ -224,6 +256,7 @@ def _persist_outputs_atomically(
             projection_root,
             heartbeat,
             state,
+            source_root=root,
         )
         D.append_changes(
             projection_root,
@@ -238,6 +271,9 @@ def _persist_outputs_atomically(
             ofac_removal_queue_rows
             if ofac_removal_queue_rows is not None
             else ORQ.load(root / OFAC_REMOVAL_QUEUE_REL),
+            ofac_alias_removal_queue_rows
+            if ofac_alias_removal_queue_rows is not None
+            else OARQ.load(root / OFAC_ALIAS_REMOVAL_QUEUE_REL),
         )
 
         projection_paths = [
@@ -357,7 +393,6 @@ def run_mof(session, st, rows, hb, opts=None) -> list[M.Diff]:
         return []
 
     archive(f, "mof", ROOT)
-    prune_raw("mof", ROOT)
 
     try:
         records = mof.parse(f)
@@ -406,9 +441,15 @@ def run_mof(session, st, rows, hb, opts=None) -> list[M.Diff]:
 
             raise exc
 
+    prune_raw(
+        "mof",
+        ROOT,
+        protected={str(prev.get("raw_path") or "")} - {""},
+    )
+
     d = M.merge(
         rows,
-        records,
+        mof.screening_records(records),
         mof.SOURCE,
         delist=baseline and not opts.get("no_delist"),
     )
@@ -421,6 +462,7 @@ def run_mof(session, st, rows, hb, opts=None) -> list[M.Diff]:
         url=url,
         asof=asof,
         record_count=len(records),
+        raw_path=f.raw_path,
         baseline_synced=True,
     )
 
@@ -672,6 +714,7 @@ def _classify_ofac_rollout_additions(
 def _mark_ofac_review_required(
     heartbeat: list[dict],
     queue_rows: list[dict],
+    alias_queue_rows: list[dict] | None = None,
 ) -> set[str]:
     """Expose open removal reviews without treating them as source failures."""
     pending_lists = {
@@ -679,7 +722,7 @@ def _mark_ofac_review_required(
         for _event_id, list_name, _snapshot in ORQ.pending_groups(
             queue_rows
         )
-    }
+    } | OARQ.pending_lists(alias_queue_rows or [])
     affected_sources = {
         key
         for key, cfg in ofac.LISTS.items()
@@ -689,6 +732,80 @@ def _mark_ofac_review_required(
         if row.get("source") in affected_sources:
             row["status"] = "review_required"
     return affected_sources
+
+
+def _extract_person_forms_if_needed(
+    rows: dict[str, dict],
+    history: dict,
+    alias_queue_rows: list[dict],
+    party_queue_parties: set[tuple[str, str]],
+    original_st: dict,
+    advanced_bodies: dict[str, bytes],
+) -> tuple[list[dict], list[dict]]:
+    """Extract person-order forms from previous/current XML only when needed."""
+    current_strong = _existing_strong_names(history)
+    party_queued_strong = {
+        str(item.get("match_key") or "").strip()
+        for item in history.values()
+        if (
+            (str(item.get("list") or ""), str(item.get("party_id") or ""))
+            in party_queue_parties
+            and item.get("low_quality") != "1"
+            and str(item.get("match_key") or "").strip()
+        )
+    }
+    history_keys = {
+        str(item.get("match_key") or "").strip()
+        for item in history.values()
+        if str(item.get("match_key") or "").strip()
+    }
+    has_open_person_form = any(
+        row.get("status") == OARQ.PENDING_REVIEW
+        and row.get("relation_kind") == OARQ.RELATION_PERSON_FORM_REMOVED
+        for row in alias_queue_rows
+    )
+    needs_forms = has_open_person_form
+    if not needs_forms:
+        for key, mrow in rows.items():
+            if mrow.get("status") != M.STATUS_ACTIVE:
+                continue
+            if "OFAC" not in str(mrow.get("sources") or "").split(";"):
+                continue
+            flags = str(mrow.get("review_flag") or "")
+            if any(m in flags for m in OARQ._EXEMPT_MARKERS):
+                continue
+            if key in current_strong or key in party_queued_strong or key in history_keys:
+                continue
+            needs_forms = True
+            break
+    if not needs_forms:
+        return [], []
+
+    from . import integrity_person_forms as IPF
+
+    prev_forms: list[dict] = []
+    curr_forms: list[dict] = []
+    for key, cfg in ofac.LISTS.items():
+        label = cfg["label"]
+        prev_rel = str(original_st.get(key, {}).get("raw_advanced") or "")
+        if prev_rel:
+            prev_path = ROOT / prev_rel
+            if prev_path.is_file():
+                try:
+                    prev_forms.extend(
+                        IPF.read_person_forms(read_raw(prev_path), label)["forms"]
+                    )
+                except Exception:  # noqa: BLE001
+                    pass
+        curr_body = advanced_bodies.get(label)
+        if curr_body:
+            try:
+                curr_forms.extend(
+                    IPF.read_person_forms(curr_body, label)["forms"]
+                )
+            except Exception:  # noqa: BLE001
+                pass
+    return prev_forms, curr_forms
 
 
 def run_ofac(session, st, rows, hb, opts=None) -> list:
@@ -731,6 +848,7 @@ def run_ofac(session, st, rows, hb, opts=None) -> list:
 
     records: list = []
     unchanged: list[tuple[str, dict]] = []
+    advanced_bodies: dict[str, bytes] = {}
     fetched_any = False
 
     for key, cfg in ofac.LISTS.items():
@@ -972,6 +1090,8 @@ def run_ofac(session, st, rows, hb, opts=None) -> list:
         prim = fetched_documents["prim"]
         alt = fetched_documents["alt"]
         advanced = fetched_documents["advanced"]
+        if advanced.body:
+            advanced_bodies[cfg["label"]] = advanced.body
 
         # HTTP取得に成功した時点の証跡。
         # 後段のパース/coverage検証で失敗した場合でも、
@@ -1000,12 +1120,10 @@ def run_ofac(session, st, rows, hb, opts=None) -> list:
         # Classic と Advanced は別ディレクトリで世代管理する。
         # 121MB級XMLをClassicのprim/alt世代と混ぜると、
         # prune時の「1世代」の意味が壊れるため。
-        archive(prim, key, ROOT)
-        archive(alt, key, ROOT)
-        archive(advanced, f"{key}_advanced", ROOT)
-
-        prune_raw(key, ROOT)
-        prune_raw(f"{key}_advanced", ROOT)
+        gen_stamp = utc_stamp()
+        archive(prim, key, ROOT, stamp=gen_stamp)
+        archive(alt, key, ROOT, stamp=gen_stamp)
+        archive(advanced, f"{key}_advanced", ROOT, stamp=gen_stamp)
 
         classic_ids = ofac.classic_party_ids(
             prim,
@@ -1034,6 +1152,20 @@ def run_ofac(session, st, rows, hb, opts=None) -> list:
             classic_ids,
             advanced_ids,
             cfg["label"],
+        )
+
+        prune_raw(
+            key,
+            ROOT,
+            protected={
+                str(prev.get("raw_prim") or ""),
+                str(prev.get("raw_alt") or ""),
+            } - {""},
+        )
+        prune_raw(
+            f"{key}_advanced",
+            ROOT,
+            protected={str(prev.get("raw_advanced") or "")} - {""},
         )
 
         records += part
@@ -1131,18 +1263,25 @@ def run_ofac(session, st, rows, hb, opts=None) -> list:
     if not fetched_any and not rollout_pending:
         # OFAC一次ソース自体に変更が無い場合でも、
         # 既存FixedRef/Alias indexを使って、後から追加された
-        # Party削除承認とWeak Alias監査理由を反映できる。
+        # Party/別名削除承認とWeak Alias監査理由を反映できる。
         history = OI.load(
             OFAC_INDEX,
         )
         queue_rows = ORQ.load(
             OFAC_REMOVAL_QUEUE,
         )
+        alias_queue_rows = OARQ.load(
+            OFAC_ALIAS_REMOVAL_QUEUE,
+        )
         pending_groups = ORQ.pending_groups(queue_rows)
         removal_approvals = OR.load_available_approvals(
             OFAC_REMOVAL_APPROVALS,
             pending_groups,
             history,
+        )
+        alias_approvals = OARQ.load_available_approvals(
+            OFAC_ALIAS_REMOVAL_APPROVALS,
+            alias_queue_rows,
         )
         approved_parties = {
             (approval.list_name, approval.party_id)
@@ -1156,16 +1295,48 @@ def run_ofac(session, st, rows, hb, opts=None) -> list:
         }
         protected_parties = pending_parties - approved_parties
 
+        approved_alias_items = {
+            (a.list_name, a.party_id, a.match_key)
+            for a in alias_approvals
+            if a.decision == OARQ.DECISION_DELIST
+        }
+        unapproved_alias_keys = {
+            row["match_key"]
+            for row in OARQ.pending_rows(alias_queue_rows)
+            if (row["list"], row["party_id"], row["match_key"])
+            not in approved_alias_items
+        }
+        protected_party_keys = {
+            str(item.get("match_key") or "").strip()
+            for item in history.values()
+            if (
+                (str(item.get("list") or ""), str(item.get("party_id") or ""))
+                in protected_parties
+                and item.get("low_quality") != "1"
+                and str(item.get("match_key") or "").strip()
+            )
+        }
+
         d = M.Diff(
             source=ofac.SOURCE,
         )
         review_ts = M.now_ms()
         removal_effects: list[dict] = []
+        alias_effects: list[dict] = []
         staged_removal_audit_rows = []
+        staged_alias_audit_rows = []
+        master_before_sha256 = (
+            OR.master_state_sha256(rows)
+            if (removal_approvals or alias_approvals) and OFAC_ADVANCED_MASTER_ENABLED
+            else ""
+        )
+        index_sha256 = (
+            OR.index_state_sha256(history)
+            if (removal_approvals or alias_approvals) and OFAC_ADVANCED_MASTER_ENABLED
+            else ""
+        )
 
         if removal_approvals and OFAC_ADVANCED_MASTER_ENABLED:
-            master_before_sha256 = OR.master_state_sha256(rows)
-            index_sha256 = OR.index_state_sha256(history)
             removal_diff, removal_effects = OR.apply_to_master(
                 rows,
                 history,
@@ -1176,6 +1347,18 @@ def run_ofac(session, st, rows, hb, opts=None) -> list:
             d.added.extend(removal_diff.added)
             d.removed.extend(removal_diff.removed)
             d.changed.extend(removal_diff.changed)
+
+        if alias_approvals and OFAC_ADVANCED_MASTER_ENABLED:
+            alias_diff, alias_effects = OARQ.apply_to_master(
+                rows,
+                history,
+                alias_approvals,
+                protected_keys=protected_party_keys | unapproved_alias_keys,
+                ts=review_ts,
+            )
+            d.added.extend(alias_diff.added)
+            d.removed.extend(alias_diff.removed)
+            d.changed.extend(alias_diff.changed)
 
         weak_updates = _sync_ofac_weak_alias_audit(
             rows,
@@ -1228,9 +1411,36 @@ def run_ofac(session, st, rows, hb, opts=None) -> list:
                 ),
             )
 
+        if alias_approvals and OFAC_ADVANCED_MASTER_ENABLED:
+            staged_alias_audit_rows = OARQ.build_audit_rows(
+                alias_effects,
+                master_before_sha256=master_before_sha256,
+                master_after_sha256=OR.master_state_sha256(rows),
+                index_before_sha256=index_sha256,
+                index_after_sha256=index_sha256,
+            )
+            OARQ.mark_applied(alias_queue_rows, alias_approvals, ts=review_ts)
+            first_alias = alias_approvals[0]
+            audit.append(
+                A.entry(
+                    source="ofac",
+                    document_role="alias_removal_approval",
+                    status="approval_validated",
+                    record_count=len(alias_approvals),
+                    url=first_alias.official_url,
+                    content_hash=first_alias.snapshot_sha256,
+                )
+            )
+            log(
+                "approved-alias",
+                "OFAC",
+                f"304再確認で別名削除/保持承認を反映={len(alias_approvals)}件",
+            )
+
         _mark_ofac_review_required(
             hb,
             queue_rows,
+            alias_queue_rows,
         )
         remaining_pending = ORQ.pending_groups(queue_rows)
         if remaining_pending:
@@ -1254,6 +1464,22 @@ def run_ofac(session, st, rows, hb, opts=None) -> list:
                 ),
             )
 
+        remaining_alias_pending = OARQ.pending_rows(alias_queue_rows)
+        if remaining_alias_pending:
+            audit.append(
+                A.entry(
+                    source="ofac",
+                    document_role="alias_removal_review_queue",
+                    status="review_required",
+                    record_count=len(remaining_alias_pending),
+                )
+            )
+            log(
+                "review-required",
+                "OFAC",
+                f"現役Party別名/表記変更の承認待ち={len(remaining_alias_pending)}件",
+            )
+
         if weak_updates:
             log(
                 "weak-audit",
@@ -1274,6 +1500,10 @@ def run_ofac(session, st, rows, hb, opts=None) -> list:
             opts["ofac_removal_queue_rows"] = queue_rows
         if staged_removal_audit_rows:
             opts["ofac_removal_audit_rows"] = staged_removal_audit_rows
+        if alias_queue_rows:
+            opts["ofac_alias_removal_queue_rows"] = alias_queue_rows
+        if staged_alias_audit_rows:
+            opts["ofac_alias_removal_audit_rows"] = staged_alias_audit_rows
 
         commit_staged()
         return [d] if d else []
@@ -1307,6 +1537,10 @@ def run_ofac(session, st, rows, hb, opts=None) -> list:
                 "掲載終了判定を防ぐため処理を停止する"
             )
 
+        raw_adv_rel = str(prev.get("raw_advanced") or "")
+        if raw_adv_rel and (ROOT / raw_adv_rel).is_file():
+            advanced_bodies[ofac.LISTS[key]["label"]] = read_raw(ROOT / raw_adv_rel)
+
         part, party_count = cached
         records += part
 
@@ -1321,9 +1555,13 @@ def run_ofac(session, st, rows, hb, opts=None) -> list:
     history = OI.load(
         OFAC_INDEX,
     )
+    previous_history = copy.deepcopy(history)
     previous_strong_names = _existing_strong_names(history)
     queue_rows = ORQ.load(
         OFAC_REMOVAL_QUEUE,
+    )
+    alias_queue_rows = OARQ.load(
+        OFAC_ALIAS_REMOVAL_QUEUE,
     )
 
     master_before_sha256 = OR.master_state_sha256(rows)
@@ -1382,6 +1620,41 @@ def run_ofac(session, st, rows, hb, opts=None) -> list:
     }
     protected_parties = pending_parties - approved_parties
 
+    prev_forms, curr_forms = _extract_person_forms_if_needed(
+        rows,
+        history,
+        alias_queue_rows,
+        pending_parties,
+        original_st,
+        advanced_bodies,
+    )
+    alias_candidates = OARQ.detect_candidates(
+        rows,
+        previous_history,
+        history,
+        previous_person_forms=prev_forms,
+        current_person_forms=curr_forms,
+        party_queue_parties=pending_parties,
+    )
+    current_strong_keys = _existing_strong_names(history)
+    curr_form_keys = {
+        M.match_key(str(form.get("name") or ""))
+        for form in curr_forms
+        if M.match_key(str(form.get("name") or ""))
+    }
+    alias_queue_diff = OARQ.reconcile(
+        alias_queue_rows,
+        alias_candidates,
+        current_strong_keys=current_strong_keys,
+        current_person_form_keys=curr_form_keys,
+        snapshot_hashes=snapshot_hashes,
+        ts=index_ts,
+    )
+    alias_approvals = OARQ.load_available_approvals(
+        OFAC_ALIAS_REMOVAL_APPROVALS,
+        alias_queue_rows,
+    )
+
     if queue_diff.created_events or queue_diff.cancelled_parties:
         audit.append(
             A.entry(
@@ -1401,6 +1674,25 @@ def run_ofac(session, st, rows, hb, opts=None) -> list:
                     "parties_cancelled": len(
                         queue_diff.cancelled_parties
                     ),
+                },
+            )
+        )
+
+    pending_alias = OARQ.pending_rows(alias_queue_rows)
+    if alias_queue_diff.created_events or alias_queue_diff.cancelled_items:
+        audit.append(
+            A.entry(
+                source="ofac",
+                document_role="alias_removal_review_queue",
+                status=(
+                    "review_required"
+                    if pending_alias
+                    else "queue_reconciled"
+                ),
+                record_count=len(pending_alias),
+                diff_counts={
+                    "events_created": len(alias_queue_diff.created_events),
+                    "items_cancelled": len(alias_queue_diff.cancelled_items),
                 },
             )
         )
@@ -1434,6 +1726,24 @@ def run_ofac(session, st, rows, hb, opts=None) -> list:
             ),
         )
 
+    if alias_approvals:
+        first_alias = alias_approvals[0]
+        audit.append(
+            A.entry(
+                source="ofac",
+                document_role="alias_removal_approval",
+                status="approval_validated",
+                record_count=len(alias_approvals),
+                url=first_alias.official_url,
+                content_hash=first_alias.snapshot_sha256,
+            )
+        )
+        log(
+            "approved-alias",
+            "OFAC",
+            f"現役Party別名/表記変更の承認一致={len(alias_approvals)}件",
+        )
+
     if pending_groups and not removal_approvals:
         log(
             "review-required",
@@ -1444,12 +1754,20 @@ def run_ofac(session, st, rows, hb, opts=None) -> list:
             ),
         )
 
+    if pending_alias and not alias_approvals:
+        log(
+            "review-required",
+            "OFAC",
+            f"現役Party別名/表記変更を隔離={len(pending_alias)}件",
+        )
+
     # Party Indexもまだ呼出元へ公開しない。
     # master側を含むOFACトランザクション全体が成功した時だけ
     # optsへpublishする。
     staged_index_rows = history
     staged_index_diff = index_diff
     staged_queue_rows = queue_rows
+    staged_alias_queue_rows = alias_queue_rows
 
     screening_records = (
         ofac.screening_records(
@@ -1494,7 +1812,9 @@ def run_ofac(session, st, rows, hb, opts=None) -> list:
         opts["ofac_index_rows"] = staged_index_rows
         opts["ofac_index_diff"] = staged_index_diff
         opts["ofac_removal_queue_rows"] = staged_queue_rows
-        _mark_ofac_review_required(hb, queue_rows)
+        if staged_alias_queue_rows:
+            opts["ofac_alias_removal_queue_rows"] = staged_alias_queue_rows
+        _mark_ofac_review_required(hb, queue_rows, alias_queue_rows)
 
         commit_staged()
         return []
@@ -1529,6 +1849,7 @@ def run_ofac(session, st, rows, hb, opts=None) -> list:
         ))
 
     removal_effects: list[dict] = []
+    alias_effects: list[dict] = []
 
     if removal_approvals:
         removal_diff, removal_effects = OR.apply_to_master(
@@ -1541,6 +1862,39 @@ def run_ofac(session, st, rows, hb, opts=None) -> list:
         d.added.extend(removal_diff.added)
         d.removed.extend(removal_diff.removed)
         d.changed.extend(removal_diff.changed)
+
+    if alias_approvals:
+        approved_alias_delists = {
+            (a.list_name, a.party_id, a.match_key)
+            for a in alias_approvals
+            if a.decision == OARQ.DECISION_DELIST
+        }
+        unapproved_alias_keys = {
+            row["match_key"]
+            for row in OARQ.pending_rows(alias_queue_rows)
+            if (row["list"], row["party_id"], row["match_key"])
+            not in approved_alias_delists
+        }
+        protected_party_keys = {
+            str(item.get("match_key") or "").strip()
+            for item in history.values()
+            if (
+                (str(item.get("list") or ""), str(item.get("party_id") or ""))
+                in protected_parties
+                and item.get("low_quality") != "1"
+                and str(item.get("match_key") or "").strip()
+            )
+        }
+        alias_diff, alias_effects = OARQ.apply_to_master(
+            rows,
+            history,
+            alias_approvals,
+            protected_keys=protected_party_keys | unapproved_alias_keys,
+            ts=merge_ts,
+        )
+        d.added.extend(alias_diff.added)
+        d.removed.extend(alias_diff.removed)
+        d.changed.extend(alias_diff.changed)
 
     weak_updates = _sync_ofac_weak_alias_audit(
         rows,
@@ -1557,6 +1911,17 @@ def run_ofac(session, st, rows, hb, opts=None) -> list:
         )
 
     staged_removal_audit_rows = []
+    staged_alias_audit_rows = []
+    index_after_sha256 = (
+        OR.index_state_sha256(history)
+        if (removal_approvals or alias_approvals)
+        else ""
+    )
+    master_after_sha256 = (
+        OR.master_state_sha256(rows)
+        if (removal_approvals or alias_approvals)
+        else ""
+    )
 
     if removal_approvals:
         OR.refresh_effects(
@@ -1567,9 +1932,9 @@ def run_ofac(session, st, rows, hb, opts=None) -> list:
             removal_approvals,
             removal_effects,
             master_before_sha256=master_before_sha256,
-            master_after_sha256=OR.master_state_sha256(rows),
+            master_after_sha256=master_after_sha256,
             index_before_sha256=index_before_sha256,
-            index_after_sha256=OR.index_state_sha256(history),
+            index_after_sha256=index_after_sha256,
         )
         ORQ.mark_applied(
             queue_rows,
@@ -1584,7 +1949,21 @@ def run_ofac(session, st, rows, hb, opts=None) -> list:
             ts=merge_ts,
         )
 
-    _mark_ofac_review_required(hb, queue_rows)
+    if alias_approvals:
+        staged_alias_audit_rows = OARQ.build_audit_rows(
+            alias_effects,
+            master_before_sha256=master_before_sha256,
+            master_after_sha256=master_after_sha256,
+            index_before_sha256=index_before_sha256,
+            index_after_sha256=index_after_sha256,
+        )
+        OARQ.mark_applied(
+            alias_queue_rows,
+            alias_approvals,
+            ts=merge_ts,
+        )
+
+    _mark_ofac_review_required(hb, queue_rows, alias_queue_rows)
 
     # mergeまで正常完了したsnapshotだけmaster同期済みとする。
     # main() はmaster/state/Party Indexを永続化トランザクションで
@@ -1640,10 +2019,16 @@ def run_ofac(session, st, rows, hb, opts=None) -> list:
     opts["ofac_index_rows"] = staged_index_rows
     opts["ofac_index_diff"] = staged_index_diff
     opts["ofac_removal_queue_rows"] = staged_queue_rows
+    if staged_alias_queue_rows or OFAC_ALIAS_REMOVAL_QUEUE.exists():
+        opts["ofac_alias_removal_queue_rows"] = staged_alias_queue_rows
 
     if staged_removal_audit_rows:
         opts["ofac_removal_audit_rows"] = (
             staged_removal_audit_rows
+        )
+    if staged_alias_audit_rows:
+        opts["ofac_alias_removal_audit_rows"] = (
+            staged_alias_audit_rows
         )
 
     commit_staged()
@@ -1834,79 +2219,81 @@ def main() -> int:
     ofac_base_sha256 = sha256(MASTER.read_bytes()) if gh and "ofac" in targets and not args.dry_run else ""
     rows = M.load(MASTER)
     st = S.load_state(ROOT)
-    session = requests.Session()
+    original_rows = copy.deepcopy(rows)
+    original_st = copy.deepcopy(st)
     hb: list[dict] = []
     diffs: list[M.Diff] = []
     failed: list[str] = []
 
-    for t in targets:
-        try:
-            diffs += RUNNERS[t](session, st, rows, hb, opts)
-        except Exception as e:  # noqa: BLE001
-            failed.append(f"{t}: {e}")
-            log("FAILED", t, str(e))
-            traceback.print_exc()
+    with requests.Session() as session:
+        for t in targets:
+            try:
+                diffs += RUNNERS[t](session, st, rows, hb, opts)
+            except Exception as e:  # noqa: BLE001
+                failed.append(f"{t}: {e}")
+                log("FAILED", t, str(e))
+                traceback.print_exc()
 
-            schema_changed = isinstance(
-                e,
-                (
-                    mof.SchemaError,
-                    ofac.SchemaError,
-                ),
-            )
+                schema_changed = isinstance(
+                    e,
+                    (
+                        mof.SchemaError,
+                        ofac.SchemaError,
+                    ),
+                )
 
-            error_status = (
-                "schema_error"
-                if schema_changed
-                else "error"
-            )
+                error_status = (
+                    "schema_error"
+                    if schema_changed
+                    else "error"
+                )
 
-            if t == "ofac":
-                # OFACはSDN/Consolidatedを一体スナップショットとして扱う。
-                # 片方の失敗でも全体mergeを停止するため、
-                # dashboard上も両方を正常表示のまま残さない。
-                for key, cfg in ofac.LISTS.items():
+                if t == "ofac":
+                    # OFACはSDN/Consolidatedを一体スナップショットとして扱う。
+                    # 片方の失敗でも全体mergeを停止するため、
+                    # dashboard上も両方を正常表示のまま残さない。
+                    for key, cfg in ofac.LISTS.items():
+                        hb.append(
+                            dict(
+                                source=key,
+                                status="error",
+                                content_hash="",
+                            )
+                        )
+
+                        opts["audit"].append(
+                            A.error_entry(
+                                source=key,
+                                document_role="source_run",
+                                error=e,
+                                url=cfg.get("prim", ""),
+                                status=error_status,
+                                fetch_failed=not schema_changed,
+                                schema_changed=schema_changed,
+                            )
+                        )
+                else:
                     hb.append(
                         dict(
-                            source=key,
+                            source=t,
                             status="error",
                             content_hash="",
                         )
                     )
 
+                    source_url = mof.INDEX_URL if t == "mof" else ""
+
                     opts["audit"].append(
                         A.error_entry(
-                            source=key,
+                            source=t,
                             document_role="source_run",
                             error=e,
-                            url=cfg.get("prim", ""),
+                            url=source_url,
                             status=error_status,
                             fetch_failed=not schema_changed,
                             schema_changed=schema_changed,
                         )
                     )
-            else:
-                hb.append(
-                    dict(
-                        source=t,
-                        status="error",
-                        content_hash="",
-                    )
-                )
-
-                source_url = mof.INDEX_URL if t == "mof" else ""
-
-                opts["audit"].append(
-                    A.error_entry(
-                        source=t,
-                        document_role="source_run",
-                        error=e,
-                        url=source_url,
-                        status=error_status,
-                        fetch_failed=not schema_changed,
-                        schema_changed=schema_changed,
-                    )
-                )
 
     # dry-runでは既存仕様どおり永続ファイルを書かない。
     # 通常実行ではmaster/stateより先に監査証跡を保存する。
@@ -1928,23 +2315,39 @@ def main() -> int:
         print(M.render_markdown(diffs))
         return 1 if failed else 0
 
-    _persist_outputs_atomically(
-        root=ROOT,
-        rows=rows,
-        state=st,
-        heartbeat=hb,
-        diffs=diffs,
-        ofac_index_rows=opts.get("ofac_index_rows"),
-        ofac_removal_queue_rows=opts.get(
-            "ofac_removal_queue_rows"
-        ),
-        ofac_removal_audit_rows=opts.get(
-            "ofac_removal_audit_rows"
-        ),
-    )
+    if failed:
+        # Partial failures (--sources all) must never commit half-updated business data.
+        _persist_outputs_atomically(
+            root=ROOT,
+            rows=original_rows,
+            state=original_st,
+            heartbeat=hb,
+            diffs=[],
+        )
+    else:
+        _persist_outputs_atomically(
+            root=ROOT,
+            rows=rows,
+            state=st,
+            heartbeat=hb,
+            diffs=diffs,
+            ofac_index_rows=opts.get("ofac_index_rows"),
+            ofac_removal_queue_rows=opts.get(
+                "ofac_removal_queue_rows"
+            ),
+            ofac_removal_audit_rows=opts.get(
+                "ofac_removal_audit_rows"
+            ),
+            ofac_alias_removal_queue_rows=opts.get(
+                "ofac_alias_removal_queue_rows"
+            ),
+            ofac_alias_removal_audit_rows=opts.get(
+                "ofac_alias_removal_audit_rows"
+            ),
+        )
 
     # 後続ステップ用の出力
-    if gh:
+    if gh and not failed:
         with open(gh, "a", encoding="utf-8") as f:
             if ofac_base_sha256:
                 digest = sha256((ROOT / DIFF_CSV_REL).read_bytes()) if diffs else "none"

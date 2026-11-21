@@ -16,7 +16,7 @@ function caValidateChain_(d,s) {
   function str(v,max){if(typeof v!=='string'||v.length>max)fail();}
   if(!d||d.schema_version!==1||!Array.isArray(d.rows)||d.rows.length>5000||!d.counts)fail();
   str(d.registry_version,64);time(d.generated_at);
-  if(!/^[0-9a-f]{64}$/.test(d.source_hash||''))fail();
+  if(!/^[0-9a-f]{64}$/.test(d.source_hash||'')||!s.source||d.source_hash!==s.source.sha256)fail();
   var known={},seen={},counts={},total=0,success=0;
   s.rows.forEach(function(r){known[r.relation_id]=r;});
   d.rows.forEach(function(r){

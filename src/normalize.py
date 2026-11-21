@@ -53,9 +53,10 @@ def match_key(name: str) -> str:
 # 団体名にも読点は出る (`7 MAKARA PHARY CO., LTD.`) ので、法人格の
 # 接尾辞が続く場合は入れ替えない。
 _ORG_SUFFIX = re.compile(
-    r"^(?:LTD|LTD\.|INC|INC\.|LLC|L\.L\.C\.|CORP|CORP\.|CO|CO\.|PLC|GMBH|"
+    r"^(?:LTD|LTD\.|INC|INC\.|LLC|L\.L\.C\.|CORP|CORP\.|CO|CO\.|CONCERN|PLC|GMBH|"
     r"S\.A\.|S\.A\.S\.|S\.R\.L\.|SA|SARL|AG|NV|BV|AB|AS|OY|PTE|PTY|"
-    r"S\. DE R\.L\.|DE C\.V\.|LLP|LP|JSC|OAO|OOO|PAO|ZAO|A\.S\.|D\.O\.O\.)",
+    r"S\. DE R\.L\.|DE C\.V\.|LLP|LP|JSC|OAO|OOO|PAO|ZAO|A\.S\.|D\.O\.O\.)"
+    r"(?=$|[\s.,;)])",
     re.I)
 _SURNAME_FIRST = re.compile(r"^([^,]{2,60}),\s+([^,]{2,60})$")
 
@@ -138,9 +139,10 @@ def validate(name: str) -> str | None:
         return "空文字または空白のみ"
     if is_trailing_unknown_artifact(s):
         return "original script等のメタ情報「不明」が名称末尾に混入した旧データ"
-    if _EXCEL_SERIAL.fullmatch(s):
+    folded = unicodedata.normalize("NFKC", s)
+    if _EXCEL_SERIAL.fullmatch(folded):
         return f"Excelの日付シリアル値が名前として混入した疑い（{s}）"
-    if re.fullmatch(r"[0-9]+", s):
+    if re.fullmatch(r"[0-9]+", folded):
         return f"数字のみで人名・団体名として成立しない（{s}）"
     if re.fullmatch(r"[\W_]+", s, flags=re.UNICODE):
         return "記号のみで構成されている"
@@ -356,19 +358,21 @@ def parse_remark(remark: str) -> tuple[str, str]:
 
     実データ 113 種を対象に設計. category が空文字なら分類名なし.
     """
-    v = str(remark).strip()
-    if not v:
+    v = str(remark).splitlines()[0].strip() if str(remark).strip() else ""
+    if not v or v == "制裁リスト":
         return SRC_UNKNOWN, ""
 
     u = v.upper()
 
     # 明示的な出所表記 (2025年の一括取込分)
-    if "OFAC" in u or "OFCA" in u or "OFAC" in u.replace("OFAC", "OFAC"):
+    if "OFAC" in u or "OFCA" in u:
         return SRC_OFAC, ""
     if "FCDO" in u:
         return SRC_UK, ""
     if "METI" in u or "経産" in v:
         return SRC_METI, ""
+    if v == "国連" or v.startswith("国連："):
+        return "国連", canonical_category(v.partition("：")[2])
     if "外務省告示" in v:
         return SRC_MOFA, canonical_category(v)
     if "誤登録" in v:
@@ -397,8 +401,9 @@ def parse_remark(remark: str) -> tuple[str, str]:
 
 # ---------------------------------------------------------------- 出力書式
 
+SRC_UN = "国連"
 _SRC_ORDER = {SRC_MOF: 0, SRC_METI: 1, SRC_MOFA: 2, SRC_OFAC: 3,
-              SRC_UK: 4, SRC_UNKNOWN: 9}
+              SRC_UK: 4, SRC_UN: 5, SRC_UNKNOWN: 9}
 
 KNOWN_SOURCES = set(_SRC_ORDER)
 
@@ -414,7 +419,10 @@ def parse_remark_multi(remark: str) -> list[tuple[str, str]]:
     parse_remark に回す。生成した Excel を再取り込みできないと、
     配布物からマスターを作り直せなくなる。
     """
-    v = str(remark).strip()
+    raw = str(remark).strip()
+    v = raw.splitlines()[0].strip() if raw else ""
+    if v == "制裁リスト":
+        return [(SRC_UNKNOWN, "")]
     m = _CANONICAL.match(v)
     if m:
         parts = [p.strip() for p in m.group(1).split("／") if p.strip()]

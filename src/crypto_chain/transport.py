@@ -49,10 +49,14 @@ class Transport:
             self.failures[base]=self.failures.get(base,0)+1
             raise
 
-    def rpc(self,base,method,params):
+    def rpc(self,base,method,params,*,allow_null=False):
         def result(reply):
             if (not isinstance(reply,dict) or reply.get('jsonrpc')!='2.0'
-                or type(reply.get('id')) is not int or reply['id']!=1 or reply.get('result') is None):
+                or type(reply.get('id')) is not int or reply['id']!=1
+                or 'result' not in reply or (reply['result'] is None and not allow_null)):
                 raise ValueError('malformed RPC response')
             return reply['result']
         return self.request(base,payload={'jsonrpc':'2.0','id':1,'method':method,'params':params},validate=result)
+
+    def rpc_nullable(self,base,method,params):
+        return self.rpc(base,method,params,allow_null=True)

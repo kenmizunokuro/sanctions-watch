@@ -56,12 +56,30 @@ def _flag(value: bool) -> str:
     return "1" if value else "0"
 
 
+_SENSITIVE_QUERY_KEYS = {
+    "sig",
+    "signature",
+    "token",
+    "access_token",
+    "api_key",
+    "apikey",
+    "key",
+    "secret",
+    "auth",
+    "password",
+    "sas",
+}
+
+
+def _strip_userinfo(netloc: str) -> str:
+    return netloc.rsplit("@", 1)[-1] if "@" in netloc else netloc
+
+
 def safe_audit_url(value: str) -> str:
-    """監査台帳へ保存するURLからAWS一時署名を除去する。
+    """監査台帳へ保存するURLから認証情報・一時署名を除去する。
 
     通常のquery parameterは監査情報として維持する。
-    X-Amz-* を含むpresigned URLの場合だけ、
-    query / fragmentを捨ててscheme/host/pathを残す。
+    presigned URLやトークン系クエリ、URL内userinfoを含む場合は除去する。
     """
     raw = str(value or "")
 
@@ -73,17 +91,44 @@ def safe_audit_url(value: str) -> str:
     except ValueError:
         return raw
 
-    if not parts.query:
-        return raw
+    clean_netloc = _strip_userinfo(parts.netloc)
+    has_userinfo = clean_netloc != parts.netloc
 
+    if not parts.query:
+        if not has_userinfo:
+            return raw
+        return urlunsplit((
+            parts.scheme,
+            clean_netloc,
+            parts.path,
+            "",
+            parts.fragment,
+        ))
+
+    q_lower = parts.query.lower()
+    query_keys = {k.lower() for k in parse_qs(parts.query, keep_blank_values=True)}
     azure_signed = ((parts.hostname or '').endswith('.blob.core.windows.net')
-                    and 'sig' in parse_qs(parts.query))
-    if "x-amz-" not in parts.query.lower() and not azure_signed:
-        return raw
+                    and 'sig' in query_keys)
+    sensitive_query = (
+        "x-amz-" in q_lower
+        or "x-goog-" in q_lower
+        or azure_signed
+        or bool(query_keys & _SENSITIVE_QUERY_KEYS)
+    )
+    if not sensitive_query:
+        if not has_userinfo:
+            return raw
+        return urlunsplit((
+            parts.scheme,
+            clean_netloc,
+            parts.path,
+            parts.query,
+            parts.fragment,
+        ))
 
     return urlunsplit((
         parts.scheme,
-        parts.netloc,
+        clean_netloc,
         parts.path,
         "",
         "",

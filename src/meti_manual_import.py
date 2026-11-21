@@ -214,6 +214,19 @@ def _norm_compare(value: str) -> str:
     return re.sub(r"\s+", " ", str(value or "")).strip().casefold()
 
 
+_CJK_RE = re.compile(r"[\u3000-\u30ff\u3400-\u9fff\uf900-\ufaff]")
+
+
+def _join_wrapped(left: str, right: str) -> str:
+    if not left:
+        return right
+    if not right:
+        return left
+    if _CJK_RE.search(left[-1]) and _CJK_RE.search(right[0]):
+        return f"{left}{right}"
+    return f"{left} {right}".strip()
+
+
 def _split_aliases(value: str) -> tuple[str, ...]:
     # PDF表セルの別名を安全に分解する。
     # bullet開始行は新しい別名、bulletなし行は直前別名の折返し。
@@ -229,7 +242,7 @@ def _split_aliases(value: str) -> tuple[str, ...]:
         if not line:
             continue
 
-        marker = re.match(r"^[・•●▪◦\-]\s*(.*)$", line)
+        marker = re.match(r"^(?:[・•●▪◦]\s*|-\s+)(.*)$", line)
 
         if marker:
             if current:
@@ -240,11 +253,7 @@ def _split_aliases(value: str) -> tuple[str, ...]:
             current = marker.group(1).strip()
             continue
 
-        current = (
-            f"{current} {line}".strip()
-            if current
-            else line
-        )
+        current = _join_wrapped(current, line)
 
     if current:
         current = re.sub(r"\s+", " ", current).strip()
@@ -1163,12 +1172,17 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     src = Path(args.pdf).expanduser().resolve()
+    if not src.exists() or not src.is_file():
+        print(f"[BLOCKED] ファイルが存在しないか通常ファイルではない: {src.name}", file=sys.stderr)
+        print("AUTO IMPORT = BLOCKED / REVIEW REQUIRED")
+        return 2
+
     now = _now()
     stamp = _stamp(now)
     seen_at = _iso(now)
 
     # SHAはPDF妥当性判定前でも取得し、拒否HTML等を識別できるようにする。
-    digest = sha256_file(src) if src.exists() and src.is_file() else ""
+    digest = sha256_file(src)
     report_path = REPORT_DIR / f"{stamp}__manual_import.json"
     paths = meti_manual_event.LifecyclePaths.for_root(ROOT, now)
     state = load_state()
@@ -1235,7 +1249,7 @@ def main(argv: list[str] | None = None) -> int:
             "review_required": True,
             "auto_import": "BLOCKED",
             "reason": str(exc),
-            "input_file": str(src),
+            "input_file": src.name,
             "source_url": source_url,
             "source_hash": digest,
             "quarantine_path": quarantine,
@@ -1330,7 +1344,7 @@ def main(argv: list[str] | None = None) -> int:
             "source_url": source_url,
             "publication_date": args.publication_date,
             "effective_date": args.effective_date,
-            "input_file": str(src),
+            "input_file": src.name,
             "raw_path": _relative(raw_path),
             "source_hash": digest,
             "file_size": size,
@@ -1402,7 +1416,7 @@ def main(argv: list[str] | None = None) -> int:
         "source_url": source_url,
         "publication_date": args.publication_date,
         "effective_date": args.effective_date,
-        "input_file": str(src),
+        "input_file": src.name,
         "raw_path": _relative(raw_path),
         "text_path": _relative(text_path),
         "records_path": _relative(record_path),

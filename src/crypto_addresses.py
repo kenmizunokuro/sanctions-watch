@@ -28,12 +28,31 @@ def _primary_name(party):
                 if parts: return ' '.join(parts)
     return ''
 
+class _NoDtdStream:
+    def __init__(self, inner):
+        self._inner = inner
+        self._tail = b""
+
+    def read(self, size=-1):
+        chunk = self._inner.read(size)
+        if isinstance(chunk, str):
+            raw = chunk.encode("utf-8")
+        else:
+            raw = chunk or b""
+        if raw:
+            window = (self._tail + raw).upper()
+            if b"<!DOCTYPE" in window or b"<!ENTITY" in window:
+                raise SchemaError("XML DTD/ENTITY宣言は禁止")
+            self._tail = raw[-16:]
+        return chunk
+
+
 def extract(stream) -> tuple[list[dict], dict]:
     types, party_ids, profile_parties, programs = {}, set(), {}, {}
     rows, raw_count, feature_count = [], 0, 0
     checked = False
     try:
-        for event, element in ET.iterparse(stream, events=('start', 'end')):
+        for event, element in ET.iterparse(_NoDtdStream(stream), events=('start', 'end')):
             tag = local(element)
             if not checked and event == 'start':
                 checked = True

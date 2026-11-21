@@ -98,17 +98,19 @@ def apply(root: Path = ROOT, *, now: datetime | None = None, run_url: str = '') 
             raise ValueError('master projection changed an unapproved row')
         L._display(stage, list(candidate.values()))
         D.append_changes(stage, events, when=stamp)
-        with (root / 'data/diff/latest.csv').open(encoding='utf-8', newline='') as stream:
-            reader = csv.reader(stream, strict=True)
-            if next(reader, []) != DIFF_COLS:
-                raise ValueError('latest diff schema changed')
-            previous_diff = list(reader)
-        if any(len(row) != len(DIFF_COLS) for row in previous_diff):
-            raise ValueError('latest diff contains a malformed row')
+        previous_diff: list[list[str]] = []
+        if (root / 'data/diff/latest.csv').exists():
+            with (root / 'data/diff/latest.csv').open(encoding='utf-8', newline='') as stream:
+                reader = csv.reader(stream, strict=True)
+                if next(reader, []) != DIFF_COLS:
+                    raise ValueError('latest diff schema changed')
+                previous_diff = list(reader)
+            if any(len(row) != len(DIFF_COLS) for row in previous_diff):
+                raise ValueError('latest diff contains a malformed row')
         diff_path = stage / 'data/diff/latest.csv'
         diff_path.parent.mkdir(parents=True, exist_ok=True)
         with diff_path.open('w', encoding='utf-8', newline='') as stream:
-            csv.writer(stream).writerows([DIFF_COLS, *events,
+            csv.writer(stream, lineterminator='\n').writerows([DIFF_COLS, *events,
                 *[r for r in previous_diff if r not in events]])
         pending = [r for r in V.read_csv(root) if r[4] not in KEYS]
         with (stage / V.OUT).open('w', encoding='utf-8', newline='') as stream:

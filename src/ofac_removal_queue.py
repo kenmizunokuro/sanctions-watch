@@ -72,13 +72,18 @@ def _event_id(
     list_name: str,
     snapshot_sha256: str,
     party_ids: Iterable[str],
+    *,
+    detected_at_ms: str = "",
 ) -> str:
+    body = {
+        "list": list_name,
+        "party_ids": sorted({str(item) for item in party_ids}),
+        "snapshot_sha256": snapshot_sha256,
+    }
+    if detected_at_ms:
+        body["detected_at_ms"] = str(detected_at_ms)
     payload = json.dumps(
-        {
-            "list": list_name,
-            "party_ids": sorted({str(item) for item in party_ids}),
-            "snapshot_sha256": snapshot_sha256,
-        },
+        body,
         ensure_ascii=False,
         sort_keys=True,
         separators=(",", ":"),
@@ -222,12 +227,20 @@ def _validated(rows: Iterable[Mapping[str, object]]) -> List[dict]:
 
         list_name = event_rows[0]["list"]
         snapshot = event_rows[0]["snapshot_sha256"]
-        expected = _event_id(
+        party_ids = [row["party_id"] for row in event_rows]
+        expected = _event_id(list_name, snapshot, party_ids)
+        salted = _event_id(
             list_name,
             snapshot,
-            (row["party_id"] for row in event_rows),
+            party_ids,
+            detected_at_ms=event_rows[0]["detected_at_ms"],
         )
-        if event_id != expected:
+        prior = events.get(expected)
+        if event_id != expected and not (
+            event_id == salted
+            and prior is not None
+            and prior[0]["status"] != PENDING_REVIEW
+        ):
             raise QueueError(
                 "OFAC removal queue event_id does not match its exact party set: "
                 f"event_id={event_id} expected={expected}"
@@ -263,7 +276,7 @@ def save(rows: Iterable[Mapping[str, object]], path: Path) -> None:
     normalized = _validated(rows)
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=FIELDS)
+        writer = csv.DictWriter(handle, fieldnames=FIELDS, lineterminator="\n")
         writer.writeheader()
         writer.writerows(normalized)
 
@@ -381,6 +394,13 @@ def reconcile(
 
         party_ids = by_list[list_name]
         event_id = _event_id(list_name, snapshot, party_ids)
+        if any(row["event_id"] == event_id for row in staged):
+            event_id = _event_id(
+                list_name,
+                snapshot,
+                party_ids,
+                detected_at_ms=timestamp,
+            )
         if any(row["event_id"] == event_id for row in staged):
             raise QueueError(
                 "OFAC removal queue would reuse an existing event_id: "

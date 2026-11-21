@@ -25,7 +25,7 @@ def transfer(log,contract,subject,*,tron=False):
     a=tron_hex(subject) if tron else subject[2:].lower()
     if str(log.get('address','')).lower()!=prefix+c:return None
     topics=log.get('topics')
-    if not isinstance(topics,list) or len(topics)!=3 or topics[0]!=prefix+TRANSFER:return None
+    if not isinstance(topics,list) or len(topics)!=3 or not isinstance(topics[0],str) or topics[0].lower()!=prefix+TRANSFER:return None
     if any(not isinstance(t,str) or not re.fullmatch(prefix+r'0{24}[0-9a-fA-F]{40}',t) for t in topics[1:]):return None
     source,dest=[t[-40:].lower() for t in topics[1:]]
     if a not in (source,dest):return None

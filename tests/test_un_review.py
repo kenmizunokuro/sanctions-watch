@@ -181,6 +181,56 @@ class UNReviewTests(unittest.TestCase):
         self.assertEqual((self.root / W.STATE_PATH).read_bytes(), before)
         self.assertFalse((self.root / 'data/master/master.csv').exists())
 
+    def test_superseded_and_applied_strip_diff_and_updates_reviews_clear_dead_ends(self):
+        self.approve()
+        self.apply()
+        state = W.load(self.root)
+        applied = next(e for e in state['events'] if e['event_id'] == state['applied_event_id'])
+        self.assertNotIn('application_diff', applied)
+        snaps = [p.name for p in (self.root / 'data/un/snapshots').iterdir() if p.is_file()]
+        self.assertTrue(all(name.endswith('.json.gz') for name in snaps))
+
+        self.feed.body = xml(ref='QDi.002')
+        W.run(self.root, fetcher=self.feed, now=NOW)
+        first_pending_id = W.load(self.root)['current_event_id']
+        self.feed.body = xml(ref='QDi.003')
+        W.run(self.root, fetcher=self.feed, now=NOW)
+        state = W.load(self.root)
+        superseded = next(e for e in state['events'] if e['event_id'] == first_pending_id)
+        self.assertEqual(superseded['status'], 'SUPERSEDED')
+        self.assertNotIn('application_diff', superseded)
+        self.assertEqual(len([p for p in (self.root / 'data/un/snapshots').iterdir() if p.is_file()]), 2)
+
+        with self.assertRaisesRegex(ValueError, 'no pending UN press coverage gap'):
+            R.review_coverage(self.root, committee='9999', reviewer='Operator', when=NOW, note='none')
+
+        pending_updates = [e for e in state.get('updates_events', []) if e['status'] == 'PENDING_REVIEW']
+        self.assertTrue(pending_updates)
+        target_ev = pending_updates[0]
+        reviewed_ev = R.review_update_event(
+            self.root,
+            event_id='updates:' + target_ev['event_id'],
+            source_hash=target_ev['source_hash'],
+            reviewer='Operator',
+            when=NOW,
+            note='照合確認',
+        )
+        self.assertEqual(reviewed_ev['status'], 'REVIEWED')
+
+        state = W.load(self.root)
+        state['updates_coverage_gap'] = {'detected_at': '2026-10-01T00:00:00Z', 'reason': 'gap'}
+        W._write_json(self.root / W.STATE_PATH, state)
+        updates_sha = state['documents']['updates']['sha256']
+        cleared = R.review_updates_coverage(
+            self.root,
+            source_hash=updates_sha,
+            reviewer='Operator',
+            when=NOW,
+            note='アーカイブ確認済',
+        )
+        self.assertEqual(cleared['reviewed_source_hash'], updates_sha)
+        self.assertNotIn('updates_coverage_gap', W.load(self.root))
+
 
 if __name__ == '__main__':
     unittest.main()

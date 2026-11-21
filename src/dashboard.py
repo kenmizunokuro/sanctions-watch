@@ -19,8 +19,10 @@ import gzip
 import json
 import logging
 from datetime import datetime, timedelta, timezone
+from email.utils import parsedate_to_datetime
 from pathlib import Path
 
+from . import ofac_alias_removal_queue as OARQ
 from . import ofac_removal_queue as ORQ
 from .monitor_attempt import ATTEMPT_PATH, INTEGRITY_FAILED
 from .normalize import canonical_display_name, is_trailing_unknown_artifact
@@ -125,7 +127,16 @@ def _http_date_to_jst(value: str) -> str:
         except ValueError:
             continue
         return dt.astimezone(JST).strftime("%Y-%m-%d %H:%M:%S")
-    return value
+    try:
+        dt = parsedate_to_datetime(value)
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt.astimezone(JST).strftime("%Y-%m-%d %H:%M:%S")
+    except (ValueError, TypeError, OverflowError):
+        return value
+
+
+_HEARTBEAT_SOURCES = {k for k in SOURCE_LABEL if not k.startswith("un_")}
 
 
 def _latest_heartbeat_by_source(root: Path) -> dict[str, dict]:
@@ -170,7 +181,7 @@ def _latest_heartbeat_by_source(root: Path) -> dict[str, dict]:
             # 本体の取得・監視異常は watch.py 側で別途失敗扱いになる。
             continue
 
-        if len(latest) == len(SOURCE_LABEL):
+        if _HEARTBEAT_SOURCES <= latest.keys():
             break
 
     return latest
@@ -244,9 +255,11 @@ def build_status_rows(
     mofa_state: dict | None = None,
     un_state: dict | None = None,
     mof_detail: bool = False,
+    source_root: Path | None = None,
 ) -> list[list[str]]:
     """全監視ソースの現在状態を固定順で投影する。"""
 
+    meta_root = source_root or root
     now = now or datetime.now(timezone.utc)
     if now.tzinfo is None or now.utcoffset() is None:
         raise ValueError("now must include a timezone")
@@ -255,7 +268,7 @@ def build_status_rows(
     )
     latest = _latest_heartbeat_by_source(root)
 
-    ofac_attempt_path = root / ATTEMPT_PATH
+    ofac_attempt_path = meta_root / ATTEMPT_PATH
     ofac_attempt = json.loads(ofac_attempt_path.read_text(encoding="utf-8")) if ofac_attempt_path.exists() else {}
     ofac_failed_at = ""
     ofac_integrity_failed = ofac_attempt.get("stage") == INTEGRITY_FAILED
@@ -263,15 +276,16 @@ def build_status_rows(
         stamp_format = "%Y-%m-%dT%H:%M:%SZ"
         ofac_failed_at = ofac_attempt["finished_at"]
         finished = datetime.strptime(ofac_failed_at, stamp_format)
-        if finished > now.astimezone(timezone.utc).replace(tzinfo=None):
+        now_naive = now.astimezone(timezone.utc).replace(tzinfo=None)
+        if finished > now_naive + timedelta(minutes=5):
             raise ValueError("invalid OFAC failure timestamp")
-        if ofac_integrity_failed and datetime.strptime(ofac_attempt["fetch_finished_at"], stamp_format) > finished:
+        if ofac_integrity_failed and datetime.strptime(ofac_attempt["fetch_finished_at"], stamp_format) > finished + timedelta(minutes=5):
             raise ValueError("invalid OFAC integrity failure timestamp")
 
     # An attempted MOF run that failed integrity verification is not an
     # official-data success. Publish its failure timestamp independently of
     # the last successful source heartbeat; never present stale "変更なし".
-    mof_failure_path = root / "data/monitoring/mof_failure.json"
+    mof_failure_path = meta_root / "data/monitoring/mof_failure.json"
     mof_failure = {}
     if mof_failure_path.exists():
         mof_failure = json.loads(mof_failure_path.read_text(encoding="utf-8"))
@@ -298,19 +312,19 @@ def build_status_rows(
             latest[key] = current
 
     if meti_state is None:
-        meti_state = _load_meti_manual_state(root)
+        meti_state = _load_meti_manual_state(meta_root)
 
     if mofa_state is None:
-        mofa_path = root / 'data/mofa/state.json'
+        mofa_path = meta_root / 'data/mofa/state.json'
         if mofa_path.exists():
             from .mofa_documents import load_bundle
-            mofa_state = load_bundle(root)[0]
+            mofa_state = load_bundle(meta_root)[0]
         else:
             mofa_state = {}
     rows: list[list[str]] = []
 
     if un_state is None:
-        un_path = root / 'data/un/state.json'
+        un_path = meta_root / 'data/un/state.json'
         un_state = json.loads(un_path.read_text(encoding='utf-8')) if un_path.exists() else {}
 
     # 順序を毎回固定する。
@@ -449,7 +463,13 @@ def write_status_rows(path: Path, rows: list[list[str]]) -> Path:
     return path
 
 
-def write_status(root: Path, hb: list[dict], st: dict) -> Path:
+def write_status(
+    root: Path,
+    hb: list[dict],
+    st: dict,
+    *,
+    source_root: Path | None = None,
+) -> Path:
     """全監視ソースの最新稼働状況を status.csv に書き出す。
 
     以前は引数 hb（= 今回実行した監視対象）だけを書いていたため、
@@ -463,10 +483,10 @@ def write_status(root: Path, hb: list[dict], st: dict) -> Path:
     最新1行を取得することで、常に全ソースの状態を表示する。
     """
     path = root / DASH / "status.csv"
-    rows = build_status_rows(root, hb, st)
+    rows = build_status_rows(root, hb, st, source_root=source_root)
     # Existing GAS clients recognize only exact error labels. Keep their
     # critical alarm until upgraded; detailed clients use the companion feed.
-    detailed = build_status_rows(root, hb, st, mof_detail=True)
+    detailed = build_status_rows(root, hb, st, mof_detail=True, source_root=source_root)
     write_status_rows(root / DASH / "status_detail.csv", detailed)
     return write_status_rows(path, rows)
 
@@ -515,8 +535,14 @@ def prepend_change_rows(
         new.append([stamp] + row)
     # atomic_replace_manyの一時ファイルも正式changes.csvと同じディレクトリ。
     # 共通writerで保護し、METIの個別workflowでも承認待ちを落とさない。
-    queue_path = path.parent.parent / "review" / "ofac_party_removal_queue.csv"
-    keep = _keep_ofac_removal_reviews(new + old, ORQ.load(queue_path))
+    review_dir = path.parent.parent / "review"
+    queue_path = review_dir / "ofac_party_removal_queue.csv"
+    alias_queue_path = review_dir / "ofac_alias_removal_queue.csv"
+    keep = _keep_ofac_removal_reviews(
+        new + old,
+        ORQ.load(queue_path),
+        OARQ.load(alias_queue_path),
+    )
 
     with path.open("w", encoding="utf-8", newline="") as f:
         w = csv.writer(f, lineterminator="\n")
@@ -534,8 +560,11 @@ def append_changes(root: Path, diff_rows: list[list], when: str = "", *,
     return prepend_change_rows(path, diff_rows, when=stamp, detected_at=detected_at)
 
 
-def _ofac_removal_review_rows(queue_rows: list[dict]) -> list[list[str]]:
-    """未承認Party終了の表示キーを初回検知時の情報から作る。
+def _ofac_removal_review_rows(
+    queue_rows: list[dict],
+    alias_queue_rows: list[dict] | None = None,
+) -> list[list[str]]:
+    """未承認Party/別名終了の表示キーを初回検知時の情報から作る。
 
     Sheetsの対応状況は6列全体をキーに保持するため、最終確認時刻ではなく
     初回検知日時・event_id・FixedRef・検知snapshotを固定して使用する。
@@ -557,19 +586,41 @@ def _ofac_removal_review_rows(queue_rows: list[dict]) -> list[list[str]]:
             f"event_id={row['event_id']}; SHA256={row['snapshot_sha256']}",
             "削除承認待ち（名簿は有効のまま・削除未反映）",
         ])
+    for row in OARQ.pending_rows(alias_queue_rows or []):
+        detected = datetime.fromtimestamp(
+            int(row["detected_at_ms"]) / 1000, tz=timezone.utc
+        ).astimezone(JST).strftime("%Y-%m-%d %H:%M:%S")
+        reviews.append([
+            detected,
+            "OFAC",
+            "掲載終了候補（要確認）",
+            canonical_display_name(row["alias_name"]),
+            f"制裁リスト（OFAC：{row['list']}）; FixedRef={row['party_id']}; "
+            f"relation={row['relation_kind']}; event_id={row['event_id']}; "
+            f"SHA256={row['snapshot_sha256']}",
+            "別名削除承認待ち（名簿は有効のまま・削除未反映）",
+        ])
     reviews.sort(key=lambda row: tuple(row), reverse=True)
     return reviews
 
 
-def _keep_ofac_removal_reviews(rows: list[list], queue_rows: list[dict]) -> list[list]:
+def _keep_ofac_removal_reviews(
+    rows: list[list],
+    queue_rows: list[dict],
+    alias_queue_rows: list[dict] | None = None,
+) -> list[list]:
     """全履歴writerで同じ承認待ちを重複なく保護する。"""
-    reviews = _ofac_removal_review_rows(queue_rows)
+    reviews = _ofac_removal_review_rows(queue_rows, alias_queue_rows)
     review_keys = {tuple(row) for row in reviews}
     history = [row for row in rows if tuple(row) not in review_keys]
     return (reviews + history)[:max(MAX_CHANGES, len(reviews))]
 
 
-def append_ofac_removal_reviews(root: Path, queue_rows: list[dict]) -> Path:
+def append_ofac_removal_reviews(
+    root: Path,
+    queue_rows: list[dict],
+    alias_queue_rows: list[dict] | None = None,
+) -> Path:
     """既存の差分履歴に現在の承認待ちを投影する。名簿は変更しない。"""
     path = root / DASH / "changes.csv"
     old = []
@@ -579,7 +630,9 @@ def append_ofac_removal_reviews(root: Path, queue_rows: list[dict]) -> Path:
             if next(reader, None) != CHANGE_COLS:
                 raise ValueError("dashboard changes.csv header changed")
             old = list(reader)
-    keep = _keep_ofac_removal_reviews(old, queue_rows)
+    if alias_queue_rows is None:
+        alias_queue_rows = OARQ.load(root / OARQ.QUEUE_REL)
+    keep = _keep_ofac_removal_reviews(old, queue_rows, alias_queue_rows)
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.writer(handle, lineterminator="\n")

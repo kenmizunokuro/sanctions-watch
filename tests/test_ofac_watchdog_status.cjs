@@ -47,9 +47,10 @@ test('reader rejects duplicated keys instead of choosing a reassuring value',()=
   const c=context();const ss={getSheetByName:()=>({getLastRow:()=>6,getRange:()=>({getDisplayValues:()=>[['schemaVersion','1'],['schemaVersion','1']]})})};
   assert.throws(()=>c.wdStatusRead_(ss),/重複/);
 });
-test('dashboard rendering reflects stopped watchdog in overall health without changing source counts',()=>{
+test('dashboard rendering reflects stopped watchdog in overall health without changing source counts or recent changes',()=>{
   const c=context(); const writes={};const sheet={getRange(...args){const key=args.join(',');return {setValues(v){writes[key]=v;return this;},setValue(v){writes[key]=v;return this;},getDisplayValue:()=> '正常',setBackground(){return this;},setFontColor(){return this;},setFontWeight(){return this;},setWrap(){return this;},setVerticalAlignment(){return this;}};},getMaxRows:()=>100,setRowHeight(){}};
   const health=c.wdStatusEvaluate_(fresh({lastTickAt:stamp(400),lastCompletedAt:stamp(400)}),NOW,'kenmizunokuro/sanctions-watch');
   c.wdStatusRender_({getSheetByName:()=>sheet},health,NOW);
-  assert.equal(writes.A5,'異常'); assert.ok(writes['22,1,4,8']); assert.equal(writes['A5:F5'],undefined);
+  assert.equal(writes.A5,'異常'); assert.ok(writes['28,1,4,8']); assert.equal(writes['22,1,4,8'],undefined); assert.equal(writes['A5:F5'],undefined);
+  assert.equal(evaluate(fresh({publishedAt:stamp(-0.25),lastTickAt:stamp(-0.25),lastCompletedAt:stamp(-0.25),lastObservationAt:stamp(-0.25)})).passed,true);
 });

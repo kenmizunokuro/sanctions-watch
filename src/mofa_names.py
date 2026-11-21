@@ -186,7 +186,7 @@ def parse_pages(pages, *, document_key, source_hash, source_url, raw_path):
             value = _trim(value)
             if not value or value.casefold() in UNKNOWN:
                 return
-            evidence = [r for a,b,r in spans if a < end and b >= start]
+            evidence = [r for a,b,r in spans if a < end and b > start]
             if not evidence:
                 raise ValueError('name has no page evidence')
             page_numbers = sorted({r['page'] for r in evidence})
@@ -324,9 +324,30 @@ def parse_pages(pages, *, document_key, source_hash, source_url, raw_path):
 
 
 def extract(root: Path, document_keys=None):
+    import csv as _csv
     state, _, _ = D.load_bundle(root)
-    keys = document_keys or ['current_un','current_1373']
+    keys = list(dict.fromkeys(document_keys)) if document_keys else ['current_un','current_1373']
+    keep_keys = ({'current_un', 'current_1373'} - set(keys)) if document_keys else set()
     records, names, issues, pages_out, documents = [], [], [], [], []
+    dest = root/OUTPUT
+    if keep_keys and (dest/'report.json').exists():
+        def _keep_csv(path, cols):
+            if not path.exists():
+                return []
+            with path.open(encoding='utf-8', newline='') as f:
+                r = _csv.DictReader(f)
+                return [row for row in r if row.get('document_key') in keep_keys] if r.fieldnames == cols else []
+        records.extend(_keep_csv(dest/'records.csv', RECORD_COLS))
+        names.extend(_keep_csv(dest/'names.csv', NAME_COLS))
+        issues.extend(_keep_csv(dest/'issues.csv', ISSUE_COLS))
+        if (dest/'pages.jsonl').exists():
+            for line in (dest/'pages.jsonl').read_text(encoding='utf-8').splitlines():
+                if line.strip():
+                    item = json.loads(line)
+                    if item.get('document_key') in keep_keys:
+                        pages_out.append(item)
+        old_report = json.loads((dest/'report.json').read_text(encoding='utf-8'))
+        documents.extend(d for d in old_report.get('documents', []) if d.get('document_key') in keep_keys)
     for key in keys:
         resource = state['resources'].get(key, {})
         try:
@@ -363,10 +384,11 @@ def extract(root: Path, document_keys=None):
             issues.append(dict(document_key=key, source_record_id='', pages='', code='EXTRACTION_FAILED',
                                detail=str(error), source_hash=resource.get('sha256','')))
             documents.append(dict(document_key=key, source_hash=resource.get('sha256',''), status='BLOCKED', error=str(error)))
+    order = {'current_un': 0, 'current_1373': 1}
+    documents.sort(key=lambda d: order.get(d.get('document_key', ''), 9))
     report = dict(schema_version=1, parser_version=PARSER_VERSION, documents=documents,
                   status='BLOCKED' if any(x['status']=='BLOCKED' for x in documents) else 'REVIEW_REQUIRED',
                   auto_import='BLOCKED', applied=False, record_count=len(records), name_count=len(names), issue_count=len(issues))
-    dest = root/OUTPUT
     writes = [FileWrite(dest/'records.csv', lambda p:p.write_bytes(D._csv_bytes(records,RECORD_COLS))),
               FileWrite(dest/'names.csv', lambda p:p.write_bytes(D._csv_bytes(names,NAME_COLS))),
               FileWrite(dest/'issues.csv', lambda p:p.write_bytes(D._csv_bytes(issues,ISSUE_COLS))),

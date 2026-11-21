@@ -39,6 +39,49 @@ def _write_json(path: Path, value):
     path.write_text(json.dumps(value, ensure_ascii=False, sort_keys=True, indent=2) + '\n', encoding='utf-8')
 
 
+def _write_snapshot_gz(path: Path, value):
+    payload = (json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(',', ':')) + '\n').encode('utf-8')
+    path.write_bytes(gzip.compress(payload, mtime=0))
+
+
+def _read_snapshot_file(root: Path, sha: str) -> dict:
+    gz_path = root / f'data/un/snapshots/{sha}.json.gz'
+    if gz_path.exists():
+        return json.loads(gzip.decompress(gz_path.read_bytes()).decode('utf-8'))
+    return json.loads((root / f'data/un/snapshots/{sha}.json').read_text(encoding='utf-8'))
+
+
+def prune_snapshots(root: Path, state: dict) -> list[str]:
+    snap_dir = root / 'data/un/snapshots'
+    if not snap_dir.exists():
+        return []
+    keep_hashes = set()
+    if state.get('snapshot_hash'):
+        keep_hashes.add(state['snapshot_hash'])
+    applied_id = state.get('applied_event_id', '')
+    for event in state.get('events', []):
+        if event.get('event_id') == applied_id or event.get('status') in {'PENDING_REVIEW', 'APPROVED'}:
+            if event.get('source_hash'):
+                keep_hashes.add(event['source_hash'])
+    removed = []
+    for item in sorted(snap_dir.iterdir()):
+        if not item.is_file() or item.name.startswith('.'):
+            continue
+        if item.name.endswith('.json.gz'):
+            h = item.name[:-len('.json.gz')]
+            if h in keep_hashes:
+                continue
+        elif item.name.endswith('.json'):
+            h = item.name[:-len('.json')]
+            if h in keep_hashes and not (snap_dir / f'{h}.json.gz').exists():
+                continue
+        else:
+            continue
+        removed.append(item.name)
+        item.unlink()
+    return removed
+
+
 def _name_history(root, snapshot, when):
     rows = {}
     path = root / 'data/un/name_history.csv'
@@ -213,29 +256,44 @@ def write_reviews(path: Path, state: dict):
         writer.writerows(_review_rows(state))
 
 
+def _merge_saved_status(path: Path, generated: list[list[str]]) -> list[list[str]]:
+    if not path.exists():
+        return generated
+    with path.open(encoding='utf-8', newline='') as file:
+        reader = csv.reader(file)
+        if next(reader, None) != dashboard.STATUS_COLS:
+            raise U.UNSchemaError('existing dashboard status columns changed')
+        saved = list(reader)
+    known = set(dashboard.SOURCE_LABEL.values())
+    if any(len(row) != len(dashboard.STATUS_COLS) or row[0] not in known for row in saved):
+        raise U.UNSchemaError('invalid dashboard status row')
+    saved_by_source = {r[0]: r for r in saved}
+    if len(saved_by_source) != len(saved):
+        raise U.UNSchemaError('duplicate dashboard source row')
+    other = {label for key, label in dashboard.SOURCE_LABEL.items() if not key.startswith('un_')}
+    if not other.issubset(saved_by_source):
+        raise U.UNSchemaError('other source dashboard observation missing')
+    return [saved_by_source[row[0]] if row[0] in other else row for row in generated]
+
+
 def projections(root: Path, state: dict, *, now: datetime) -> list[FileWrite]:
     # Project the in-memory UN bundle so status and review queue share its generation.
-    rows = dashboard.build_status_rows(root, [], S.load_state(root), now=now, un_state=state)
-    status_path = root / 'data/dashboard/status.csv'
-    if status_path.exists():
-        with status_path.open(encoding='utf-8', newline='') as file:
-            reader = csv.reader(file)
-            if next(reader, None) != dashboard.STATUS_COLS:
-                raise U.UNSchemaError('existing dashboard status columns changed')
-            saved = list(reader)
-        known = set(dashboard.SOURCE_LABEL.values())
-        if any(len(row) != len(dashboard.STATUS_COLS) or row[0] not in known for row in saved):
-            raise U.UNSchemaError('invalid dashboard status row')
-        saved_by_source = {r[0]: r for r in saved}
-        if len(saved_by_source) != len(saved):
-            raise U.UNSchemaError('duplicate dashboard source row')
-        other = {label for key, label in dashboard.SOURCE_LABEL.items() if not key.startswith('un_')}
-        if not other.issubset(saved_by_source):
-            raise U.UNSchemaError('other source dashboard observation missing')
-        rows = [saved_by_source[row[0]] if row[0] in other else row for row in rows]
-    return [FileWrite(root / STATE_PATH, lambda p: _write_json(p, state)),
-            FileWrite(root / 'data/dashboard/un_reviews.csv', lambda p: write_reviews(p, state)),
-            FileWrite(root / 'data/dashboard/status.csv', lambda p: dashboard.write_status_rows(p, rows))]
+    st = S.load_state(root)
+    rows = _merge_saved_status(
+        root / 'data/dashboard/status.csv',
+        dashboard.build_status_rows(root, [], st, now=now, un_state=state),
+    )
+    out = [FileWrite(root / STATE_PATH, lambda p: _write_json(p, state)),
+           FileWrite(root / 'data/dashboard/un_reviews.csv', lambda p: write_reviews(p, state)),
+           FileWrite(root / 'data/dashboard/status.csv', lambda p: dashboard.write_status_rows(p, rows))]
+    detail_path = root / 'data/dashboard/status_detail.csv'
+    if detail_path.exists():
+        detail_rows = _merge_saved_status(
+            detail_path,
+            dashboard.build_status_rows(root, [], st, now=now, un_state=state, mof_detail=True),
+        )
+        out.append(FileWrite(detail_path, lambda p: dashboard.write_status_rows(p, detail_rows)))
+    return out
 
 
 def _document(root, key, url, previous, parser, fetcher):
@@ -479,7 +537,7 @@ def _xml_event(root, state, snapshot, source_hash, now):
     base_parties = {}
     if applied_id:
         applied = next(e for e in state['events'] if e['event_id'] == applied_id)
-        base = json.loads((root / f'data/un/snapshots/{applied["source_hash"]}.json').read_text(encoding='utf-8'))
+        base = _read_snapshot_file(root, applied['source_hash'])
         raw = read_raw(root / base['raw_path'])
         if hashlib.sha256(raw).hexdigest() != applied['source_hash'] or U.parse_xml(raw)['parties'] != base['parties']:
             raise U.UNSchemaError('applied UN baseline evidence is corrupted')
@@ -498,6 +556,7 @@ def _xml_event(root, state, snapshot, source_hash, now):
     for old in state['events']:
         if old['status'] in {'PENDING_REVIEW', 'APPROVED'}:
             old['status'] = 'SUPERSEDED'
+            old.pop('application_diff', None)
     state['events'].append(event)
     state['current_event_id'] = event['event_id']
     return event
@@ -540,8 +599,8 @@ def run(root: Path, *, fetcher=fetch, now=None) -> dict:
             state['snapshot_hash'] = metadata['sha256']
             state['snapshot_digest'] = U.digest(snapshot)
             writes += [FileWrite(root / SNAPSHOT_PATH, lambda p, v=snapshot: _write_json(p, v)),
-                       FileWrite(root / f'data/un/snapshots/{metadata["sha256"]}.json',
-                                 lambda p, v=snapshot: _write_json(p, v))]
+                       FileWrite(root / f'data/un/snapshots/{metadata["sha256"]}.json.gz',
+                                 lambda p, v=snapshot: _write_snapshot_gz(p, v))]
         state['documents']['xml'] = metadata
         writes.append(FileWrite(root / 'data/un/name_history.csv', lambda p: _write_names(p, history)))
         state.update(record_count=len(snapshot['parties']), source_updated=snapshot['generated_at'],
@@ -692,6 +751,7 @@ def run(root: Path, *, fetcher=fetch, now=None) -> dict:
                FileWrite(root / f'data/heartbeat/{now:%Y-%m}.csv',
                          lambda p: S.append_heartbeat(p, hb, now=now), seed_existing=True)]
     atomic_replace_many(writes)
+    prune_snapshots(root, state)
     return dict(ok=xml_ok and press_ok and updates_ok and archive_ok and archive_evidence_ok and not state['coverage_gaps']
                 and not state.get('updates_coverage_gap') and sensor['status'] == 'observed'
                 and not sensor.get('recovery_error')

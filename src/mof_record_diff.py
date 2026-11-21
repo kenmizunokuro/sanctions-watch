@@ -173,11 +173,18 @@ def _known_elsewhere(value: str, row: dict[str, str], field_name: str) -> bool:
     token = _evidence_token(value)
     if len(token) < 2:
         return False
-    for col, other in row.items():
+    prose_cols = AGGREGATE_FIELDS | SUPPLEMENTAL_FIELDS
+    for col in prose_cols:
         if col == field_name:
             continue
-        if token in _evidence_token(other):
-            return True
+        other = row.get(col, "")
+        if token not in _evidence_token(other):
+            continue
+        if token.isascii() and token.isalpha():
+            folded = unicodedata.normalize("NFKC", _clean(other)).casefold()
+            if not re.search(r"(?<![a-z0-9])" + re.escape(token) + r"(?![a-z0-9])", folded):
+                continue
+        return True
     return False
 
 
@@ -398,9 +405,12 @@ def _parse_csv(path: Path) -> Snapshot:
             "財務省CSVの列構造が変更された。"
             f" missing={missing} extra={extra} actual={actual}"
         )
+    reader.fieldnames = actual
 
     rows: dict[str, dict[str, str]] = {}
     for line_no, raw in enumerate(reader, start=2):
+        if None in raw or any(v is None for v in raw.values()):
+            raise RecordDiffError(f"財務省CSVの列数が不正: {path.name}:{line_no}")
         row = {col: _clean(raw.get(col, "")) for col in EXPECTED_COLUMNS}
         rid = row["番号"]
         if not rid:
@@ -488,6 +498,10 @@ def _pair_records(before: Snapshot, after: Snapshot) -> tuple[list[tuple[str, st
     a_name = _unique_name_index(after.rows, a_left)
     for key in sorted(set(b_name) & set(a_name)):
         b_id, a_id = b_name[key], a_name[key]
+        b_ref = _clean(before.rows[b_id].get("国連参照番号", ""))
+        a_ref = _clean(after.rows[a_id].get("国連参照番号", ""))
+        if b_ref not in NULLISH and a_ref not in NULLISH and b_ref != a_ref:
+            continue
         pairs.append((b_id, a_id))
         b_left.discard(b_id)
         a_left.discard(a_id)

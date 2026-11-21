@@ -141,10 +141,17 @@ def parse_xml(body: bytes) -> dict:
         raise UNSchemaError(str(error)) from error
 
 
+class _NoticeTree(Tree):
+    def handle_starttag(self, tag, attrs):
+        if len(self.stack) >= 256:
+            raise UNSchemaError('UN press HTML nesting exceeds limit')
+        super().handle_starttag(tag, attrs)
+
+
 def parse_notices(body: bytes, url: str) -> list[dict]:
     """Read dated press records from the actual Drupal press view, not navigation."""
     validate_un_url(url)
-    tree = Tree(body).root
+    tree = _NoticeTree(body).root
     view = next((n for n in tree.walk() if 'view-press-releases' in
                  n.attrs.get('class', '').split()), None)
     if view is None:

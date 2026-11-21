@@ -159,6 +159,7 @@ def parse(prim: Fetched, alt: Fetched | None, label: str) -> list[dict]:
                             source_id=ent, program=prog))
 
     if alt is not None and alt.body is not None:
+        validate_classic_download(alt, f"{label} ALT")
         for r in _rows(alt.text, ALT_COLS, f"{label} ALT"):
             raw = r.get("alt_name", "")
             if raw in NULL:
@@ -303,6 +304,11 @@ def parse_advanced(
         raise SchemaError(
             f"OFAC {label} Advanced XML が空"
         )
+    upper_body = advanced.body.upper()
+    if b"<!DOCTYPE" in upper_body or b"<!ENTITY" in upper_body:
+        raise SchemaError(
+            f"OFAC {label} Advanced XML に禁止されたDTD/ENTITY宣言が含まれる"
+        )
 
     try:
         parser = ET.iterparse(
@@ -318,7 +324,7 @@ def parse_advanced(
     type_labels: dict[str, str] = {}
     party_ids: set[str] = set()
     out: list[dict] = []
-    seen: set[tuple[str, str, str]] = set()
+    seen_idx: dict[tuple[str, str, str], int] = {}
     no_name_parties: list[str] = []
 
     try:
@@ -487,10 +493,17 @@ def parse_advanced(
                                 name,
                             )
 
-                            if key in seen:
+                            if key in seen_idx:
+                                existing = out[seen_idx[key]]
+                                existing["alias_primary"] = bool(
+                                    existing["alias_primary"] or primary
+                                )
+                                existing["low_quality"] = bool(
+                                    existing["low_quality"] and low_quality
+                                )
                                 continue
 
-                            seen.add(key)
+                            seen_idx[key] = len(out)
 
                             out.append(
                                 dict(

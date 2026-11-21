@@ -58,11 +58,22 @@ OFAC_WEAK_ALIAS_FLAGS = {
     OFAC_WEAK_ALIAS_MULTI_FLAG,
 }
 
+MOF_WEAK_ALIAS_REASON = (
+    "財務省現役Weak Aliasのみのため通常の自動スクリーニング対象外（制裁解除ではない）"
+)
+MOF_WEAK_ALIAS_FLAG = "MOF_WEAK_ALIAS_CURRENT"
+MOF_WEAK_ALIAS_RISK_TYPE = "制裁リスト（Weak Alias・照合参考）"
+HISTORICAL_WEAK_ALIAS_REASON = "OFAC旧Weak Aliasの履歴保持（単独の自動照合対象外）"
+LEGACY_INACTIVE_REASON = "既存データで無効指定"
+
 # Weak Aliasが後日Strong/Primaryへ昇格した場合は
 # 通常スクリーニング対象へ安全に復帰させる。
 REACTIVATABLE_REASONS = {
     DELISTED,
     *OFAC_WEAK_ALIAS_REASONS,
+    MOF_WEAK_ALIAS_REASON,
+    HISTORICAL_WEAK_ALIAS_REASON,
+    LEGACY_INACTIVE_REASON,
 }
 
 DIFF_AUDIT_FIELDS = (
@@ -138,30 +149,49 @@ def _recompute(row: dict) -> dict:
     silently erase the latter while its review_flag is still present.
     """
     summary = render_remark(_pairs(row))
-    if "LEGACY_UNVERIFIED_V1:" in str(row.get("review_flag", "")):
-        previous = str(row.get("remark", ""))
-        _, separator, annotation = previous.partition("\n")
-        if (not separator or "旧登録・" not in annotation
-                or "保持期限UTC:" not in annotation):
+    flags = str(row.get("review_flag", ""))
+    previous_lines = str(row.get("remark", "")).splitlines()[1:]
+    kept_annotations: list[str] = []
+
+    if "LEGACY_UNVERIFIED_V1:" in flags:
+        matches = [ln for ln in previous_lines if "旧登録・" in ln and "保持期限UTC:" in ln]
+        if not matches:
             raise ValueError(
                 "legacy retention annotation is missing or malformed; "
                 "refuse to overwrite review evidence"
             )
-        row["remark"] = summary + "\n" + annotation
-    elif "OFAC_ALIAS_HISTORY_V1:" in str(row.get("review_flag", "")):
-        _, separator, annotation = str(row.get("remark", "")).partition("\n")
-        if (not separator or not annotation.startswith("OFAC別名履歴:")
-                or "FixedRef:" not in annotation or "保持期限UTC:" not in annotation):
+        kept_annotations.extend(matches)
+
+    if "OFAC_ALIAS_HISTORY_V1:" in flags:
+        matches = [
+            ln for ln in previous_lines
+            if ln.startswith("OFAC別名履歴:") and "FixedRef:" in ln and "保持期限UTC:" in ln
+        ]
+        if not matches:
             raise ValueError("alias history annotation missing; refuse to erase evidence")
-        row["remark"] = summary + "\n" + annotation
-    elif "OFAC_VESSEL_HISTORY_V1:" in str(row.get("review_flag", "")):
-        _, separator, annotation = str(row.get("remark", "")).partition("\n")
-        if (not separator or not annotation.startswith("OFAC船名履歴:")
-                or "FixedRef:" not in annotation or "IMO:" not in annotation):
+        kept_annotations.extend(matches)
+
+    if "OFAC_VESSEL_HISTORY_V1:" in flags:
+        matches = [
+            ln for ln in previous_lines
+            if ln.startswith("OFAC船名履歴:") and "FixedRef:" in ln and "IMO:" in ln
+        ]
+        if not matches:
             raise ValueError("vessel history annotation missing; refuse to erase evidence")
-        row["remark"] = summary + "\n" + annotation
-    else:
-        row["remark"] = summary
+        kept_annotations.extend(matches)
+
+    if MOF_WEAK_ALIAS_FLAG in _split(flags):
+        matches = [ln for ln in previous_lines if ln.startswith("財務省Weak Alias（確定に十分でない別名）。")]
+        if not matches:
+            raise ValueError("MOF weak alias annotation missing; refuse to erase evidence")
+        kept_annotations.extend(matches)
+
+    if any(f.startswith("APPROVED_LEGACY_DELIST_") for f in _split(flags)):
+        matches = [ln for ln in previous_lines if "利用者承認により掲載終了" in ln]
+        if matches:
+            kept_annotations.extend(matches)
+
+    row["remark"] = "\n".join([summary, *kept_annotations]) if kept_annotations else summary
     return row
 
 
@@ -244,9 +274,18 @@ def merge(master: dict[str, dict], records: list[dict], source: str,
         if row.get("invalid_reason") in REACTIVATABLE_REASONS:
             row["status"] = STATUS_ACTIVE
             row["invalid_reason"] = ""
+            if row.get("risk_type") == MOF_WEAK_ALIAS_RISK_TYPE or "旧登録・" in str(row.get("risk_type", "")) and any(
+                f.startswith("APPROVED_LEGACY_DELIST_") for f in _split(row.get("review_flag", ""))
+            ):
+                row["risk_type"] = RISK_TYPE
 
-            if row.get("review_flag") in OFAC_WEAK_ALIAS_FLAGS:
-                row["review_flag"] = ""
+            cleaned_flags = [
+                f for f in _split(row.get("review_flag", ""))
+                if f not in OFAC_WEAK_ALIAS_FLAGS
+                and f != MOF_WEAK_ALIAS_FLAG
+                and not f.startswith("APPROVED_LEGACY_DELIST_")
+            ]
+            row["review_flag"] = _join(cleaned_flags)
 
         _recompute(row)
         after = {c: row.get(c, "") for c in ("status", "sources", "categories", "remark")}

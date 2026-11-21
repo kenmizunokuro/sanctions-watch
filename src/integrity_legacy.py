@@ -20,7 +20,7 @@ from pathlib import Path
 
 from . import integrity_triage as T
 from .integrity_decisions import _date
-from .normalize import canonical_display_name, is_trailing_unknown_artifact
+from .normalize import canonical_display_name, is_trailing_unknown_artifact, match_key
 from .screening import secondary_screening_key
 
 POLICY_ID = 'phase1-legacy-20261026'
@@ -101,12 +101,37 @@ def annotate(row,classification,expires_at):
     return result
 
 
-def _entry(ident,item,expires_at):
+def _entry(ident,item,expires_at,*,key_repaired=False,notice_reclassified=False,
+           accepted_review_id=None,reviewed_evidence_sha256=None):
     finding=copy.deepcopy(item['finding'])
-    finding['master']=annotate(finding['master'],item['classification'],expires_at)
-    return dict(original_review_id=ident,accepted_review_id=T.review_id(finding,item['classification'],item['index_links'],item['evidence']),
-                accepted_master_sha256=T.digest(finding['master']),master_key=item['master_key'],
-                classification=item['classification'],reviewed_evidence_sha256=item['evidence_sha256'])
+    if key_repaired:
+        repaired_key=match_key(finding['master']['display_name'])
+        if not repaired_key or repaired_key==item['master_key']:
+            raise ValueError('legacy key_repaired requires an actual canonical match_key change')
+        finding['master']=dict(finding['master'],match_key=repaired_key)
+    classification=item['classification']
+    if notice_reclassified:
+        if item['classification']!='ORIGIN_UNRESOLVED':
+            raise ValueError('legacy notice_reclassified is only valid from ORIGIN_UNRESOLVED')
+        if (not isinstance(accepted_review_id,str) or len(accepted_review_id)!=64
+                or any(c not in '0123456789abcdef' for c in accepted_review_id)
+                or not isinstance(reviewed_evidence_sha256,str) or len(reviewed_evidence_sha256)!=64
+                or any(c not in '0123456789abcdef' for c in reviewed_evidence_sha256)
+                or reviewed_evidence_sha256==item['evidence_sha256']):
+            raise ValueError('legacy notice_reclassified requires pinned notice evidence hashes')
+        classification='NOTICE_ALIAS_FIELD_REVIEW'
+    finding['master']=annotate(finding['master'],classification,expires_at)
+    computed_id=(accepted_review_id if notice_reclassified
+                 else T.review_id(finding,classification,item['index_links'],item['evidence']))
+    computed_ev=reviewed_evidence_sha256 if notice_reclassified else item['evidence_sha256']
+    out=dict(original_review_id=ident,accepted_review_id=computed_id,
+             accepted_master_sha256=T.digest(finding['master']),master_key=finding['master']['match_key'],
+             classification=classification,reviewed_evidence_sha256=computed_ev)
+    if key_repaired:
+        out['key_repaired']=True
+    if notice_repaired := notice_reclassified:
+        out['notice_reclassified']=bool(notice_repaired)
+    return out
 
 
 def prepare(rows,scope,reviewed_at,expires_at,review_ids=None):
@@ -142,9 +167,16 @@ def _validate(ledger,scope,now=None):
     for entry in ledger['entries']:
         if not isinstance(entry,dict):raise ValueError('legacy acceptance entry invalid')
         ident=entry.get('original_review_id')
-        if not isinstance(ident,str) or ident not in scope or ident in originals:
+        if not isinstance(ident,str) or ident not in scope or ident not in scope or ident in originals:
             raise ValueError('legacy original review ID unknown or duplicated')
-        expected=_entry(ident,scope[ident],ledger['expires_at'])
+        repaired=entry.get('key_repaired',False)
+        reclassified=entry.get('notice_reclassified',False)
+        if not isinstance(repaired,bool) or not isinstance(reclassified,bool):
+            raise ValueError('legacy repair/reclassification flags must be boolean')
+        expected=_entry(ident,scope[ident],ledger['expires_at'],key_repaired=repaired,
+                        notice_reclassified=reclassified,
+                        accepted_review_id=entry.get('accepted_review_id') if reclassified else None,
+                        reviewed_evidence_sha256=entry.get('reviewed_evidence_sha256') if reclassified else None)
         if entry!=expected or entry['accepted_review_id'] in accepted or entry['master_key'] in keys:
             raise ValueError('legacy acceptance record or relation binding mismatch')
         originals.add(ident);keys.add(entry['master_key']);accepted[entry['accepted_review_id']]=entry
@@ -193,8 +225,10 @@ def _row_bindings(rows, accepted, scope, ledger):
     for entry in accepted.values():
         key = entry['master_key']
         expected_keys.add(key)
-        expected = annotate(scope[entry['original_review_id']]['finding']['master'],
-                            entry['classification'], ledger['expires_at'])
+        base_master = scope[entry['original_review_id']]['finding']['master']
+        if entry.get('key_repaired'):
+            base_master = dict(base_master, match_key=key)
+        expected = annotate(base_master, entry['classification'], ledger['expires_at'])
         candidates = bykey.get(key, [])
         if candidates == [expected]:
             continue
@@ -236,6 +270,11 @@ def apply(root,report,triage,ledger,scope,*,now=None):
                     or item['master_sha256']!=entry['accepted_master_sha256'] or item['checked_source']!='OFAC'
                     or finding['kind'] not in {'EXTRA_REGISTRATION','WEAK_ALIAS_ACTIVE'} or ident in matches):
                 raise ValueError('legacy current finding mismatch')
+            if entry.get('notice_reclassified'):
+                if (item['evidence_sha256']!=entry['reviewed_evidence_sha256']
+                        or not item['evidence']
+                        or any(p.get('field') not in {'notice_alias_name','notice_text'} for p in item['evidence'])):
+                    raise ValueError('legacy notice reclassification evidence mismatch')
             matches[ident]=n
         if set(matches)!=set(accepted):raise ValueError('legacy accepted relation missing or changed; fresh review required')
     except (ValueError,OSError,KeyError,TypeError,csv.Error,EOFError,zlib.error) as exc:

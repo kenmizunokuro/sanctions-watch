@@ -231,7 +231,7 @@ def _pinned(root, key, state, role, documents):
     return body,document
 
 
-def audit(root: Path, sources: list[str], upstream_failed: bool = False) -> dict:
+def audit(root: Path, sources: list[str], upstream_failed: bool = False, *, _triage_ctx_out: list | None = None) -> dict:
     root=root.resolve()
     result=dict(schema_version=1,scope=sorted(set(sources)),documents=[],inputs={},findings=[],lineage=[],regression=[],
                 limitations=[
@@ -304,6 +304,7 @@ def audit(root: Path, sources: list[str], upstream_failed: bool = False) -> dict
     result['official_name_count']=len(expected)
     result['master_row_count']=len(master_rows)
     result=_finish(result)
+    triage_ctx=None
     decision_path=root/'data/review/integrity_retention_decisions.json'
     if decision_path.exists():
         try:
@@ -312,12 +313,13 @@ def audit(root: Path, sources: list[str], upstream_failed: bool = False) -> dict
             body=decision_path.read_bytes()
             result['inputs']['data/review/integrity_retention_decisions.json']=sha(body)
             ledger=json.loads(body)
-            investigation=T.triage(root,result)
+            triage_ctx=T.triage_context(root,result)
+            investigation=T.triage_from_context(result,triage_ctx)
             result=D.apply(result,investigation,ledger,root=root)
         except (OSError,ValueError,KeyError,csv.Error) as exc:
             result['findings'].append(dict(kind='RETENTION_DECISION_ERROR',detail=str(exc),blocking=True))
     legacy_path=root/'data/review/integrity_legacy_acceptances.json'
-    if legacy_path.exists():
+    if legacy_path.exists() and 'ofac' in sources and complete_labels=={'SDN','Consolidated'}:
         try:
             from . import integrity_triage as T
             from . import integrity_legacy as L
@@ -326,7 +328,9 @@ def audit(root: Path, sources: list[str], upstream_failed: bool = False) -> dict
             scope=L.load_scope(root)
             for rel in (L.POLICY_PATH,L.SCOPE_PATH):result['inputs'][rel]=sha((root/rel).read_bytes())
             ledger=json.loads(body)
-            result=L.apply(root,result,T.triage(root,result),ledger,scope)
+            if triage_ctx is None:
+                triage_ctx=T.triage_context(root,result)
+            result=L.apply(root,result,T.triage_from_context(result,triage_ctx),ledger,scope)
         except (OSError,ValueError,KeyError,TypeError,csv.Error,EOFError,zlib.error) as exc:
             result['findings'].append(dict(kind='LEGACY_ACCEPTANCE_ERROR',detail=str(exc),blocking=True))
     from . import integrity_approved_delist as approved_delist
@@ -334,6 +338,14 @@ def audit(root: Path, sources: list[str], upstream_failed: bool = False) -> dict
         result=approved_delist.apply(root,result)
     except (OSError,ValueError,KeyError,TypeError,EOFError) as exc:
         result['findings'].append(dict(kind='APPROVED_DELIST_ERROR',detail=str(exc),blocking=True))
+    if 'ofac' in sources and complete_labels=={'SDN','Consolidated'}:
+        from . import ofac_alias_removal_queue as OARQ, ofac_removal_queue as ORQ
+        try:
+            result=OARQ.apply_audit_relief(root,result,expected_records=expected,index_rows=index_rows)
+        except (OSError,ValueError,KeyError,TypeError,csv.Error,ORQ.QueueError,OARQ.QueueError,OARQ.ApprovalError) as exc:
+            result['findings'].append(dict(kind='OFAC_REMOVAL_QUEUE_ERROR',checked_source='OFAC',detail=str(exc),blocking=True))
+    if _triage_ctx_out is not None and triage_ctx is not None:
+        _triage_ctx_out.append(triage_ctx)
     return _finish(result)
 
 
@@ -356,12 +368,14 @@ def main(argv=None):
     parser.add_argument('--triage',action='store_true',help='全findingを根拠付き分類して監査Artifactに保存')
     args=parser.parse_args(argv)
     sources=['ofac','mof'] if 'all' in args.sources else args.sources
-    result=audit(args.root,sources,args.upstream_failed)
+    ctx_holder=[]
+    result=audit(args.root,sources,args.upstream_failed,_triage_ctx_out=ctx_holder if args.triage else None)
     triage_paths=[]
     if args.triage:
         try:
             from . import integrity_triage as T
-            investigation=T.triage(args.root,result)
+            investigation=(T.triage_from_context(result,ctx_holder[0])
+                           if ctx_holder else T.triage(args.root,result))
             paths=T.write_outputs(args.root/'data/integrity_audit',investigation,stem='triage-'+uuid.uuid4().hex)
             result['triage_summary']=dict(counts=investigation['counts'],retention_candidates=investigation['retention_candidates'],
                                          report_sha256=T.digest(investigation),approved_count=sum(f.get('retention_approved',False) for f in result['findings']))

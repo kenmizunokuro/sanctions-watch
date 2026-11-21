@@ -114,10 +114,15 @@ def _norm(value: str) -> str:
 
 
 def _split_aliases(value: str) -> set[str]:
+    from .sources import mof as _mof
     s = unicodedata.normalize("NFKC", _clean(value))
     if not s or s in {"-", "—", "―"}:
         return set()
-    return {_norm(x) for x in re.split(r"[;；]", s) if _norm(x)}
+    return {
+        _norm(_mof.strip_descriptor(x))
+        for x in _mof.split_top_level(s)
+        if _norm(_mof.strip_descriptor(x))
+    }
 
 
 def _read_csv(path: Path, expected: list[str]) -> list[dict[str, str]]:
@@ -131,11 +136,14 @@ def _read_csv(path: Path, expected: list[str]) -> list[dict[str, str]]:
                 raise ReReviewError(
                     f"CSV列構造が想定外: {path} expected={expected} actual={actual}"
                 )
-            return [
-                {k: _clean(v) for k, v in row.items()}
-                for row in reader
-                if any(_clean(v) for v in row.values())
-            ]
+            reader.fieldnames = actual
+            rows = []
+            for line_no, row in enumerate(reader, start=2):
+                if None in row or any(v is None for v in row.values()):
+                    raise ReReviewError(f"CSV列数が不正: {path}:{line_no}")
+                if any(_clean(v) for v in row.values()):
+                    rows.append({k: _clean(v) for k, v in row.items()})
+            return rows
     except csv.Error as exc:
         raise ReReviewError(f"CSV読込失敗: {path}: {exc}") from exc
 

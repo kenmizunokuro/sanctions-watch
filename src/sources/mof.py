@@ -313,35 +313,50 @@ def strip_descriptor(name: str) -> str:
     return s
 
 
-def extract_names(row: dict) -> list[str]:
-    """1レコードからscreening nameを全て取り出す。"""
-    out: list[str] = []
+def extract_names_with_quality(row: dict) -> list[tuple[str, bool]]:
+    """1レコードから (name, low_quality) を全て取り出す。Strong優先で重複排除する。"""
+    strong_cols = set(NAME_COLS[:6])
+    candidates: list[tuple[str, bool]] = []
 
-    # 構造化された氏名・別名・旧称等。
     for col in NAME_COLS:
         raw = clean_name(row.get(col, ""))
         if not raw or raw in NULL_NAMES:
             continue
+        is_weak = col not in strong_cols
         for part in split_top_level(raw):
             n = strip_descriptor(part)
             if n and n not in NULL_NAMES and len(n) > 1:
-                out.append(n)
+                candidates.append((n, is_weak))
 
-    # 外務省告示情報に明示された非Latin original script。
-    #
-    # 自由文からの推測抽出は禁止し、
-    # extract_original_script_names() の安全条件を満たすものだけ。
-    out.extend(extract_original_script_names(row))
+    for orig in extract_original_script_names(row):
+        for part in split_top_level(orig):
+            n = clean_name(part)
+            if n and n not in NULL_NAMES and len(n) > 1 and _has_native_script(n):
+                candidates.append((n, False))
 
-    seen, res = set(), []
-
-    for n in out:
+    by_key: dict[str, tuple[str, bool]] = {}
+    order: list[str] = []
+    for n, is_weak in candidates:
         k = match_key(n)
-        if k and k not in seen:
-            seen.add(k)
-            res.append(n)
+        if not k:
+            continue
+        if k not in by_key:
+            by_key[k] = (n, is_weak)
+            order.append(k)
+        elif by_key[k][1] and not is_weak:
+            by_key[k] = (n, False)
 
-    return res
+    return [by_key[k] for k in order]
+
+
+def extract_names(row: dict) -> list[str]:
+    """1レコードからscreening nameを全て取り出す。"""
+    return [n for n, _ in extract_names_with_quality(row)]
+
+
+def screening_records(records: list[dict]) -> list[dict]:
+    """通常スクリーニングmasterへ反映するStrong名称だけを返す。"""
+    return [r for r in records if not bool(r.get("low_quality", False))]
 
 
 # ---------------------------------------------------------------- 区分
@@ -351,6 +366,10 @@ def load_kubun_map(path=None) -> dict:
     if not p.exists():
         return {}
     return json.loads(p.read_text(encoding="utf-8")).get("map", {})
+
+
+def _kubun_sort_key(value: str) -> tuple[int, int | str]:
+    return (0, int(value)) if str(value).isdigit() else (1, str(value))
 
 
 def detect_drift(records: list, master: dict,
@@ -379,7 +398,7 @@ def detect_drift(records: list, master: dict,
             agree[k][0] += 1
 
     problems = []
-    for k in sorted(agree, key=int):
+    for k in sorted(agree, key=_kubun_sort_key):
         ok, total = agree[k]
         if total >= min_samples and ok / total < threshold:
             problems.append(
@@ -393,17 +412,25 @@ def detect_drift(records: list, master: dict,
 
 def parse(f: Fetched, kubun_map=None) -> list:
     """正規化済みレコードのリストを返す。1名前1レコードに展開する。"""
-    rows = list(csv.DictReader(io.StringIO(f.text)))
+    try:
+        reader = csv.DictReader(io.StringIO(f.text))
+        if reader.fieldnames:
+            reader.fieldnames = [h.strip() if h else "" for h in reader.fieldnames]
+        rows = list(reader)
+    except csv.Error as exc:
+        raise SchemaError(f"財務省CSVを解析できない: {exc}", fetched=f) from exc
     if not rows:
-        raise SchemaError("財務省CSVが空だった")
+        raise SchemaError("財務省CSVが空だった", fetched=f)
 
-    header = [h.strip() for h in rows[0].keys() if h]
+    header = [h.strip() for h in (reader.fieldnames or []) if h]
     need = [COL_KUBUN, COL_ID, COL_MOFA_NOTICE] + NAME_COLS[:2]
     missing = [c for c in need if c not in header]
     if missing:
         raise SchemaError(
             "財務省CSVに想定した列が無い。欠けている列={} / 実際の列={}".format(
-                missing, header))
+                missing, header),
+            fetched=f,
+        )
 
     kmap = kubun_map if kubun_map is not None else load_kubun_map()
     out = []
@@ -415,15 +442,18 @@ def parse(f: Fetched, kubun_map=None) -> list:
         if kubun and kubun not in kmap:
             unknown.add(kubun)
         rid = clean_name(r.get(COL_ID, ""))
-        for n in extract_names(r):
-            out.append(dict(source=SOURCE, category=cat, name=n,
-                            source_id=rid, kubun=kubun,
-                            listed=clean_name(r.get(COL_NOTICE, ""))))
+        for n, is_weak in extract_names_with_quality(r):
+            rec = dict(source=SOURCE, category=cat, name=n,
+                       source_id=rid, kubun=kubun,
+                       listed=clean_name(r.get(COL_NOTICE, "")))
+            if is_weak:
+                rec["low_quality"] = True
+            out.append(rec)
 
     if not out:
-        raise SchemaError("財務省CSVから名前を1件も抽出できなかった。列構成の変更を疑う")
+        raise SchemaError("財務省CSVから名前を1件も抽出できなかった。列構成の変更を疑う", fetched=f)
     if unknown:
         # 新設カテゴリ。全体は止めず、カテゴリ名なしで取り込んで通知する。
         print("  警告: 対応表に無い区分 {} を検出。data/kubun_map.json の更新が必要"
-              .format(sorted(unknown, key=int)), flush=True)
+              .format(sorted(unknown, key=_kubun_sort_key)), flush=True)
     return out

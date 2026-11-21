@@ -36,6 +36,7 @@ class ApprovedLegacyDelistTests(unittest.TestCase):
         # Keep the approved historical before state even after production applies it.
         rows = V._read_rows((self.root / 'data/master/master.csv').read_text())
         ledger = json.loads((self.root / L.LEDGER_PATH).read_bytes())
+        self.expected_remaining = len([e for e in ledger['entries'] if e['master_key'] not in SIX])
         for case in self.approval['cases']:
             rows[case['match_key']] = case['before']
             if not any(e['master_key'] == case['match_key'] for e in ledger['entries']):
@@ -64,7 +65,7 @@ class ApprovedLegacyDelistTests(unittest.TestCase):
         self.assertEqual({k for k in SIX if after[k]['status'] == '無効'}, SIX)
         self.assertTrue(all(after[k]['first_seen_ms'] == before[k]['first_seen_ms'] for k in SIX))
         ledger = json.loads((self.root / L.LEDGER_PATH).read_bytes())
-        self.assertEqual(len(ledger['entries']), 2423)
+        self.assertEqual(len(ledger['entries']), self.expected_remaining)
         self.assertFalse(SIX & {e['master_key'] for e in ledger['entries']})
         screened = list(csv.DictReader(io.StringIO(gzip.decompress(
             (self.root / 'data/dashboard/screening.csv.gz').read_bytes()).decode())))
@@ -85,7 +86,7 @@ class ApprovedLegacyDelistTests(unittest.TestCase):
             {'sha256': 'a' * 64, 'url': 'https://www.mof.go.jp/list.csv'},
             detected_at='2026-11-09T02:00:00Z')
         self.assertEqual(review, [])
-        self.assertEqual(totals['approved_legacy_count'], 2423)
+        self.assertEqual(totals['approved_legacy_count'], self.expected_remaining)
         saved = self.snapshot()
         self.assertEqual(A.apply(self.root, now=NOW)['status'], 'ALREADY_APPLIED')
         self.assertEqual(saved, self.snapshot())

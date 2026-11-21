@@ -19,7 +19,7 @@ def observe(t,base,address,http):
     if not isinstance(a,dict): raise ValueError('invalid TRON account')
     # Some nodes echo hex despite visible=true. Compare decoded bytes as well.
     echoed=a.get('address','')
-    if echoed and echoed not in (address,decode_base58(address)[:-4].hex()): raise ValueError('wrong account echo')
+    if echoed and echoed!=address and str(echoed).lower()!=decode_base58(address)[:-4].hex(): raise ValueError('wrong account echo')
     out={'block_height':height,'block_hash':block_hash,'block_timestamp':stamp,'confirmation':'solidified',
          'balance_raw':integer(a.get('balance',0)),'decimals':6,'account_present':bool(echoed),
          'asset_match':False,'positive':bool(echoed),

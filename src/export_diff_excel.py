@@ -131,7 +131,7 @@ def select_actionable(
 
         # OFACの「掲載終了候補」は
         # before == after のままmasterを変更していない。
-        if kind == "掲載終了" and before == after:
+        if kind == "掲載終了候補（要確認）" or (kind == "掲載終了" and before == after):
             held += 1
             continue
 

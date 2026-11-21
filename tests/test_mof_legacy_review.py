@@ -28,6 +28,8 @@ def historical_fixture():
     ledger = json.loads((ROOT / L.LEDGER_PATH).read_bytes())
     scope = L.load_scope(ROOT)
     ledger['entries'] = [L._entry(ident, item, ledger['expires_at']) for ident, item in scope.items()]
+    for key in [k for k, row in base.items() if L.MARKER in row.get('review_flag', '')]:
+        del base[key]
     for item in scope.values():
         base[item['master_key']] = L.annotate(item['finding']['master'], item['classification'], ledger['expires_at'])
     return base, ledger

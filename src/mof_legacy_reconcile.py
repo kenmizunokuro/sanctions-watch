@@ -79,9 +79,11 @@ def reconcile(root: Path, report_path: Path) -> dict:
     keys = {row["match_key"] for row in bindings}
     audited_rows = {}
     for finding in report["findings"]:
-        candidate = finding.get("master") or {}
-        if candidate.get("match_key") in keys:
-            audited_rows[R._hash(candidate)] = candidate
+        raw_master = finding.get("master")
+        candidates = raw_master if isinstance(raw_master, list) else ([raw_master] if isinstance(raw_master, dict) else [])
+        for candidate in candidates:
+            if isinstance(candidate, dict) and candidate.get("match_key") in keys:
+                audited_rows[R._hash(candidate)] = candidate
 
     cases = []
     for row in rows:

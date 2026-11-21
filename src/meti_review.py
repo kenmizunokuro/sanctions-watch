@@ -166,6 +166,7 @@ def _actual_diff_counts(rows: list[dict]) -> dict[str, int]:
 def verify_snapshot(
     *,
     expected_hash: str | None = None,
+    allow_unverified_content: bool = False,
 ) -> dict:
     """現在snapshotを読み取り専用で完全性検証する。"""
     state = _load_json(STATE_PATH, "METI manual state")
@@ -236,19 +237,19 @@ def verify_snapshot(
     _, records = _load_csv(records_path, "records CSV")
     record_count = len(records)
 
+    raw_expected = report.get("expected_count")
     try:
         state_count = int(state.get("current_record_count"))
         report_count = int(report.get("record_count"))
-        expected_count = int(report.get("expected_count"))
+        expected_count = int(raw_expected) if raw_expected is not None else None
     except (TypeError, ValueError) as exc:
         raise ReviewError(
             "state/reportの件数フィールドが数値ではない"
         ) from exc
 
     if not (
-        record_count == state_count
-        == report_count
-        == expected_count
+        record_count == state_count == report_count
+        and (expected_count is None or record_count == expected_count)
     ):
         raise ReviewError(
             "records/state/report/expected件数が不一致: "
@@ -256,85 +257,86 @@ def verify_snapshot(
             f"report={report_count} expected={expected_count}"
         )
 
-    if record_count <= 0:
+    if record_count <= 0 and not allow_unverified_content:
         raise ReviewError("recordsが0件")
 
-    nos: list[int] = []
-    keys: list[str] = []
+    if not allow_unverified_content:
+        nos: list[int] = []
+        keys: list[str] = []
 
-    for i, row in enumerate(records, 1):
-        try:
-            no = int(row.get("no", ""))
-        except ValueError as exc:
+        for i, row in enumerate(records, 1):
+            try:
+                no = int(row.get("no", ""))
+            except ValueError as exc:
+                raise ReviewError(
+                    f"records行{i}のnoが数値ではない"
+                ) from exc
+
+            nos.append(no)
+
+            company = str(row.get("company") or "").strip()
+            country = str(row.get("country") or "").strip()
+            key = str(row.get("match_key") or "").strip()
+
+            if not company:
+                raise ReviewError(f"No.{no} companyが空")
+            if not country:
+                raise ReviewError(f"No.{no} countryが空")
+            if not key:
+                raise ReviewError(f"No.{no} match_keyが空")
+            keys.append(key)
+
+        if nos != list(range(1, record_count + 1)):
             raise ReviewError(
-                f"records行{i}のnoが数値ではない"
-            ) from exc
-
-        nos.append(no)
-
-        company = str(row.get("company") or "").strip()
-        country = str(row.get("country") or "").strip()
-        key = str(row.get("match_key") or "").strip()
-
-        if not company:
-            raise ReviewError(f"No.{no} companyが空")
-        if not country:
-            raise ReviewError(f"No.{no} countryが空")
-        if not key:
-            raise ReviewError(f"No.{no} match_keyが空")
-        keys.append(key)
-
-    if nos != list(range(1, record_count + 1)):
-        raise ReviewError(
-            "recordsのNo.連番が崩れている"
-        )
-
-    if len(set(keys)) != record_count:
-        raise ReviewError(
-            "recordsのmatch_keyが一意ではない"
-        )
-
-    _, evidence = _load_csv(
-        EVIDENCE_PATH,
-        "METI Source Evidence Ledger",
-    )
-    current = [
-        row for row in evidence
-        if str(row.get("current") or "") == "1"
-    ]
-
-    if len(current) != record_count:
-        raise ReviewError(
-            "current evidence件数がrecordsと一致しない: "
-            f"evidence={len(current)} records={record_count}"
-        )
-
-    evidence_keys = [
-        str(row.get("match_key") or "").strip()
-        for row in current
-    ]
-    if any(not x for x in evidence_keys):
-        raise ReviewError("evidenceに空match_keyがある")
-    if len(set(evidence_keys)) != record_count:
-        raise ReviewError("current evidenceのmatch_keyが一意ではない")
-
-    if set(evidence_keys) != set(keys):
-        raise ReviewError(
-            "recordsとcurrent evidenceのmatch_key集合が一致しない"
-        )
-
-    for row in current:
-        if str(row.get("source_hash") or "") != source_hash:
-            raise ReviewError("current evidenceのsource_hashが不一致")
-        if str(row.get("source_url") or "") != state_url:
-            raise ReviewError("current evidenceのsource_urlが不一致")
-        source_record_id = str(
-            row.get("source_record_id") or ""
-        )
-        if not source_record_id.startswith(source_hash + ":"):
-            raise ReviewError(
-                "current evidenceのsource_record_idが不正"
+                "recordsのNo.連番が崩れている"
             )
+
+        if len(set(keys)) != record_count:
+            raise ReviewError(
+                "recordsのmatch_keyが一意ではない"
+            )
+
+        _, evidence = _load_csv(
+            EVIDENCE_PATH,
+            "METI Source Evidence Ledger",
+        )
+        current = [
+            row for row in evidence
+            if str(row.get("current") or "") == "1"
+        ]
+
+        if len(current) != record_count:
+            raise ReviewError(
+                "current evidence件数がrecordsと一致しない: "
+                f"evidence={len(current)} records={record_count}"
+            )
+
+        evidence_keys = [
+            str(row.get("match_key") or "").strip()
+            for row in current
+        ]
+        if any(not x for x in evidence_keys):
+            raise ReviewError("evidenceに空match_keyがある")
+        if len(set(evidence_keys)) != record_count:
+            raise ReviewError("current evidenceのmatch_keyが一意ではない")
+
+        if set(evidence_keys) != set(keys):
+            raise ReviewError(
+                "recordsとcurrent evidenceのmatch_key集合が一致しない"
+            )
+
+        for row in current:
+            if str(row.get("source_hash") or "") != source_hash:
+                raise ReviewError("current evidenceのsource_hashが不一致")
+            if str(row.get("source_url") or "") != state_url:
+                raise ReviewError("current evidenceのsource_urlが不一致")
+            source_record_id = str(
+                row.get("source_record_id") or ""
+            )
+            if not source_record_id.startswith(source_hash + ":"):
+                raise ReviewError(
+                    "current evidenceのsource_record_idが不正"
+                )
 
     _, diff_rows = _load_csv(diff_path, "diff CSV")
     expected_diff = _expected_diff_counts(report)
@@ -540,6 +542,7 @@ def decide(
 
     verified = verify_snapshot(
         expected_hash=expected_hash,
+        allow_unverified_content=(decision == DECISION_REJECTED),
     )
     state = verified["state"]
 
