@@ -1,46 +1,12 @@
 {
-  "started_at": "2026-11-21T12:56:16Z",
-  "finished_at": "2026-11-21T13:00:08Z",
-  "outcome": "failure",
-  "exit_code": 1,
+  "started_at": "2026-11-21T13:24:06Z",
+  "finished_at": "2026-11-21T13:24:50Z",
+  "outcome": "success",
+  "exit_code": 0,
   "sources": [
     "ofac"
   ],
-  "run_id": "44905864510",
+  "run_id": "44907085106",
   "run_attempt": "1",
-  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/44905864510",
-  "stage": "integrity_failed",
-  "fetch_finished_at": "2026-11-21T12:56:44Z",
-  "integrity": {
-    "status": "BLOCKED",
-    "report": "data/integrity_audit/20261121T130007157700Z__9f1ea23281aefcc9__cbc4ad90.json.gz",
-    "report_sha256": "39285c6d09d414df47a794d0d4c1627ca547816eda5ff1a726f9239be76d7836",
-    "inputs": {
-      "data/kubun_map.json": "007da2fec65dd0357f5d3f91b2b68927f8dcf1c97b95253cc1c0c51a1d55e3f6",
-      "data/master/master.csv": "7c4f476c3875cb923d370bd0299adc3acdb77187d8e466d081d80fd83bf630ca",
-      "data/master/ofac_alias_history.csv": "7cf2021891aa7b1abcd76e9915568d38afb1aa7bd610085e5e2f48ba0dd3e3c7",
-      "data/monitoring/approved_legacy_delist_20261108_applied.json": "e187b47cc8557e76ed44285d0bea2556afba84b6050c3f5ae43e0dcc37c45a5d",
-      "data/review/approved_legacy_delist_20261108.json": "223a3be4ed97ea2e75c0a059cf8f286a09ae22f76f7267eae851cd57dc093c95",
-      "data/review/integrity_legacy_acceptances.json": "503516847a9979fd3b9bfda89b8d9f0731b3b755871bee3230a3d4e189d8825c",
-      "data/review/integrity_retention_decisions.json": "613299679e1f2c3f63f0f1b96927dec6b6fe9fc2c14a4cc2176ceed9f8cafab0",
-      "data/state.json": "d94bf40966d45f833b79c0b9381f809c553a4dd5d197432d462163997a8e8eb5",
-      "docs/evidence/source-integrity-legacy-retention-policy-proposal-20261026.json": "7d54d514a3c9dfa6708dce5bbec0c6dc595ad6defa5dad4ab0cf26c48c0c4881",
-      "docs/evidence/source-integrity-legacy-scope-20261026.json.gz": "83713003dc24b7efafa4683c703f9f40b31b0721015abe655aff3c88694a0289"
-    },
-    "blocking_counts": {
-      "EXTRA_REGISTRATION": 2
-    },
-    "blockers": [
-      {
-        "kind": "EXTRA_REGISTRATION",
-        "name": "Abu al-Fadl",
-        "detail": "現在原本に根拠の無い出典付き登録（保持行を含む。削除禁止）"
-      },
-      {
-        "kind": "EXTRA_REGISTRATION",
-        "name": "'NDRANGHETA ORGANIZATION",
-        "detail": "現在原本に根拠の無い出典付き登録（保持行を含む。削除禁止）"
-      }
-    ]
-  }
+  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/44907085106"
 }
