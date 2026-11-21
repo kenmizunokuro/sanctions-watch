@@ -34,7 +34,7 @@ def apply(root:Path=ROOT,*,now:datetime|None=None,run_url:str='')->dict:
     if (root/RECEIPT).exists():
         receipt=json.loads((root/RECEIPT).read_bytes())
         if (receipt.get('status')!='APPLIED' or receipt.get('count')!=3 or receipt.get('approval_sha256')!=V.APPROVAL_SHA256
-                or any(rows.get(k)!=c['after'] or entries.get(c['retention_decision']['review_id'])!=c['retention_decision'] for k,c in cases.items())):
+                or any(rows.get(k)!=c['after'] or entries.get(V.effective_decision(root,c)['review_id'])!=V.effective_decision(root,c) for k,c in cases.items())):
             raise ValueError('previous vessel application incomplete or changed; fresh review required')
         return dict(receipt,status='ALREADY_APPLIED')
     if not Q._date(bundle['reviewed_at'])<=now<Q._date(bundle['expires_at']):raise ValueError('vessel approval not yet valid or expired')

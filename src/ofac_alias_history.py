@@ -107,13 +107,20 @@ def _current_records(root, report, *, consolidated=False):
     return current, hashes
 
 
+def _effective(root, b, *, huistas=False):
+    from . import integrity_renewal as IR
+    base_hash = HUISTAS_APPROVAL_SHA256 if huistas else APPROVAL_SHA256
+    return IR.alias_state(root, b, base_hash)
+
+
 def verify_decision(root,report,decision):
     scope = decision.get('alias_history')
     if not isinstance(scope, dict):
         raise ValueError('alias decision scope changed')
     huistas = scope.get('master_key') == HUISTAS_KEY
     b=approval(root, huistas=huistas)
-    if decision!=b['retention_decision']:raise ValueError('alias decision scope changed')
+    _, expected_decision, _, _ = _effective(root, b, huistas=huistas)
+    if decision!=expected_decision:raise ValueError('alias decision scope changed')
     facts=_huistas_evidence(root,b) if huistas else static_evidence(root,b)
     current, hashes = _current_records(root, report)
     facts.update(hashes)
@@ -162,10 +169,10 @@ def validate_annotations(root,report,ledger,*,now):
             if not indexed_rows and not case_decisions:
                 continue
             b = approval(root, huistas=huistas)
-            decision = b['retention_decision']
-            if indexed_rows != [b['after']] or case_decisions != [decision]:
+            expected_after, decision, reviewed_at, expires_at = _effective(root, b, huistas=huistas)
+            if indexed_rows != [expected_after] or case_decisions != [decision]:
                 raise ValueError('alias annotation or ledger scope changed')
-            if not Q._date(b['reviewed_at']) <= now < Q._date(b['expires_at']):
+            if not Q._date(reviewed_at) <= now < Q._date(expires_at):
                 raise ValueError('alias annotation approval future or expired')
             verified = any(r.get('review_id') == decision['review_id']
                            and r.get('status') == 'APPLIED' and r.get('alias_history')
@@ -196,7 +203,8 @@ def apply(root=ROOT,*,now=None,run_url='',huistas=False,fresh_diff=True):
     entries={e['review_id']:e for e in ledger['entries']};decision=b['retention_decision']
     if (root/receipt_path).exists():
         receipt=json.loads((root/receipt_path).read_bytes())
-        if receipt.get('status')!='APPLIED' or receipt.get('count')!=1 or receipt.get('approval_sha256')!=approval_hash or rows.get(key)!=b['after'] or entries.get(decision['review_id'])!=decision:
+        expected_after, expected_decision, _, _ = _effective(root, b, huistas=huistas)
+        if receipt.get('status')!='APPLIED' or receipt.get('count')!=1 or receipt.get('approval_sha256')!=approval_hash or rows.get(key)!=expected_after or entries.get(expected_decision['review_id'])!=expected_decision:
             raise ValueError('prior alias application changed or incomplete')
         return dict(receipt,status='ALREADY_APPLIED')
     if not Q._date(b['reviewed_at'])<=now<Q._date(b['expires_at']):raise ValueError('alias approval future or expired')

@@ -34,8 +34,10 @@ class ApprovedLegacyDelistTests(unittest.TestCase):
             shutil.copyfile(ROOT / rel, target)
         self.approval = json.loads((self.root / A.APPROVAL).read_bytes())
         # Keep the approved historical before state even after production applies it.
+        from tests._legacy_fixture import pin_historical_legacy
         rows = V._read_rows((self.root / 'data/master/master.csv').read_text())
         ledger = json.loads((self.root / L.LEDGER_PATH).read_bytes())
+        rows, ledger = pin_historical_legacy(self.root, rows, ledger)
         self.expected_remaining = len([e for e in ledger['entries'] if e['master_key'] not in SIX])
         for case in self.approval['cases']:
             rows[case['match_key']] = case['before']
@@ -84,7 +86,7 @@ class ApprovedLegacyDelistTests(unittest.TestCase):
         L._display(self.root, list(after.values()))
         review, totals = V.build_review(after, after, ledger,
             {'sha256': 'a' * 64, 'url': 'https://www.mof.go.jp/list.csv'},
-            detected_at='2026-11-09T02:00:00Z')
+            detected_at='2026-11-09T02:00:00Z', now=NOW)
         self.assertEqual(review, [])
         self.assertEqual(totals['approved_legacy_count'], self.expected_remaining)
         saved = self.snapshot()
@@ -160,8 +162,25 @@ class ApprovedLegacyDelistTests(unittest.TestCase):
         git('remote', 'add', 'origin', str(origin))
         git('push', '-u', 'origin', 'main')
         before = git('rev-parse', 'HEAD')
+        import sys
+        shim = folder / 'test-bin' / 'python'
+        shim.parent.mkdir(parents=True, exist_ok=True)
+        shim.write_text('#!' + sys.executable + '\n' + """import os, sys
+if sys.argv[1:3] == ['-m', 'src.approved_legacy_delist']:
+    from datetime import datetime, timezone
+    from unittest.mock import patch
+    from src import approved_legacy_delist as A
+    class FixedClock(datetime):
+        @classmethod
+        def now(cls, tz=None): return datetime(2026, 11, 9, 2, tzinfo=timezone.utc)
+    with patch.object(A, 'datetime', FixedClock):
+        raise SystemExit(A.main(sys.argv[3:]))
+os.execv(""" + repr(sys.executable) + """, [""" + repr(sys.executable) + """, *sys.argv[1:]])
+""")
+        shim.chmod(0o755)
         env = dict(os.environ, GITHUB_REF='refs/heads/main', GITHUB_REPOSITORY='example/repo',
-                   GITHUB_RUN_ID='123', PYTHONPATH=str(ROOT) + os.pathsep + os.getenv('PYTHONPATH', ''))
+                   GITHUB_RUN_ID='123', PYTHONPATH=str(ROOT) + os.pathsep + os.getenv('PYTHONPATH', ''),
+                   PATH=str(shim.parent) + os.pathsep + os.environ['PATH'])
         journal = self.root / A.RECEIPT
         journal.parent.mkdir(parents=True, exist_ok=True)
         journal.write_text(json.dumps({'status': 'APPLIED', 'count': 6,
