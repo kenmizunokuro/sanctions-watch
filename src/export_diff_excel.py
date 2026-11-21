@@ -101,13 +101,13 @@ def _literal(cell, value) -> None:
     cell.data_type = "s"
 
 
-def _append_row(ws, values) -> None:
-    row_no = ws.max_row + 1
-
+def _write_row(ws, row_no: int, values, *, text_cols: tuple[int, ...] = ()) -> None:
     for col_no, value in enumerate(values, start=1):
         cell = ws.cell(row_no, col_no)
         _literal(cell, value)
         cell.font = BODY_FONT
+        if col_no in text_cols:
+            cell.number_format = "@"
 
 
 def select_actionable(
@@ -192,9 +192,10 @@ def build_workbook(
         WIDTHS,
     )
 
-    for row in selected:
-        _append_row(
+    for row_no, row in enumerate(selected, start=2):
+        _write_row(
             ws,
+            row_no,
             [
                 row.get("display_name", ""),
                 row.get("risk_type", ""),
@@ -204,11 +205,8 @@ def build_workbook(
                 _jst(row.get("last_updated_ms", "")),
                 row.get("remark", ""),
             ],
+            text_cols=(5, 6),
         )
-
-    for col in ("E", "F"):
-        for cell in ws[col][1:]:
-            cell.number_format = "@"
 
     # 作業・監査用
     info = wb.create_sheet("差分情報")
@@ -231,9 +229,10 @@ def build_workbook(
         ("掲載終了候補・保留件数", held),
     ]
 
-    for key, value in values:
-        _append_row(
+    for row_no, (key, value) in enumerate(values, start=2):
+        _write_row(
             info,
+            row_no,
             [key, value],
         )
 

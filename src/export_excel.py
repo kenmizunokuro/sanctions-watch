@@ -58,13 +58,14 @@ def _read(path: Path) -> list[dict]:
         return list(csv.DictReader(f))
 
 
-def _append_literal_row(ws, values) -> None:
-    row_no = ws.max_row + 1
+def _write_literal_row(ws, row_no: int, values, *, text_cols: tuple[int, ...] = ()) -> None:
     for col_no, value in enumerate(values, start=1):
         cell = ws.cell(row_no, col_no)
         cell.value = "" if value is None else str(value)
         cell.data_type = "s"
         cell.font = BODY_FONT
+        if col_no in text_cols:
+            cell.number_format = "@"
 
 
 def build_workbook(master: list[dict], log: list[dict]) -> Workbook:
@@ -82,22 +83,19 @@ def build_workbook(master: list[dict], log: list[dict]) -> Workbook:
     ws = wb.active
     ws.title = SHEET_MAIN
     _style_header(ws, HEADERS, WIDTHS)
-    for r in master:
-        _append_literal_row(ws, [
+    # 登録時間/更新時間（E/F列）は JST の日時文字列として保持する
+    for row_no, r in enumerate(master, start=2):
+        _write_literal_row(ws, row_no, [
             r["display_name"], r["risk_type"], r["status"], r["risk_level"],
             _jst(r["first_seen_ms"]), _jst(r["last_updated_ms"]), r["remark"],
-        ])
-    # 登録時間/更新時間は JST の日時文字列として保持する
-    for col in ("E", "F"):
-        for c in ws[col][1:]:
-            c.number_format = "@"
+        ], text_cols=(5, 6))
 
     # ---- クリーンアップ履歴 ----------------------------------------
     wl = wb.create_sheet(SHEET_LOG)
     lh = ["元Excel行", "種別", "元の値", "変更後", "理由"]
     _style_header(wl, lh, [11, 12, 58, 58, 62])
-    for e in log:
-        _append_literal_row(wl, [
+    for row_no, e in enumerate(log, start=2):
+        _write_literal_row(wl, row_no, [
             e.get("行", ""), e.get("種別", ""),
             e.get("元の値", ""), e.get("変更後", ""), e.get("理由", ""),
         ])
