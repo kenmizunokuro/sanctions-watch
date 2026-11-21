@@ -22,10 +22,19 @@ SIX = {
 }
 
 
-def historical_fixture():
+from datetime import datetime, timezone
+import functools
+
+HIST_NOW = datetime(2026, 10, 30, 9, 0, 0, tzinfo=timezone.utc)
+
+
+@functools.lru_cache(maxsize=1)
+def _build_historical_fixture():
     """Pin pre-delist review cases to the immutable approved legacy scope."""
     base = R._read_rows((ROOT / 'data/master/master.csv').read_text(encoding='utf-8'))
     ledger = json.loads((ROOT / L.LEDGER_PATH).read_bytes())
+    ledger['reviewed_at'] = '2026-10-26T08:21:15Z'
+    ledger['expires_at'] = '2026-11-25T08:21:15Z'
     scope = L.load_scope(ROOT)
     ledger['entries'] = [L._entry(ident, item, ledger['expires_at']) for ident, item in scope.items()]
     for key in [k for k, row in base.items() if L.MARKER in row.get('review_flag', '')]:
@@ -33,6 +42,11 @@ def historical_fixture():
     for item in scope.values():
         base[item['master_key']] = L.annotate(item['finding']['master'], item['classification'], ledger['expires_at'])
     return base, ledger
+
+
+def historical_fixture():
+    base, ledger = _build_historical_fixture()
+    return copy.deepcopy(base), copy.deepcopy(ledger)
 
 
 class MofLegacyReviewTests(unittest.TestCase):
@@ -53,7 +67,7 @@ class MofLegacyReviewTests(unittest.TestCase):
             candidate[key]["last_updated_ms"] = "2000"
         rows, counts = R.build_review(
             self.base, candidate, self.ledger, SOURCE,
-            detected_at="2026-10-30T09:00:00Z", run_url="https://github.com/run/1")
+            detected_at="2026-10-30T09:00:00Z", run_url="https://github.com/run/1", now=HIST_NOW)
         self.assertEqual(counts["pending_review"], 6)
         self.assertEqual(counts["approved_legacy_count"], 2429)
         self.assertEqual({r[4] for r in rows}, SIX)
@@ -72,7 +86,7 @@ class MofLegacyReviewTests(unittest.TestCase):
         candidate[key]["last_updated_ms"] = "2000"
         rows, result = R.build_review(
             self.base, candidate, self.ledger, SOURCE,
-            detected_at="2026-10-30T09:00:00Z")
+            detected_at="2026-10-30T09:00:00Z", now=HIST_NOW)
         self.assertEqual(rows, [])
         self.assertEqual(result["annotation_only_changes"], 1)
 
@@ -142,7 +156,7 @@ class MofLegacyReviewTests(unittest.TestCase):
             with self.subTest(state=ledger.get("state"), sha=source.get("sha256")):
                 with self.assertRaises(ValueError):
                     R.build_review(self.base, self.base, ledger, source,
-                                   detected_at="2026-10-30T09:00:00Z")
+                                   detected_at="2026-10-30T09:00:00Z", now=HIST_NOW)
 
     def test_formula_escape_and_review_csv_verification(self):
         self.assertEqual(R._text("=HYPERLINK(\"evil\")")[:1], "'")
