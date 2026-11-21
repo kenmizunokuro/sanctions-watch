@@ -49,7 +49,8 @@ class MofLegacyReconcileTests(unittest.TestCase):
                                        checked_at='2026-11-07T02:55:00Z', master_applied=False),
                             integrity={'report': 'data/integrity_audit/audit.json.gz'})
         self.write_report()
-        self.rows, _ = V.build_review(base, candidate, ledger, SOURCE, detected_at=self.checked, run_url=self.run_url)
+        from datetime import datetime, timezone
+        self.rows, _ = V.build_review(base, candidate, ledger, SOURCE, detected_at=self.checked, run_url=self.run_url, now=datetime(2026, 11, 7, 3, tzinfo=timezone.utc))
         self.write_review()
 
     def write_report(self):

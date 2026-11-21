@@ -1163,6 +1163,16 @@ class OfacRemovalTransactionTest(unittest.TestCase):
             ),
             patch.object(
                 watch,
+                "OFAC_ALIAS_REMOVAL_QUEUE",
+                queue_path.with_name("ofac_alias_removal_queue.csv"),
+            ),
+            patch.object(
+                watch,
+                "OFAC_ALIAS_REMOVAL_APPROVALS",
+                approval_path.with_name("ofac_alias_removal_approvals.json"),
+            ),
+            patch.object(
+                watch,
                 "OFAC_ADVANCED_MASTER_ENABLED",
                 master_enabled,
             ),
@@ -1570,6 +1580,16 @@ class OfacRemovalUnchangedReviewTest(unittest.TestCase):
         with (
             patch.object(watch, "OFAC_REMOVAL_QUEUE", queue_path),
             patch.object(watch, "OFAC_REMOVAL_APPROVALS", approval_path),
+            patch.object(
+                watch,
+                "OFAC_ALIAS_REMOVAL_QUEUE",
+                queue_path.with_name("ofac_alias_removal_queue.csv"),
+            ),
+            patch.object(
+                watch,
+                "OFAC_ALIAS_REMOVAL_APPROVALS",
+                approval_path.with_name("ofac_alias_removal_approvals.json"),
+            ),
             patch.object(
                 watch,
                 "OFAC_ADVANCED_MASTER_ENABLED",
