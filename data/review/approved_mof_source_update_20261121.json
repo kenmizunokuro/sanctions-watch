@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "decision": "APPROVED_APPLY_MOF_SOURCE_UPDATE",
+  "approved_by": "User explicit approval in this conversation",
+  "instruction": "全部すすめてくれ",
+  "approval_recorded_at": "2026-11-21T13:42:27Z",
+  "expires_at": "2026-12-21T13:42:27Z",
+  "proposal_path": "docs/evidence/mof-source-review-20261121/proposed-changes.json.gz",
+  "proposal_sha256": "9ba3ac1f6b3385af31a31e99dd9ce684eec3666a5f901a48f44ba817e7bde9fa",
+  "row_count": 4,
+  "pending_count": 1,
+  "source_url": "https://www.mof.go.jp/policy/international_policy/gaitame_kawase/gaitame/economic_sanctions/shisantouketsu20261120.csv",
+  "source_sha256": "01e6141505b7733ad2ff07a0acd312c11d7abb55bd57607db74390b195c2ce21",
+  "approved_scope": "1 delisted Party (007-000200 ロガチェオS.A. / LOGARCHEO S.A., UN IQe.200); 3 MOF-only names deactivated (ロガチェオS.A., ロガチェオ, AGLOGARCHEO AG); 1 dual-source name (LOGARCHEO S.A.) retains active OFAC:SDN (Party 8214); preserve true detection time (2026-11-19T21:02:50Z) and all existing first_seen_ms."
+}
