@@ -72,11 +72,15 @@ def static_evidence(root,case,bundle):
         raise ValueError('historical official name/Party binding missing')
     return dict(notice_url=notice['source_url'],notice_sha256=notice['source_hash'],notice_record_sha256=case['notice_record_sha256'])
 
+def effective_decision(root,case):
+    from . import integrity_renewal as IR
+    return IR.vessel_decision(root,case,APPROVAL_SHA256)
+
 def verify_decision(root,report,decision):
     bundle=approval(root);link=decision.get('vessel_history')
     if not isinstance(link,dict):raise ValueError('vessel decision identity missing')
     cases=[c for c in bundle['cases'] if c['master_key']==link.get('master_key')]
-    if len(cases)!=1 or decision!=cases[0]['retention_decision']:raise ValueError('vessel decision scope changed')
+    if len(cases)!=1 or decision!=effective_decision(root,cases[0]):raise ValueError('vessel decision scope changed')
     case=cases[0];facts=static_evidence(root,case,bundle)
     documents=[d for d in report.get('documents',[]) if d.get('source')=='ofac_sdn' and d.get('role')=='primary']
     if len(documents)!=1 or documents[0]['source_url']!=SDN_URL:raise ValueError('current official SDN document missing')

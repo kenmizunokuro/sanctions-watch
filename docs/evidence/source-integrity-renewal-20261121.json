@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "decision": "APPROVED_INTEGRITY_RETENTION_RENEWAL",
+  "instruction": "全部すすめてくれ",
+  "reviewed_at": "2026-11-21T13:00:00Z",
+  "expires_at": "2026-12-21T13:00:00Z",
+  "window_days": 30,
+  "legacy_acceptances_count": 2306,
+  "legacy_notice_reclassified_count": 22,
+  "retention_decisions_counts": {
+    "standard": 7489,
+    "vessel": 3,
+    "volta": 1,
+    "huistas": 1
+  },
+  "retention_decisions_total": 7494,
+  "renewal_bundle_path": "data/review/approved_integrity_renewal_20261121.json",
+  "renewal_bundle_sha256": "52ffacca6bb2366ade22b7b904ba098e0a789076a2d47ac35e6c2603cdc7d6bb",
+  "master_before_sha256": "703be75ea1f6f21db6b8baa579e79e5af8f215719cd0dbb1fab82dfe0ce42301",
+  "master_after_sha256": "02dae0ef350fa5355274fa994b36fe56981fc88b59dd86bdbafbc59da0132c77",
+  "legacy_before_sha256": "a71697df2343d0d98f33dc7fb8efe6d3fce4ae31c13965bb854eac08e369ad80",
+  "legacy_after_sha256": "956da752f4eaf07810b8895971ee831fec07f0cde5e2472c0316d18fd2c542dd",
+  "retention_before_sha256": "86ca224e4c4c77805931fdcb88d83d169fa45ca56bdf5a4f57b7dc215712cf4c",
+  "retention_after_sha256": "752139ced9e055e1454dc4d1ab3e036d70dbddf7e5fa4903f23a9af58f6fe5e3",
+  "metadata_only_separation": "No official additions/delistings emitted to changes.csv, latest.csv, or internal_import_latest.xlsx."
+}

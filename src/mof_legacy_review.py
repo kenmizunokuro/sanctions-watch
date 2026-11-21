@@ -185,10 +185,10 @@ def read_generated(root: Path, failure: dict) -> tuple[list[list[str]], dict]:
 
 def build_review(base: dict[str, dict], candidate: dict[str, dict],
                  ledger: dict, source: dict, *, detected_at: str,
-                 run_url: str = "") -> tuple[list[list[str]], dict]:
+                 run_url: str = "", now: datetime | None = None) -> tuple[list[list[str]], dict]:
     from . import integrity_legacy as legacy
     scope = legacy.load_scope(ROOT)
-    accepted = legacy._validate(ledger, scope)
+    accepted = legacy._validate(ledger, scope, now=now)
     # A withdrawn acceptance is valid only when its old annotated row is also
     # resolved. A silently shortened ledger cannot waive another old finding.
     legacy._row_bindings(list(base.values()), accepted, scope, ledger)

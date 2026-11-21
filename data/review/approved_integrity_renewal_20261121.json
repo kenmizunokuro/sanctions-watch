@@ -1,0 +1,136 @@
+{
+  "schema_version": 1,
+  "decision": "APPROVED_RENEW_HISTORICAL_RETENTIONS",
+  "approved_by": "ユーザー承認（2026-11-21 期限更新: 全部すすめてくれ）",
+  "instruction": "全部すすめてくれ",
+  "reviewed_at": "2026-11-21T13:00:00Z",
+  "expires_at": "2026-12-21T13:00:00Z",
+  "vessel_history": {
+    "base_approval_sha256": "7ad33e0b50ae788ba78348853513a3f2b5adca5f66f9a5af6b93cdeb66d0a273",
+    "cases": {
+      "carlotac": {
+        "retention_decision": {
+          "review_id": "a02e8a391d948b78495567323ab3201659f50ad2243a6b2061b4ba221211461a",
+          "decision": "APPROVED_RETAIN",
+          "reviewed_at": "2026-11-21T13:00:00Z",
+          "expires_at": "2026-12-21T13:00:00Z",
+          "reviewed_by": "ユーザー承認（2026-11-21 期限更新: 全部すすめてくれ）",
+          "reason": "CARLOTA Cを旧船名としてMARIA CRISTINAへひも付け保持。FixedRef 27431 / IMO 9502453。現行名とは区別する。",
+          "reviewed_evidence_sha256": "375b0c6a68c0ea5dc01e6bdd37d871a2238235f065805edc3923ca5292c358b4",
+          "vessel_history": {
+            "master_key": "carlotac",
+            "old_name": "CARLOTA C",
+            "replacement_name": "MARIA CRISTINA",
+            "party_id": "27431",
+            "imo": "9502453",
+            "notice_date": "2026-11-05"
+          }
+        }
+      },
+      "giralt": {
+        "retention_decision": {
+          "review_id": "90bd1cef4396e2c7c1665c87cf3db42cb2ac84c5bfd8457b0080e2d4b3062709",
+          "decision": "APPROVED_RETAIN",
+          "reviewed_at": "2026-11-21T13:00:00Z",
+          "expires_at": "2026-12-21T13:00:00Z",
+          "reviewed_by": "ユーザー承認（2026-11-21 期限更新: 全部すすめてくれ）",
+          "reason": "GIRALTを旧船名としてLOURDESへひも付け保持。FixedRef 27425 / IMO 9259692。現行名とは区別する。",
+          "reviewed_evidence_sha256": "7ef06234564074e68a760d981763ae78d7f861f93a5dcd8b4d15ba56c07349ba",
+          "vessel_history": {
+            "master_key": "giralt",
+            "old_name": "GIRALT",
+            "replacement_name": "LOURDES",
+            "party_id": "27425",
+            "imo": "9259692",
+            "notice_date": "2026-11-05"
+          }
+        }
+      },
+      "nedas": {
+        "retention_decision": {
+          "review_id": "d10c193fdf99339c341b3ffcb312f328bb13af1bba734ff12754b983b9a7c8a6",
+          "decision": "APPROVED_RETAIN",
+          "reviewed_at": "2026-11-21T13:00:00Z",
+          "expires_at": "2026-12-21T13:00:00Z",
+          "reviewed_by": "ユーザー承認（2026-11-21 期限更新: 全部すすめてくれ）",
+          "reason": "NEDASを旧船名としてESPERANZAへひも付け保持。FixedRef 26704 / IMO 9289166。現行名とは区別する。",
+          "reviewed_evidence_sha256": "55582386efcd2a95b3599e3d9f533071b84da3975be3893948596e01b5d8b833",
+          "vessel_history": {
+            "master_key": "nedas",
+            "old_name": "NEDAS",
+            "replacement_name": "ESPERANZA",
+            "party_id": "26704",
+            "imo": "9289166",
+            "notice_date": "2026-11-05"
+          }
+        }
+      }
+    }
+  },
+  "alias_history": {
+    "voltashippingservicesfzco": {
+      "base_approval_sha256": "e73aabbe874096351e4edcba6a374e32c62a823ed1214db1edaf22d11b0b4758",
+      "after": {
+        "match_key": "voltashippingservicesfzco",
+        "display_name": "Volta Shipping Services FZCO",
+        "status": "有効",
+        "risk_type": "制裁リスト（OFAC旧別名）",
+        "risk_level": "高",
+        "first_seen_ms": "1784249483000",
+        "last_updated_ms": "1788040337525",
+        "sources": "OFAC",
+        "categories": "OFAC:SDN",
+        "remark": "制裁リスト（OFAC：SDN）\nOFAC別名履歴: VOLTA SHIPPING SERVICES FZCO / 現行別名: VOLTA CONTAINER LINE FZCO / 現行主名称: VOLTA SHIPPING SERVICES LLC / FixedRef:58138 / 公表日:2026-11-09 / 一次資料:https://ofac.treasury.gov/recent-actions/20261109 / 保持期限UTC:2026-12-21T13:00:00Z",
+        "invalid_reason": "",
+        "review_flag": "OFAC_ALIAS_HISTORY_V1:58138:voltashippingservicesfzco",
+        "variants": "[\"Volta Shipping Services FZCO\"]"
+      },
+      "after_sha256": "75841e1a23b702fb5a1bfee36d1b1b1c1b5715c0fd89d8a97f2c16c36573a741",
+      "retention_decision": {
+        "review_id": "e3a3da7eb636cf16f2ca13b2461add3805fb8e428d9a9bb6b29192cf3c40e7be",
+        "decision": "APPROVED_RETAIN",
+        "reviewed_by": "ユーザー承認（2026-11-21 期限更新: 全部すすめてくれ）",
+        "reason": "同じFixedRef58138の別名変更。旧別名を履歴名称として有効スクリーニングに保持し、新別名を通常監視で追加する承認。",
+        "reviewed_at": "2026-11-21T13:00:00Z",
+        "expires_at": "2026-12-21T13:00:00Z",
+        "reviewed_evidence_sha256": "8f31ff6bd0fbfe37add8156a092441d98a7d7ef832632c16ce693a4fac2b0261",
+        "alias_history": {
+          "master_key": "voltashippingservicesfzco",
+          "party_id": "58138"
+        }
+      }
+    },
+    "loshuistasdto": {
+      "base_approval_sha256": "60aec06c349f0722ba1632c351c5ab78d50be83f5da249eb1c91488fa3715df1",
+      "after": {
+        "categories": "",
+        "display_name": "Los Huistas DTO",
+        "first_seen_ms": "1748573582000",
+        "invalid_reason": "OFAC旧Weak Aliasの履歴保持（単独の自動照合対象外）",
+        "last_updated_ms": "1748573582000",
+        "match_key": "loshuistasdto",
+        "remark": "制裁リスト（OFAC）\nOFAC別名履歴: Los Huistas DTO / 旧Weak Alias・手動照合用 / 現行主名称: LOS HUISTAS DRUG TRAFFICKING ORGANIZATION / FixedRef:32452 / 公表日:2026-11-13 / 一次資料:https://ofac.treasury.gov/recent-actions/20261113 / 保持期限UTC:2026-12-21T13:00:00Z",
+        "review_flag": "OFAC_ALIAS_HISTORY_V1:32452:loshuistasdto",
+        "risk_level": "高",
+        "risk_type": "制裁リスト（OFAC旧Weak Alias）",
+        "sources": "OFAC",
+        "status": "無効",
+        "variants": "[\"Los Huistas DTO\"]"
+      },
+      "after_sha256": "78260204f2c902ef5116e0fe66d7f8fea3375cf7cb638e965aef04602b49426b",
+      "retention_decision": {
+        "review_id": "e46eb1985ceca6c8d9623118663fe08f8c37a84de8d2c131679f314fd5142b33",
+        "decision": "APPROVED_RETAIN",
+        "reviewed_by": "ユーザー承認（2026-11-21 期限更新: 全部すすめてくれ）",
+        "reason": "FixedRef 32452の旧別名を履歴に保持。公式Advanced XML上のWeak Alias品質を保持し、単独の自動照合を無効化。",
+        "reviewed_at": "2026-11-21T13:00:00Z",
+        "expires_at": "2026-12-21T13:00:00Z",
+        "reviewed_evidence_sha256": "657e88b774b73ea2b1f9df4d0cf77c7191351d378cc40c71a7d913e39ad9edf2",
+        "alias_history": {
+          "master_key": "loshuistasdto",
+          "party_id": "32452"
+        }
+      }
+    }
+  }
+}

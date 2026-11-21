@@ -12,9 +12,13 @@ class VesselFixture(unittest.TestCase):
         self.bundle=V.approval(ROOT)
         for rel in (V.APPROVAL,L.POLICY_PATH,L.SCOPE_PATH,L.LEDGER_PATH,A.LEDGER,'data/master/master.csv','data/dashboard/changes.csv','data/diff/latest.csv','data/review/ofac_party_removal_queue.csv',self.bundle['notice']['raw_path'],*[d['raw_path'] for d in self.bundle['historical'].values()]):
             p=self.root/rel;p.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(ROOT/rel,p)
+        from tests._legacy_fixture import pin_historical_legacy
         rows=_read_rows((self.root/'data/master/master.csv').read_text())
+        legacy=json.loads((self.root/L.LEDGER_PATH).read_bytes())
+        rows,legacy=pin_historical_legacy(self.root,rows,legacy)
         for c in self.bundle['cases']:rows[c['master_key']]=c['before']
         M.save(rows,self.root/'data/master/master.csv')
+        (self.root/L.LEDGER_PATH).write_text(json.dumps(legacy,ensure_ascii=False,indent=2)+'\n')
         self.ledger=json.loads((self.root/A.LEDGER).read_bytes());ids={c['retention_decision']['review_id'] for c in self.bundle['cases']}
         self.ledger['entries']=[e for e in self.ledger['entries'] if e['review_id'] not in ids]
         (self.root/A.LEDGER).write_text(json.dumps(self.ledger,ensure_ascii=False,indent=2)+'\n')

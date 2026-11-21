@@ -28,11 +28,15 @@ class ApprovedMofSourceUpdateTests(unittest.TestCase):
         raw=state['processed_raw'];p=self.root/raw;p.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(ROOT/raw,p)
         self.proposal=json.loads(gzip.decompress((self.root/FOLDER/'proposed-changes.json.gz').read_bytes()))
         # These fixed approval tests remain valid after production has applied it.
+        from tests._legacy_fixture import pin_historical_legacy
         rows=M.load(self.root/'data/master/master.csv')
+        legacy=json.loads((self.root/L.LEDGER_PATH).read_bytes())
+        rows,legacy=pin_historical_legacy(self.root,rows,legacy)
         for c in self.proposal['cases']:
             if c['before'] is None:rows.pop(c['match_key'],None)
             else:rows[c['match_key']]=copy.deepcopy(c['before'])
         M.save(rows,self.root/'data/master/master.csv')
+        (self.root/L.LEDGER_PATH).write_text(json.dumps(legacy,ensure_ascii=False,indent=2)+'\n')
         p=self.root/'data/state.json';v=json.loads(p.read_bytes());v['mof']=self.proposal['source_state_before'];p.write_text(json.dumps(v))
         p=self.root/'data/source_record_state/mof.json'
         oldraw='data/raw/mof/20261020T120119Z__shisantouketsu20261021.csv.gz'

@@ -1,0 +1,84 @@
+name: publish-release-latest
+
+# Publish refreshed Excel workbooks (and optionally today's diff CSV/Excel) to
+# the `latest` GitHub Release after passing the full source integrity gate.
+# Keep metadata-only renewals separated from internal_import_latest.xlsx by
+# leaving `include_diff` set to false.
+on:
+  workflow_dispatch:
+    inputs:
+      include_diff:
+        description: "data/diff/latest.csv と internal_import_latest.xlsx も同時に更新する（公式差分ありの場合のみ true）"
+        type: boolean
+        required: false
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sanctions-watch-commit
+  cancel-in-progress: false
+  queue: max
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: 依存関係
+        run: pip install -r requirements.txt
+
+      - name: 一次ソース完全性と保持期限を検証
+        run: bash .github/scripts/integrity-gate.sh all success
+
+      - name: 全件 Excel を生成
+        run: python -m src.export_excel
+
+      - name: 社内取込用差分 Excel を生成
+        id: diff_excel
+        if: inputs.include_diff == true
+        run: |
+          TS="$(TZ=Asia/Tokyo date +'%Y%m%d_%H%M%S')"
+          OUT="dist/internal_import_${TS}.xlsx"
+          python -m src.export_diff_excel --diff data/diff/latest.csv --out "$OUT"
+          if [ -f "$OUT" ]; then
+            cp "$OUT" dist/internal_import_latest.xlsx
+            echo "has_actionable=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_actionable=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: GitHub Release (latest) を更新
+        env:
+          GH_TOKEN: ${{ github.token }}
+          INCLUDE_DIFF: ${{ inputs.include_diff }}
+          HAS_ACTIONABLE: ${{ steps.diff_excel.outputs.has_actionable }}
+        run: |
+          FILES=("dist/black_receiver_name_all.xlsx")
+          if [ "$INCLUDE_DIFF" = "true" ]; then
+            FILES+=("data/diff/latest.csv")
+            if [ "$HAS_ACTIONABLE" = "true" ]; then
+              FILES+=("dist/internal_import_latest.xlsx")
+            fi
+          fi
+          gh release upload latest "${FILES[@]}" --clobber --repo "$GITHUB_REPOSITORY"
+
+      - name: 完全性監査証跡を保存
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: publish-release-latest-${{ github.run_id }}-${{ github.run_attempt }}
+          path: data/integrity_audit/
+          retention-days: 90
+          if-no-files-found: warn
