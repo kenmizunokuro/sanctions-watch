@@ -1,38 +1,38 @@
 {
   "outcome": "failure",
   "source": "mof",
-  "finished_at": "2026-11-20T20:52:00Z",
-  "run_id": "44813387950",
+  "finished_at": "2026-11-21T07:46:30Z",
+  "run_id": "44881148635",
   "run_attempt": "1",
-  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/44813387950",
+  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/44881148635",
   "message": "MOF fetched and diffed; review required; master not applied",
   "fetch": {
     "schema_version": 1,
-    "run_id": "44813387950",
+    "run_id": "44881148635",
     "run_attempt": "1",
-    "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/44813387950",
-    "checked_at": "2026-11-20T20:47:24Z",
+    "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/44881148635",
+    "checked_at": "2026-11-21T07:43:43Z",
     "sha256": "01e6141505b7733ad2ff07a0acd312c11d7abb55bd57607db74390b195c2ce21",
     "url": "https://www.mof.go.jp/policy/international_policy/gaitame_kawase/gaitame/economic_sanctions/shisantouketsu20261120.csv",
-    "raw_path": "data/raw/mof/20261120T204717Z__shisantouketsu20261120.csv.gz",
+    "raw_path": "data/raw/mof/20261121T074338Z__shisantouketsu20261120.csv.gz",
     "asof": "令和8年11月20日",
     "record_count": 15245,
-    "etag": "\"3294f3-6609c8530da80\"",
-    "last_modified": "Thu, 19 Nov 2026 08:00:26 GMT",
+    "etag": "\"3294f3-6609c850313c0\"",
+    "last_modified": "Thu, 19 Nov 2026 08:00:23 GMT",
     "pending_count": 1,
     "master_applied": false,
-    "pending_sha256": "441680b79bf852dbf10831a4249f78605542d4ca1b8bcc6470d3a75f081c1c32"
+    "pending_sha256": "9ec3a17728214724b6c4bcae5199a13d5c43cba1644761d5c0f690afa70a0d2c"
   },
   "stage": "approval_required",
   "pending_publication": {
     "status": "PUBLISHED",
     "count": 1,
-    "sha256": "441680b79bf852dbf10831a4249f78605542d4ca1b8bcc6470d3a75f081c1c32"
+    "sha256": "9ec3a17728214724b6c4bcae5199a13d5c43cba1644761d5c0f690afa70a0d2c"
   },
   "legacy_publication": {
     "status": "PUBLISHED",
     "count": 0,
-    "generated_at": "2026-11-20T20:51:58Z",
+    "generated_at": "2026-11-21T07:46:29Z",
     "sha256": "d00177bd6142480ea6db3e10c393fb8a3fbf271d213a4d0f0e17544e612487a5"
   }
 }
