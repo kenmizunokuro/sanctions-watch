@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "verified_at": "2026-11-21T13:42:27Z",
+  "source_csv_sha256": "01e6141505b7733ad2ff07a0acd312c11d7abb55bd57607db74390b195c2ce21",
+  "delist_pdf_sha256": "033cbc70dcb44ba7424b581d3f370e88aae4604ff679343175f6d622ade0dcff",
+  "proposal_sha256": "9ba3ac1f6b3385af31a31e99dd9ce684eec3666a5f901a48f44ba817e7bde9fa",
+  "record_count_before": 2897,
+  "record_count_after": 2896,
+  "master_rows_updated": 4,
+  "audit_status": "REVIEW",
+  "audit_publication_allowed": true,
+  "audit_blocking_counts": {},
+  "audit_counts": {
+    "CATEGORY_LABEL_UNRESOLVED": 8,
+    "EXTRA_REGISTRATION": 5525,
+    "WEAK_ALIAS_ACTIVE": 2873
+  }
+}
