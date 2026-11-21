@@ -859089,7 +859089,7 @@
       "source": "press:2745"
     }
   ],
-  "last_checked_at": "2026-11-21T03:51:29Z",
+  "last_checked_at": "2026-11-21T11:59:18Z",
   "notices": {},
   "press_rss": {
     "article_evidence": {
@@ -859295,7 +859295,7 @@
         "url": "https://press.un.org/en/2026/sgt3480.doc.htm"
       }
     ],
-    "last_success_at": "2026-11-21T03:51:29Z",
+    "last_success_at": "2026-11-21T11:59:18Z",
     "latest_publication_at": "2026-11-21T00:32:30Z",
     "new_articles": 0,
     "new_candidates": 0,
@@ -859619,6 +859619,6 @@
     }
   ],
   "updates_status": "error",
-  "xml_last_success_at": "2026-11-21T03:51:29Z",
+  "xml_last_success_at": "2026-11-21T11:59:18Z",
   "xml_status": "review_required"
 }
