@@ -1,38 +1,13 @@
 {
   "outcome": "failure",
   "source": "mof",
-  "finished_at": "2026-11-21T13:18:16Z",
-  "run_id": "44907085007",
+  "finished_at": "2026-11-21T14:30:22Z",
+  "run_id": "44913831909",
   "run_attempt": "1",
-  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/44907085007",
-  "message": "MOF fetched and diffed; review required; master not applied",
-  "fetch": {
-    "schema_version": 1,
-    "run_id": "44907085007",
-    "run_attempt": "1",
-    "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/44907085007",
-    "checked_at": "2026-11-21T13:16:41Z",
-    "sha256": "01e6141505b7733ad2ff07a0acd312c11d7abb55bd57607db74390b195c2ce21",
-    "url": "https://www.mof.go.jp/policy/international_policy/gaitame_kawase/gaitame/economic_sanctions/shisantouketsu20261120.csv",
-    "raw_path": "data/raw/mof/20261121T131634Z__shisantouketsu20261120.csv.gz",
-    "asof": "令和8年11月20日",
-    "record_count": 15245,
-    "etag": "\"3294f3-6609c8530da80\"",
-    "last_modified": "Thu, 19 Nov 2026 08:00:26 GMT",
-    "pending_count": 1,
-    "master_applied": false,
-    "pending_sha256": "89a22c609781c2d100ff1ead115ca36b0b794324247fcc0d440045703248aef1"
-  },
-  "stage": "approval_required",
-  "pending_publication": {
-    "status": "PUBLISHED",
-    "count": 1,
-    "sha256": "89a22c609781c2d100ff1ead115ca36b0b794324247fcc0d440045703248aef1"
-  },
+  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/44913831909",
+  "message": "watch-jp failed; inspect the run for the failed stage and publication outcome",
   "legacy_publication": {
-    "status": "PUBLISHED",
-    "count": 0,
-    "generated_at": "2026-11-21T13:18:14Z",
-    "sha256": "d00177bd6142480ea6db3e10c393fb8a3fbf271d213a4d0f0e17544e612487a5"
+    "status": "WITHHELD",
+    "reason": "MOF legacy generation is not bound to this fetched attempt"
   }
 }
