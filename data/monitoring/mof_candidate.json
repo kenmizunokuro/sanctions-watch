@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "run_id": "44942376163",
+  "run_id": "44997806595",
   "run_attempt": "1",
-  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/44942376163",
-  "checked_at": "2026-11-21T19:55:40Z",
+  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/44997806595",
+  "checked_at": "2026-11-22T07:28:29Z",
   "sha256": "01e6141505b7733ad2ff07a0acd312c11d7abb55bd57607db74390b195c2ce21",
   "url": "https://www.mof.go.jp/policy/international_policy/gaitame_kawase/gaitame/economic_sanctions/shisantouketsu20261120.csv",
   "raw_path": "data/raw/mof/20261121T134227Z__shisantouketsu20261120.csv.gz",
