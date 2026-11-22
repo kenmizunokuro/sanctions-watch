@@ -1,6 +1,6 @@
 {
   "coverage_gaps": {},
-  "current_event_id": "485130ab940fcf94eb7222912ea874eb3d51218b0e617f17b9826bbc6087c5aa",
+  "current_event_id": "a417b591d1bdd56b0a96a2550a4da1bf90e3bd4a6a79037c56621c9b7295aa4f",
   "documents": {
     "press_rss": {
       "etag": "W/\"1795223692\"",
@@ -12,12 +12,12 @@
       "url": "https://press.un.org/en/rss.xml"
     },
     "xml": {
-      "etag": "\"0x8DF476299C004E2\"",
+      "etag": "\"0x8DF482BDA1A1295\"",
       "filename": "consolidatedLegacyByNAME.xml",
       "final_url": "https://unsolprodfiles.blob.core.windows.net/publiclegacyxmlfiles/EN/consolidatedLegacyByNAME.xml",
-      "last_modified": "Sat, 21 Nov 2026 00:01:32 GMT",
-      "raw_path": "data/raw/un/05b1146278e2bbd4db79dbc337031c3c7bb7de5b797f49ada1483ef2f4b59c80.xml.gz",
-      "sha256": "05b1146278e2bbd4db79dbc337031c3c7bb7de5b797f49ada1483ef2f4b59c80",
+      "last_modified": "Sun, 22 Nov 2026 00:02:08 GMT",
+      "raw_path": "data/raw/un/0c260d21948720dfadc3e8f09f9779a82104a55cc947bf4c63d504376c71c2ff.xml.gz",
+      "sha256": "0c260d21948720dfadc3e8f09f9779a82104a55cc947bf4c63d504376c71c2ff",
       "url": "https://scsanctions.un.org/resources/xml/en/name/consolidated.xml"
     }
   },
@@ -96731,6 +96731,18 @@
     {
       "added": [],
       "application_base_event_id": "",
+      "baseline": false,
+      "changed": [],
+      "detected_at": "2026-11-21T03:51:29Z",
+      "event_id": "485130ab940fcf94eb7222912ea874eb3d51218b0e617f17b9826bbc6087c5aa",
+      "parent_event_id": "024954c10254fa37f8af2d6a331fe0ecaf66b4862053203ac055a89967fa6717",
+      "removed": [],
+      "source_hash": "05b1146278e2bbd4db79dbc337031c3c7bb7de5b797f49ada1483ef2f4b59c80",
+      "status": "SUPERSEDED"
+    },
+    {
+      "added": [],
+      "application_base_event_id": "",
       "application_diff": [
         {
           "after_fingerprint": "bad94e5ce27c5ba1c221db84e30898e0e2c4e6dbc5c95c18b34eefd2a15b100e",
@@ -128497,11 +128509,11 @@
       ],
       "baseline": false,
       "changed": [],
-      "detected_at": "2026-11-21T03:51:29Z",
-      "event_id": "485130ab940fcf94eb7222912ea874eb3d51218b0e617f17b9826bbc6087c5aa",
-      "parent_event_id": "024954c10254fa37f8af2d6a331fe0ecaf66b4862053203ac055a89967fa6717",
+      "detected_at": "2026-11-22T03:37:18Z",
+      "event_id": "a417b591d1bdd56b0a96a2550a4da1bf90e3bd4a6a79037c56621c9b7295aa4f",
+      "parent_event_id": "485130ab940fcf94eb7222912ea874eb3d51218b0e617f17b9826bbc6087c5aa",
       "removed": [],
-      "source_hash": "05b1146278e2bbd4db79dbc337031c3c7bb7de5b797f49ada1483ef2f4b59c80",
+      "source_hash": "0c260d21948720dfadc3e8f09f9779a82104a55cc947bf4c63d504376c71c2ff",
       "status": "PENDING_REVIEW"
     }
   ],
@@ -128597,7 +128609,7 @@
       "source": "press:2745"
     }
   ],
-  "last_checked_at": "2026-11-21T23:43:11Z",
+  "last_checked_at": "2026-11-22T03:37:18Z",
   "notices": {},
   "press_rss": {
     "article_evidence": {
@@ -128803,7 +128815,7 @@
         "url": "https://press.un.org/en/2026/sgt3480.doc.htm"
       }
     ],
-    "last_success_at": "2026-11-21T23:43:11Z",
+    "last_success_at": "2026-11-22T03:37:18Z",
     "latest_publication_at": "2026-11-21T00:32:30Z",
     "new_articles": 0,
     "new_candidates": 0,
@@ -128815,9 +128827,9 @@
   "press_status": "error",
   "record_count": 1007,
   "schema_version": 1,
-  "snapshot_digest": "26720c89ccea31d0141c66eba958cab47e0813513f6717ff400d86fa8e257f85",
-  "snapshot_hash": "05b1146278e2bbd4db79dbc337031c3c7bb7de5b797f49ada1483ef2f4b59c80",
-  "source_updated": "2026-11-21T00:00:07.510Z",
+  "snapshot_digest": "733df25f037e71ed160d4c6398cca8550a539c036ef7b4379bc75db2a1504472",
+  "snapshot_hash": "0c260d21948720dfadc3e8f09f9779a82104a55cc947bf4c63d504376c71c2ff",
+  "source_updated": "2026-11-22T00:00:00.942Z",
   "updates_archive_recoveries": {
     "a19e54383113bf62858716c905f9545bf5230376d1dbf5258d99af2a8fe490db": {
       "imported_at": "2026-11-17T06:28:35Z",
@@ -129127,6 +129139,6 @@
     }
   ],
   "updates_status": "error",
-  "xml_last_success_at": "2026-11-21T23:43:11Z",
+  "xml_last_success_at": "2026-11-22T03:37:18Z",
   "xml_status": "review_required"
 }
