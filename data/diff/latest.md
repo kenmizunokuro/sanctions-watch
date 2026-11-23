@@ -1,111 +1,79 @@
 # 制裁リスト差分レポート
 
-## OFAC　追加 98 / 削除 0 / 変更 1
+## OFAC　追加 73 / 削除 0 / 変更 0
 
 ### 追加
-- `'NDRANGHETA` — 制裁リスト（OFAC：SDN）
-- `Figliomeni Angelo` — 制裁リスト（OFAC：SDN）
-- `Figliomeni Cosimo` — 制裁リスト（OFAC：SDN）
-- `Commisso Francesco` — 制裁リスト（OFAC：SDN）
-- `Commisso Rocco Remo` — 制裁リスト（OFAC：SDN）
-- `Vescio Sr. Luigi` — 制裁リスト（OFAC：SDN）
-- `Vescio Lui` — 制裁リスト（OFAC：SDN）
-- `DeMaria Vincenzo` — 制裁リスト（OFAC：SDN）
-- `DeMaria Jimmy` — 制裁リスト（OFAC：SDN）
-- `FRATELLI VESCIO FUNERAL HOMES LTD.` — 制裁リスト（OFAC：SDN）
-- `VESCIO FUNERAL HOMES INC.` — 制裁リスト（OFAC：SDN）
-- `VESCIO FUNERAL HOME MAPLE INC.` — 制裁リスト（OFAC：SDN）
-- `Vescio Rose` — 制裁リスト（OFAC：SDN）
-- `Vescio Rosa Maria` — 制裁リスト（OFAC：SDN）
-- `Vescio Jr. Luigi` — 制裁リスト（OFAC：SDN）
-- `Vescio Laura` — 制裁リスト（OFAC：SDN）
-- `Vescio-Sacco Laura` — 制裁リスト（OFAC：SDN）
-- `PHANTOM LIMOUSINE SERVICES INC.` — 制裁リスト（OFAC：SDN）
-- `Comanchero Outlaw Motorcycle Gang` — 制裁リスト（OFAC：SDN）
-- `Comanchero Motorcycle Club` — 制裁リスト（OFAC：SDN）
-- `Coffen Marco Francis` — 制裁リスト（OFAC：SDN）
-- `de Bernardo Marco Sullivan` — 制裁リスト（OFAC：SDN）
-- `Alexandre Varela Villar` — 制裁リスト（OFAC：SDN）
-- `Vare Alex` — 制裁リスト（OFAC：SDN）
-- `Varela Alex` — 制裁リスト（OFAC：SDN）
-- `Meehan Allan John Norman` — 制裁リスト（OFAC：SDN）
-- `Meehan Allan` — 制裁リスト（OFAC：SDN）
-- `Naufahu Pasilika` — 制裁リスト（OFAC：SDN）
-- `Naufahu Vetekina` — 制裁リスト（OFAC：SDN）
-- `Wah Saw Shwe` — 制裁リスト（OFAC：SDN）
-- `Wah Maung Shwe` — 制裁リスト（OFAC：SDN）
-- `One Saw A` — 制裁リスト（OFAC：SDN）
-- `Zhao Hui` — 制裁リスト（OFAC：SDN）
-- `Bei Fang Bo Lin Construction Decoration Co., Ltd.` — 制裁リスト（OFAC：SDN）
-- `ZHZ Investment Consulting Co., Ltd.` — 制裁リスト（OFAC：SDN）
-- `Khechen Hassan` — 制裁リスト（OFAC：SDN）
-- `خشن حسن` — 制裁リスト（OFAC：SDN）
-- `Khashan Hassan Muhammad` — 制裁リスト（OFAC：SDN）
-- `Khashan Hassan` — 制裁リスト（OFAC：SDN）
-- `Khechen Ibrahim` — 制裁リスト（OFAC：SDN）
-- `خشن ابراهيم` — 制裁リスト（OFAC：SDN）
-- `Gold Global Company` — 制裁リスト（OFAC：SDN）
-- `Gold Global Company Hassan Mohamad Khechen and His Partners` — 制裁リスト（OFAC：SDN）
-- `Sankari Gold Kuyumculuk Ticaret Limited Sirketi` — 制裁リスト（OFAC：SDN）
-- `SANKARİ GOLD KUYUMCULUK TİCARET LİMİTED ŞİRKETİ` — 制裁リスト（OFAC：SDN）
-- `Sankari Gold Jewelry Trade Limited Company` — 制裁リスト（OFAC：SDN）
-- `Wa Ta'awanu Association` — 制裁リスト（OFAC：SDN）
-- `جمعية وتعاونوا` — 制裁リスト（OFAC：SDN）
-- `Wa Taawanou` — 制裁リスト（OFAC：SDN）
-- `Chouman Afif Abdel Rida` — 制裁リスト（OFAC：SDN）
-- `شومان عفيف عبد الرضا` — 制裁リスト（OFAC：SDN）
-- `Shuman Afif Abd-Al-Rida` — 制裁リスト（OFAC：SDN）
-- `al-Fadl Abu` — 制裁リスト（OFAC：SDN）
-- `Arabnejad Mojtaba` — 制裁リスト（OFAC：SDN）
-- `عرب نژاد مجتبی` — 制裁リスト（OFAC：SDN）
-- `BAVAND Mohammad Javad` — 制裁リスト（OFAC：SDN）
-- `باوند محمد جواد` — 制裁リスト（OFAC：SDN）
-- `TAJ Majid` — 制裁リスト（OFAC：SDN）
-- `تاج مجید` — 制裁リスト（OFAC：SDN）
-- `SERVATI Mohammadhossein` — 制裁リスト（OFAC：SDN）
-- `ثروتی محمدحسین` — 制裁リスト（OFAC：SDN）
-- `Sarvati Mohammad Hosein` — 制裁リスト（OFAC：SDN）
-- `FIGLIOMENI, Angelo` — 制裁リスト（OFAC：SDN）
-- `FIGLIOMENI, Cosimo` — 制裁リスト（OFAC：SDN）
-- `COMMISSO, Francesco` — 制裁リスト（OFAC：SDN）
-- `COMMISSO, Rocco Remo` — 制裁リスト（OFAC：SDN）
-- `VESCIO SR., Luigi` — 制裁リスト（OFAC：SDN）
-- `DEMARIA, Vincenzo` — 制裁リスト（OFAC：SDN）
-- `VESCIO, Rose` — 制裁リスト（OFAC：SDN）
-- `VESCIO JR., Luigi` — 制裁リスト（OFAC：SDN）
-- `VESCIO, Laura` — 制裁リスト（OFAC：SDN）
-- `COFFEN, Marco Francis` — 制裁リスト（OFAC：SDN）
-- `MEEHAN, Allan John Norman` — 制裁リスト（OFAC：SDN）
-- `NAUFAHU, Pasilika` — 制裁リスト（OFAC：SDN）
-- `NAUFAHU, Vetekina` — 制裁リスト（OFAC：SDN）
-- `WAH, Saw Shwe` — 制裁リスト（OFAC：SDN）
-- `ONE, Saw A` — 制裁リスト（OFAC：SDN）
-- `ZHAO, Hui` — 制裁リスト（OFAC：SDN）
-- `KHECHEN, Hassan` — 制裁リスト（OFAC：SDN）
-- `KHECHEN, Ibrahim` — 制裁リスト（OFAC：SDN）
-- `CHOUMAN, Afif Abdel Rida` — 制裁リスト（OFAC：SDN）
-- `ARABNEJAD, Mojtaba` — 制裁リスト（OFAC：SDN）
-- `BAVAND, Mohammad Javad` — 制裁リスト（OFAC：SDN）
-- `TAJ, Majid` — 制裁リスト（OFAC：SDN）
-- `SERVATI, Mohammadhossein` — 制裁リスト（OFAC：SDN）
-- `VESCIO, Lui` — 制裁リスト（OFAC：SDN）
-- `DEMARIA, Jimmy` — 制裁リスト（OFAC：SDN）
-- `VESCIO, Rosa Maria` — 制裁リスト（OFAC：SDN）
-- `VESCIO-SACCO, Laura` — 制裁リスト（OFAC：SDN）
-- `DE BERNARDO, Marco Sullivan` — 制裁リスト（OFAC：SDN）
-- `VARE, Alex` — 制裁リスト（OFAC：SDN）
-- `VARELA, Alex` — 制裁リスト（OFAC：SDN）
-- `MEEHAN, Allan` — 制裁リスト（OFAC：SDN）
-- `WAH, Maung Shwe` — 制裁リスト（OFAC：SDN）
-- `KHASHAN, Hassan Muhammad` — 制裁リスト（OFAC：SDN）
-- `KHASHAN, Hassan` — 制裁リスト（OFAC：SDN）
-- `SHUMAN, Afif Abd-Al-Rida` — 制裁リスト（OFAC：SDN）
-- `SARVATI, Mohammad Hosein` — 制裁リスト（OFAC：SDN）
-
-### 変更
-#### `Abu al-Fadl`
-| 項目 | 変更前 | 変更後 |
-| --- | --- | --- |
-| categories | — | OFAC:SDN |
-| remark | 制裁リスト（OFAC） | 制裁リスト（OFAC：SDN） |
+- `H N B TRADING CO LLC` — 制裁リスト（OFAC：SDN）
+- `GRAND TARGET HEAVY EQUIPMENT AND MACHINERY SPARE PARTS TRADING L.L.C` — 制裁リスト（OFAC：SDN）
+- `جراند تارجیت لتجارة قطع غیار الآلات و المعدات الثقیلة ذ م م` — 制裁リスト（OFAC：SDN）
+- `RECAZ STAR GENERAL TRADING LLC` — 制裁リスト（OFAC：SDN）
+- `ريكاز ستار للتجارة العامة ذ م م` — 制裁リスト（OFAC：SDN）
+- `Rahbar Bazargani Nesim Baharan Qeshm Company` — 制裁リスト（OFAC：SDN）
+- `شرکت راهبر بازرگانی نسیم بهاران قشم` — 制裁リスト（OFAC：SDN）
+- `HEMRAJ TRADING L.L.C` — 制裁リスト（OFAC：SDN）
+- `Mina Fashki and Partners Exchange Company` — 制裁リスト（OFAC：SDN）
+- `شرکت صرافی مینا فشکی و شرکا` — 制裁リスト（OFAC：SDN）
+- `Mina Fashki and Partners General Partnership Company` — 制裁リスト（OFAC：SDN）
+- `شرکت تضامنی صرافی مینا فشکی و شرکا` — 制裁リスト（OFAC：SDN）
+- `OGA GLOBAL GENERAL TRADING L.L.C` — 制裁リスト（OFAC：SDN）
+- `او جي ايه جلوبال للتجارة العامة ذ.م.م` — 制裁リスト（OFAC：SDN）
+- `EWAN AL MADEENA GENERAL TRADING LLC` — 制裁リスト（OFAC：SDN）
+- `ايوان المدينة للتجارة العامة ذ م م` — 制裁リスト（OFAC：SDN）
+- `DEXTEROUS GLOBAL DMCC` — 制裁リスト（OFAC：SDN）
+- `ديكستروس غلوبال م د م س` — 制裁リスト（OFAC：SDN）
+- `Zana International DMCC` — 制裁リスト（OFAC：SDN）
+- `Kalhor Ali` — 制裁リスト（OFAC：SDN）
+- `کلهر علی` — 制裁リスト（OFAC：SDN）
+- `GESPL INTERNATIONAL GENERAL TRADING LLC` — 制裁リスト（OFAC：SDN）
+- `جسبل انترناشونال للتجارة العامة ش. ذ م م` — 制裁リスト（OFAC：SDN）
+- `MEETHALE RAW MATERIALS TRADING COMPANY LLC` — 制裁リスト（OFAC：SDN）
+- `ميطيل لتجارة الخامات والمواد الاولية شركة الشخص الواحد ذ م م` — 制裁リスト（OFAC：SDN）
+- `Hemmati Valiollah` — 制裁リスト（OFAC：SDN）
+- `همتی ولی اله` — 制裁リスト（OFAC：SDN）
+- `Jalali Sayyed Mohammad` — 制裁リスト（OFAC：SDN）
+- `جلالی سید محمد` — 制裁リスト（OFAC：SDN）
+- `Fashki Mina` — 制裁リスト（OFAC：SDN）
+- `فشکی مینا` — 制裁リスト（OFAC：SDN）
+- `Feshki Mina` — 制裁リスト（OFAC：SDN）
+- `Fashki Farzad` — 制裁リスト（OFAC：SDN）
+- `فشکی فرزاد` — 制裁リスト（OFAC：SDN）
+- `Feshki Farzad` — 制裁リスト（OFAC：SDN）
+- `BOGAZICI GUMRUKLEME ITHALAT IHRACAT TURIZM PETROL URUNLERI SANAYI VE TICARET LIMITED SIRKETI` — 制裁リスト（OFAC：SDN）
+- `BOĞAZİÇİ GÜMRÜKLEME İTHALAT İHRACAT TURİZM PETROL ÜRÜNLERİ SANAYİ VE TİCARET LİMİTED ŞİRKETİ` — 制裁リスト（OFAC：SDN）
+- `GRANDEZ TRADING LIMITED` — 制裁リスト（OFAC：SDN）
+- `KHORE AL HILAL GOODS WHOLESALERS TRADING LLC` — 制裁リスト（OFAC：SDN）
+- `خور الهلال لتجارة السلع بالجملة ذ.م.م` — 制裁リスト（OFAC：SDN）
+- `Royah Altahabia Trading L.L.C` — 制裁リスト（OFAC：SDN）
+- `Nordic International Trading LLC` — 制裁リスト（OFAC：SDN）
+- `نوردیك انترناشيونال للتجارة ذ م م` — 制裁リスト（OFAC：SDN）
+- `Alam Al Sahra Building Materials Trading Co. L.L.C` — 制裁リスト（OFAC：SDN）
+- `عالم الصحراء لتجارة مواد البناء شرکة الشخص الواحد ذ.م.م` — 制裁リスト（OFAC：SDN）
+- `Berkeley Trading LLC` — 制裁リスト（OFAC：SDN）
+- `بیرکلی للتجارة ذ م م` — 制裁リスト（OFAC：SDN）
+- `Integral Petro Energy Trading LLC` — 制裁リスト（OFAC：SDN）
+- `انتجرال بترو انرجی للتجارة ذ م م` — 制裁リスト（OFAC：SDN）
+- `Integral Petro Energy Company` — 制裁リスト（OFAC：SDN）
+- `Integral Petro Energy Trading EST` — 制裁リスト（OFAC：SDN）
+- `Robust Trading LLC` — 制裁リスト（OFAC：SDN）
+- `روبست للتجارة ذ م م` — 制裁リスト（OFAC：SDN）
+- `Iran Center for Exchange of Currency and Gold` — 制裁リスト（OFAC：SDN）
+- `شرکت مرکز مبادله ارز و طلای ایران` — 制裁リスト（OFAC：SDN）
+- `Mellat Exchange Company` — 制裁リスト（OFAC：SDN）
+- `شرکت صرافی ملت` — 制裁リスト（OFAC：SDN）
+- `Akhlaghi Mahmoud` — 制裁リスト（OFAC：SDN）
+- `اخلاقی محمود` — 制裁リスト（OFAC：SDN）
+- `Fazlju Parviz` — 制裁リスト（OFAC：SDN）
+- `فضلجو پرویز` — 制裁リスト（OFAC：SDN）
+- `Abbasi Mohammad Hossein` — 制裁リスト（OFAC：SDN）
+- `عباسی محمد حسین` — 制裁リスト（OFAC：SDN）
+- `KALHOR, Ali` — 制裁リスト（OFAC：SDN）
+- `HEMMATI, Valiollah` — 制裁リスト（OFAC：SDN）
+- `JALALI, Sayyed Mohammad` — 制裁リスト（OFAC：SDN）
+- `FASHKI, Mina` — 制裁リスト（OFAC：SDN）
+- `FASHKI, Farzad` — 制裁リスト（OFAC：SDN）
+- `AKHLAGHI, Mahmoud` — 制裁リスト（OFAC：SDN）
+- `FAZLJU, Parviz` — 制裁リスト（OFAC：SDN）
+- `ABBASI, Mohammad Hossein` — 制裁リスト（OFAC：SDN）
+- `FESHKI, Mina` — 制裁リスト（OFAC：SDN）
+- `FESHKI, Farzad` — 制裁リスト（OFAC：SDN）
 
