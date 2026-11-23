@@ -3,12 +3,12 @@
   "current_event_id": "a417b591d1bdd56b0a96a2550a4da1bf90e3bd4a6a79037c56621c9b7295aa4f",
   "documents": {
     "press_rss": {
-      "etag": "W/\"1795402987\"",
+      "etag": "W/\"1795464833\"",
       "filename": "rss.xml",
       "final_url": "https://press.un.org/en/rss.xml",
-      "last_modified": "Mon, 23 Nov 2026 03:03:07 GMT",
-      "raw_path": "data/raw/un/0835a39d330df7877051c2fe7c420ad6489e600454bb49b62c03aab166096fbb.xml.gz",
-      "sha256": "0835a39d330df7877051c2fe7c420ad6489e600454bb49b62c03aab166096fbb",
+      "last_modified": "Mon, 23 Nov 2026 20:13:53 GMT",
+      "raw_path": "data/raw/un/4ac7d7f3b478409489b4a2b316f8ed550e5865b2be7aac4c751984f282dff59c.xml.gz",
+      "sha256": "4ac7d7f3b478409489b4a2b316f8ed550e5865b2be7aac4c751984f282dff59c",
       "url": "https://press.un.org/en/rss.xml"
     },
     "xml": {
@@ -128609,7 +128609,7 @@
       "source": "press:2745"
     }
   ],
-  "last_checked_at": "2026-11-23T08:18:45Z",
+  "last_checked_at": "2026-11-23T20:30:29Z",
   "notices": {},
   "press_rss": {
     "article_evidence": {
@@ -128746,17 +128746,10 @@
     "items": [
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/db261119.doc.htm",
-        "publication_at": "2026-11-19T21:08:17Z",
-        "title": "Daily Press Briefing by the Office of the Spokesperson for the Secretary-General",
-        "url": "https://press.un.org/en/2026/db261119.doc.htm"
-      },
-      {
-        "candidate": false,
-        "guid": "https://press.un.org/en/2026/db261120.doc.htm",
-        "publication_at": "2026-11-20T20:25:04Z",
-        "title": "Daily Press Briefing by the Office of the Spokesperson for the Secretary-General",
-        "url": "https://press.un.org/en/2026/db261120.doc.htm"
+        "guid": "https://press.un.org/en/2026/ga12810.doc.htm",
+        "publication_at": "2026-11-23T19:24:46Z",
+        "title": "General Assembly Adopts Drafts on Tightening Ties Between UN and Gulf Cooperation Council, Achieving Lagging Water Goals Through Regular UN Conferences",
+        "url": "https://press.un.org/en/2026/ga12810.doc.htm"
       },
       {
         "candidate": false,
@@ -128764,20 +128757,6 @@
         "publication_at": "2026-11-21T00:32:30Z",
         "title": "Sixth Committee Concludes Work for 2026, Sending 23 Texts to General Assembly",
         "url": "https://press.un.org/en/2026/gal3767.doc.htm"
-      },
-      {
-        "candidate": false,
-        "guid": "https://press.un.org/en/2026/gashc4461.doc.htm",
-        "publication_at": "2026-11-20T00:46:48Z",
-        "title": "Third Committee Concludes Session, Approves 11 Texts amid Divisions over Palestinian Rights, Racism, Drug Policy",
-        "url": "https://press.un.org/en/2026/gashc4461.doc.htm"
-      },
-      {
-        "candidate": false,
-        "guid": "https://press.un.org/en/2026/sc16514.doc.htm",
-        "publication_at": "2026-11-20T01:27:30Z",
-        "title": "Security Council Hears Updates on Three Subsidiary Bodies Tackling Da’esh, Al-Qaida, Terrorism Threats",
-        "url": "https://press.un.org/en/2026/sc16514.doc.htm"
       },
       {
         "candidate": true,
@@ -128802,10 +128781,24 @@
       },
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/sgsm23378.doc.htm",
-        "publication_at": "2026-11-19T18:33:12Z",
-        "title": "Hailing International Court of Justice Judgment that Myanmar Committed Genocide against Rohingya, Secretary-General Implores Government to Fully Comply with Ruling",
-        "url": "https://press.un.org/en/2026/sgsm23378.doc.htm"
+        "guid": "https://press.un.org/en/2026/sgsm23379.doc.htm",
+        "publication_at": "2026-11-23T17:02:35Z",
+        "title": "Secretary-General Pays Tribute to Phumzile Mlambo-Ngcuka, Lifelong Champion of Women’s and Girls’ Rights",
+        "url": "https://press.un.org/en/2026/sgsm23379.doc.htm"
+      },
+      {
+        "candidate": false,
+        "guid": "https://press.un.org/en/2026/sgsm23380.doc.htm",
+        "publication_at": "2026-11-23T16:33:25Z",
+        "title": "UN Stands with Africa’s Ambitions to Advance Progress, Prosperity, Deliver Justice, Secretary-General Tells Aswan Forum for Sustainable Peace and Development",
+        "url": "https://press.un.org/en/2026/sgsm23380.doc.htm"
+      },
+      {
+        "candidate": false,
+        "guid": "https://press.un.org/en/2026/sgsm23382.doc.htm",
+        "publication_at": "2026-11-23T18:45:30Z",
+        "title": "Secretary-General, at Special Summit on AI Safety, Stresses Technology, Its Governance Must Work for Every Country, All of Humanity",
+        "url": "https://press.un.org/en/2026/sgsm23382.doc.htm"
       },
       {
         "candidate": false,
@@ -128813,14 +128806,21 @@
         "publication_at": "2026-11-20T22:40:28Z",
         "title": "Activities of Secretary-General in Türkiye, 9-13 November",
         "url": "https://press.un.org/en/2026/sgt3480.doc.htm"
+      },
+      {
+        "candidate": false,
+        "guid": "https://press.un.org/en/blog/sc16517",
+        "publication_at": "2026-11-23T12:39:11Z",
+        "title": "Security Council, 10277th Meeting (AM) Ukraine",
+        "url": "https://press.un.org/en/blog/sc16517"
       }
     ],
-    "last_success_at": "2026-11-23T08:18:45Z",
-    "latest_publication_at": "2026-11-21T00:32:30Z",
+    "last_success_at": "2026-11-23T20:30:29Z",
+    "latest_publication_at": "2026-11-23T19:24:46Z",
     "new_articles": 0,
     "new_candidates": 0,
     "revised_articles": 0,
-    "source_hash": "0835a39d330df7877051c2fe7c420ad6489e600454bb49b62c03aab166096fbb",
+    "source_hash": "4ac7d7f3b478409489b4a2b316f8ed550e5865b2be7aac4c751984f282dff59c",
     "stale": false,
     "status": "coverage_gap"
   },
@@ -129139,6 +129139,6 @@
     }
   ],
   "updates_status": "error",
-  "xml_last_success_at": "2026-11-23T08:18:45Z",
+  "xml_last_success_at": "2026-11-23T20:30:29Z",
   "xml_status": "review_required"
 }
