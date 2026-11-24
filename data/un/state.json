@@ -3,12 +3,12 @@
   "current_event_id": "dcb3a00119ec043d0590013553e7d52e45e18b5539aff0780a3bc44091ba9f4d",
   "documents": {
     "press_rss": {
-      "etag": "W/\"1795479407\"",
+      "etag": "W/\"1795534547\"",
       "filename": "rss.xml",
       "final_url": "https://press.un.org/en/rss.xml",
-      "last_modified": "Tue, 24 Nov 2026 00:16:47 GMT",
-      "raw_path": "data/raw/un/0272edb3b173d5ac0016887a025787bc61ab785115d68453a14a9b7759e01a91.xml.gz",
-      "sha256": "0272edb3b173d5ac0016887a025787bc61ab785115d68453a14a9b7759e01a91",
+      "last_modified": "Tue, 24 Nov 2026 15:35:47 GMT",
+      "raw_path": "data/raw/un/a07e75ecb5eb5dd2f434757d86af252b72d637c2af37a54534d91af519a40e5b.xml.gz",
+      "sha256": "a07e75ecb5eb5dd2f434757d86af252b72d637c2af37a54534d91af519a40e5b",
       "url": "https://press.un.org/en/rss.xml"
     },
     "xml": {
@@ -128621,7 +128621,7 @@
       "source": "press:2745"
     }
   ],
-  "last_checked_at": "2026-11-24T05:04:33Z",
+  "last_checked_at": "2026-11-24T15:55:31Z",
   "notices": {},
   "press_rss": {
     "article_evidence": {
@@ -128765,13 +128765,6 @@
       },
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/ga12810.doc.htm",
-        "publication_at": "2026-11-23T19:24:46Z",
-        "title": "General Assembly Adopts Drafts on Tightening Ties Between UN and Gulf Cooperation Council, Achieving Lagging Water Goals Through Regular UN Conferences",
-        "url": "https://press.un.org/en/2026/ga12810.doc.htm"
-      },
-      {
-        "candidate": false,
         "guid": "https://press.un.org/en/2026/gaab4526.doc.htm",
         "publication_at": "2026-11-23T22:26:43Z",
         "title": "Delegates in Fifth Committee Raise Concern Over Ongoing Financial Constraints’ Long-Term Impact on United Nations Operations, Structure",
@@ -128825,14 +128818,21 @@
         "publication_at": "2026-11-23T22:32:40Z",
         "title": "With World Closer Than Ever to Ending AIDS as Public Health Threat, Secretary-General Observance Message Urges Expand Equitable, Affordable HIV Prevention, Treatment",
         "url": "https://press.un.org/en/2026/sgsn23384.doc.htm"
+      },
+      {
+        "candidate": false,
+        "guid": "https://press.un.org/en/blog/sc16518",
+        "publication_at": "2026-11-24T15:28:26Z",
+        "title": "Security Council 10278th Meeting (AM & PM) Conflict Resolution in Rapid Technological Change",
+        "url": "https://press.un.org/en/blog/sc16518"
       }
     ],
-    "last_success_at": "2026-11-24T05:04:33Z",
-    "latest_publication_at": "2026-11-24T00:15:26Z",
+    "last_success_at": "2026-11-24T15:55:31Z",
+    "latest_publication_at": "2026-11-24T15:28:26Z",
     "new_articles": 0,
     "new_candidates": 0,
     "revised_articles": 0,
-    "source_hash": "0272edb3b173d5ac0016887a025787bc61ab785115d68453a14a9b7759e01a91",
+    "source_hash": "a07e75ecb5eb5dd2f434757d86af252b72d637c2af37a54534d91af519a40e5b",
     "stale": false,
     "status": "coverage_gap"
   },
@@ -129151,6 +129151,6 @@
     }
   ],
   "updates_status": "error",
-  "xml_last_success_at": "2026-11-24T05:04:33Z",
+  "xml_last_success_at": "2026-11-24T15:55:31Z",
   "xml_status": "review_required"
 }
