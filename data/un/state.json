@@ -1,23 +1,23 @@
 {
   "coverage_gaps": {},
-  "current_event_id": "a417b591d1bdd56b0a96a2550a4da1bf90e3bd4a6a79037c56621c9b7295aa4f",
+  "current_event_id": "dcb3a00119ec043d0590013553e7d52e45e18b5539aff0780a3bc44091ba9f4d",
   "documents": {
     "press_rss": {
-      "etag": "W/\"1795464833\"",
+      "etag": "W/\"1795479407\"",
       "filename": "rss.xml",
       "final_url": "https://press.un.org/en/rss.xml",
-      "last_modified": "Mon, 23 Nov 2026 20:13:53 GMT",
-      "raw_path": "data/raw/un/4ac7d7f3b478409489b4a2b316f8ed550e5865b2be7aac4c751984f282dff59c.xml.gz",
-      "sha256": "4ac7d7f3b478409489b4a2b316f8ed550e5865b2be7aac4c751984f282dff59c",
+      "last_modified": "Tue, 24 Nov 2026 00:16:47 GMT",
+      "raw_path": "data/raw/un/0272edb3b173d5ac0016887a025787bc61ab785115d68453a14a9b7759e01a91.xml.gz",
+      "sha256": "0272edb3b173d5ac0016887a025787bc61ab785115d68453a14a9b7759e01a91",
       "url": "https://press.un.org/en/rss.xml"
     },
     "xml": {
-      "etag": "\"0x8DF482BDA1A1295\"",
+      "etag": "\"0x8DF49BE420D6E05\"",
       "filename": "consolidatedLegacyByNAME.xml",
       "final_url": "https://unsolprodfiles.blob.core.windows.net/publiclegacyxmlfiles/EN/consolidatedLegacyByNAME.xml",
-      "last_modified": "Sun, 22 Nov 2026 00:02:08 GMT",
-      "raw_path": "data/raw/un/0c260d21948720dfadc3e8f09f9779a82104a55cc947bf4c63d504376c71c2ff.xml.gz",
-      "sha256": "0c260d21948720dfadc3e8f09f9779a82104a55cc947bf4c63d504376c71c2ff",
+      "last_modified": "Tue, 24 Nov 2026 00:02:41 GMT",
+      "raw_path": "data/raw/un/2f4cbaabe425e6429a8c37f0ed403cf4202545ec187bf1cb759f7bd504916438.xml.gz",
+      "sha256": "2f4cbaabe425e6429a8c37f0ed403cf4202545ec187bf1cb759f7bd504916438",
       "url": "https://scsanctions.un.org/resources/xml/en/name/consolidated.xml"
     }
   },
@@ -96743,6 +96743,18 @@
     {
       "added": [],
       "application_base_event_id": "",
+      "baseline": false,
+      "changed": [],
+      "detected_at": "2026-11-22T03:37:18Z",
+      "event_id": "a417b591d1bdd56b0a96a2550a4da1bf90e3bd4a6a79037c56621c9b7295aa4f",
+      "parent_event_id": "485130ab940fcf94eb7222912ea874eb3d51218b0e617f17b9826bbc6087c5aa",
+      "removed": [],
+      "source_hash": "0c260d21948720dfadc3e8f09f9779a82104a55cc947bf4c63d504376c71c2ff",
+      "status": "SUPERSEDED"
+    },
+    {
+      "added": [],
+      "application_base_event_id": "",
       "application_diff": [
         {
           "after_fingerprint": "bad94e5ce27c5ba1c221db84e30898e0e2c4e6dbc5c95c18b34eefd2a15b100e",
@@ -128509,11 +128521,11 @@
       ],
       "baseline": false,
       "changed": [],
-      "detected_at": "2026-11-22T03:37:18Z",
-      "event_id": "a417b591d1bdd56b0a96a2550a4da1bf90e3bd4a6a79037c56621c9b7295aa4f",
-      "parent_event_id": "485130ab940fcf94eb7222912ea874eb3d51218b0e617f17b9826bbc6087c5aa",
+      "detected_at": "2026-11-24T05:04:33Z",
+      "event_id": "dcb3a00119ec043d0590013553e7d52e45e18b5539aff0780a3bc44091ba9f4d",
+      "parent_event_id": "a417b591d1bdd56b0a96a2550a4da1bf90e3bd4a6a79037c56621c9b7295aa4f",
       "removed": [],
-      "source_hash": "0c260d21948720dfadc3e8f09f9779a82104a55cc947bf4c63d504376c71c2ff",
+      "source_hash": "2f4cbaabe425e6429a8c37f0ed403cf4202545ec187bf1cb759f7bd504916438",
       "status": "PENDING_REVIEW"
     }
   ],
@@ -128609,7 +128621,7 @@
       "source": "press:2745"
     }
   ],
-  "last_checked_at": "2026-11-23T20:30:29Z",
+  "last_checked_at": "2026-11-24T05:04:33Z",
   "notices": {},
   "press_rss": {
     "article_evidence": {
@@ -128746,6 +128758,13 @@
     "items": [
       {
         "candidate": false,
+        "guid": "https://press.un.org/en/2026/261123.doc.htm",
+        "publication_at": "2026-11-23T20:06:08Z",
+        "title": "Daily Press Briefing by the Office of the Spokesperson for the Secretary-General",
+        "url": "https://press.un.org/en/2026/261123.doc.htm"
+      },
+      {
+        "candidate": false,
         "guid": "https://press.un.org/en/2026/ga12810.doc.htm",
         "publication_at": "2026-11-23T19:24:46Z",
         "title": "General Assembly Adopts Drafts on Tightening Ties Between UN and Gulf Cooperation Council, Achieving Lagging Water Goals Through Regular UN Conferences",
@@ -128753,83 +128772,76 @@
       },
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/gal3767.doc.htm",
-        "publication_at": "2026-11-21T00:32:30Z",
-        "title": "Sixth Committee Concludes Work for 2026, Sending 23 Texts to General Assembly",
-        "url": "https://press.un.org/en/2026/gal3767.doc.htm"
-      },
-      {
-        "candidate": true,
-        "guid": "https://press.un.org/en/2026/sc16515.doc.htm",
-        "publication_at": "2026-11-20T21:52:44Z",
-        "title": "Security Council ISIL (Da’esh) and Al-Qaida Sanctions Committee Amends One Entry on Its Sanctions List",
-        "url": "https://press.un.org/en/2026/sc16515.doc.htm"
-      },
-      {
-        "candidate": true,
-        "guid": "https://press.un.org/en/2026/sc16516.doc.htm",
-        "publication_at": "2026-11-20T22:10:19Z",
-        "title": "Security Council ISIL (Da’esh) and Al-Qaida Sanctions Committee Amends 81 Entries on Its Sanctions List",
-        "url": "https://press.un.org/en/2026/sc16516.doc.htm"
+        "guid": "https://press.un.org/en/2026/gaab4526.doc.htm",
+        "publication_at": "2026-11-23T22:26:43Z",
+        "title": "Delegates in Fifth Committee Raise Concern Over Ongoing Financial Constraints’ Long-Term Impact on United Nations Operations, Structure",
+        "url": "https://press.un.org/en/2026/gaab4526.doc.htm"
       },
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/sea2256.doc.htm",
-        "publication_at": "2026-11-20T22:28:23Z",
-        "title": "Commission on the Limits of Continental Shelf Concludes Sixty-Eighth Session",
-        "url": "https://press.un.org/en/2026/sea2256.doc.htm"
+        "guid": "https://press.un.org/en/2026/gapal1498.doc.htm",
+        "publication_at": "2026-11-24T00:00:11Z",
+        "title": "Don’t Let Christian Presence in Holy Land Become Memory, Priest Urges at Solidarity Day Commemoration, amid Support for Palestinian Cause, Ending Israeli Occupation",
+        "url": "https://press.un.org/en/2026/gapal1498.doc.htm"
       },
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/sgsm23379.doc.htm",
-        "publication_at": "2026-11-23T17:02:35Z",
-        "title": "Secretary-General Pays Tribute to Phumzile Mlambo-Ngcuka, Lifelong Champion of Women’s and Girls’ Rights",
-        "url": "https://press.un.org/en/2026/sgsm23379.doc.htm"
+        "guid": "https://press.un.org/en/2026/sc16517.doc.htm",
+        "publication_at": "2026-11-23T21:18:25Z",
+        "title": "Winter at Ukraine’s Doorstep as Energy, Shipping Attacks Send Shockwaves Worldwide, Security Council Told",
+        "url": "https://press.un.org/en/2026/sc16517.doc.htm"
       },
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/sgsm23380.doc.htm",
-        "publication_at": "2026-11-23T16:33:25Z",
-        "title": "UN Stands with Africa’s Ambitions to Advance Progress, Prosperity, Deliver Justice, Secretary-General Tells Aswan Forum for Sustainable Peace and Development",
-        "url": "https://press.un.org/en/2026/sgsm23380.doc.htm"
+        "guid": "https://press.un.org/en/2026/sgsm23381.doc.htm",
+        "publication_at": "2026-11-23T20:38:13Z",
+        "title": "Expressing Disappointment at Climate Conference’s Failure to Reach Consensus, Secretary-General Urges Faster Fossil Fuel Transition",
+        "url": "https://press.un.org/en/2026/sgsm23381.doc.htm"
       },
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/sgsm23382.doc.htm",
-        "publication_at": "2026-11-23T18:45:30Z",
-        "title": "Secretary-General, at Special Summit on AI Safety, Stresses Technology, Its Governance Must Work for Every Country, All of Humanity",
-        "url": "https://press.un.org/en/2026/sgsm23382.doc.htm"
+        "guid": "https://press.un.org/en/2026/sgsm23383.doc.htm",
+        "publication_at": "2026-11-23T21:54:53Z",
+        "title": "Amid Regional Tensions, Secretary-General Commends Efforts towards Middle East Zone Free of Weapons of Mass Destruction",
+        "url": "https://press.un.org/en/2026/sgsm23383.doc.htm"
       },
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/sgt3480.doc.htm",
-        "publication_at": "2026-11-20T22:40:28Z",
-        "title": "Activities of Secretary-General in Türkiye, 9-13 November",
-        "url": "https://press.un.org/en/2026/sgt3480.doc.htm"
+        "guid": "https://press.un.org/en/2026/sgsm23385.doc.htm",
+        "publication_at": "2026-11-23T23:17:14Z",
+        "title": "Amid Growing Reports of Chemical Weapons Use, Secretary-General Urges All States to Stand Firm towards Ending This Scourge, in Victims’ Remembrance Day Message",
+        "url": "https://press.un.org/en/2026/sgsm23385.doc.htm"
       },
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/blog/sc16517",
-        "publication_at": "2026-11-23T12:39:11Z",
-        "title": "Security Council, 10277th Meeting (AM) Ukraine",
-        "url": "https://press.un.org/en/blog/sc16517"
+        "guid": "https://press.un.org/en/2026/sgsm23386.doc.htm",
+        "publication_at": "2026-11-24T00:15:26Z",
+        "title": "Solidarity Must Mean Action to End Palestinian Suffering, Secretary-General Tells Commemorative Meeting",
+        "url": "https://press.un.org/en/2026/sgsm23386.doc.htm"
+      },
+      {
+        "candidate": false,
+        "guid": "https://press.un.org/en/2026/sgsn23384.doc.htm",
+        "publication_at": "2026-11-23T22:32:40Z",
+        "title": "With World Closer Than Ever to Ending AIDS as Public Health Threat, Secretary-General Observance Message Urges Expand Equitable, Affordable HIV Prevention, Treatment",
+        "url": "https://press.un.org/en/2026/sgsn23384.doc.htm"
       }
     ],
-    "last_success_at": "2026-11-23T20:30:29Z",
-    "latest_publication_at": "2026-11-23T19:24:46Z",
+    "last_success_at": "2026-11-24T05:04:33Z",
+    "latest_publication_at": "2026-11-24T00:15:26Z",
     "new_articles": 0,
     "new_candidates": 0,
     "revised_articles": 0,
-    "source_hash": "4ac7d7f3b478409489b4a2b316f8ed550e5865b2be7aac4c751984f282dff59c",
+    "source_hash": "0272edb3b173d5ac0016887a025787bc61ab785115d68453a14a9b7759e01a91",
     "stale": false,
     "status": "coverage_gap"
   },
   "press_status": "error",
   "record_count": 1007,
   "schema_version": 1,
-  "snapshot_digest": "733df25f037e71ed160d4c6398cca8550a539c036ef7b4379bc75db2a1504472",
-  "snapshot_hash": "0c260d21948720dfadc3e8f09f9779a82104a55cc947bf4c63d504376c71c2ff",
-  "source_updated": "2026-11-22T00:00:00.942Z",
+  "snapshot_digest": "9be1b550853faa2f9e9d010ad184191056f1faf26d576ee047b12d685ddccef1",
+  "snapshot_hash": "2f4cbaabe425e6429a8c37f0ed403cf4202545ec187bf1cb759f7bd504916438",
+  "source_updated": "2026-11-24T00:00:06.002Z",
   "updates_archive_recoveries": {
     "a19e54383113bf62858716c905f9545bf5230376d1dbf5258d99af2a8fe490db": {
       "imported_at": "2026-11-17T06:28:35Z",
@@ -129139,6 +129151,6 @@
     }
   ],
   "updates_status": "error",
-  "xml_last_success_at": "2026-11-23T20:30:29Z",
+  "xml_last_success_at": "2026-11-24T05:04:33Z",
   "xml_status": "review_required"
 }
