@@ -373,10 +373,14 @@ class RetentionGateTests(unittest.TestCase):
         report=A.audit(self.root,['ofac']);triage=T.triage(self.root,report)
         self.assertEqual(len(report['findings']),1)
         item=triage['items'][0];self.assertTrue(item['retention_eligible'])
+        from datetime import datetime, timedelta, timezone
+        now = datetime.now(timezone.utc).replace(microsecond=0)
+        reviewed_at = (now - timedelta(days=1)).strftime('%Y-%m-%dT%H:%M:%SZ')
+        expires_at = (now + timedelta(days=29)).strftime('%Y-%m-%dT%H:%M:%SZ')
         (self.root/'data/review').mkdir(exist_ok=True)
         (self.root/'data/review/integrity_retention_decisions.json').write_text(json.dumps({'schema_version':1,'entries':[
             dict(review_id=item['review_id'],decision='APPROVED_RETAIN',reviewed_by='test reviewer',
-                 reviewed_at='2026-01-01T00:00:00Z',expires_at='2030-01-01T00:00:00Z',reason='Specific historical retention',
+                 reviewed_at=reviewed_at,expires_at=expires_at,reason='Specific historical retention',
                  reviewed_evidence_sha256=item['evidence_sha256'])]}))
 
     def test_actual_gate_accepts_only_the_approved_retention_without_changing_data(self):

@@ -11,7 +11,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from src import integrity_audit as A, integrity_triage as T
@@ -23,6 +23,10 @@ EXPIRES = '2026-11-25T00:00:00Z'
 NOW = datetime(2026,10,26,12,tzinfo=timezone.utc)
 SCOPE_PATH = 'docs/evidence/source-integrity-legacy-scope-20261026.json.gz'
 POLICY_PATH = 'docs/evidence/source-integrity-legacy-retention-policy-proposal-20261026.json'
+
+
+def utc_stamp(dt):
+    return dt.strftime('%Y-%m-%dT%H:%M:%SZ')
 
 
 def module(case):
@@ -137,8 +141,16 @@ class GateTests(unittest.TestCase):
         self.item=sample();self.scope=scope_fixture()
         with self.gate.mpath.open() as stream:rows=list(csv.DictReader(stream))
         rows=[{f:r.get(f,'') for f in M.FIELDS} for r in rows]+[copy.deepcopy(self.item['finding']['master'])]
+        self.now=datetime.now(timezone.utc).replace(microsecond=0)
+        reviewed_dt=self.now-timedelta(days=1)
+        expires_dt=reviewed_dt+timedelta(days=30)
+        self.reviewed=utc_stamp(reviewed_dt)
+        self.expires=utc_stamp(expires_dt)
+        self.before_reviewed=reviewed_dt-timedelta(days=1)
+        self.at_expiry=expires_dt
+        self.overlong_expires=utc_stamp(reviewed_dt+timedelta(days=30,seconds=1))
         self.original=copy.deepcopy(rows)
-        self.rows,self.draft=self.L.prepare(rows,self.scope,REVIEWED,EXPIRES)
+        self.rows,self.draft=self.L.prepare(rows,self.scope,self.reviewed,self.expires)
         self.ledger=active(self.draft)
         for rel in [SCOPE_PATH,POLICY_PATH]:
             p=self.root/rel;p.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(REPO/rel,p)
@@ -194,7 +206,7 @@ class GateTests(unittest.TestCase):
     def test_missing_duplicate_and_out_of_scope_annotation_are_distinguished(self):
         key = self.item['master_key']
         row = next(row for row in self.rows if row['match_key'] == key)
-        accepted = self.L._validate(self.ledger, self.scope, NOW)
+        accepted = self.L._validate(self.ledger, self.scope, self.now)
         unexpected = dict(row, match_key='unexpected')
         for candidate, reason in (([unexpected], 'row_missing'),
                                   ([row, row, unexpected], 'row_duplicated')):
@@ -210,7 +222,7 @@ class GateTests(unittest.TestCase):
         for f in r['findings']:
             if f.get('legacy_accepted'):f.pop('legacy_accepted');f['blocking']=True
         t=T.triage(self.root,r)
-        for now in [datetime(2026,11,25,tzinfo=timezone.utc),datetime(2026,10,25,tzinfo=timezone.utc)]:
+        for now in [self.at_expiry,self.before_reviewed]:
             with self.subTest(now=now):
                 result=self.L.apply(self.root,r,t,self.ledger,self.scope,now=now)
                 self.assertTrue(any(f.get('blocking',True) for f in result['findings']))
@@ -267,10 +279,10 @@ class GateTests(unittest.TestCase):
         self.assertFalse((self.root/'published').exists())
 
     def test_expired_acceptance_and_missing_ledger_refuse_export_validation(self):
-        for now in [datetime(2026,11,25,tzinfo=timezone.utc),datetime(2026,10,25,tzinfo=timezone.utc)]:
+        for now in [self.at_expiry,self.before_reviewed]:
             with self.assertRaises(ValueError):self.L.validate_for_export(self.root,self.rows,now=now)
         (self.root/'data/review/integrity_legacy_acceptances.json').unlink()
-        with self.assertRaises(ValueError):self.L.validate_for_export(self.root,self.rows,now=NOW)
+        with self.assertRaises(ValueError):self.L.validate_for_export(self.root,self.rows,now=self.now)
 
     def test_ordinary_retention_does_not_approve_legacy(self):
         from src import integrity_decisions as D
@@ -281,9 +293,9 @@ class GateTests(unittest.TestCase):
             finding.pop('legacy_accepted',None);finding['blocking']=True
         triage=T.triage(self.root,report)
         ledger=dict(schema_version=1,entries=[dict(review_id=item['review_id'],decision='APPROVED_RETAIN',
-            reviewed_by='fixture',reason='fixture',reviewed_at=REVIEWED,expires_at=EXPIRES,
+            reviewed_by='fixture',reason='fixture',reviewed_at=self.reviewed,expires_at=self.expires,
             reviewed_evidence_sha256=item['evidence_sha256'])])
-        result=D.apply(report,triage,ledger,now=NOW)
+        result=D.apply(report,triage,ledger,now=self.now)
         self.assertFalse(any(f.get('retention_approved') for f in result['findings']))
         self.assertEqual(result['retention_review'][0]['status'],'INELIGIBLE')
 
@@ -310,7 +322,7 @@ class GateTests(unittest.TestCase):
         x=copy.deepcopy(self.ledger);x['entries'][0]['original_review_id']='0'*64;variants.append(x)
         x=copy.deepcopy(self.ledger);x['decision']='APPROVED_RETAIN';variants.append(x)
         x=copy.deepcopy(self.ledger);x['entries']*=2;variants.append(x)
-        x=copy.deepcopy(self.ledger);x['expires_at']='2026-11-25T00:00:01Z';variants.append(x)
+        x=copy.deepcopy(self.ledger);x['expires_at']=self.overlong_expires;variants.append(x)
         for ledger in variants:
             with self.subTest(ledger=ledger.get('decision')):
                 self.install(ledger);p=self.gate.run_gate('success','mof')
@@ -327,7 +339,7 @@ class GateTests(unittest.TestCase):
         result=subprocess.run(cmd,cwd=REPO,capture_output=True,text=True)
         self.assertEqual(result.returncode,0,result.stderr)
         ws=load_workbook(out)['Sheet1'];self.assertEqual(ws.max_column,7)
-        self.assertIn('旧登録・一次出典未確認',ws.cell(2,2).value);self.assertIn(EXPIRES,ws.cell(2,7).value)
+        self.assertIn('旧登録・一次出典未確認',ws.cell(2,2).value);self.assertIn(self.expires,ws.cell(2,7).value)
         before=out.read_bytes();self.install(self.draft);diff.unlink()
         result=subprocess.run(cmd,cwd=REPO,capture_output=True,text=True)
         self.assertNotEqual(result.returncode,0);self.assertEqual(out.read_bytes(),before)
@@ -340,7 +352,7 @@ class GateTests(unittest.TestCase):
         self.assertEqual(p.returncode,0,p.stderr)
         wb=load_workbook(out);ws=wb['Sheet1'];self.assertEqual(ws.max_column,7)
         row=next(values for values in ws.iter_rows(min_row=2,values_only=True) if values[0]==self.item['display_name'])
-        self.assertIn('旧登録・一次出典未確認',row[1]);self.assertIn(EXPIRES,row[6])
+        self.assertIn('旧登録・一次出典未確認',row[1]);self.assertIn(self.expires,row[6])
         self.assertEqual(row[2],'有効');self.assertEqual(row[3],self.item['finding']['master']['risk_level'])
         before=out.read_bytes();self.install(self.draft)
         p=subprocess.run([sys.executable,'-m','src.export_excel','--indir',str(self.root/'data/master'),
