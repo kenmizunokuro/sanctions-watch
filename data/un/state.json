@@ -1,23 +1,23 @@
 {
   "coverage_gaps": {},
-  "current_event_id": "dcb3a00119ec043d0590013553e7d52e45e18b5539aff0780a3bc44091ba9f4d",
+  "current_event_id": "955f63a24f4bfad5e5be822c40729557a847e3418985f124ed2b3116377e9418",
   "documents": {
     "press_rss": {
-      "etag": "W/\"1795534547\"",
+      "etag": "W/\"1795652889\"",
       "filename": "rss.xml",
       "final_url": "https://press.un.org/en/rss.xml",
-      "last_modified": "Tue, 24 Nov 2026 15:35:47 GMT",
-      "raw_path": "data/raw/un/a07e75ecb5eb5dd2f434757d86af252b72d637c2af37a54534d91af519a40e5b.xml.gz",
-      "sha256": "a07e75ecb5eb5dd2f434757d86af252b72d637c2af37a54534d91af519a40e5b",
+      "last_modified": "Thu, 26 Nov 2026 00:28:09 GMT",
+      "raw_path": "data/raw/un/1959645a71362f42063a5e8e08cc77d1c78bf60d6dd1a5d3053a22508a9d4c6e.xml.gz",
+      "sha256": "1959645a71362f42063a5e8e08cc77d1c78bf60d6dd1a5d3053a22508a9d4c6e",
       "url": "https://press.un.org/en/rss.xml"
     },
     "xml": {
-      "etag": "\"0x8DF49BE420D6E05\"",
+      "etag": "\"0x8DF4B5078260FB3\"",
       "filename": "consolidatedLegacyByNAME.xml",
       "final_url": "https://unsolprodfiles.blob.core.windows.net/publiclegacyxmlfiles/EN/consolidatedLegacyByNAME.xml",
-      "last_modified": "Tue, 24 Nov 2026 00:02:41 GMT",
-      "raw_path": "data/raw/un/2f4cbaabe425e6429a8c37f0ed403cf4202545ec187bf1cb759f7bd504916438.xml.gz",
-      "sha256": "2f4cbaabe425e6429a8c37f0ed403cf4202545ec187bf1cb759f7bd504916438",
+      "last_modified": "Thu, 26 Nov 2026 00:01:49 GMT",
+      "raw_path": "data/raw/un/80ffcfcf67179cb8fdb833ce542d29d1f803d117cd43268b3317d26c2ba5acc4.xml.gz",
+      "sha256": "80ffcfcf67179cb8fdb833ce542d29d1f803d117cd43268b3317d26c2ba5acc4",
       "url": "https://scsanctions.un.org/resources/xml/en/name/consolidated.xml"
     }
   },
@@ -96755,6 +96755,20 @@
     {
       "added": [],
       "application_base_event_id": "",
+      "baseline": false,
+      "changed": [],
+      "detected_at": "2026-11-24T05:04:33Z",
+      "event_id": "dcb3a00119ec043d0590013553e7d52e45e18b5539aff0780a3bc44091ba9f4d",
+      "parent_event_id": "a417b591d1bdd56b0a96a2550a4da1bf90e3bd4a6a79037c56621c9b7295aa4f",
+      "removed": [],
+      "source_hash": "2f4cbaabe425e6429a8c37f0ed403cf4202545ec187bf1cb759f7bd504916438",
+      "status": "SUPERSEDED"
+    },
+    {
+      "added": [
+        "LYe.007"
+      ],
+      "application_base_event_id": "",
       "application_diff": [
         {
           "after_fingerprint": "bad94e5ce27c5ba1c221db84e30898e0e2c4e6dbc5c95c18b34eefd2a15b100e",
@@ -107185,6 +107199,22 @@
           "before_names": [],
           "change": "追加",
           "reference": "LYe.006"
+        },
+        {
+          "after_fingerprint": "e06408fe4acaba569c29420ed7fd4cdf7428a4cfb43e4d90cc05f85799e7c2b3",
+          "after_name": "Aegean",
+          "after_names": [
+            {
+              "kind": "primary",
+              "name": "Aegean",
+              "weak": false
+            }
+          ],
+          "before_fingerprint": "",
+          "before_name": "",
+          "before_names": [],
+          "change": "追加",
+          "reference": "LYe.007"
         },
         {
           "after_fingerprint": "57e278ea38227d9d152ed3f00da64a3dd38b8366e27c40a40aefd90ac3ea4f45",
@@ -128521,11 +128551,11 @@
       ],
       "baseline": false,
       "changed": [],
-      "detected_at": "2026-11-24T05:04:33Z",
-      "event_id": "dcb3a00119ec043d0590013553e7d52e45e18b5539aff0780a3bc44091ba9f4d",
-      "parent_event_id": "a417b591d1bdd56b0a96a2550a4da1bf90e3bd4a6a79037c56621c9b7295aa4f",
+      "detected_at": "2026-11-26T02:31:29Z",
+      "event_id": "955f63a24f4bfad5e5be822c40729557a847e3418985f124ed2b3116377e9418",
+      "parent_event_id": "dcb3a00119ec043d0590013553e7d52e45e18b5539aff0780a3bc44091ba9f4d",
       "removed": [],
-      "source_hash": "2f4cbaabe425e6429a8c37f0ed403cf4202545ec187bf1cb759f7bd504916438",
+      "source_hash": "80ffcfcf67179cb8fdb833ce542d29d1f803d117cd43268b3317d26c2ba5acc4",
       "status": "PENDING_REVIEW"
     }
   ],
@@ -128621,7 +128651,7 @@
       "source": "press:2745"
     }
   ],
-  "last_checked_at": "2026-11-24T15:55:31Z",
+  "last_checked_at": "2026-11-26T02:31:29Z",
   "notices": {},
   "press_rss": {
     "article_evidence": {
@@ -128746,6 +128776,23 @@
         },
         "source_hash": "6714063b6affe85c6f54688fa904f44192ee2288e8990b885c437171f1821fb6",
         "status": "PENDING_REVIEW"
+      },
+      {
+        "change": "NEW",
+        "detected_at": "2026-11-26T02:31:29Z",
+        "event_id": "597acd2086935d5a2f93e7d324f79d68914a731f9703bd48acb28c7c5b9876f2",
+        "parent_event_id": "",
+        "previous_record": {},
+        "previous_source_hash": "",
+        "record": {
+          "candidate": true,
+          "guid": "https://press.un.org/en/2026/sc16519.doc.htm",
+          "publication_at": "2026-11-25T16:50:00Z",
+          "title": "Security Council Committee concerning Libya Adds Vessel to Its Sanctions List",
+          "url": "https://press.un.org/en/2026/sc16519.doc.htm"
+        },
+        "source_hash": "1959645a71362f42063a5e8e08cc77d1c78bf60d6dd1a5d3053a22508a9d4c6e",
+        "status": "PENDING_REVIEW"
       }
     ],
     "heads": {
@@ -128753,95 +128800,96 @@
       "https://press.un.org/en/2026/sc16508.doc.htm": "5f4c3e11ea5a21841831036029f4493ec0d0363ac15d255cf2d829408047e911",
       "https://press.un.org/en/2026/sc16512.doc.htm": "30bb246933fc55253f5115d13094e5e1d4a9f0f89f2ac7b15432bc8b61931234",
       "https://press.un.org/en/2026/sc16515.doc.htm": "1a53c647f012b48eb5417f53f573b23bc4b802666d99585eda9e89691ffcb0bb",
-      "https://press.un.org/en/2026/sc16516.doc.htm": "882142d7b0f1d994a692d2d2cd55ef953d2ddef58bac9d1536f9f09c4ce5ee03"
+      "https://press.un.org/en/2026/sc16516.doc.htm": "882142d7b0f1d994a692d2d2cd55ef953d2ddef58bac9d1536f9f09c4ce5ee03",
+      "https://press.un.org/en/2026/sc16519.doc.htm": "597acd2086935d5a2f93e7d324f79d68914a731f9703bd48acb28c7c5b9876f2"
     },
     "items": [
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/261123.doc.htm",
-        "publication_at": "2026-11-23T20:06:08Z",
+        "guid": "https://press.un.org/en/2026/db261124.doc.htm",
+        "publication_at": "2026-11-24T21:10:38Z",
         "title": "Daily Press Briefing by the Office of the Spokesperson for the Secretary-General",
-        "url": "https://press.un.org/en/2026/261123.doc.htm"
+        "url": "https://press.un.org/en/2026/db261124.doc.htm"
       },
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/gaab4526.doc.htm",
-        "publication_at": "2026-11-23T22:26:43Z",
-        "title": "Delegates in Fifth Committee Raise Concern Over Ongoing Financial Constraints’ Long-Term Impact on United Nations Operations, Structure",
-        "url": "https://press.un.org/en/2026/gaab4526.doc.htm"
+        "guid": "https://press.un.org/en/2026/db261125.doc.htm",
+        "publication_at": "2026-11-25T20:24:42Z",
+        "title": "Daily Press Briefing by the Office of the Spokesperson for the Secretary-General",
+        "url": "https://press.un.org/en/2026/db261125.doc.htm"
       },
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/gapal1498.doc.htm",
-        "publication_at": "2026-11-24T00:00:11Z",
-        "title": "Don’t Let Christian Presence in Holy Land Become Memory, Priest Urges at Solidarity Day Commemoration, amid Support for Palestinian Cause, Ending Israeli Occupation",
-        "url": "https://press.un.org/en/2026/gapal1498.doc.htm"
+        "guid": "https://press.un.org/en/2026/gaef3632.doc.htm",
+        "publication_at": "2026-11-25T01:07:23Z",
+        "title": "Second Committee Approves 13 Resolutions, amid Divisions over AI Governance, International Trade",
+        "url": "https://press.un.org/en/2026/gaef3632.doc.htm"
       },
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/sc16517.doc.htm",
-        "publication_at": "2026-11-23T21:18:25Z",
-        "title": "Winter at Ukraine’s Doorstep as Energy, Shipping Attacks Send Shockwaves Worldwide, Security Council Told",
-        "url": "https://press.un.org/en/2026/sc16517.doc.htm"
+        "guid": "https://press.un.org/en/2026/gaef3633.doc.htm",
+        "publication_at": "2026-11-26T00:26:41Z",
+        "title": "Second Committee Concludes Work, Approving Resolutions on Women in Development, International Migration",
+        "url": "https://press.un.org/en/2026/gaef3633.doc.htm"
       },
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/sgsm23381.doc.htm",
-        "publication_at": "2026-11-23T20:38:13Z",
-        "title": "Expressing Disappointment at Climate Conference’s Failure to Reach Consensus, Secretary-General Urges Faster Fossil Fuel Transition",
-        "url": "https://press.un.org/en/2026/sgsm23381.doc.htm"
+        "guid": "https://press.un.org/en/2026/sc16518.doc.htm",
+        "publication_at": "2026-11-24T22:59:42Z",
+        "title": "In Security Council, Microsoft Executive Warns AI-Assisted War Tactics, Narrowing Response Window Test Peace Efforts, as Speakers Urge Human Control",
+        "url": "https://press.un.org/en/2026/sc16518.doc.htm"
+      },
+      {
+        "candidate": true,
+        "guid": "https://press.un.org/en/2026/sc16519.doc.htm",
+        "publication_at": "2026-11-25T16:50:00Z",
+        "title": "Security Council Committee concerning Libya Adds Vessel to Its Sanctions List",
+        "url": "https://press.un.org/en/2026/sc16519.doc.htm"
       },
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/sgsm23383.doc.htm",
-        "publication_at": "2026-11-23T21:54:53Z",
-        "title": "Amid Regional Tensions, Secretary-General Commends Efforts towards Middle East Zone Free of Weapons of Mass Destruction",
-        "url": "https://press.un.org/en/2026/sgsm23383.doc.htm"
+        "guid": "https://press.un.org/en/2026/sgsm23390.doc.htm",
+        "publication_at": "2026-11-24T22:19:30Z",
+        "title": "Artificial Intelligence Can Support Peace Efforts, but Humans Must Retain Control over Use of Force, Secretary-General Tells Security Council",
+        "url": "https://press.un.org/en/2026/sgsm23390.doc.htm"
       },
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/sgsm23385.doc.htm",
-        "publication_at": "2026-11-23T23:17:14Z",
-        "title": "Amid Growing Reports of Chemical Weapons Use, Secretary-General Urges All States to Stand Firm towards Ending This Scourge, in Victims’ Remembrance Day Message",
-        "url": "https://press.un.org/en/2026/sgsm23385.doc.htm"
+        "guid": "https://press.un.org/en/2026/sgsm23391.doc.htm",
+        "publication_at": "2026-11-24T22:47:12Z",
+        "title": "Solidarity Must Mean Acting to End Palestinian Suffering, Unlawful Occupation, Secretary-General Stresses in International Day Message",
+        "url": "https://press.un.org/en/2026/sgsm23391.doc.htm"
       },
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/sgsm23386.doc.htm",
-        "publication_at": "2026-11-24T00:15:26Z",
-        "title": "Solidarity Must Mean Action to End Palestinian Suffering, Secretary-General Tells Commemorative Meeting",
-        "url": "https://press.un.org/en/2026/sgsm23386.doc.htm"
+        "guid": "https://press.un.org/en/2026/sgsm23392.doc.htm",
+        "publication_at": "2026-11-25T21:42:18Z",
+        "title": "Marking Centenary of Slavery Convention, Secretary-General Calls for Renewed Push to End Exploitation",
+        "url": "https://press.un.org/en/2026/sgsm23392.doc.htm"
       },
       {
         "candidate": false,
-        "guid": "https://press.un.org/en/2026/sgsn23384.doc.htm",
-        "publication_at": "2026-11-23T22:32:40Z",
-        "title": "With World Closer Than Ever to Ending AIDS as Public Health Threat, Secretary-General Observance Message Urges Expand Equitable, Affordable HIV Prevention, Treatment",
-        "url": "https://press.un.org/en/2026/sgsn23384.doc.htm"
-      },
-      {
-        "candidate": false,
-        "guid": "https://press.un.org/en/blog/sc16518",
-        "publication_at": "2026-11-24T15:28:26Z",
-        "title": "Security Council 10278th Meeting (AM & PM) Conflict Resolution in Rapid Technological Change",
-        "url": "https://press.un.org/en/blog/sc16518"
+        "guid": "https://press.un.org/en/2026/sgsm23393.doc.htm",
+        "publication_at": "2026-11-25T21:38:01Z",
+        "title": "Every Contribution Matters, Secretary-General Says, Honouring Volunteers on International Day",
+        "url": "https://press.un.org/en/2026/sgsm23393.doc.htm"
       }
     ],
-    "last_success_at": "2026-11-24T15:55:31Z",
-    "latest_publication_at": "2026-11-24T15:28:26Z",
-    "new_articles": 0,
-    "new_candidates": 0,
+    "last_success_at": "2026-11-26T02:31:29Z",
+    "latest_publication_at": "2026-11-26T00:26:41Z",
+    "new_articles": 1,
+    "new_candidates": 1,
     "revised_articles": 0,
-    "source_hash": "a07e75ecb5eb5dd2f434757d86af252b72d637c2af37a54534d91af519a40e5b",
+    "source_hash": "1959645a71362f42063a5e8e08cc77d1c78bf60d6dd1a5d3053a22508a9d4c6e",
     "stale": false,
     "status": "coverage_gap"
   },
   "press_status": "error",
-  "record_count": 1007,
+  "record_count": 1008,
   "schema_version": 1,
-  "snapshot_digest": "9be1b550853faa2f9e9d010ad184191056f1faf26d576ee047b12d685ddccef1",
-  "snapshot_hash": "2f4cbaabe425e6429a8c37f0ed403cf4202545ec187bf1cb759f7bd504916438",
-  "source_updated": "2026-11-24T00:00:06.002Z",
+  "snapshot_digest": "44359d41bc048f9d6f37eeab6541469a37e702848128ebebfe87a489539e70fb",
+  "snapshot_hash": "80ffcfcf67179cb8fdb833ce542d29d1f803d117cd43268b3317d26c2ba5acc4",
+  "source_updated": "2026-11-26T00:00:00.937Z",
   "updates_archive_recoveries": {
     "a19e54383113bf62858716c905f9545bf5230376d1dbf5258d99af2a8fe490db": {
       "imported_at": "2026-11-17T06:28:35Z",
@@ -129151,6 +129199,6 @@
     }
   ],
   "updates_status": "error",
-  "xml_last_success_at": "2026-11-24T15:55:31Z",
+  "xml_last_success_at": "2026-11-26T02:31:29Z",
   "xml_status": "review_required"
 }

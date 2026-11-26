@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-24T00:00:06.002Z",
+  "generated_at": "2026-11-26T00:00:00.937Z",
   "parties": {
     "CDe.001": {
       "committee": "1533",
@@ -101402,6 +101402,140 @@
         }
       ],
       "reference": "LYe.006"
+    },
+    "LYe.007": {
+      "committee": "1970",
+      "data_id": "6909750",
+      "evidence": [
+        "ENTITY",
+        [],
+        "",
+        [
+          [
+            "DATAID",
+            [],
+            "6909750",
+            []
+          ],
+          [
+            "VERSIONNUM",
+            [],
+            "1",
+            []
+          ],
+          [
+            "FIRST_NAME",
+            [],
+            "Aegean",
+            []
+          ],
+          [
+            "UN_LIST_TYPE",
+            [],
+            "Libya",
+            []
+          ],
+          [
+            "REFERENCE_NUMBER",
+            [],
+            "LYe.007",
+            []
+          ],
+          [
+            "LISTED_ON",
+            [],
+            "2026-11-24",
+            []
+          ],
+          [
+            "COMMENTS1",
+            [],
+            "IMO: 8027705 Listed pursuant to paragraphs 10(a), 10 (b), 10(c) and 10(d) of resolution 2146 (2014), as amended by paragraph 2 of resolutions 2441 (2018) and 2509 (2020) and extended in resolution 2819 (2026) (prohibition to load, transport or discharge; prohibition to enter ports; prohibition to provide bunkering and vessel services; prohibition to engage in financial transactions with regard to petroleum). Pursuant to paragraph 11 of resolution 2146, as modified by paragraph 2 of resolution 2509 (2020), this designation is valid from 24 November 2026 to 24 November 2027, unless terminated earlier by the Committee pursuant to paragraph 12 of resolution 2146 (2014). Flag State: Unknown. As of 4 April 2026, the vessel was located near the anchorage area of the Benghazi Old Harbour, Libya.",
+            []
+          ],
+          [
+            "HAS_INTERPOL_LINK",
+            [],
+            "NO",
+            []
+          ],
+          [
+            "INTERPOL_LINK",
+            [],
+            "",
+            []
+          ],
+          [
+            "LIST_TYPE",
+            [],
+            "",
+            [
+              [
+                "VALUE",
+                [],
+                "UN List",
+                []
+              ]
+            ]
+          ],
+          [
+            "ENTITY_ALIAS",
+            [],
+            "",
+            [
+              [
+                "QUALITY",
+                [],
+                "",
+                []
+              ],
+              [
+                "ALIAS_NAME",
+                [],
+                "",
+                []
+              ]
+            ]
+          ],
+          [
+            "ENTITY_ADDRESS",
+            [],
+            "",
+            [
+              [
+                "COUNTRY",
+                [],
+                "",
+                []
+              ]
+            ]
+          ],
+          [
+            "SORT_KEY",
+            [],
+            "",
+            []
+          ],
+          [
+            "SORT_KEY_LAST_MOD",
+            [],
+            "",
+            []
+          ]
+        ]
+      ],
+      "fingerprint": "e06408fe4acaba569c29420ed7fd4cdf7428a4cfb43e4d90cc05f85799e7c2b3",
+      "kind": "entity",
+      "list_type": "Libya",
+      "listed_on": "2026-11-24",
+      "names": [
+        {
+          "kind": "primary",
+          "name": "Aegean",
+          "weak": false
+        }
+      ],
+      "reference": "LYe.007"
     },
     "LYi.001": {
       "committee": "1970",
@@ -306530,8 +306664,8 @@
       "reference": "YEi.012"
     }
   },
-  "raw_path": "data/raw/un/2f4cbaabe425e6429a8c37f0ed403cf4202545ec187bf1cb759f7bd504916438.xml.gz",
+  "raw_path": "data/raw/un/80ffcfcf67179cb8fdb833ce542d29d1f803d117cd43268b3317d26c2ba5acc4.xml.gz",
   "schema_version": 1,
-  "source_hash": "2f4cbaabe425e6429a8c37f0ed403cf4202545ec187bf1cb759f7bd504916438",
+  "source_hash": "80ffcfcf67179cb8fdb833ce542d29d1f803d117cd43268b3317d26c2ba5acc4",
   "source_url": "https://scsanctions.un.org/resources/xml/en/name/consolidated.xml"
 }
