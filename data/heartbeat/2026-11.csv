@@ -838,3 +838,4 @@ checked_at,source,status,content_hash,source_updated,record_count,raw_path
 2026-11-27T20:16:32Z,ofac_cons,unchanged,599771b4fb7363f5f0be0009372bbe23f2e3d39a361ad7d624564656c9c407a0,"Wed, 04 Nov 2026 17:33:12 GMT",3396,
 2026-11-27T21:21:15Z,un_xml,review_required,215d8f9d1277036f54a3dcaaf1a87599ada116f1b207f291d70420ca21c2c1a2,2026-11-27T00:00:06.380Z,1008,
 2026-11-27T21:21:15Z,un_press,error,,,0,
+2026-11-27T21:42:07Z,mof,unchanged,01e6141505b7733ad2ff07a0acd312c11d7abb55bd57607db74390b195c2ce21,令和8年11月20日,15245,
