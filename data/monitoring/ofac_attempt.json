@@ -1,12 +1,12 @@
 {
-  "started_at": "2026-11-28T14:46:25Z",
-  "finished_at": "2026-11-28T14:46:44Z",
+  "started_at": "2026-11-28T16:16:19Z",
+  "finished_at": "2026-11-28T16:16:27Z",
   "outcome": "success",
   "exit_code": 0,
   "sources": [
     "ofac"
   ],
-  "run_id": "46155846046",
+  "run_id": "46163695971",
   "run_attempt": "1",
-  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/46155846046"
+  "run_url": "https://github.com/kenmizunokuro/sanctions-watch/actions/runs/46163695971"
 }
